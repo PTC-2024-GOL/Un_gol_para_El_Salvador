@@ -10,8 +10,24 @@
 
 //Escribir aquí el codigo para modificar los componentes de boostrap o agregar colores, etc.
 
+// PALETA DE COLORES
+// Declaración de variables para asignación de colores
+$skyBlue-pastel-color: (
+  "skyBlue-pastel-color":   rgb(242, 247, 255)
+);
 
+$red-cream-color: (
+  "red-cream-color":   rgb(235, 88, 88)
+);
 
+$blue-principal-color: (
+  "blue-principal-color":   rgb(51, 65, 149)
+);
+
+// Agregar variables al tema de colores de boostrap, mergearlas
+$theme-colors: map-merge($theme-colors, $skyBlue-pastel-color);
+$theme-colors: map-merge($theme-colors, $red-cream-color);
+$theme-colors: map-merge($theme-colors, $blue-principal-color);
 
 
 //Include all of Bootstrap
