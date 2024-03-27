@@ -1,7 +1,16 @@
+//PASO 1: Instalar en extenciones de vscode Live Sass Compiler para compilar el codigo de SASS
+//Paso 2: Luego de haber escrito el codigo para modificar un componente nos ubicamos en la parte de abajo
+// y podremos ver un ojito, al darle clic se comenzara a compilar nuestro codigo SASS.
+
+
 // Importacion de todos los componentes de boostrap para poder cambiarlos
 @import "../../node_modules/bootstrap/scss/functions";
 @import "../../node_modules/bootstrap/scss/variables";
 @import "../../node_modules/bootstrap/scss/variables-dark";
+
+//Escribir aquí el codigo para modificar los componentes de boostrap o agregar colores, etc.
+
+
 
 
 
