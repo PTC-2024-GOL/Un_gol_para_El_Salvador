@@ -1,74 +1,167 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-     <!-- Agregamos el framework de boostrap - css -->
+    <!-- Agregamos el framework de boostrap - css -->
     <link type="text/css" rel="stylesheet" href="../../resources/scss/main.css">
     <!-- Agregamos su archivo css -->
     <link type="text/css" rel="stylesheet" href="../../resources/css/menu.css">
 </head>
+
 <body>
-    
+
     <nav class="navbar bg-skyBlue-pastel-color fixed-top sticky-sm-top">
         <div class="container-fluid">
             <button class="navbar-toggler " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
                 aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            <a class="navbar-brand" href="#">Administrador</a>
             <!-- Imagen de perfil y nombre -->
-            <div class="row">
-                <div class="col-3">
-                    
+            <div class="row align-items-center justify-content-center">
+                <div class="col-auto ">
+                    <div>
+                        <p class="mb-0 float-end">Chepe Martínez</p>
+                    </div>
+                    <div>
+                        <p class="text-body-secondary small float-end">Administrador</p>
+                    </div>
                 </div>
                 <div class="col">
-                    
+                    <img src="../../resources/img/svg/avatar.svg" class="rounded-circle" alt="">
                 </div>
             </div>
             <!-- Cuerpo -->
             <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
                 aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+                </div>
+                <!-- Cuerpo del nav -->
                 <div class="offcanvas-body">
-                    <ul class="navbar-nav flex-grow-1 pe-3">
-                        <!-- Logo -->
-                        <div class="row justify-content-center">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                        <!-- Fila que contiene el logo centrado en la parte superior del menu -->
+                        <div class="row justify-content-center mb-5">
                             <div class="col-auto">
-                                <img src="../../resources/img/png/logos/logo_blanco.png" alt="">
+                                <img src="../../resources/img/svg/logos/logo_blanco.svg" width="140px" alt="">
                             </div>
                         </div>
-                        <!-- Logo -->
-                        
-                        <!-- Contenido -->
-                        <div class="row mt-4">
-                            <div class="col-2">
-                                <!-- <img src="../../resources/img/svg/dashoboard.svg" alt=""> -->
-                            </div>
-                            <div class="col-2">
+                        <div class="container ms-2">
+                            <!-- Etiqueta para el dashboard -->
+                            <li class="nav-item">
+                                <a class="nav-link active text-light" aria-current="page" href="#">
+                                    <img src="../../resources/img/svg/icons_menu/dashboard.svg" class="me-3"
+                                        alt="">Dashboard</a>
+                            </li>
+                            <!-- Etiqueta para el usuario -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="../../resources/img/svg/icons_menu/users.svg" class="me-3" alt="">
+                                    Usuarios
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                </ul>
+                            </li>
+                            <!-- Etiqueta para el estadisticas -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="../../resources/img/svg/icons_menu/estadisticas.svg" class="me-3" alt="">
+                                    Estadísticas
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                </ul>
+                            </li>
+                            <!-- Etiqueta para el entrenamientos -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="../../resources/img/svg/icons_menu/entrenamientos.svg" class="me-3"
+                                        alt="">
+                                    Entrenamientos
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                </ul>
+                            </li>
+                            <!-- Etiqueta para el equipos -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="../../resources/img/svg/icons_menu/equipos.svg" class="me-3" alt="">
+                                    Equipos
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                </ul>
+                            </li>
+                            <!-- Etiqueta para el registro medico -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="../../resources/img/svg/icons_menu/registro_medico.svg" class="me-3"
+                                        alt="">
+                                    Registro médico
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                </ul>
+                            </li>
+                            <!-- Etiqueta para pagos -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="../../resources/img/svg/icons_menu/pay.svg" class="me-3" alt="">
+                                    Pagos
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                </ul>
+                            </li>
+
+                            <div class="contenedor p-3 rounded-3">
+                                <!-- Etiqueta para el Ayuda -->
                                 <li class="nav-item">
-                                    <!-- <a class="nav-link active" aria-current="page"
-                                        href="../../views/admin/dashboard.html">Dashboard
-                                    </a> -->
+                                    <a class="nav-link active text-light" aria-current="page" href="#">
+                                        <img src="../../resources/img/svg/icons_menu/help.svg" class="me-3" alt="">
+                                        Ayuda</a>
+                                </li>
+                                <!-- Etiqueta para contactanos -->
+                                <li class="nav-item">
+                                    <a class="nav-link active text-light" aria-current="page" href="#">
+                                        <img src="../../resources/img/svg/icons_menu/contactanos.svg" class="me-3"
+                                            alt="">
+                                        contáctanos</a>
+                                </li>
+                                <!-- Etiqueta para log out -->
+                                <li class="nav-item">
+                                    <a class="nav-link active text-light" aria-current="page" href="#">
+                                        <img src="../../resources/img/svg/icons_menu/log_out.svg" class="me-3" alt="">
+                                        Cerrar sesión</a>
                                 </li>
                             </div>
                         </div>
-                        <div class="row mt-2">
-                            <div class="col-2">
-                                <!-- <img src="../../resources/img/svg/admins.svg" alt=""> -->
-                            </div>
-                            <div class="col-2">
-                                <!-- <li class="nav-item">
-                                    <a class="nav-link active text-light" aria-current="page"
-                                        href="../../views/admin/scrud_admin.html">Administradores</a>
-                                </li> -->
-                            </div>
-                        </div>
-                    </ul>
                 </div>
+                </ul>
             </div>
         </div>
+        </div>
     </nav>
-     <!-- Agregamos el framework de boostrap - js -->
-     <script type="text/javascript" src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Agregamos el framework de boostrap - js -->
+    <script type="text/javascript" src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

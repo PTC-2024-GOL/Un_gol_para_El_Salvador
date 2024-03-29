@@ -7,8 +7,10 @@
 @import "../../node_modules/bootstrap/scss/functions";
 @import "../../node_modules/bootstrap/scss/variables";
 @import "../../node_modules/bootstrap/scss/variables-dark";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 //Escribir aquí el codigo para modificar los componentes de boostrap o agregar colores, etc.
+$font-family-sans-serif:  "Poppins", sans-serif;
 
 // PALETA DE COLORES
 // Declaración de variables para asignación de colores
@@ -23,6 +25,7 @@ $red-cream-color: (
 $blue-principal-color: (
   "blue-principal-color":   rgb(51, 65, 149)
 );
+
 
 // Agregar variables al tema de colores de boostrap, mergearlas
 $theme-colors: map-merge($theme-colors, $skyBlue-pastel-color);
