@@ -3,8 +3,8 @@
         <!-- Buscador -->
         <div class="">
             <form id="searchForm" class="d-flex">
-                <input type="search" class="form-control me-2 borde-transparente campo" name="search" placeholder="Buscar"
-                    required>
+                <input type="search" class="form-control me-2 borde-transparente campo" name="search"
+                    placeholder="Buscar" required>
                 <button type="submit" class="btn bg-blue-principal-color borde-transparente me-5">
                     <img src="../../../resources/img/svg/icons_forms/search.svg" width="18" height="18">
                 </button>
@@ -15,7 +15,8 @@
         </div>
 
         <!-- Botón Agregar -->
-        <button class="btn bg-blue-principal-color text-white ms-auto borde-transparente" type="submit" onclick="openCreate()">
+        <button class="btn bg-blue-principal-color text-white ms-auto borde-transparente" type="submit"
+            onclick="openCreate()">
             <span class="fs-5">+</span> Agregar administrador
         </button>
     </div>
@@ -54,10 +55,19 @@
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
                     <input type="hidden" id="idAdministrador" name="idAdministrador">
-                    <div class="col-sm-12 col-md-6">
-                        <label for="imagenAdministrador" class="form-label">Imagen</label>
-                        <input id="imagenAdministrador" type="file" name="imagenAdministrador" class="form-control"
-                            accept=".png, .jpg">
+                    <div class="container text-center text-md-start text-lg-start">
+                        <div class="row align-items-center justify-content-center gy-3">
+                            <div class="col-sm-12 col-md-auto">
+                                <img class="circulo" id="img_admin" src="../../../resources/img/svg/avatar.svg"
+                                    width="120px">
+                            </div>
+                            <div class="col-sm-12 text-center">
+                                <!-- Botón para cargar imagen -->
+                                <input type="file" class="form-control" id="imagenAdministrador" hidden >
+                                <!-- Para que tenga el mismo funcionamiento del input file le ponemos el for y le agregamos el id del input file -->
+                                <label class="btn bg-blue-principal-color text-light" for="imagenAdministrador">Cargar imagen</label>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="nombreAdministrador" class="form-label">Nombre</label>
