@@ -78,7 +78,7 @@ const openUpdate = async (id) => {
 */
 const openDelete = async (id) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar el administrador de forma permanente?');
+    const RESPONSE = await confirmAction('¿Desea eliminar el administrador?');
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
@@ -102,7 +102,7 @@ const openDelete = async (id) => {
     }
     catch (Error) {
         console.log(Error + ' Error al cargar el mensaje');
-        confirmAction('¿Desea eliminar el administrador de forma permanente?');
+        confirmAction('¿Desea eliminar el administrador?');
     }
 
 }
