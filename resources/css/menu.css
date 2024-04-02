@@ -13,3 +13,40 @@
     margin-top: 100px;
     margin-bottom: 40px;
 }
+
+.borde-transparente {
+    border: 3px;
+    border-radius: 15px;
+    /* Bordes redondeados */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    /* Sombra */
+    transition: all 0.3s ease;
+    /* Animación de transición */
+}
+
+.borde-transparente:hover {
+    transform: scale(1.05);
+    /* Escala al 105% en hover */
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.8);
+    /* Sombra más pronunciada en hover */
+}
+
+.transparente {
+    background-color: rgb(255, 255, 255);
+    /* Bordes redondeados */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    /* Sombra */
+    transition: all 0.3s ease;
+    /* Animación de transición */
+}
+
+.transparente:hover {
+    transform: scale(1.05);
+    /* Escala al 105% en hover */
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.8);
+    /* Sombra más pronunciada en hover */
+}
+
+.campo{
+    min-width: 300px;
+}
