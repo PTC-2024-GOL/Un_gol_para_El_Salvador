@@ -76,7 +76,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                 <ul class="dropdown-menu bg-transparent">
                                     <li><a class="dropdown-item text-light" href="#">Jugadores</a></li>
                                     <li><a class="dropdown-item text-light" href="#">Técnicos</a></li>
-                                    <li><a class="dropdown-item text-light" href="#">Usuarios</a></li>
+                                    <li><a class="dropdown-item text-light" href="admins.html">Usuarios</a></li>
                                 </ul>
                             </li>
                             <!-- Etiqueta para el estadisticas -->
@@ -124,7 +124,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                     <li><a class="dropdown-item text-light" href="#">Tipos de jugada</a></li>
                                     <li><a class="dropdown-item text-light" href="#">Tipos de goles</a></li>
                                     <li><a class="dropdown-item text-light" href="#">Participaciones</a></li>
-                                    <li><a class="dropdown-item text-light" href="#">Posiciones</a></li>
+                                    <li><a class="dropdown-item text-light" href="positions.html">Posiciones</a></li>
                                     <li><a class="dropdown-item text-light" href="#">Categorías</a></li>
                                     <li><a class="dropdown-item text-light" href="#">Partidos</a></li>
                                 </ul>
