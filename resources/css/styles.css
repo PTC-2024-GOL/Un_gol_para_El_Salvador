@@ -5,10 +5,15 @@
 }
 
 .dropdown-menu{
-    background-color: rgb(255, 255, 255);
-    margin-left: 35px;
+    margin-left: 30px;
+    border: none;
 }
 
+.dropdown-item:hover, .dropdown-item:focus {
+    color: var(--bs-dropdown-link-hover-color);
+    background-color:  rgb(13, 56, 126);
+  }
+  
 .contenedor{
     background-color: rgb(1, 4, 79);
     margin-top: 100px;

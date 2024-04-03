@@ -73,9 +73,10 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                     <img src="../../../resources/img/svg/icons_menu/users.svg" class="me-3" alt="">
                                     Usuarios
                                 </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Action</a></li>
-                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <ul class="dropdown-menu bg-transparent">
+                                    <li><a class="dropdown-item text-light" href="#">Jugadores</a></li>
+                                    <li><a class="dropdown-item text-light" href="#">Técnicos</a></li>
+                                    <li><a class="dropdown-item text-light" href="#">Usuarios</a></li>
                                 </ul>
                             </li>
                             <!-- Etiqueta para el estadisticas -->
@@ -85,9 +86,9 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                     <img src="../../../resources/img/svg/icons_menu/estadisticas.svg" class="me-3" alt="">
                                     Estadísticas
                                 </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Action</a></li>
-                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <ul class="dropdown-menu bg-transparent">
+                                    <li><a class="dropdown-item text-light" href="#">Jornadas</a></li>
+                                    <li><a class="dropdown-item text-light" href="#">Temporadas</a></li>
                                 </ul>
                             </li>
                             <!-- Etiqueta para el entrenamientos -->
@@ -98,9 +99,16 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                         alt="">
                                     Entrenamientos
                                 </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Action</a></li>
-                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <ul class="dropdown-menu bg-transparent">
+                                    <li><a class="dropdown-item text-light" href="#">Entrenamientos</a></li>
+                                    <li><a class="dropdown-item text-light" href="#">Contenidos</a></li>
+                                    <li><a class="dropdown-item text-light" href="#">Sub contenidos</a></li>
+                                    <li><a class="dropdown-item text-light" href="#">Detalles</a></li>
+                                    <li><a class="dropdown-item text-light" href="#">Tareas</a></li>
+                                    <li><a class="dropdown-item text-light" href="#">Características de jugadores</a></li>
+                                    <li><a class="dropdown-item text-light" href="#">Análisis de características</a></li>
+                                    <li><a class="dropdown-item text-light" href="#">Horarios</a></li>
+                                    <li><a class="dropdown-item text-light" href="#">Asistencia</a></li>
                                 </ul>
                             </li>
                             <!-- Etiqueta para el equipos -->
@@ -110,9 +118,15 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                     <img src="../../../resources/img/svg/icons_menu/equipos.svg" class="me-3" alt="">
                                     Equipos
                                 </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Action</a></li>
-                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <ul class="dropdown-menu bg-transparent">
+                                    <li><a class="dropdown-item text-light" href="#">Cuerpos técnicos</a></li>
+                                    <li><a class="dropdown-item text-light" href="#">Equipos</a></li>
+                                    <li><a class="dropdown-item text-light" href="#">Tipos de jugada</a></li>
+                                    <li><a class="dropdown-item text-light" href="#">Tipos de goles</a></li>
+                                    <li><a class="dropdown-item text-light" href="#">Participaciones</a></li>
+                                    <li><a class="dropdown-item text-light" href="#">Posiciones</a></li>
+                                    <li><a class="dropdown-item text-light" href="#">Categorías</a></li>
+                                    <li><a class="dropdown-item text-light" href="#">Partidos</a></li>
                                 </ul>
                             </li>
                             <!-- Etiqueta para el registro medico -->
@@ -123,10 +137,14 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                         alt="">
                                     Registro médico
                                 </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Action</a></li>
-                                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                                </ul>
+                            </a>
+                            <ul class="dropdown-menu bg-transparent">
+                                <li><a class="dropdown-item text-light" href="#">Registro médico</a></li>
+                                <li><a class="dropdown-item text-light" href="#">Tipos de lesiones</a></li>
+                                <li><a class="dropdown-item text-light" href="#">Tipologías</a></li>
+                                <li><a class="dropdown-item text-light" href="#">Sub Tipologías</a></li>
+                                <li><a class="dropdown-item text-light" href="#">Lesiones</a></li>
+                            </ul>
                             </li>
                             <!-- Etiqueta para pagos -->
                             <li class="nav-item dropdown">
@@ -135,10 +153,10 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                     <img src="../../../resources/img/svg/icons_menu/pay.svg" class="me-3" alt="">
                                     Pagos
                                 </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Action</a></li>
-                                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                                </ul>
+                            </a>
+                            <ul class="dropdown-menu bg-transparent">
+                                <li><a class="dropdown-item text-light" href="#">Pagos</a></li>
+                            </ul>
                             </li>
 
                             <div class="contenedor p-3 rounded-3">
