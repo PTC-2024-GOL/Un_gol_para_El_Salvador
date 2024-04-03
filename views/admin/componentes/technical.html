@@ -1,0 +1,130 @@
+<div class="container">
+    <div class="container-fluid mb-5">
+        <div class="row gy-3">
+            <!-- Buscador -->
+            <div class="col-sm-12 col-md-6">
+                <form id="searchForm" class="d-flex">
+                    <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
+                        name="search" placeholder="Buscar" required>
+                    <button type="submit" class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
+                        <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
+                    </button>
+                    <button type="reset" class="btn" onclick="fillTable()">
+                        <img src="../../../resources/img/svg/icons_forms/reset.svg" width="18px" height="18px">
+                    </button>
+                </form>
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+                <!-- Botón Agregar -->
+                <button class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3" type="submit"
+                    onclick="openCreate()">
+                    <span class="fs-5 me-2">+</span> Agregar técnico
+                </button>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <!-- Tabla para mostrar los registros existentes -->
+    <div class="table-responsive">
+        <table class="table table align-middle table-striped table-borderless">
+            <!-- Cabeza de la tabla para mostrar la cantidad de registros y los títulos de las columnas -->
+            <thead>
+                <tr>
+                    <td colspan="6" id="rowsFound"></td>
+                </tr>
+                <tr>
+                    <th>Imagen</th>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Teléfono</th>
+                    <th>Dui</th>
+                    <th>Fecha de nacimiento</th>
+                </tr>
+            </thead>
+            <!-- Cuerpo de la tabla para mostrar un registro por fila -->
+            <tbody id="tabla_tecnicos"></tbody>
+        </table>
+    </div>
+</div>
+<!-- Componente Modal para guardar un registro -->
+<div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-principal-color">
+                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                <h1 class="modal-title fs-5 text-white" id="modalTitle"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- Formulario para crear o actualizar un registro -->
+            <form id="saveForm">
+                <div class="modal-body row g-3">
+                    <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                    <input type="hidden" id="idTecnico" name="idTecnico">
+                    <div class="container text-center text-md-start text-lg-start">
+                        <div class="row align-items-center justify-content-center gy-3">
+                            <div class="col-sm-12 col-md-auto">
+                                <img class="circulo" id="img_admin" src="../../../resources/img/svg/avatar.svg"
+                                    width="120px">
+                            </div>
+                            <div class="col-sm-12 text-center">
+                                <!-- Botón para cargar imagen -->
+                                <input type="file" class="form-control" id="imagenTecnico" hidden>
+                                <!-- Para que tenga el mismo funcionamiento del input file le ponemos el for y le agregamos el id del input file -->
+                                <label class="btn bg-blue-principal-color text-light" for="imagenTecnico">Cargar
+                                    imagen</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="nombreTecnico" class="form-label">Nombre</label>
+                        <input id="nombreTecnico" type="text" name="nombreTecnico" class="form-control"
+                            placeholder="Ingresa el nombre del Técnico" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="apellidoTecnico" class="form-label">Apellido</label>
+                        <input id="apellidoTecnico" type="text" name="apellidoTecnico" class="form-control"
+                            placeholder="Ingresa el apellido del técnico" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="correoTecnico" class="form-label">Correo</label>
+                        <input id="correoTecnico" type="email" name="correoTecnico" class="form-control"
+                            placeholder="Ingresa el correo de técnico" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="telefonoTecnico" class="form-label">Teléfono</label>
+                        <input id="telefonoTecnico" type="text" name="telefonoTecnico" class="form-control"
+                            placeholder="0000-0000" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="duiTecnico" class="form-label">DUI</label>
+                        <input id="duiTecnico" type="text" name="duiTecnico" class="form-control"
+                            placeholder="00000000-0" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="nacimientoTecnico" class="form-label">Fecha de nacimiento</label>
+                        <input id="nacimientoTecnico" type="date" name="nacimientoTecnico"
+                            class="form-control" placeholder="Ingresa la fecha de nacimiento del técnico"
+                            required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="claveTecnico" class="form-label">Contraseña</label>
+                        <input id="claveTecnico" type="password" name="claveTecnico" min="0.01" step="0.01"
+                            class="form-control" placeholder="Ingresa la clave del técnico" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="repetirclaveTecnico" class="form-label">Repetir contraseña</label>
+                        <input id="repetirclaveTecnico" type="password" name="repetirTecnico"
+                            min="0.01" step="0.01" class="form-control" placeholder="Repite la clave del técnico"
+                            required>
+                    </div>
+                </div>
+                <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
+                    <button type="reset" class="btn bg-red-cream-color text-white">Cancelar</button>
+                    <button type="submit" class="btn bg-blue-principal-color text-white ">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -180,11 +180,11 @@ window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
     // Carga los componentes de manera síncrona
-    const adminHtml = await loadComponent('../componentes/positions.html');
+    const posicionHtml = await loadComponent('../componentes/positions.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
     // Agrega el HTML del encabezado
-    appContainer.innerHTML = adminHtml;
+    appContainer.innerHTML = posicionHtml;
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),

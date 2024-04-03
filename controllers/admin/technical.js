@@ -1,19 +1,19 @@
 let SAVE_MODAL;
 let SAVE_FORM,
-    ID_ADMINISTRADOR,
-    NOMBRE_ADMINISTRADOR,
-    APELLIDO_ADMINISTRADOR,
-    CLAVE_ADMINISTRADOR,
-    CORREO_ADMINISTRADOR,
-    TELEFONO_ADMINISTRADOR,
-    DUI_ADMINISTRADOR,
-    NACIMIENTO_ADMINISTRADOR,
-    IMAGEN_ADMINISTRADOR,
+    ID_TECNICO,
+    NOMBRE_TECNICO,
+    APELLIDO_TECNICO,
+    CLAVE_TECNICO,
+    CORREO_TECNICO,
+    TELEFONO_TECNICO,
+    DUI_TECNICO,
+    NACIMIENTO_TECNICO,
+    IMAGEN_TECNICO,
     REPETIR_CLAVE;
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
-const ADMINISTRADOR_API = '';
+const API = '';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -28,7 +28,7 @@ async function loadComponent(path) {
 const openCreate = () => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
-    MODAL_TITLE.textContent = 'Crear administrador';
+    MODAL_TITLE.textContent = 'Agregar un técnico';
     // Se prepara el formulario.
     SAVE_FORM.reset();
 }
@@ -41,20 +41,20 @@ const openUpdate = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
-        FORM.append('idAdministrador', id);
+        FORM.append('idTecnico', id);
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(ADMINISTRADOR_API, 'readOne', FORM);
+        const DATA = await fetchData(API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
-            MODAL_TITLE.textContent = 'Actualizar administrador';
+            MODAL_TITLE.textContent = 'Actualizar un técnico';
             // Se prepara el formulario.
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
-            ID_ADMINISTRADOR.value = ROW.ID;
-            NOMBRE_ADMINISTRADOR.value = ROW.NOMBRE;
+            ID_TECNICO.value = ROW.ID;
+            NOMBRE_TECNICO.value = ROW.NOMBRE;
             APELLIDO_ADMINISTRADOR.value = ROW.APELLIDO;
             CORREO_ADMINISTRADOR.value = ROW.CORREO;
             TELEFONO_ADMINISTRADOR.value = ROW.TELÉFONO;
@@ -67,7 +67,7 @@ const openUpdate = async (id) => {
     } catch (Error) {
         console.log(Error);
         SAVE_MODAL.show();
-        MODAL_TITLE.textContent = 'Actualizar administrador';
+        MODAL_TITLE.textContent = 'Actualizar un técnico';
     }
 
 }
@@ -78,16 +78,16 @@ const openUpdate = async (id) => {
 */
 const openDelete = async (id) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar el administrador?');
+    const RESPONSE = await confirmAction('¿Desea eliminar el técnico?');
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
             // Se define una constante tipo objeto con los datos del registro seleccionado.
             const FORM = new FormData();
-            FORM.append('idAdministrador', id);
+            FORM.append('idTecnico', id);
             console.log(id);
             // Petición para eliminar el registro seleccionado.
-            const DATA = await fetchData(ADMINISTRADOR_API, 'deleteRow', FORM);
+            const DATA = await fetchData(API, 'deleteRow', FORM);
             console.log(DATA.status);
             // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
             if (DATA.status) {
@@ -102,7 +102,7 @@ const openDelete = async (id) => {
     }
     catch (Error) {
         console.log(Error + ' Error al cargar el mensaje');
-        confirmAction('¿Desea eliminar el administrador?');
+        confirmAction('¿Desea eliminar el técnico?');
     }
 
 }
@@ -120,34 +120,16 @@ async function fillTable(form = null) {
             id: 1,
         },
         {
-            imagen: '../../../../resources/img/svg/avatar.svg',
-            nombre: 'José Martínez',
-            correo: 'jose@gmail.com',
+            imagen: '../../../../resources/img/svg/avatar2.svg',
+            nombre: 'Wilmer Melara',
+            correo: 'wilmer@gmail.com',
             telefono: '1234-5678',
             dui: '12345678-9',
             fecha: '1994-02-09',
             id: 2,
         },
-        {
-            imagen: '../../../../resources/img/svg/avatar.svg',
-            nombre: 'José Martínez',
-            correo: 'jose@gmail.com',
-            telefono: '1234-5678',
-            dui: '12345678-9',
-            fecha: '1994-02-09',
-            id: 3,
-        },
-        {
-            imagen: '../../../../resources/img/svg/avatar.svg',
-            nombre: 'José Martínez',
-            correo: 'jose@gmail.com',
-            telefono: '1234-5678',
-            dui: '12345678-9',
-            fecha: '1994-02-09',
-            id: 4,
-        }
     ];
-    const cargarTabla = document.getElementById('tabla_administradores');
+    const cargarTabla = document.getElementById('tabla_tecnicos');
 
     try {
         cargarTabla.innerHTML = '';
@@ -155,7 +137,7 @@ async function fillTable(form = null) {
         (form) ? action = 'searchRows' : action = 'readAll';
         console.log(form);
         // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(ADMINISTRADOR_API, action, form);
+        const DATA = await fetchData(API, action, form);
         console.log(DATA);
 
         if (DATA.status) {
@@ -216,7 +198,7 @@ window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
     // Carga los componentes de manera síncrona
-    const adminHtml = await loadComponent('../componentes/admin.html');
+    const adminHtml = await loadComponent('../componentes/technical.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
     // Agrega el HTML del encabezado
@@ -228,26 +210,26 @@ window.onload = async function () {
 
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
-        ID_ADMINISTRADOR = document.getElementById('idAdministrador'),
-        NOMBRE_ADMINISTRADOR = document.getElementById('nombreAdministrador'),
-        APELLIDO_ADMINISTRADOR = document.getElementById('apellidoAdministrador'),
-        CORREO_ADMINISTRADOR = document.getElementById('correoAdministrador'),
-        TELEFONO_ADMINISTRADOR = document.getElementById('telefonoAdministrador'),
-        DUI_ADMINISTRADOR = document.getElementById('duiAdministrador'),
-        NACIMIENTO_ADMINISTRADOR = document.getElementById('nacimientoAdministrador'),
-        CLAVE_ADMINISTRADOR = document.getElementById('claveAdministrador'),
-        REPETIR_CLAVE = document.getElementById('repetirclaveAdministrador'),
-        IMAGEN_ADMINISTRADOR = document.getElementById('imagenAdministrador');
+        ID_TECNICO = document.getElementById('idTecnico'),
+        NOMBRE_TECNICO = document.getElementById('nombreTecnico'),
+        APELLIDO_TECNICO = document.getElementById('apellidoTecnico'),
+        CORREO_TECNICO = document.getElementById('correoTecnico'),
+        TELEFONO_TECNICO = document.getElementById('telefonoTecnico'),
+        DUI_TECNICO = document.getElementById('duiTecnico'),
+        NACIMIENTO_TECNICO = document.getElementById('nacimientoTecnico'),
+        CLAVE_TECNICO = document.getElementById('claveTecnico'),
+        REPETIR_CLAVE = document.getElementById('repetirclaveTecnico'),
+        IMAGEN_TECNICO = document.getElementById('imagenTecnico');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
         event.preventDefault();
         // Se verifica la acción a realizar.
-        (ID_ADMINISTRADOR.value) ? action = 'updateRow' : action = 'createRow';
+        (ID_TECNICO.value) ? action = 'updateRow' : action = 'createRow';
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SAVE_FORM);
         // Petición para guardar los datos del formulario.
-        const DATA = await fetchData(ADMINISTRADOR_API, action, FORM);
+        const DATA = await fetchData(API, action, FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se cierra la caja de diálogo.

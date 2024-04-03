@@ -75,7 +75,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                 </a>
                                 <ul class="dropdown-menu bg-transparent">
                                     <li><a class="dropdown-item text-light" href="#">Jugadores</a></li>
-                                    <li><a class="dropdown-item text-light" href="#">Técnicos</a></li>
+                                    <li><a class="dropdown-item text-light" href="technical.html">Técnicos</a></li>
                                     <li><a class="dropdown-item text-light" href="admins.html">Usuarios</a></li>
                                 </ul>
                             </li>
@@ -107,7 +107,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                     <li><a class="dropdown-item text-light" href="#">Tareas</a></li>
                                     <li><a class="dropdown-item text-light" href="#">Características de jugadores</a></li>
                                     <li><a class="dropdown-item text-light" href="#">Análisis de características</a></li>
-                                    <li><a class="dropdown-item text-light" href="#">Horarios</a></li>
+                                    <li><a class="dropdown-item text-light" href="schedules.html">Horarios</a></li>
                                     <li><a class="dropdown-item text-light" href="#">Asistencia</a></li>
                                 </ul>
                             </li>
