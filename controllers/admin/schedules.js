@@ -1,8 +1,10 @@
 let SAVE_MODAL;
 let SAVE_FORM,
-    ID_POSICION,
-    NOMBRE_POSICION,
-    AREA_DE_JUEGO;
+    ID_HORARIOS,
+    DIA,
+    HORA_INICIAL,
+    HORA_FINAL,
+    CAMPO_ENTRENO;
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
@@ -21,7 +23,7 @@ async function loadComponent(path) {
 const openCreate = () => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
-    MODAL_TITLE.textContent = 'Agregar tipo de posición';
+    MODAL_TITLE.textContent = 'Agregar un horario';
     // Se prepara el formulario.
     SAVE_FORM.reset();
 }
@@ -34,28 +36,30 @@ const openUpdate = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
-        FORM.append('idPosicion', id);
+        FORM.append('idHorario', id);
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(ADMINISTRADOR_API, 'readOne', FORM);
+        const DATA = await fetchData(API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
-            MODAL_TITLE.textContent = 'Actualizar tipo de posición';
+            MODAL_TITLE.textContent = 'Actualizar un horario';
             // Se prepara el formulario.
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
-            ID_POSICION.value = ROW.ID;
-            NOMBRE_POSICION.value = ROW.POSICION;
-            AREA_DE_JUEGO.value = ROW.AREA;
+            ID_HORARIOS.value = ROW.ID;
+            DIA.value = ROW.DIA;
+            HORA_INICIAL.value = ROW.INICIAL;
+            HORA_FINAL.value = ROW.FINAL;
+            CAMPO_ENTRENO.value = ROW.CAMPO;
         } else {
             sweetAlert(2, DATA.error, false);
         }
     } catch (Error) {
         console.log(Error);
         SAVE_MODAL.show();
-        MODAL_TITLE.textContent = 'Actualizar tipo de posición';
+        MODAL_TITLE.textContent = 'Actualizar un horario';
     }
 
 }
@@ -66,13 +70,13 @@ const openUpdate = async (id) => {
 */
 const openDelete = async (id) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar la posición?');
+    const RESPONSE = await confirmAction('¿Desea eliminar el horario?');
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
             // Se define una constante tipo objeto con los datos del registro seleccionado.
             const FORM = new FormData();
-            FORM.append('idPosicion', id);
+            FORM.append('idHorario', id);
             console.log(id);
             // Petición para eliminar el registro seleccionado.
             const DATA = await fetchData(API, 'deleteRow', FORM);
@@ -90,7 +94,7 @@ const openDelete = async (id) => {
     }
     catch (Error) {
         console.log(Error + ' Error al cargar el mensaje');
-        confirmAction('¿Desea eliminar la posición?');
+        confirmAction('¿Desea eliminar el horario?');
     }
 
 }
@@ -99,27 +103,35 @@ const openDelete = async (id) => {
 async function fillTable(form = null) {
     const lista_datos = [
         {
-            posicion: 'Portero',
-            area: 'Defensiva',
+            dia: 'Lunes',
+            hora_inicial: '16:00:00',
+            hora_final: '18:00:00',
+            campo_entrenamiento: 'Cancha Bayer',
             id: 1,
         },
         {
-            posicion: 'Delantero centro',
-            area: 'Ofensiva',
+            dia: 'Martes',
+            hora_inicial: '16:00:00',
+            hora_final: '18:00:00',
+            campo_entrenamiento: 'Cancha Bayer',
             id: 2,
         },
         {
-            posicion: 'Interior izquierda ',
-            area: 'Ofensiva y defensiva',
+            dia: 'Jueves',
+            hora_inicial: '16:00:00',
+            hora_final: '18:00:00',
+            campo_entrenamiento: 'Cancha Bayer',
             id: 3,
         },
         {
-            posicion: 'Mediocentro',
-            area: 'Ofensiva y defensiva',
+            dia: 'Sábado',
+            hora_inicial: '16:00:00',
+            hora_final: '18:00:00',
+            campo_entrenamiento: 'Cancha Bayer',
             id: 4,
         }
     ];
-    const cargarTabla = document.getElementById('tabla_posiciones');
+    const cargarTabla = document.getElementById('tabla_horarios');
 
     try {
         cargarTabla.innerHTML = '';
@@ -135,8 +147,10 @@ async function fillTable(form = null) {
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
                 <tr>
-                    <td>${row.NOMBRE}</td>
-                    <td>${row.AREA}</td>
+                    <td>${row.DIA}</td>
+                    <td>${row.INICIAL}</td>
+                    <td>${row.FINAL}</td>
+                    <td>${row.CAMPO}</td>
                     <td>
                         <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
                         <img src="../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
@@ -158,8 +172,10 @@ async function fillTable(form = null) {
         lista_datos.forEach(row => {
             const tablaHtml = `
             <tr>
-                    <td>${row.posicion}</td>
-                    <td>${row.area}</td>
+            <td>${row.dia}</td>
+            <td>${row.hora_inicial}</td>
+            <td>${row.hora_final}</td>
+            <td>${row.campo_entrenamiento}</td>
                     <td>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
@@ -180,11 +196,11 @@ window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
     // Carga los componentes de manera síncrona
-    const posicionHtml = await loadComponent('../componentes/positions.html');
+    const horarioHtml = await loadComponent('../componentes/schedules.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
     // Agrega el HTML del encabezado
-    appContainer.innerHTML = posicionHtml;
+    appContainer.innerHTML = horarioHtml;
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
@@ -192,15 +208,17 @@ window.onload = async function () {
 
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
-        ID_POSICION = document.getElementById('idPosicion'),
-        NOMBRE_POSICION = document.getElementById('nombrePosicion'),
-        AREA_DE_JUEGO = document.getElementById('areaJuego');
+        ID_HORARIOS = document.getElementById('idHorario'),
+        DIA = document.getElementById('diaEntreno'),
+        HORA_INICIAL = document.getElementById('horarioInicial'),
+        HORA_FINAL = document.getElementById('horarioFinal'),
+        CAMPO_ENTRENO = document.getElementById('campoEntreno');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
         event.preventDefault();
         // Se verifica la acción a realizar.
-        (ID_POSICION.value) ? action = 'updateRow' : action = 'createRow';
+        (ID_HORARIOS.value) ? action = 'updateRow' : action = 'createRow';
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SAVE_FORM);
         // Petición para guardar los datos del formulario.
