@@ -1,19 +1,12 @@
 let SAVE_MODAL;
 let SAVE_FORM,
-    ID_ADMINISTRADOR,
-    NOMBRE_ADMINISTRADOR,
-    APELLIDO_ADMINISTRADOR,
-    CLAVE_ADMINISTRADOR,
-    CORREO_ADMINISTRADOR,
-    TELEFONO_ADMINISTRADOR,
-    DUI_ADMINISTRADOR,
-    NACIMIENTO_ADMINISTRADOR,
-    IMAGEN_ADMINISTRADOR,
-    REPETIR_CLAVE;
+    ID_POSICION,
+    NOMBRE_POSICION,
+    AREA_DE_JUEGO;
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
-const ADMINISTRADOR_API = '';
+const API = '';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -28,7 +21,7 @@ async function loadComponent(path) {
 const openCreate = () => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
-    MODAL_TITLE.textContent = 'Crear administrador';
+    MODAL_TITLE.textContent = 'Agregar tipo de posición';
     // Se prepara el formulario.
     SAVE_FORM.reset();
 }
@@ -41,33 +34,28 @@ const openUpdate = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
-        FORM.append('idAdministrador', id);
+        FORM.append('idPosicion', id);
         // Petición para obtener los datos del registro solicitado.
         const DATA = await fetchData(ADMINISTRADOR_API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
-            MODAL_TITLE.textContent = 'Actualizar administrador';
+            MODAL_TITLE.textContent = 'Actualizar tipo de posición';
             // Se prepara el formulario.
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
-            ID_ADMINISTRADOR.value = ROW.ID;
-            NOMBRE_ADMINISTRADOR.value = ROW.NOMBRE;
-            APELLIDO_ADMINISTRADOR.value = ROW.APELLIDO;
-            CORREO_ADMINISTRADOR.value = ROW.CORREO;
-            TELEFONO_ADMINISTRADOR.value = ROW.TELÉFONO;
-            DUI_ADMINISTRADOR.value = ROW.DUI;
-            NACIMIENTO_ADMINISTRADOR.value = ROW.NACIMIENTO;
-            CLAVE_ADMINISTRADOR.value = ROW.CLAVE;
+            ID_POSICION.value = ROW.ID;
+            NOMBRE_POSICION.value = ROW.POSICION;
+            AREA_DE_JUEGO.value = ROW.AREA;
         } else {
             sweetAlert(2, DATA.error, false);
         }
     } catch (Error) {
         console.log(Error);
         SAVE_MODAL.show();
-        MODAL_TITLE.textContent = 'Actualizar administrador';
+        MODAL_TITLE.textContent = 'Actualizar tipo de posición';
     }
 
 }
@@ -78,23 +66,23 @@ const openUpdate = async (id) => {
 */
 const openDelete = async (id) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar el administrador?');
+    const RESPONSE = await confirmAction('¿Desea eliminar la posición?');
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
             // Se define una constante tipo objeto con los datos del registro seleccionado.
             const FORM = new FormData();
-            FORM.append('idAdministrador', id);
+            FORM.append('idPosicion', id);
             console.log(id);
             // Petición para eliminar el registro seleccionado.
-            const DATA = await fetchData(ADMINISTRADOR_API, 'deleteRow', FORM);
+            const DATA = await fetchData(API, 'deleteRow', FORM);
             console.log(DATA.status);
             // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
             if (DATA.status) {
                 // Se muestra un mensaje de éxito.
                 await sweetAlert(1, DATA.message, true);
                 // Se carga nuevamente la tabla para visualizar los cambios.
-                cargarTabla();
+                fillTable();
             } else {
                 sweetAlert(2, DATA.error, false);
             }
@@ -102,52 +90,36 @@ const openDelete = async (id) => {
     }
     catch (Error) {
         console.log(Error + ' Error al cargar el mensaje');
-        confirmAction('¿Desea eliminar el administrador?');
+        confirmAction('¿Desea eliminar la posición?');
     }
 
 }
 
 
-async function cargarTabla(form = null) {
+async function fillTable(form = null) {
     const lista_datos = [
         {
-            imagen: '../../../../resources/img/svg/avatar.svg',
-            nombre: 'José Martínez',
-            correo: 'jose@gmail.com',
-            telefono: '1234-5678',
-            dui: '12345678-9',
-            fecha: '1994-02-09',
+            posicion: 'Portero',
+            area: 'Defensiva',
             id: 1,
         },
         {
-            imagen: '../../../../resources/img/svg/avatar.svg',
-            nombre: 'José Martínez',
-            correo: 'jose@gmail.com',
-            telefono: '1234-5678',
-            dui: '12345678-9',
-            fecha: '1994-02-09',
+            posicion: 'Delantero centro',
+            area: 'Ofensiva',
             id: 2,
         },
         {
-            imagen: '../../../../resources/img/svg/avatar.svg',
-            nombre: 'José Martínez',
-            correo: 'jose@gmail.com',
-            telefono: '1234-5678',
-            dui: '12345678-9',
-            fecha: '1994-02-09',
+            posicion: 'Interior izquierda ',
+            area: 'Ofensiva y defensiva',
             id: 3,
         },
         {
-            imagen: '../../../../resources/img/svg/avatar.svg',
-            nombre: 'José Martínez',
-            correo: 'jose@gmail.com',
-            telefono: '1234-5678',
-            dui: '12345678-9',
-            fecha: '1994-02-09',
+            posicion: 'Mediocentro',
+            area: 'Ofensiva y defensiva',
             id: 4,
         }
     ];
-    const cargarTabla = document.getElementById('tabla_administradores');
+    const cargarTabla = document.getElementById('tabla_posiciones');
 
     try {
         cargarTabla.innerHTML = '';
@@ -155,7 +127,7 @@ async function cargarTabla(form = null) {
         (form) ? action = 'searchRows' : action = 'readAll';
         console.log(form);
         // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(ADMINISTRADOR_API, action, form);
+        const DATA = await fetchData(API, action, form);
         console.log(DATA);
 
         if (DATA.status) {
@@ -163,19 +135,15 @@ async function cargarTabla(form = null) {
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
                 <tr>
-                    <td><img src="${SERVER_URL}images/admin/${row.IMAGEN}" height="50" width="50" class="circulo"></td>
                     <td>${row.NOMBRE}</td>
-                    <td>${row.CORREO}</td>
-                    <td>${row.TELÉFONO}</td>
-                    <td>${row.DUI}</td>
-                    <td>${row.NACIMIENTO}</td>
+                    <td>${row.AREA}</td>
                     <td>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                    </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.ID})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
+                        <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
+                        <img src="../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
+                        </button>
+                        <button type="button" class="btn btn-outline-danger" onclick="openDelete(${row.ID})">
+                            <i class="bi bi-trash-fill"></i>
+                        </button>
                     </td>
                 </tr>
                 `;
@@ -190,21 +158,17 @@ async function cargarTabla(form = null) {
         lista_datos.forEach(row => {
             const tablaHtml = `
             <tr>
-                <td><img src="${row.imagen}" height="50" width="50" class="circulo"></td>
-                <td>${row.nombre}</td>
-                <td>${row.correo}</td>
-                <td>${row.telefono}</td>
-                <td>${row.dui}</td>
-                <td>${row.fecha}</td>
-                <td>
+                    <td>${row.posicion}</td>
+                    <td>${row.area}</td>
+                    <td>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
                     <button type="button" class="btn transparente" onclick="openDelete(${row.id})">
                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
-                </td>
-            </tr>
+                    </td>
+                </tr>
             `;
             cargarTabla.innerHTML += tablaHtml;
         });
@@ -216,39 +180,31 @@ window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
     // Carga los componentes de manera síncrona
-    const adminHtml = await loadComponent('../componentes/admin.html');
+    const adminHtml = await loadComponent('../componentes/positions.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
     // Agrega el HTML del encabezado
     appContainer.innerHTML = adminHtml;
-    cargarTabla();
+    fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
 
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
-        ID_ADMINISTRADOR = document.getElementById('idAdministrador'),
-        NOMBRE_ADMINISTRADOR = document.getElementById('nombreAdministrador'),
-        APELLIDO_ADMINISTRADOR = document.getElementById('apellidoAdministrador'),
-        CORREO_ADMINISTRADOR = document.getElementById('correoAdministrador'),
-        TELEFONO_ADMINISTRADOR = document.getElementById('telefonoAdministrador'),
-        DUI_ADMINISTRADOR = document.getElementById('duiAdministrador'),
-        NACIMIENTO_ADMINISTRADOR = document.getElementById('nacimientoAdministrador'),
-        CLAVE_ADMINISTRADOR = document.getElementById('claveAdministrador'),
-        REPETIR_CLAVE = document.getElementById('repetirclaveAdministrador'),
-        ROL_ADMINISTRADOR = document.getElementById('rolAdministrador'),
-        IMAGEN_ADMINISTRADOR = document.getElementById('imagenAdministrador');
+        ID_POSICION = document.getElementById('idPosicion'),
+        NOMBRE_POSICION = document.getElementById('nombrePosicion'),
+        AREA_DE_JUEGO = document.getElementById('areaJuego');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
         event.preventDefault();
         // Se verifica la acción a realizar.
-        (ID_ADMINISTRADOR.value) ? action = 'updateRow' : action = 'createRow';
+        (ID_POSICION.value) ? action = 'updateRow' : action = 'createRow';
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SAVE_FORM);
         // Petición para guardar los datos del formulario.
-        const DATA = await fetchData(ADMINISTRADOR_API, action, FORM);
+        const DATA = await fetchData(API, action, FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se cierra la caja de diálogo.
@@ -256,7 +212,7 @@ window.onload = async function () {
             // Se muestra un mensaje de éxito.
             sweetAlert(1, DATA.message, true);
             // Se carga nuevamente la tabla para visualizar los cambios.
-            cargarTabla();
+            fillTable();
         } else {
             sweetAlert(2, DATA.error, false);
             console.error(DATA.exception);
@@ -275,16 +231,6 @@ window.onload = async function () {
         console.log(SEARCH_FORM);
         console.log(FORM);
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
-        cargarTabla(FORM);
-    });
-    // Llamada a la función para establecer la mascara del campo teléfono.
-    vanillaTextMask.maskInput({
-        inputElement: document.getElementById('telefonoAdministrador'),
-        mask: [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
-    });
-    // Llamada a la función para establecer la mascara del campo DUI.
-    vanillaTextMask.maskInput({
-        inputElement: document.getElementById('duiAdministrador'),
-        mask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/]
+        fillTable(FORM);
     });
 };
