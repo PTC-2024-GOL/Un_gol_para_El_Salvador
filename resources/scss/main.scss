@@ -32,6 +32,8 @@ $theme-colors: map-merge($theme-colors, $skyBlue-pastel-color);
 $theme-colors: map-merge($theme-colors, $red-cream-color);
 $theme-colors: map-merge($theme-colors, $blue-principal-color);
 
+// Cambiar el color del estilo de la tabla
+$table-striped-bg: rgb(242, 247, 255);
 
 //Include all of Bootstrap
 @import "../../node_modules/bootstrap/scss/bootstrap";

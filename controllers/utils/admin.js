@@ -26,19 +26,21 @@ MAIN.insertAdjacentHTML('beforebegin', `
                 aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" href="#">Administrador</a>
+            <a class="navbar-brand" href="#">Administradores</a>
             <!-- Imagen de perfil y nombre -->
-            <div class="row align-items-center justify-content-center">
-                <div class="col-auto ">
-                    <div>
-                        <p class="mb-0 float-end">Chepe Martínez</p>
+            <div class="d-none d-sm-block">
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-auto ">
+                        <div>
+                            <p class="mb-0 float-end">Chepe Martínez</p>
+                        </div>
+                        <div>
+                            <p class="text-body-secondary small float-end">Administrador</p>
+                        </div>
                     </div>
-                    <div>
-                        <p class="text-body-secondary small float-end">Administrador</p>
+                    <div class="col">
+                        <img src="../../../resources/img/svg/avatar.svg" class="rounded-circle" alt="">
                     </div>
-                </div>
-                <div class="col">
-                    <img src="../../../resources/img/svg/avatar.svg" class="rounded-circle" alt="">
                 </div>
             </div>
             <!-- Cuerpo -->
