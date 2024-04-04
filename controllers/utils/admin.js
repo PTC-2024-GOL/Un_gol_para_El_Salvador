@@ -88,7 +88,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                 </a>
                                 <ul class="dropdown-menu bg-transparent">
                                     <li><a class="dropdown-item text-light" href="#">Jornadas</a></li>
-                                    <li><a class="dropdown-item text-light" href="#">Temporadas</a></li>
+                                    <li><a class="dropdown-item text-light" href="seasons.html">Temporadas</a></li>
                                 </ul>
                             </li>
                             <!-- Etiqueta para el entrenamientos -->
@@ -104,7 +104,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                     <li><a class="dropdown-item text-light" href="#">Contenidos</a></li>
                                     <li><a class="dropdown-item text-light" href="#">Sub contenidos</a></li>
                                     <li><a class="dropdown-item text-light" href="#">Detalles</a></li>
-                                    <li><a class="dropdown-item text-light" href="#">Tareas</a></li>
+                                    <li><a class="dropdown-item text-light" href="tasks.html">Tareas</a></li>
                                     <li><a class="dropdown-item text-light" href="#">Características de jugadores</a></li>
                                     <li><a class="dropdown-item text-light" href="#">Análisis de características</a></li>
                                     <li><a class="dropdown-item text-light" href="schedules.html">Horarios</a></li>
@@ -140,7 +140,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                             </a>
                             <ul class="dropdown-menu bg-transparent">
                                 <li><a class="dropdown-item text-light" href="#">Registro médico</a></li>
-                                <li><a class="dropdown-item text-light" href="#">Tipos de lesiones</a></li>
+                                <li><a class="dropdown-item text-light" href="types_injuries.html">Tipos de lesiones</a></li>
                                 <li><a class="dropdown-item text-light" href="typology.html">Tipologías</a></li>
                                 <li><a class="dropdown-item text-light" href="#">Sub Tipologías</a></li>
                                 <li><a class="dropdown-item text-light" href="#">Lesiones</a></li>
