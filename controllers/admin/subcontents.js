@@ -1,7 +1,8 @@
 let SAVE_MODAL;
 let SAVE_FORM,
-    ID_CONTENIDO,
-    NOMBRE_CONTENIDO;
+    ID_SUBCONTENIDO,
+    NOMBRE_SUBCONTENIDO,
+    CONTENIDO;
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
@@ -20,7 +21,7 @@ async function loadComponent(path) {
 const openCreate = () => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
-    MODAL_TITLE.textContent = 'Agregar una contenido';
+    MODAL_TITLE.textContent = 'Agregar subcontenido';
     // Se prepara el formulario.
     SAVE_FORM.reset();
 }
@@ -33,27 +34,28 @@ const openUpdate = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
-        FORM.append('idContenido', id);
+        FORM.append('idSubcontenido', id);
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(API, 'readOne', FORM);
+        const DATA = await fetchData(ADMINISTRADOR_API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
-            MODAL_TITLE.textContent = 'Actualizar el contenido';
+            MODAL_TITLE.textContent = 'Actualizar subcontenido';
             // Se prepara el formulario.
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
-            ID_CONTENIDO.value = ROW.ID;
-            NOMBRE_CONTENIDO.value = ROW.NOMBRE;
+            ID_SUBCONTENIDO.value = ROW.ID;
+            NOMBRE_SUBCONTENIDO.value = ROW.SUBCONTENIDO;
+            CONTENIDO.value = ROW.CONTENIDO;
         } else {
             sweetAlert(2, DATA.error, false);
         }
     } catch (Error) {
         console.log(Error);
         SAVE_MODAL.show();
-        MODAL_TITLE.textContent = 'Actualizar el contenido';
+        MODAL_TITLE.textContent = 'Actualizar sub-Contenido';
     }
 
 }
@@ -64,7 +66,7 @@ const openUpdate = async (id) => {
 */
 const openDelete = async (id) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar el contenido?');
+    const RESPONSE = await confirmAction('¿Desea eliminar el sub-contenido?');
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
@@ -88,7 +90,7 @@ const openDelete = async (id) => {
     }
     catch (Error) {
         console.log(Error + ' Error al cargar el mensaje');
-        confirmAction('¿Desea eliminar el contenido?');
+        confirmAction('¿Desea eliminar el sub-contenido?');
     }
 
 }
@@ -98,22 +100,26 @@ async function fillTable(form = null) {
     const lista_datos = [
         {
             contenido: "Juegos lúdicos",
+            subcontenido: 'Coordinación',
             id: 1,
         },
         {
             contenido: "Trabajo preventivo",
+            subcontenido: 'Agilidad',
             id: 2,
         },
         {
             contenido: "Circuitos/ Fisicos sin balón",
+            subcontenido: 'Toma de decisiciones',
             id: 3,
         },
         {
             contenido: "Circuitos/ Fisicos con balón",
+            subcontenido: 'Toma de decisiciones',
             id: 4,
         }
     ];
-    const cargarTabla = document.getElementById('tabla_contenidos');
+    const cargarTabla = document.getElementById('tabla_subcontenidos');
 
     try {
         cargarTabla.innerHTML = '';
@@ -128,7 +134,8 @@ async function fillTable(form = null) {
             // Mostrar elementos obtenidos de la API
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
-                <tr class="text-end">
+                <tr>
+                    <td>${row.SUBCONTENIDO}</td>
                     <td>${row.CONTENIDO}</td>
                     <td>
                         <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
@@ -151,16 +158,17 @@ async function fillTable(form = null) {
         lista_datos.forEach(row => {
             const tablaHtml = `
             <tr>
-                <td class="text-center">${row.contenido}</td>
-                <td class="text-end">
+                    <td>${row.contenido}</td>
+                    <td>${row.subcontenido}</td>
+                    <td>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
                     <button type="button" class="btn transparente" onclick="openDelete(${row.id})">
                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
-                </td>
-            </tr>
+                    </td>
+                </tr>
             `;
             cargarTabla.innerHTML += tablaHtml;
         });
@@ -172,11 +180,11 @@ window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
     // Carga los componentes de manera síncrona
-    const contentHtml = await loadComponent('../componentes/contents.html');
+    const subcontenidosHtml = await loadComponent('../componentes/subcontents.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
     // Agrega el HTML del encabezado
-    appContainer.innerHTML = contentHtml;
+    appContainer.innerHTML = subcontenidosHtml;
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
@@ -184,14 +192,15 @@ window.onload = async function () {
 
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
-        ID_CONTENIDO = document.getElementById('idContenido'),
-        NOMBRE_CONTENIDO = document.getElementById('contenido');
+        ID_SUBCONTENIDO = document.getElementById('idSubcontenido'),
+        NOMBRE_SUBCONTENIDO = document.getElementById('nombreSubcontenido'),
+        CONTENIDO = document.getElementById('contenido');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
         event.preventDefault();
         // Se verifica la acción a realizar.
-        (ID_CONTENIDO.value) ? action = 'updateRow' : action = 'createRow';
+        (ID_SUBCONTENIDO.value) ? action = 'updateRow' : action = 'createRow';
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SAVE_FORM);
         // Petición para guardar los datos del formulario.
