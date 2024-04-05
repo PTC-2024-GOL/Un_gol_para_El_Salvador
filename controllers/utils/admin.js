@@ -126,7 +126,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                     <li><a class="dropdown-item text-light" href="#">Participaciones</a></li>
                                     <li><a class="dropdown-item text-light" href="positions.html">Posiciones</a></li>
                                     <li><a class="dropdown-item text-light" href="categories.html">Categorías</a></li>
-                                    <li><a class="dropdown-item text-light" href="#">Partidos</a></li>
+                                    <li><a class="dropdown-item text-light" href="matches.html">Partidos</a></li>
                                 </ul>
                             </li>
                             <!-- Etiqueta para el registro medico -->

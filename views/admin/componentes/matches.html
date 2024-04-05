@@ -1,0 +1,173 @@
+<div class="container">
+    <div class="container-fluid mb-5">
+        <div class="row gy-3">
+            <!-- Buscador -->
+            <div class="col-sm-12 col-md-6">
+                <form id="searchForm" class="d-flex">
+                    <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
+                        name="search" placeholder="Buscar" required>
+                    <button type="submit"
+                        class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
+                        <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
+                    </button>
+                    <button type="reset" class="btn" onclick="fillTable()">
+                        <img src="../../../resources/img/svg/icons_forms/reset.svg" width="18px" height="18px">
+                    </button>
+                </form>
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+                <!-- Botón Agregar -->
+                <button
+                    class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
+                    type="submit" onclick="openCreate()">
+                    <span class="fs-5 me-2">+</span> Agregar partido
+                </button>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <!-- Tabla para mostrar los registros existentes -->
+    <div class="table-responsive">
+        <table class="table table align-middle table-striped table-borderless">
+            <!-- Cabeza de la tabla para mostrar la cantidad de registros y los títulos de las columnas -->
+            <thead>
+                <tr>
+                    <td colspan="6" id="rowsFound"></td>
+                </tr>
+                <tr>
+                    <th>Equipo</th>
+                    <th>Rival</th>
+                    <th>Fecha partido</th>
+                    <th>Resultado</th>
+                    <th>Localidad</th>
+                </tr>
+            </thead>
+            <!-- Cuerpo de la tabla para mostrar un registro por fila -->
+            <tbody id="tabla_partido"></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Componente Modal para guardar un registro -->
+<div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-principal-color">
+                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                <h1 class="modal-title fs-5 text-white" id="modalTitle"></h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <!-- Formulario para crear o actualizar un registro -->
+            <form id="saveForm">
+                <div class="modal-body row g-3">
+                    <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                    <input type="hidden" id="idPartido" name="idPartido">
+                    <div class="col-sm-12 col-md-6">
+                        <label for="equipos" class="form-label">Equipo</label>
+                        <select id="equipos" type="text" name="equipos" class="form-select" required></select>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="rival" class="form-label">Rival</label>
+                        <input id="rival" type="text" name="rival" class="form-control"
+                            placeholder="Ingresa la fecha del pago" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="fechaPartido" class="form-label">Fecha partido</label>
+                        <input id="fechaPartido" min="1" step="1" type="date" name="fechaPartido" class="form-control"
+                            placeholder="Escribe la cantidad del pago" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="cancha" class="form-label">Cancha</label>
+                        <input id="cancha" type="text" name="cancha" class="form-control"
+                            placeholder="Ingresa el nombre del campo" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="resultado" class="form-label">Resultado del partido</label>
+                        <input id="resultado" type="text" name="resultado" class="form-control"
+                            placeholder="Ingresa el marcador" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="localidad" class="form-label">Localidad</label>
+                        <select id="localidad" type="text" name="localidad" class="form-select" required></select>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="tipoResultado" class="form-label">Tipo de resultado</label>
+                        <select id="tipoResultado" type="text" name="tipoResultado" class="form-select" required></select>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="jornada" class="form-label">Jornada</label>
+                        <select id="jornada" type="text" name="jornada" class="form-select" required></select>
+                    </div>
+                </div>
+                <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
+                    <button type="reset" class="btn bg-red-cream-color text-white">Cancelar</button>
+                    <button type="submit" class="btn bg-blue-principal-color text-white ">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Componente Modal para guardar un registro -->
+<div class="modal fade" id="viewModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-principal-color">
+                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                <h1 class="modal-title fs-5 text-white" id="modalTitle"></h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <!-- Formulario para visualizar un registro -->
+            <form id="saveForm">
+                <div class="modal-body row g-3">
+                    <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                    <input type="hidden" id="idPartido" name="idPartido">
+                    <div class="col-sm-12 col-md-6">
+                        <label for="equipos" class="form-label">Equipo</label>
+                        <select id="equipos" type="text" name="equipos" class="form-select" required></select>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="rival" class="form-label">Rival</label>
+                        <input id="rival" type="text" name="rival" class="form-control"
+                            placeholder="Ingresa la fecha del pago" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="fechaPartido" class="form-label">Fecha partido</label>
+                        <input id="fechaPartido" min="1" step="1" type="date" name="fechaPartido" class="form-control"
+                            placeholder="Escribe la cantidad del pago" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="cancha" class="form-label">Cancha</label>
+                        <input id="cancha" type="text" name="cancha" class="form-control"
+                            placeholder="Ingresa el nombre del campo" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="resultado" class="form-label">Resultado del partido</label>
+                        <input id="resultado" type="text" name="resultado" class="form-control"
+                            placeholder="Ingresa el marcador" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="localidad" class="form-label">Localidad</label>
+                        <select id="localidad" type="text" name="localidad" class="form-select" required></select>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="tipoResultado" class="form-label">Tipo de resultado</label>
+                        <select id="tipoResultado" type="text" name="tipoResultado" required></select>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="jornada" class="form-label">Jornada</label>
+                        <select id="jornada" type="text" name="jornada" required></select>
+                    </div>
+                </div>
+                <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
+                    <button type="reset" class="btn bg-red-cream-color text-white">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
