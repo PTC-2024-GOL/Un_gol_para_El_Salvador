@@ -87,7 +87,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                     Estadísticas
                                 </a>
                                 <ul class="dropdown-menu bg-transparent">
-                                    <li><a class="dropdown-item text-light" href="#">Jornadas</a></li>
+                                    <li><a class="dropdown-item text-light" href="journeys.html">Jornadas</a></li>
                                     <li><a class="dropdown-item text-light" href="seasons.html">Temporadas</a></li>
                                 </ul>
                             </li>
@@ -101,8 +101,8 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                 </a>
                                 <ul class="dropdown-menu bg-transparent">
                                     <li><a class="dropdown-item text-light" href="#">Entrenamientos</a></li>
-                                    <li><a class="dropdown-item text-light" href="#">Contenidos</a></li>
-                                    <li><a class="dropdown-item text-light" href="#">Sub contenidos</a></li>
+                                    <li><a class="dropdown-item text-light" href="contents.html">Contenidos</a></li>
+                                    <li><a class="dropdown-item text-light" href="subcontents.html">Sub contenidos</a></li>
                                     <li><a class="dropdown-item text-light" href="#">Detalles</a></li>
                                     <li><a class="dropdown-item text-light" href="tasks.html">Tareas</a></li>
                                     <li><a class="dropdown-item text-light" href="#">Características de jugadores</a></li>
@@ -139,11 +139,11 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                 </a>
                             </a>
                             <ul class="dropdown-menu bg-transparent">
-                                <li><a class="dropdown-item text-light" href="#">Registro médico</a></li>
+                                <li><a class="dropdown-item text-light" href="medical_record.html">Registro médico</a></li>
                                 <li><a class="dropdown-item text-light" href="types_injuries.html">Tipos de lesiones</a></li>
                                 <li><a class="dropdown-item text-light" href="typology.html">Tipologías</a></li>
                                 <li><a class="dropdown-item text-light" href="#">Sub Tipologías</a></li>
-                                <li><a class="dropdown-item text-light" href="#">Lesiones</a></li>
+                                <li><a class="dropdown-item text-light" href="injuries.html">Lesiones</a></li>
                             </ul>
                             </li>
                             <!-- Etiqueta para pagos -->

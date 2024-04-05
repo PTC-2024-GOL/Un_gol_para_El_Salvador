@@ -1,0 +1,108 @@
+<div class="container">
+    <div class="container-fluid mb-5">
+        <div class="row gy-3">
+            <!-- Buscador -->
+            <div class="col-sm-12 col-md-6">
+                <form id="searchForm" class="d-flex">
+                    <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
+                        name="search" placeholder="Buscar" required>
+                    <button type="submit" class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
+                        <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
+                    </button>
+                    <button type="reset" class="btn" onclick="fillTable()">
+                        <img src="../../../resources/img/svg/icons_forms/reset.svg" width="18px" height="18px">
+                    </button>
+                </form>
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+                <!-- Botón Agregar -->
+                <button class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3" type="submit"
+                    onclick="openCreate()">
+                    <span class="fs-5 me-2">+</span> Agregar un registro médico
+                </button>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <!-- Tabla para mostrar los registros existentes -->
+    <div class="table-responsive">
+        <table class="table table align-middle table-striped table-borderless">
+            <!-- Cabeza de la tabla para mostrar la cantidad de registros y los títulos de las columnas -->
+            <thead>
+                <tr>
+                    <td colspan="6" id="rowsFound"></td>
+                </tr>
+                <tr>
+                    <th>Jugador</th>
+                    <th>Fecha de la lesión</th>
+                    <th>Fecha de registro</th>
+                    <th>Días lesionado</th>
+                    <th>Lesión</th>
+                    <th>Retorno a entrenos</th>
+                    <th>Retorno a partidos</th>
+                </tr>
+            </thead>
+            <!-- Cuerpo de la tabla para mostrar un registro por fila -->
+            <tbody id="tabla_registro_medico"></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Componente Modal para guardar un registro -->
+<div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-principal-color">
+                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                <h1 class="modal-title fs-5 text-white" id="modalTitle"></h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- Formulario para crear o actualizar un registro -->
+            <form id="saveForm">
+                <div class="modal-body row g-3">
+                    <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                    <input type="hidden" id="idMedico" name="idMedico">
+                    <div class="col-sm-12 col-md-6">
+                        <label for="jugador" class="form-label">Selecciona al jugador</label>
+                        <select id="jugador" type="text" name="jugador" class="form-select" required></select>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="fechaLesion" class="form-label">Seleccione la fecha en que se hizo la lesión</label>
+                        <input id="fechaLesion" type="date" name="fechaLesion"
+                            class="form-control" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="fechaRegistro" class="form-label">Selecciona la fecha en que se registro la lesión</label>
+                        <input id="fechaRegistro" type="date" name="fechaRegistro"
+                            class="form-control" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="diasLesionado" class="form-label">Días lesionado</label>
+                        <input id="diasLesionado" type="text" name="diasLesionado" class="form-control"
+                            placeholder="Escriba los días que estará lesionado" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="lesion" class="form-label">Selecciona la lesión del jugador</label>
+                        <select id="lesion" type="text" name="lesion" class="form-select" required></select>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="retornoEntreno" class="form-label">Selecciona la fecha de retorno a entrenos</label>
+                        <input id="retornoEntreno" type="date" name="retornoEntreno"
+                            class="form-control" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="retornoPartido" class="form-label">Selecciona la fecha de retorno a partidos</label>
+                        <select id="retornoPartido" type="date" name="retornoPartido"
+                            class="form-select" required>
+                    </div>
+                </div>
+                <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
+                    <button type="reset" class="btn bg-red-cream-color text-white">Cancelar</button>
+                    <button type="submit" class="btn bg-blue-principal-color text-white ">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

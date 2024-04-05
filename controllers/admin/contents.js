@@ -1,11 +1,7 @@
 let SAVE_MODAL;
 let SAVE_FORM,
-    ID_CATEGORIAS,
-    NOMBRE_CATEGORIA,
-    EDAD_MIN,
-    EDAD_MAX,
-    TEMPORADA,
-    HORARIO;
+    ID_CONTENIDO,
+    NOMBRE_CONTENIDO;
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
@@ -24,7 +20,7 @@ async function loadComponent(path) {
 const openCreate = () => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
-    MODAL_TITLE.textContent = 'Agregar una categoría';
+    MODAL_TITLE.textContent = 'Agregar una contenido';
     // Se prepara el formulario.
     SAVE_FORM.reset();
 }
@@ -37,31 +33,27 @@ const openUpdate = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
-        FORM.append('idCategoria', id);
+        FORM.append('idContenido', id);
         // Petición para obtener los datos del registro solicitado.
         const DATA = await fetchData(API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
-            MODAL_TITLE.textContent = 'Actualizar una categoría';
+            MODAL_TITLE.textContent = 'Actualizar el contenido';
             // Se prepara el formulario.
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
-            ID_CATEGORIAS.value = ROW.ID;
-            NOMBRE_CATEGORIA.value = ROW.NOMBRE;
-            EDAD_MIN.value = ROW.MINIMA;
-            EDAD_MAX.value = ROW.MAXIMA;
-            TEMPORADA.value = ROW.TEMPORADA;
-            HORARIO.value = ROW.HORARIO;
+            ID_CONTENIDO.value = ROW.ID;
+            NOMBRE_CONTENIDO.value = ROW.NOMBRE;
         } else {
             sweetAlert(2, DATA.error, false);
         }
     } catch (Error) {
         console.log(Error);
         SAVE_MODAL.show();
-        MODAL_TITLE.textContent = 'Actualizar una categoría';
+        MODAL_TITLE.textContent = 'Actualizar el contenido';
     }
 
 }
@@ -72,13 +64,13 @@ const openUpdate = async (id) => {
 */
 const openDelete = async (id) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar la categoría?');
+    const RESPONSE = await confirmAction('¿Desea eliminar el contenido?');
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
             // Se define una constante tipo objeto con los datos del registro seleccionado.
             const FORM = new FormData();
-            FORM.append('idCategoria', id);
+            FORM.append('idContenido', id);
             console.log(id);
             // Petición para eliminar el registro seleccionado.
             const DATA = await fetchData(API, 'deleteRow', FORM);
@@ -96,7 +88,7 @@ const openDelete = async (id) => {
     }
     catch (Error) {
         console.log(Error + ' Error al cargar el mensaje');
-        confirmAction('¿Desea eliminar la categoría?');
+        confirmAction('¿Desea eliminar el contenido?');
     }
 
 }
@@ -105,39 +97,23 @@ const openDelete = async (id) => {
 async function fillTable(form = null) {
     const lista_datos = [
         {
-            nombre: 'Nivel 1',
-            minima: '4',
-            maxima: '7',
-            temporada: '2021',
-            horario: '14:00:00',
+            contenido: "Juegos lúdicos",
             id: 1,
         },
         {
-            nombre: 'Nivel 2',
-            minima: '8',
-            maxima: '13',
-            temporada: '2022',
-            horario: '16:00:00',
+            contenido: "Trabajo preventivo",
             id: 2,
         },
         {
-            nombre: 'Nivel 3',
-            minima: '14',
-            maxima: '15',
-            temporada: '2023',
-            horario: '15:00:00',
+            contenido: "Circuitos/ Fisicos sin balón",
             id: 3,
         },
         {
-            nombre: 'Nivel 4',
-            minima: '16',
-            maxima: '18',
-            temporada: '2024',
-            horario: '14:00:00',
+            contenido: "Circuitos/ Fisicos con balón",
             id: 4,
         }
     ];
-    const cargarTabla = document.getElementById('tabla_categorias');
+    const cargarTabla = document.getElementById('tabla_contenidos');
 
     try {
         cargarTabla.innerHTML = '';
@@ -152,12 +128,8 @@ async function fillTable(form = null) {
             // Mostrar elementos obtenidos de la API
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
-                <tr>
-                    <td>${row.NOMBRE}</td>
-                    <td>${row.MINIMA}</td>
-                    <td>${row.MAXIMA}</td>
-                    <td>${row.TEMPORADA}</td>
-                    <td>${row.HORARIO}</td>
+                <tr class="text-end">
+                    <td>${row.CONTENIDO}</td>
                     <td>
                         <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
                         <img src="../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
@@ -179,20 +151,16 @@ async function fillTable(form = null) {
         lista_datos.forEach(row => {
             const tablaHtml = `
             <tr>
-            <td>${row.nombre}</td>
-            <td>${row.minima}</td>
-            <td>${row.maxima}</td>
-            <td>${row.temporada}</td>
-            <td>${row.horario}</td>
-                    <td>
+                <td class="text-center">${row.contenido}</td>
+                <td class="text-end">
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
                     <button type="button" class="btn transparente" onclick="openDelete(${row.id})">
                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
-                    </td>
-                </tr>
+                </td>
+            </tr>
             `;
             cargarTabla.innerHTML += tablaHtml;
         });
@@ -204,11 +172,11 @@ window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
     // Carga los componentes de manera síncrona
-    const horarioHtml = await loadComponent('../componentes/categories.html');
+    const contentHtml = await loadComponent('../componentes/contents.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
     // Agrega el HTML del encabezado
-    appContainer.innerHTML = horarioHtml;
+    appContainer.innerHTML = contentHtml;
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
@@ -216,18 +184,14 @@ window.onload = async function () {
 
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
-        ID_CATEGORIAS = document.getElementById('idCategoria'),
-        NOMBRE_CATEGORIA = document.getElementById('nombreCategoria'),
-        EDAD_MIN = document.getElementById('edadMin'),
-        EDAD_MAX = document.getElementById('edadMax'),
-        TEMPORADA = document.getElementById('temporada'),
-        HORARIO = document.getElementById('horario');
+        ID_CONTENIDO = document.getElementById('idContenido'),
+        NOMBRE_CONTENIDO = document.getElementById('contenido');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
         event.preventDefault();
         // Se verifica la acción a realizar.
-        (ID_CATEGORIAS.value) ? action = 'updateRow' : action = 'createRow';
+        (ID_CONTENIDO.value) ? action = 'updateRow' : action = 'createRow';
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SAVE_FORM);
         // Petición para guardar los datos del formulario.
