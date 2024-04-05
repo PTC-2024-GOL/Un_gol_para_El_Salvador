@@ -6,8 +6,7 @@
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
                         name="search" placeholder="Buscar" required>
-                    <button type="submit"
-                        class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
+                    <button type="submit" class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
                     </button>
                     <button type="reset" class="btn" onclick="fillTable()">
@@ -18,10 +17,9 @@
 
             <div class="col-sm-12 col-md-6">
                 <!-- Botón Agregar -->
-                <button
-                    class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
-                    type="submit" onclick="openCreate()">
-                    <span class="fs-5 me-2">+</span> Agregar tipología
+                <button class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3" type="submit"
+                    onclick="openCreate()">
+                    <span class="fs-5 me-2">+</span> Agregar característica
                 </button>
             </div>
         </div>
@@ -36,11 +34,12 @@
                     <td colspan="6" id="rowsFound"></td>
                 </tr>
                 <tr>
-                    <th>Nombre de la tipología</th>
+                    <th>Nombre de la característica</th>
+                    <th>clasificación de la característica</th>
                 </tr>
             </thead>
             <!-- Cuerpo de la tabla para mostrar un registro por fila -->
-            <tbody id="tabla_tipologia"></tbody>
+            <tbody id="tabla_caracteristica_jugador"></tbody>
         </table>
     </div>
 </div>
@@ -53,18 +52,21 @@
             <div class="modal-header bg-blue-principal-color">
                 <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
                 <h1 class="modal-title fs-5 text-white" id="modalTitle"></h1>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-- Formulario para crear o actualizar un registro -->
             <form id="saveForm">
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input type="hidden" id="idTipologia" name="idTipologia">
+                    <input type="hidden" id="idCaracteristica" name="idCaracteristica">
                     <div class="col-sm-12 col-md-6">
-                        <label for="nombreTipologia" class="form-label">Nombre de la tipología</label>
-                        <input id="nombreTipologia" type="text" name="nombreTipologia" class="form-control"
-                            placeholder="Escribe el nombre de la tipología" required>
+                        <label for="caracteristicaJugador" class="form-label">Nombre de la característica</label>
+                        <input id="caracteristicaJugador" type="text" name="caracteristicaJugador" class="form-control"
+                            placeholder="Escribe el nombre de la característica" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="clasificacionCaracteristica" class="form-label">Selecciona la clasificación de la característica</label>
+                        <select id="clasificacionCaracteristica" type="text" name="clasificacionCaracteristica" class="form-select" required></select>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">

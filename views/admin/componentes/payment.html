@@ -21,7 +21,7 @@
                 <button
                     class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
                     type="submit" onclick="openCreate()">
-                    <span class="fs-5 me-2">+</span> Agregar tipología
+                    <span class="fs-5 me-2">+</span> Agregar pago
                 </button>
             </div>
         </div>
@@ -36,11 +36,16 @@
                     <td colspan="6" id="rowsFound"></td>
                 </tr>
                 <tr>
-                    <th>Nombre de la tipología</th>
+                    <th>Jugador</th>
+                    <th>Fecha</th>
+                    <th>Cantidad</th>
+                    <th>Pago tardio</th>
+                    <th>Mora</th>
+                    <th>Mes</th>
                 </tr>
             </thead>
             <!-- Cuerpo de la tabla para mostrar un registro por fila -->
-            <tbody id="tabla_tipologia"></tbody>
+            <tbody id="tabla_pago"></tbody>
         </table>
     </div>
 </div>
@@ -60,11 +65,33 @@
             <form id="saveForm">
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input type="hidden" id="idTipologia" name="idTipologia">
+                    <input type="hidden" id="idPago" name="idPago">
                     <div class="col-sm-12 col-md-6">
-                        <label for="nombreTipologia" class="form-label">Nombre de la tipología</label>
-                        <input id="nombreTipologia" type="text" name="nombreTipologia" class="form-control"
-                            placeholder="Escribe el nombre de la tipología" required>
+                        <label for="nombreJugador" class="form-label">Nombre jugador</label>
+                        <select id="nombreJugador" type="text" name="nombreJugador" class="form-select" required></select>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="fechaPago" class="form-label">Fecha del pago</label>
+                        <input id="fechaPago" type="date" name="fechaPago" class="form-control"
+                            placeholder="Ingresa la fecha del pago" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="cantidadPago" class="form-label">Cantidad del pago</label>
+                        <input id="cantidadPago" min="1" step="1" type="number" name="cantidadPago" class="form-control"
+                            placeholder="Escribe la cantidad del pago" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="tardioPago" class="form-label">Pago tardio</label>
+                        <select id="tardioPago" type="text" name="tardioPago" class="form-select" required></select>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="moraPago" class="form-label">Mora del pago</label>
+                        <input id="moraPago" min="1" step="1" type="number" name="moraPago" class="form-control"
+                            placeholder="Escribe la mora del pago" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="mesPago" class="form-label">Mes</label>
+                        <select id="mesPago" type="text" name="mesPago" class="form-select" required></select>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
