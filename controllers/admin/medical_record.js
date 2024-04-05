@@ -1,11 +1,13 @@
 let SAVE_MODAL;
 let SAVE_FORM,
-    ID_CATEGORIAS,
-    NOMBRE_CATEGORIA,
-    EDAD_MIN,
-    EDAD_MAX,
-    TEMPORADA,
-    HORARIO;
+    ID_REGISTRO_MEDICO,
+    JUGADOR,
+    FECHA_LESION,
+    FECHA_REGISTRO,
+    DIAS_LESIONADO,
+    LESION,
+    RETORNO_ENTRENO,
+    RETORNO_PARTIDO;
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
@@ -24,7 +26,7 @@ async function loadComponent(path) {
 const openCreate = () => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
-    MODAL_TITLE.textContent = 'Agregar una categoría';
+    MODAL_TITLE.textContent = 'Agregar un registro médico';
     // Se prepara el formulario.
     SAVE_FORM.reset();
 }
@@ -37,31 +39,33 @@ const openUpdate = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
-        FORM.append('idCategoria', id);
+        FORM.append('idMedico', id);
         // Petición para obtener los datos del registro solicitado.
         const DATA = await fetchData(API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
-            MODAL_TITLE.textContent = 'Actualizar una categoría';
+            MODAL_TITLE.textContent = 'Actualizar un registro médico';
             // Se prepara el formulario.
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
-            ID_CATEGORIAS.value = ROW.ID;
-            NOMBRE_CATEGORIA.value = ROW.NOMBRE;
-            EDAD_MIN.value = ROW.MINIMA;
-            EDAD_MAX.value = ROW.MAXIMA;
-            TEMPORADA.value = ROW.TEMPORADA;
-            HORARIO.value = ROW.HORARIO;
+            ID_REGISTRO_MEDICO.value = ROW.ID;
+            JUGADOR.value = ROW.JUGADOR;
+            FECHA_LESION.value = ROW.FECHA_LESION;
+            FECHA_REGISTRO.value = ROW.FECHA_REGISTRO;
+            DIAS_LESIONADO.value = ROW.DIAS;
+            LESION.value = ROW.LESION;
+            RETORNO_ENTRENO.value = ROW.RETORNO_ENTRENO;
+            RETORNO_PARTIDO.value = ROW.RETORNO_PARTIDO;
         } else {
             sweetAlert(2, DATA.error, false);
         }
     } catch (Error) {
         console.log(Error);
         SAVE_MODAL.show();
-        MODAL_TITLE.textContent = 'Actualizar una categoría';
+        MODAL_TITLE.textContent = 'Actualizar un registro médico';
     }
 
 }
@@ -72,13 +76,13 @@ const openUpdate = async (id) => {
 */
 const openDelete = async (id) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar la categoría?');
+    const RESPONSE = await confirmAction('¿Desea eliminar el registro médico?');
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
             // Se define una constante tipo objeto con los datos del registro seleccionado.
             const FORM = new FormData();
-            FORM.append('idCategoria', id);
+            FORM.append('idMedico', id);
             console.log(id);
             // Petición para eliminar el registro seleccionado.
             const DATA = await fetchData(API, 'deleteRow', FORM);
@@ -96,7 +100,7 @@ const openDelete = async (id) => {
     }
     catch (Error) {
         console.log(Error + ' Error al cargar el mensaje');
-        confirmAction('¿Desea eliminar la categoría?');
+        confirmAction('¿Desea eliminar el registro médico?');
     }
 
 }
@@ -105,39 +109,47 @@ const openDelete = async (id) => {
 async function fillTable(form = null) {
     const lista_datos = [
         {
-            nombre: 'Nivel 1',
-            minima: '4',
-            maxima: '7',
-            temporada: '2021',
-            horario: '14:00:00',
+            jugador: 'Mateo',
+            fecha_lesion: '2024-01-10',
+            fecha_registro: '2024-01-11',
+            dias_lesionado: '4',
+            lesion: 'Tren superior',
+            retorno_entreno: '2024-01-14',
+            retorno_partido: '2024-01-23',
             id: 1,
         },
         {
-            nombre: 'Nivel 2',
-            minima: '8',
-            maxima: '13',
-            temporada: '2022',
-            horario: '16:00:00',
+            jugador: 'Fernando',
+            fecha_lesion: '2024-02-28',
+            fecha_registro: '2024-02-29',
+            dias_lesionado: '10',
+            lesion: 'Tren superior',
+            retorno_entreno: '2024-03-10',
+            retorno_partido: '2024-03-19',
             id: 2,
         },
         {
-            nombre: 'Nivel 3',
-            minima: '14',
-            maxima: '15',
-            temporada: '2023',
-            horario: '15:00:00',
+            jugador: 'Daniel',
+            fecha_lesion: '2024-03-05',
+            fecha_registro: '2024-03-06',
+            dias_lesionado: '3',
+            lesion: 'Tren superior',
+            retorno_entreno: '2024-03-09',
+            retorno_partido: '2024-03-20',
             id: 3,
         },
         {
-            nombre: 'Nivel 4',
-            minima: '16',
-            maxima: '18',
-            temporada: '2024',
-            horario: '14:00:00',
+            jugador: 'Xavier',
+            fecha_lesion: '2024-04-26',
+            fecha_registro: '2024-04-28',
+            dias_lesionado: '25',
+            lesion: 'Tren superior',
+            retorno_entreno: '2024-05-21',
+            retorno_partido: '2024-06-01',
             id: 4,
         }
     ];
-    const cargarTabla = document.getElementById('tabla_categorias');
+    const cargarTabla = document.getElementById('tabla_registro_medico');
 
     try {
         cargarTabla.innerHTML = '';
@@ -153,11 +165,13 @@ async function fillTable(form = null) {
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
                 <tr>
-                    <td>${row.NOMBRE}</td>
-                    <td>${row.MINIMA}</td>
-                    <td>${row.MAXIMA}</td>
-                    <td>${row.TEMPORADA}</td>
-                    <td>${row.HORARIO}</td>
+                    <td>${row.JUGADOR}</td>
+                    <td>${row.FECHA_LESION}</td>
+                    <td>${row.FECHA_REGISTRO}</td>
+                    <td>${row.DIAS}</td>
+                    <td>${row.LESION}</td>
+                    <td>${row.RETORNO_ENTRENO}</td>
+                    <td>${row.RETORNO_PARTIDO}</td>
                     <td>
                         <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
                         <img src="../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
@@ -179,11 +193,13 @@ async function fillTable(form = null) {
         lista_datos.forEach(row => {
             const tablaHtml = `
             <tr>
-            <td>${row.nombre}</td>
-            <td>${row.minima}</td>
-            <td>${row.maxima}</td>
-            <td>${row.temporada}</td>
-            <td>${row.horario}</td>
+            <td>${row.jugador}</td>
+            <td>${row.fecha_lesion}</td>
+            <td>${row.fecha_registro}</td>
+            <td>${row.dias_lesionado}</td>
+            <td>${row.lesion}</td>
+            <td>${row.retorno_entreno}</td>
+            <td>${row.retorno_partido}</td>
                     <td>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
@@ -204,7 +220,7 @@ window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
     // Carga los componentes de manera síncrona
-    const horarioHtml = await loadComponent('../componentes/categories.html');
+    const horarioHtml = await loadComponent('../componentes/medical_record.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
     // Agrega el HTML del encabezado
@@ -216,12 +232,14 @@ window.onload = async function () {
 
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
-        ID_CATEGORIAS = document.getElementById('idCategoria'),
-        NOMBRE_CATEGORIA = document.getElementById('nombreCategoria'),
-        EDAD_MIN = document.getElementById('edadMin'),
-        EDAD_MAX = document.getElementById('edadMax'),
-        TEMPORADA = document.getElementById('temporada'),
-        HORARIO = document.getElementById('horario');
+        ID_REGISTRO_MEDICO = document.getElementById('idMedico'),
+        JUGADOR = document.getElementById('jugador'),
+        FECHA_LESION = document.getElementById('fechaLesion'),
+        FECHA_REGISTRO = document.getElementById('fechaRegistro'),
+        DIAS_LESIONADO = document.getElementById('diasLesionado'),
+        LESION = document.getElementById('lesion'),
+        RETORNO_ENTRENO = document.getElementById('retornoEntreno'),
+        RETORNO_PARTIDO = document.getElementById('retornoPartido');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
