@@ -87,7 +87,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                     Estadísticas
                                 </a>
                                 <ul class="dropdown-menu bg-transparent">
-                                    <li><a class="dropdown-item text-light" href="#">Jornadas</a></li>
+                                    <li><a class="dropdown-item text-light" href="journeys.html">Jornadas</a></li>
                                     <li><a class="dropdown-item text-light" href="seasons.html">Temporadas</a></li>
                                 </ul>
                             </li>
@@ -143,7 +143,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                 <li><a class="dropdown-item text-light" href="types_injuries.html">Tipos de lesiones</a></li>
                                 <li><a class="dropdown-item text-light" href="typology.html">Tipologías</a></li>
                                 <li><a class="dropdown-item text-light" href="#">Sub Tipologías</a></li>
-                                <li><a class="dropdown-item text-light" href="#">Lesiones</a></li>
+                                <li><a class="dropdown-item text-light" href="injuries.html">Lesiones</a></li>
                             </ul>
                             </li>
                             <!-- Etiqueta para pagos -->
