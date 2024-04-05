@@ -220,11 +220,14 @@ window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
     // Carga los componentes de manera síncrona
-    const horarioHtml = await loadComponent('../componentes/medical_record.html');
+    const registroMedicoHtml = await loadComponent('../componentes/medical_record.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
     // Agrega el HTML del encabezado
-    appContainer.innerHTML = horarioHtml;
+    appContainer.innerHTML = registroMedicoHtml;
+    //Agrega el encabezado de la pantalla
+    const titleElement = document.getElementById('title');
+    titleElement.textContent = 'Registro médico';
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),

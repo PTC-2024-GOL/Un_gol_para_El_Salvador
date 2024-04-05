@@ -23,7 +23,7 @@ async function loadComponent(path) {
 const openCreate = () => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
-    MODAL_TITLE.textContent = 'Crear lesión';
+    MODAL_TITLE.textContent = 'Agregar lesión';
     // Se prepara el formulario.
     SAVE_FORM.reset();
 }
@@ -38,7 +38,7 @@ const openUpdate = async (id) => {
         const FORM = new FormData();
         FORM.append('idLesion', id);
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(LESIONES_API_API, 'readOne', FORM);
+        const DATA = await fetchData(LESIONES_API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
@@ -196,11 +196,14 @@ window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
     // Carga los componentes de manera síncrona
-    const adminHtml = await loadComponent('../componentes/injuries.html');
+    const lesionHtml = await loadComponent('../componentes/injuries.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
     // Agrega el HTML del encabezado
-    appContainer.innerHTML = adminHtml;
+    appContainer.innerHTML = lesionHtml;
+    //Agrega el encabezado de la pantalla
+    const titleElement = document.getElementById('title');
+    titleElement.textContent = 'Lesiones';
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
@@ -208,16 +211,10 @@ window.onload = async function () {
 
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
-        ID_ADMINISTRADOR = document.getElementById('idAdministrador'),
-        NOMBRE_ADMINISTRADOR = document.getElementById('nombreAdministrador'),
-        APELLIDO_ADMINISTRADOR = document.getElementById('apellidoAdministrador'),
-        CORREO_ADMINISTRADOR = document.getElementById('correoAdministrador'),
-        TELEFONO_ADMINISTRADOR = document.getElementById('telefonoAdministrador'),
-        DUI_ADMINISTRADOR = document.getElementById('duiAdministrador'),
-        NACIMIENTO_ADMINISTRADOR = document.getElementById('nacimientoAdministrador'),
-        CLAVE_ADMINISTRADOR = document.getElementById('claveAdministrador'),
-        REPETIR_CLAVE = document.getElementById('repetirclaveAdministrador'),
-        IMAGEN_ADMINISTRADOR = document.getElementById('imagenAdministrador');
+        ID_TIPO_LESION = document.getElementById('idLesiones'),
+        ID_TIPO_LESION = document.getElementById('tipoLesion'),
+        ID_SUB_TIPOLOGIA = document.getElementById('tipologia'),
+        NUMERO_LESIONES = document.getElementById('cantidadLesiones'),
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.

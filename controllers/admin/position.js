@@ -185,6 +185,9 @@ window.onload = async function () {
     loadTemplate();
     // Agrega el HTML del encabezado
     appContainer.innerHTML = posicionHtml;
+    //Agrega el encabezado de la pantalla
+    const titleElement = document.getElementById('title');
+    titleElement.textContent = 'Posiciones';
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),

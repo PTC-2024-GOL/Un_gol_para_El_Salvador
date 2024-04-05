@@ -196,11 +196,14 @@ window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
     // Carga los componentes de manera síncrona
-    const adminHtml = await loadComponent('../componentes/coaching_staff.html');
+    const cuerpoTecnicoHtml = await loadComponent('../componentes/coaching_staff.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
     // Agrega el HTML del encabezado
-    appContainer.innerHTML = adminHtml;
+    appContainer.innerHTML = cuerpoTecnicoHtml;
+    //Agrega el encabezado de la pantalla
+    const titleElement = document.getElementById('title');
+    titleElement.textContent = 'Cuerpos técnicos';
     cargarTabla();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),

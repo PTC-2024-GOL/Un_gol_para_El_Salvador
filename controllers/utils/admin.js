@@ -17,6 +17,7 @@ MAIN.classList.add('container');
 */
 const loadTemplate = async () => {
 
+
 // Se agrega el encabezado de la página web antes del contenido principal.
 MAIN.insertAdjacentHTML('beforebegin', `
 <header>
@@ -26,7 +27,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                 aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" href="#">Administradores</a>
+            <a class="navbar-brand fw-semibold" href="#" id='title'></a>
             <!-- Imagen de perfil y nombre -->
             <div class="d-none d-sm-block">
                 <div class="row align-items-center justify-content-center">
@@ -76,7 +77,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                 <ul class="dropdown-menu bg-transparent">
                                     <li><a class="dropdown-item text-light" href="#">Jugadores</a></li>
                                     <li><a class="dropdown-item text-light" href="technical.html">Técnicos</a></li>
-                                    <li><a class="dropdown-item text-light" href="admins.html">Usuarios</a></li>
+                                    <li><a class="dropdown-item text-light" href="admins.html">Administradores</a></li>
                                 </ul>
                             </li>
                             <!-- Etiqueta para el estadisticas -->
@@ -105,7 +106,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                     <li><a class="dropdown-item text-light" href="subcontents.html">Sub contenidos</a></li>
                                     <li><a class="dropdown-item text-light" href="#">Detalles</a></li>
                                     <li><a class="dropdown-item text-light" href="tasks.html">Tareas</a></li>
-                                    <li><a class="dropdown-item text-light" href="#">Características de jugadores</a></li>
+                                    <li><a class="dropdown-item text-light" href="player_characteristics.html">Características de jugadores</a></li>
                                     <li><a class="dropdown-item text-light" href="#">Análisis de características</a></li>
                                     <li><a class="dropdown-item text-light" href="schedules.html">Horarios</a></li>
                                     <li><a class="dropdown-item text-light" href="#">Asistencia</a></li>
@@ -121,8 +122,8 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                 <ul class="dropdown-menu bg-transparent">
                                     <li><a class="dropdown-item text-light" href="#">Cuerpos técnicos</a></li>
                                     <li><a class="dropdown-item text-light" href="soccer_team.html">Equipos</a></li>
-                                    <li><a class="dropdown-item text-light" href="#">Tipos de jugada</a></li>
-                                    <li><a class="dropdown-item text-light" href="#">Tipos de goles</a></li>
+                                    <li><a class="dropdown-item text-light" href="types_plays.html">Tipos de jugada</a></li>
+                                    <li><a class="dropdown-item text-light" href="types_goals.html">Tipos de goles</a></li>
                                     <li><a class="dropdown-item text-light" href="#">Participaciones</a></li>
                                     <li><a class="dropdown-item text-light" href="positions.html">Posiciones</a></li>
                                     <li><a class="dropdown-item text-light" href="categories.html">Categorías</a></li>
@@ -142,7 +143,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                 <li><a class="dropdown-item text-light" href="medical_record.html">Registro médico</a></li>
                                 <li><a class="dropdown-item text-light" href="types_injuries.html">Tipos de lesiones</a></li>
                                 <li><a class="dropdown-item text-light" href="typology.html">Tipologías</a></li>
-                                <li><a class="dropdown-item text-light" href="#">Sub Tipologías</a></li>
+                                <li><a class="dropdown-item text-light" href="sub_typology.html">Sub Tipologías</a></li>
                                 <li><a class="dropdown-item text-light" href="injuries.html">Lesiones</a></li>
                             </ul>
                             </li>

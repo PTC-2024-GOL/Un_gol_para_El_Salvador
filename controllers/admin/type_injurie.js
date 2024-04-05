@@ -169,6 +169,9 @@ window.onload = async function () {
     loadTemplate();
     // Agrega el HTML del encabezado
     appContainer.innerHTML = contentHtml;
+    //Agrega el encabezado de la pantalla
+    const titleElement = document.getElementById('title');
+    titleElement.textContent = 'Tipos de lesiones';
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),

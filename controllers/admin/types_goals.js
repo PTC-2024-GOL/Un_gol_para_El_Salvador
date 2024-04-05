@@ -1,17 +1,12 @@
 let SAVE_MODAL;
-let SEE_MODAL;
 let SAVE_FORM,
-    ID_EQUIPO,
-    NOMBRE_EQUIPO,
-    TELEFONO_EQUIPO,
-    ID_CUERPO_TECNICO,
-    ID_ADMINISTRADOR,
-    ID_CATEGORIA,
-    LOGO_EQUIPO
+    ID_TIPO_GOL,
+    ID_TIPO_JUGADA,
+    NOMBRE_TIPO_GOL;
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
-const EQUIPO_API = '';
+const TIPO_GOL_API = '';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -26,20 +21,10 @@ async function loadComponent(path) {
 const openCreate = () => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
-    MODAL_TITLE.textContent = 'Crear equipo';
+    MODAL_TITLE.textContent = 'Crear tipo de gol';
     // Se prepara el formulario.
     SAVE_FORM.reset();
 }
-
-// Funcion para preparar el formulario al momento de abrirlo
-
-const seeModal = () => {
-    SEE_MODAL.show();
-    MODAL_TITLE.textContent = 'Cuerpo Técnico del equipo';
-    SAVE_FORM.reset();
-}
-
-
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
 *   Parámetros: id (identificador del registro seleccionado).
@@ -49,32 +34,28 @@ const openUpdate = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
-        FORM.append('idEquipo', id);
+        FORM.append('idTipoGol', id);
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(EQUIPO_API, 'readOne', FORM);
+        const DATA = await fetchData(TIPO_GOL_API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
-            MODAL_TITLE.textContent = 'Actualizar equipo';
+            MODAL_TITLE.textContent = 'Actualizar tipo de gol';
             // Se prepara el formulario.
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
-            ID_EQUIPO.value = ROW.ID;
-            NOMBRE_EQUIPO.value = ROW.NOMBRE;
-            TELEFONO_EQUIPO.value = ROW.TELEFONO;
-            ID_CUERPO_TECNICO.value = ROW.ID_CUERPO_TECNICO;
-            ID_ADMINISTRADOR.value = ROW.ID_ADMINISTRADOR;
-            ID_CATEGORIA.value = ROW.ID_CATEGORIA;
-            LOGO_EQUIPO.value = ROW.LOGO;
+            ID_TIPO_GOL.value = ROW.ID;
+            ID_TIPO_JUGADA.value = ROW.TIPO_JUGADA;
+            NOMBRE_TIPO_GOL.value = ROW.TIPO_GOL;
         } else {
             sweetAlert(2, DATA.error, false);
         }
     } catch (Error) {
         console.log(Error);
         SAVE_MODAL.show();
-        MODAL_TITLE.textContent = 'Actualizar equipo';
+        MODAL_TITLE.textContent = 'Actualizar tipo de gol';
     }
 
 }
@@ -85,23 +66,23 @@ const openUpdate = async (id) => {
 */
 const openDelete = async (id) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar el equipo?');
+    const RESPONSE = await confirmAction('¿Desea eliminar el tipo de gol?');
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
             // Se define una constante tipo objeto con los datos del registro seleccionado.
             const FORM = new FormData();
-            FORM.append('idEquipo', id);
+            FORM.append('idTipoGol', id);
             console.log(id);
             // Petición para eliminar el registro seleccionado.
-            const DATA = await fetchData(EQUIPO_API_API, 'deleteRow', FORM);
+            const DATA = await fetchData(TIPO_GOL_API, 'deleteRow', FORM);
             console.log(DATA.status);
             // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
             if (DATA.status) {
                 // Se muestra un mensaje de éxito.
                 await sweetAlert(1, DATA.message, true);
                 // Se carga nuevamente la tabla para visualizar los cambios.
-                cargarTabla();
+                fillTable();
             } else {
                 sweetAlert(2, DATA.error, false);
             }
@@ -109,48 +90,31 @@ const openDelete = async (id) => {
     }
     catch (Error) {
         console.log(Error + ' Error al cargar el mensaje');
-        confirmAction('¿Desea eliminar el equipo?');
+        confirmAction('¿Desea eliminar el tipo de gol?');
     }
 
 }
 
 
-async function cargarTabla(form = null) {
+async function fillTable(form = null) {
     const lista_datos = [
         {
-            imagen: '../../../../resources/img/svg/avatar.svg',
-            nombre: 'Gol',
-            telefono: '2243-2312',
-            categoria: '16',
-            cuerpo_técnico: 1,
+            tipo_jugada: 'Juego directo',
+            nombre_tipoGol: 'Dentro del área',
             id: 1,
         },
         {
-            imagen: '../../../../resources/img/svg/avatar.svg',
-            nombre: 'Monaco',
-            telefono: '1234-5678',
-            categoria: '17',
-            cuerpo_técnico: 1,
-            id: 2,
+            tipo_jugada: 'Juego combinativo',
+            nombre_tipoGol: 'Fuera del área',
+            id: 2
         },
         {
-            imagen: '../../../../resources/img/svg/avatar.svg',
-            nombre: 'Selecta',
-            telefono: '1234-5678',
-            categoria: '28',
-            cuerpo_técnico: 1,
-            id: 3,
+            tipo_jugada: 'Contrataque',
+            nombre_tipoGol: 'Transición',
+            id: 3
         },
-        {
-            imagen: '../../../../resources/img/svg/avatar.svg',
-            nombre: 'Software',
-            telefono: '1234-5678',
-            categoria: '17',
-            cuerpo_técnico: 1,
-            id: 4,
-        }
     ];
-    const cargarTabla = document.getElementById('tabla_equipos');
+    const cargarTabla = document.getElementById('tabla_tipoGol');
 
     try {
         cargarTabla.innerHTML = '';
@@ -158,7 +122,7 @@ async function cargarTabla(form = null) {
         (form) ? action = 'searchRows' : action = 'readAll';
         console.log(form);
         // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(EQUIPO_API_API, action, form);
+        const DATA = await fetchData(LESIONES_API, action, form);
         console.log(DATA);
 
         if (DATA.status) {
@@ -166,22 +130,15 @@ async function cargarTabla(form = null) {
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
                 <tr>
-                    <td><img src="${SERVER_URL}images/admin/${row.IMAGEN}" height="50" width="50" class="circulo"></td>
-                    <td>${row.NOMBRE}</td>
-                    <td>${row.TELEFONO}</td>
-                    <td>${row.ID_CATEGORIA}</td>
+                    <td>${row.ID_TIPO_JUGADA}</td>
+                    <td>${row.NOMBRE_TIPO_GOL}</td>
                     <td>
-                        <button type="button" class="btn btn-warnig" onclick="seeModal(${row.ID_CUERPO_TECNICO})">
-                        <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
-                        </button>
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
-                        <img src="../../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" onclick="openDelete(${row.ID})">
-                            <i class="bi bi-trash-fill"></i>
-                        </button>
+                    <button type="button" class="btn transparente" onclick="openUpdate(${row.ID_TIPO_GOL})">
+                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                    </button>
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.ID_TIPO_GOL})">
+                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                    </button>
                     </td>
                 </tr>
                 `;
@@ -196,15 +153,8 @@ async function cargarTabla(form = null) {
         lista_datos.forEach(row => {
             const tablaHtml = `
             <tr>
-                <td><img src="${row.imagen}" height="50" width="50" class="circulo"></td>
-                <td>${row.nombre}</td>
-                <td>${row.telefono}</td>
-                <td>${row.categoria}</td>
-                <td>
-                    <button type="button" class="btn transparente" onclick="seeModal(${row.cuerpo_técnico})">
-                    <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18px" height="18px">
-                    </button>
-                </td>
+                <td>${row.tipo_jugada}</td>
+                <td>${row.nombre_tipoGol}</td>
                 <td>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
@@ -225,39 +175,34 @@ window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
     // Carga los componentes de manera síncrona
-    const equiposHtml = await loadComponent('../componentes/soccer_team.html');
+    const tiposGolesHtml = await loadComponent('../componentes/types_goals.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
     // Agrega el HTML del encabezado
-    appContainer.innerHTML = equiposHtml;
+    appContainer.innerHTML = tiposGolesHtml;
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
-    titleElement.textContent = 'Equipos';
-    cargarTabla();
+    titleElement.textContent = 'Tipos de goles';
+    fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
 
-    SEE_MODAL = new bootstrap.Modal('#seeModal'),
-        MODAL_TITLE = document.getElementById('modalTitle2')
-
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
-        ID_ADMINISTRADOR = document.getElementById('idEquipo'),
-        NOMBRE_EQUIPO = document.getElementById('nombreEquipo'),
-        TELEFONO_EQUIPO = document.getElementById('telefonoEquipo'),
-        ID_CATEGORIA = document.getElementById('categoriaEquipo'),
-        ID_CUERPO_TECNICO = document.getElementById('cuerpoTecnico'),
+        ID_TIPO_GOL = document.getElementById('idTipoGol'),
+        ID_TIPO_JUGADA= document.getElementById('tipoJugada'),
+        NOMBRE_TIPO_GOL = document.getElementById('tipoGol'),
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
         event.preventDefault();
         // Se verifica la acción a realizar.
-        (ID_EQUIPO.value) ? action = 'updateRow' : action = 'createRow';
+        (ID_ADMINISTRADOR.value) ? action = 'updateRow' : action = 'createRow';
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SAVE_FORM);
         // Petición para guardar los datos del formulario.
-        const DATA = await fetchData(EQUIPO_API_API, action, FORM);
+        const DATA = await fetchData(ADMINISTRADOR_API, action, FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se cierra la caja de diálogo.
@@ -265,7 +210,7 @@ window.onload = async function () {
             // Se muestra un mensaje de éxito.
             sweetAlert(1, DATA.message, true);
             // Se carga nuevamente la tabla para visualizar los cambios.
-            cargarTabla();
+            fillTable();
         } else {
             sweetAlert(2, DATA.error, false);
             console.error(DATA.exception);
@@ -284,6 +229,6 @@ window.onload = async function () {
         console.log(SEARCH_FORM);
         console.log(FORM);
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
-        cargarTabla(FORM);
+        fillTable(FORM);
     });
 };

@@ -202,6 +202,9 @@ window.onload = async function () {
     // Agrega el HTML del encabezado
     appContainer.innerHTML = horarioHtml;
     fillTable();
+    //Agrega el encabezado de la pantalla
+    const titleElement = document.getElementById('title');
+    titleElement.textContent = 'Horarios';
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
