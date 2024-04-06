@@ -94,7 +94,7 @@ const openDelete = async (id) => {
             FORM.append('idEquipo', id);
             console.log(id);
             // Petición para eliminar el registro seleccionado.
-            const DATA = await fetchData(EQUIPO_API_API, 'deleteRow', FORM);
+            const DATA = await fetchData(EQUIPO_API, 'deleteRow', FORM);
             console.log(DATA.status);
             // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
             if (DATA.status) {
@@ -158,7 +158,7 @@ async function cargarTabla(form = null) {
         (form) ? action = 'searchRows' : action = 'readAll';
         console.log(form);
         // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(EQUIPO_API_API, action, form);
+        const DATA = await fetchData(EQUIPO_API, action, form);
         console.log(DATA);
 
         if (DATA.status) {
@@ -257,7 +257,7 @@ window.onload = async function () {
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SAVE_FORM);
         // Petición para guardar los datos del formulario.
-        const DATA = await fetchData(EQUIPO_API_API, action, FORM);
+        const DATA = await fetchData(EQUIPO_API, action, FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se cierra la caja de diálogo.
