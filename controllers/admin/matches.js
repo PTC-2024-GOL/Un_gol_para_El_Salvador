@@ -31,6 +31,14 @@ const openCreate = () => {
     // Se prepara el formulario.
     SAVE_FORM.reset();
 }
+
+// Funcion para preparar el formulario al momento de abrirlo
+
+const seeModal = () => {
+    SEE_MODAL.show();
+    MODAL_TITLE.textContent = 'Ver información del partido';
+    SAVE_FORM.reset();
+}
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
 *   Parámetros: id (identificador del registro seleccionado).
@@ -165,6 +173,11 @@ async function cargarTabla(form = null) {
                     <td>${row.RESULTADO}</td>
                     <td>${row.LOCALIDAD}</td>
                     <td>
+                        <button type="button" class="btn btn-warnig" onclick="seeModal(${row.ID})">
+                        <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
+                        </button>
+                    </td>
+                    <td>
                         <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
                         <img src="../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
                         </button>
@@ -191,6 +204,11 @@ async function cargarTabla(form = null) {
                 <td>${row.resultado}</td>
                 <td>${row.localidad}</td>
                 <td>
+                    <button type="button" class="btn btn-warnig" onclick="seeModal(${row.id})">
+                    <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
+                    </button>
+                </td>
+                <td>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
@@ -210,18 +228,18 @@ window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
     // Carga los componentes de manera síncrona
-    const partidosHtml = await loadComponent('../componentes/matches.html');
+    const adminHtml = await loadComponent('../componentes/matches.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
     // Agrega el HTML del encabezado
-    appContainer.innerHTML = partidosHtml;
-    //Agrega el encabezado de la pantalla
-    const titleElement = document.getElementById('title');
-    titleElement.textContent = 'Partidos';
+    appContainer.innerHTML = adminHtml;
     cargarTabla();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
+        
+    SEE_MODAL = new bootstrap.Modal('#seeModal'),
+        MODAL_TITLE = document.getElementById('modalTitle2')
 
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
@@ -231,7 +249,7 @@ window.onload = async function () {
         FECHA_PARTIDO = document.getElementById('fechaPartido'),
         CANCHA = document.getElementById('cancha'),
         RESULTADO_PARTIDO = document.getElementById('resultado'),
-        LOCALIDAD  = document.getElementById('lcoalidad'),
+        LOCALIDAD  = document.getElementById('localidad'),
         TIPO_RESULTADO_PARTIDO = document.getElementById('tipoResultado');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
