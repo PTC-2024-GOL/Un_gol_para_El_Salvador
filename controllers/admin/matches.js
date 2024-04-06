@@ -130,7 +130,7 @@ async function cargarTabla(form = null) {
             equipo: 'Mar',
             rival: 'FC Migueleños',
             fechaPartido: '12 de abril del 2024',
-            resultado: '3-1',
+            resultado: '2-2',
             localidad: 'Local',
             id: 2,
         },
@@ -165,12 +165,13 @@ async function cargarTabla(form = null) {
         if (DATA.status) {
             // Mostrar elementos obtenidos de la API
             DATA.dataset.forEach(row => {
+                const resultadoColorClass = row.RESULTADO === '3-1' ? 'text-success' : row.RESULTADO === '2-2' ? 'text-dark' : 'text-danger';
                 const tablaHtml = `
                 <tr>
                     <td>${row.EQUIPO}</td>
                     <td>${row.RIVAL}</td>
                     <td>${row.FECHAPARTIDO}</td>
-                    <td>${row.RESULTADO}</td>
+                    <td class="${resultadoColorClass}">${row.RESULTADO}</td>
                     <td>${row.LOCALIDAD}</td>
                     <td>
                         <button type="button" class="btn btn-warnig" onclick="seeModal(${row.ID})">
@@ -196,12 +197,13 @@ async function cargarTabla(form = null) {
         console.error('Error al obtener datos de la API:', error);
         // Mostrar materiales de respaldo
         lista_datos.forEach(row => {
+            const resultadoColorClass = row.resultado === '3-1' ? 'text-success' : row.resultado=== '2-2' ? 'text-dark' : 'text-danger';
             const tablaHtml = `
             <tr>
                 <td>${row.equipo}</td>
                 <td>${row.rival}</td>
                 <td>${row.fechaPartido}</td>
-                <td>${row.resultado}</td>
+                <td class="${resultadoColorClass}">${row.resultado}</td>
                 <td>${row.localidad}</td>
                 <td>
                     <button type="button" class="btn btn-warnig" onclick="seeModal(${row.id})">
@@ -237,7 +239,7 @@ window.onload = async function () {
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
-        
+
     SEE_MODAL = new bootstrap.Modal('#seeModal'),
         MODAL_TITLE = document.getElementById('modalTitle2')
 
@@ -249,7 +251,7 @@ window.onload = async function () {
         FECHA_PARTIDO = document.getElementById('fechaPartido'),
         CANCHA = document.getElementById('cancha'),
         RESULTADO_PARTIDO = document.getElementById('resultado'),
-        LOCALIDAD  = document.getElementById('localidad'),
+        LOCALIDAD = document.getElementById('localidad'),
         TIPO_RESULTADO_PARTIDO = document.getElementById('tipoResultado');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
