@@ -6,7 +6,9 @@
                 <h4 class="fw-semibold">Bienvenido&nbsp;</h4>
                 <h4 class="fw-semibold" id="nombreAdmin"></h4>
             </div>
-            <p class="fw-light">Es un gusto tenerte de regreso, ponte al día sobre las nuevas actualizaciones de tu academia de football.</p>
+            <p class="fw-light">Es un gusto tenerte de regreso, ponte al día sobre las nuevas actualizaciones de tu
+                academia de football.</p>
+            <!-- Fila que tiene dos col (Select para seleccionar input y la grafica) -->
             <div class="row mt-5">
                 <div class="col-6">
                     <div class="container bg-blue-principal-color text-center rounded-3">
@@ -16,26 +18,76 @@
                     <div class="mb-3 row mt-5">
                         <label for="inputPassword" class="col-sm-4 col-form-label">Elige el equipo</label>
                         <div class="col-sm-8">
-                          <select type="password" class="form-select" id="inputPassword"></select>
+                            <select type="password" class="form-select" id="inputPassword"></select>
                         </div>
                     </div>
-                    <div class="row d-flex align-items-center">
+                    <!-- Fila que contiene el icono e informacion de las estadisticas -->
+                    <div class="row d-flex align-items-center mt-4">
                         <div class="col-2">
                             <img src="../../../resources/img/svg/statistics.svg" alt="">
                         </div>
-                        <div class="col-10 ">
-                            <p class="fs-6 fw-semibold">Estadisticas generales del equipo</p>
-                            <p class="mt-0">Revisa las estadísticas generales tanto en áreas técnicas,
+                        <div class="col-10">
+                            <p class="fs-6 fw-semibold mb-0">Estadisticas generales del equipo</p>
+                            <p class="small fw-light">Revisa las estadísticas generales tanto en áreas técnicas,
                                 tácticas, técnicas y mentales de los equipos </p>
                         </div>
                     </div>
+                </div>
+                <!-- Grafica -->
                 <div class="col-6">
+                    <!-- Por el momento solo es una imagen -->
+                    <img src="../../../resources/img/svg/graphic.svg" alt="">
+                </div>
+            </div>
 
+            <!-- Seccion de resultados de partido -->
+            <p class="fs-5 fw-semibold mb-3">Resultados generales de partidos jugados</p>
+            <div class="row d-flex d-flex text-center">
+                <div class="col-2">
+                    <h1 class="p-3 fw-semibold text-light result_one rounded-3" id="">5</h1>
+                    <p class="fw-light">Partidos ganados</p>
+                </div>
+                <div class="col-2">
+                    <h1 class="p-3 fw-semibold text-light result_one result_second rounded-3" id="">5</h1>
+                    <p class="fw-light">Partidos perdidos</p>
+                </div>
+                <div class="col-2">
+                    <h1 class="p-3 fw-semibold text-light result_one result_third  rounded-3  " id="">5</h1>
+                    <p class="fw-light">Partidos empatados</p>
+                </div>
+                <div class="col-2 resutl4">
+                    <h1 class="p-3 fw-semibold text-light result_one result_second rounded-3" id="">5</h1>
+                    <p class="fw-light">Goles en contra</p>
+                </div>
+                <div class="col-2 resutl5">
+                    <h1 class="p-3 fw-semibold text-light result_one rounded-3" id="">5</h1>
+                    <p class="fw-light">Goles a favor</p>
+                </div>
+                <div class="col-2 resutl6">
+                    <h1 class="p-3 fw-semibold text-light result_one result_third  rounded-3  " id="">5</h1>
+                    <p class="fw-light">Diferencia</p>
+                </div>
+            </div>
+            
+            <!-- Seccion del resultado del ultimo partido jugado-->
+            <p class="fs-5 fw-semibold mb-3 mt-4">Resultado del último partido jugado</p>
+            <div class="container shadow rounded-3">
+                <div class="container mt-4 p-3">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-10 text-center">
+                            <p class="mb-0 fw-semibold">Miércoles 14 de agosto de 2023</p> 
+                            <p class="small">Categoría 17</p>
+                        </div>
+                        <div class="col-2">
+                            <p class="float-end fw-semibold">14:00  pm</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+        <!-- Calendario e equipos -->
         <div class="col-4">
-
+            <p class="fs-5 fw-semibold mb-0">Organizador</p>
+            <p class="fw-light">Lleva todas tus actividades y tareas más organizadas.</p>
         </div>
     </div>
-</div>
