@@ -75,7 +75,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                     Usuarios
                                 </a>
                                 <ul class="dropdown-menu bg-transparent">
-                                    <li><a class="dropdown-item text-light" href="#">Jugadores</a></li>
+                                    <li><a class="dropdown-item text-light" href="#">players.html</a></li>
                                     <li><a class="dropdown-item text-light" href="technical.html">Técnicos</a></li>
                                     <li><a class="dropdown-item text-light" href="admins.html">Administradores</a></li>
                                 </ul>
