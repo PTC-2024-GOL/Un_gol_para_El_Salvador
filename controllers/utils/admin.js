@@ -33,7 +33,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                 <div class="row align-items-center justify-content-center">
                     <div class="col-auto ">
                         <div>
-                            <p class="mb-0 float-end">Chepe Martínez</p>
+                            <p class="mb-0 float-end fw-semibold" id="name"></p>
                         </div>
                         <div>
                             <p class="text-body-secondary small float-end">Administrador</p>
@@ -63,7 +63,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                         <div class="container ms-2">
                             <!-- Etiqueta para el dashboard -->
                             <li class="nav-item">
-                                <a class="nav-link active text-light" aria-current="page" href="#">
+                                <a class="nav-link active text-light" aria-current="page" href="dashboard.html">
                                     <img src="../../../resources/img/svg/icons_menu/dashboard.svg" class="me-3"
                                         alt="">Dashboard</a>
                             </li>
@@ -190,4 +190,8 @@ MAIN.insertAdjacentHTML('beforebegin', `
     </nav>
 </header>
 `);
+
+const userName = document.getElementById('name');
+userName.textContent = 'Chepe Martínez';
+
 }
