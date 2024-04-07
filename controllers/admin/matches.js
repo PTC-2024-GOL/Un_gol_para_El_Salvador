@@ -125,6 +125,7 @@ async function cargarTabla(form = null) {
             resultado: '3-1',
             localidad: 'Visitante',
             id: 1,
+            tipo_resultado_partido: 'victoria',
         },
         {
             equipo: 'Mar',
@@ -133,6 +134,7 @@ async function cargarTabla(form = null) {
             resultado: '2-2',
             localidad: 'Local',
             id: 2,
+            tipo_resultado_partido: 'empate',
         },
         {
             equipo: 'GOL',
@@ -141,14 +143,16 @@ async function cargarTabla(form = null) {
             resultado: '1-2',
             localidad: 'Local',
             id: 3,
+            tipo_resultado_partido: 'derrota',
         },
         {
             equipo: 'Power kid',
             rival: 'Toluca',
             fechaPartido: '15 de marzo del 2024',
-            resultado: '3-1',
+            resultado: '2-0',
             localidad: 'Visitante',
             id: 4,
+            tipo_resultado_partido: 'victoria',
         }
     ];
     const cargarTabla = document.getElementById('tabla_partido');
@@ -165,7 +169,7 @@ async function cargarTabla(form = null) {
         if (DATA.status) {
             // Mostrar elementos obtenidos de la API
             DATA.dataset.forEach(row => {
-                const resultadoColorClass = row.RESULTADO === '3-1' ? 'text-success' : row.RESULTADO === '2-2' ? 'text-dark' : 'text-danger';
+                const resultadoColorClass = row.TIPO_RESULTADO_PARTIDO === 'victoria' ? 'text-success' : row.TIPO_RESULTADO_PARTIDO === 'empate' ? 'text-dark' : 'text-danger';
                 const tablaHtml = `
                 <tr>
                     <td>${row.EQUIPO}</td>
@@ -197,7 +201,7 @@ async function cargarTabla(form = null) {
         console.error('Error al obtener datos de la API:', error);
         // Mostrar materiales de respaldo
         lista_datos.forEach(row => {
-            const resultadoColorClass = row.resultado === '3-1' ? 'text-success' : row.resultado=== '2-2' ? 'text-dark' : 'text-danger';
+            const resultadoColorClass = row.tipo_resultado_partido === 'victoria' ? 'text-success' : row.tipo_resultado_partido=== 'empate' ? 'text-dark' : 'text-danger';
             const tablaHtml = `
             <tr>
                 <td>${row.equipo}</td>
