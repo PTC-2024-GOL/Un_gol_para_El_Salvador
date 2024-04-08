@@ -155,6 +155,10 @@ window.onload = async function () {
         const DATA = await fetchData(DETALLE_CONTENIDO_API, action, FORM);
         //Aqui debo hacer la lógica de lo que sucederá cuando se le dé click a seleccionar horario.
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+        //Pondré el metodo para abrir la siguiente pantalla antes del if, luego deberé ponerla
+        // Redirige a una nueva página en la misma ventana del navegador
+        window.location.href = '../../views/admin/paginas/SpecificDetailsContents.html';
+
         if (DATA.status) {
             // Se cierra la caja de diálogo.
             SAVE_MODAL.hide();

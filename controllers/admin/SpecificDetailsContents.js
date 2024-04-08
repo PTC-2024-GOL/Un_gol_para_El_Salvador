@@ -1,75 +1,86 @@
-let SAVE_MODAL,
-SEE_MODAL,
-SEE_FORM;
+
+let SAVE_MODAL;
 let SAVE_FORM,
-    ID_PARTIDO,
-    EQUIPO,
-    RIVAL,
-    FECHA_PARTIDO,
-    CANCHA,
-    RESULTADO_PARTIDO,
-    LOCALIDAD,
-    TIPO_RESULTADO_PARTIDO,
-    JORNADA;
+    JUGADOR,
+    SUBTEMA,
+    TAREA,
+    CANTIDAD_CONTENIDO,
+    MINUTOS_TAREA,
+    IDDETALLE_CONTENIDO,
+    JUGADORES;
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
-const PARTIDO_API = '';
+const SD_CONTENTS_API = '';
+const JUGADORES_API = '';
+
+const lista_datos = [
+    {
+        jugadores: "Mario",
+        id: 1,
+    },
+    {
+        jugadores: 'Marco',
+        id: 2,
+    },
+    {
+        jugadores: 'Susan',
+        id: 3,
+    },
+    {
+        jugadores: 'Agustin',
+        id: 4,
+    }
+];
 
 async function loadComponent(path) {
     const response = await fetch(path);
     const text = await response.text();
     return text;
 }
+// Función para poblar un combobox (select) con opciones
+const fillSelected = (data, action, selectId, selectedValue = null) => {
+    const selectElement = document.getElementById(selectId);
+
+    // Limpiar opciones previas del combobox
+    selectElement.innerHTML = '';
+
+    // Crear opción por defecto
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Seleccionar';
+    selectElement.appendChild(defaultOption);
+
+    // Llenar el combobox con los datos proporcionados
+    data.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.id; // Suponiendo que hay una propiedad 'id' en los datos
+        option.textContent = item.jugadores; // Cambia 'jugadores' al nombre de la propiedad que deseas mostrar en el combobox
+        selectElement.appendChild(option);
+    });
+
+    // Seleccionar el valor especificado si se proporciona
+    if (selectedValue !== null) {
+        selectElement.value = selectedValue;
+    }
+};
 /*
 *   Función para preparar el formulario al momento de insertar un registro.
 *   Parámetros: ninguno.
 *   Retorno: ninguno.
 */
+
+   
 const openCreate = () => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
-    MODAL_TITLE.textContent = 'Agregar partido';
+    MODAL_TITLE.textContent = 'Agregar detalle';
     // Se prepara el formulario.
     SAVE_FORM.reset();
+    // Llenar el combobox de jugadores
+    fillSelected(lista_datos, 'readAll', 'generador');
 }
 
-// Funcion para preparar el formulario al momento de abrirlo
-
-const seeModal =async (id) => {
-    try {
-        // Se define un objeto con los datos del registro seleccionado.
-        const FORM = new FormData();
-        FORM.append('idPartido', id);
-        // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(PARTIDO_API, 'readOne', FORM);
-        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-        if (DATA.status) {
-            // Se muestra la caja de diálogo con su título.
-            SEE_MODAL.show();
-            MODAL_TITLE.textContent = 'Ver partido';
-            // Se prepara el formulario.
-            SEE_MODAL.reset();
-            // Se inicializan los campos con los datos.
-            const ROW = DATA.dataset;
-            ID_PARTIDO.value = ROW.ID;
-            EQUIPO.value = ROW.EQUIPOP;
-            RIVAL.value = ROW.RIVALP;
-            FECHA_PARTIDO.value = ROW.FECHAP;
-            CANCHA.value = ROW.CANCHAP;
-            RESULTADO_PARTIDO.value = ROW.RESULTADOP;
-            LOCALIDAD.value = ROW.LOCALIDAD;
-            TIPO_RESULTADO_PARTIDO.value = ROW.TIPORESULTADOP;
-            JORNADA.value = ROW.JORNADAP;
-        } else {
-            sweetAlert(2, DATA.error, false);
-        }
-    } catch (Error) {
-        console.log(Error);
-        SEE_MODAL.show();
-        MODAL_TITLE.textContent = 'Ver partido';
-    }
-}
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
 *   Parámetros: id (identificador del registro seleccionado).
@@ -79,37 +90,37 @@ const openUpdate = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
-        FORM.append('idPartido', id);
+        FORM.append('iddetallecontenido', id);
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(PARTIDO_API, 'readOne', FORM);
+        const DATA = await fetchData(SD_CONTENTS_API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
-            MODAL_TITLE.textContent = 'Actualizar partido';
+            MODAL_TITLE.textContent = 'Actualizar detalle';
             // Se prepara el formulario.
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
-            ID_PARTIDO.value = ROW.ID;
-            EQUIPO.value = ROW.EQUIPOP;
-            RIVAL.value = ROW.RIVALP;
-            FECHA_PARTIDO.value = ROW.FECHAP;
-            CANCHA.value = ROW.CANCHAP;
-            RESULTADO_PARTIDO.value = ROW.RESULTADOP;
-            LOCALIDAD.value = ROW.LOCALIDAD;
-            TIPO_RESULTADO_PARTIDO.value = ROW.TIPORESULTADOP;
-            JORNADA.value = ROW.JORNADAP;
+            IDDETALLE_CONTENIDO.value = ROW.ID;
+            SUBCONTENIDO.value = ROW.SUBCONTENIDO;
+            TAREA.value = ROW.TAREA;
+            MINUTOS_TAREA.value = ROW.MINUTOS_TAREA;
+            CANTIDAD_CONTENIDO.value = ROW.CANTIDAD_CONTENIDO;
+            // Llenar el combobox de jugadores
+            fillSelected(lista_datos, 'readAll', 'generador', ROW.JUGADORES);
         } else {
             sweetAlert(2, DATA.error, false);
         }
     } catch (Error) {
-        console.log(Error);
+        console.error(Error);
+        // En caso de error, llenar el combobox con datos simulados
         SAVE_MODAL.show();
-        MODAL_TITLE.textContent = 'Actualizar partido';
-    }
-
+        fillSelected(lista_datos, 'readAll', 'generador');
+        MODAL_TITLE.textContent = 'Actualizar detalle';
+    }    
 }
+
 /*
 *   Función asíncrona para eliminar un registro.
 *   Parámetros: id (identificador del registro seleccionado).
@@ -117,23 +128,23 @@ const openUpdate = async (id) => {
 */
 const openDelete = async (id) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar el partido de forma permanente?');
+    const RESPONSE = await confirmAction('¿Desea eliminar el esta asignación?');
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
             // Se define una constante tipo objeto con los datos del registro seleccionado.
             const FORM = new FormData();
-            FORM.append('idPartido', id);
+            FORM.append('iddetallecontenido', id);
             console.log(id);
             // Petición para eliminar el registro seleccionado.
-            const DATA = await fetchData(PARTIDO_API, 'deleteRow', FORM);
+            const DATA = await fetchData(SD_CONTENTS_API, 'deleteRow', FORM);
             console.log(DATA.status);
             // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
             if (DATA.status) {
                 // Se muestra un mensaje de éxito.
                 await sweetAlert(1, DATA.message, true);
                 // Se carga nuevamente la tabla para visualizar los cambios.
-                cargarTabla();
+                fillTable();
             } else {
                 sweetAlert(2, DATA.error, false);
             }
@@ -141,52 +152,40 @@ const openDelete = async (id) => {
     }
     catch (Error) {
         console.log(Error + ' Error al cargar el mensaje');
-        confirmAction('¿Desea eliminar el partido de forma permanente?');
+        confirmAction('¿Desea eliminar el sub-contenido?');
     }
 
 }
 
 
-async function cargarTabla(form = null) {
+async function fillTable(form = null) {
     const lista_datos = [
         {
-            equipo: 'Leones',
-            rival: 'Tigres',
-            fechaPartido: '15 de marzo del 2024',
-            resultado: '3-1',
-            localidad: 'Visitante',
+            subcontenido: "Juegos lúdicos",
+            tarea: 'Coordinación',
+            jugador: 'Paolo',
             id: 1,
-            tipo_resultado_partido: 'victoria',
         },
         {
-            equipo: 'Mar',
-            rival: 'FC Migueleños',
-            fechaPartido: '12 de abril del 2024',
-            resultado: '2-2',
-            localidad: 'Local',
+            tarea: "Trabajo preventivo",
+            subcontenido: 'Agilidad',
+            jugador: 'Marco',
             id: 2,
-            tipo_resultado_partido: 'empate',
         },
         {
-            equipo: 'GOL',
-            rival: 'FESA',
-            fechaPartido: '20 de marzo del 2024',
-            resultado: '1-2',
-            localidad: 'Local',
+            tarea: "Circuitos/ Fisicos sin balón",
+            subcontenido: 'Toma de decisiciones',
+            jugador: 'Susan',
             id: 3,
-            tipo_resultado_partido: 'derrota',
         },
         {
-            equipo: 'Power kid',
-            rival: 'Toluca',
-            fechaPartido: '15 de marzo del 2024',
-            resultado: '2-0',
-            localidad: 'Visitante',
+            tarea: "Circuitos/ Fisicos con balón",
+            subcontenido: 'Toma de decisiciones',
+            jugador: 'Agustin',
             id: 4,
-            tipo_resultado_partido: 'victoria',
         }
     ];
-    const cargarTabla = document.getElementById('tabla_partido');
+    const cargarTabla = document.getElementById('tabla_especificos_detalles_contenidos');
 
     try {
         cargarTabla.innerHTML = '';
@@ -194,25 +193,17 @@ async function cargarTabla(form = null) {
         (form) ? action = 'searchRows' : action = 'readAll';
         console.log(form);
         // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(PARTIDO_API, action, form);
+        const DATA = await fetchData(SD_CONTENTS_API, action, form);
         console.log(DATA);
 
         if (DATA.status) {
             // Mostrar elementos obtenidos de la API
             DATA.dataset.forEach(row => {
-                const resultadoColorClass = row.TIPO_RESULTADO_PARTIDO === 'victoria' ? 'text-success' : row.TIPO_RESULTADO_PARTIDO === 'empate' ? 'text-dark' : 'text-danger';
                 const tablaHtml = `
                 <tr>
-                    <td>${row.EQUIPO}</td>
-                    <td>${row.RIVAL}</td>
-                    <td>${row.FECHAPARTIDO}</td>
-                    <td class="${resultadoColorClass}">${row.RESULTADO}</td>
-                    <td>${row.LOCALIDAD}</td>
-                    <td>
-                        <button type="button" class="btn btn-warnig" onclick="seeModal(${row.ID})">
-                        <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
-                        </button>
-                    </td>
+                    <td>${row.JUGADOR}</td>
+                    <td>${row.SUBCONTENIDO}</td>
+                    <td>${row.TAREA}<td>
                     <td>
                         <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
                         <img src="../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
@@ -232,27 +223,19 @@ async function cargarTabla(form = null) {
         console.error('Error al obtener datos de la API:', error);
         // Mostrar materiales de respaldo
         lista_datos.forEach(row => {
-            const resultadoColorClass = row.tipo_resultado_partido === 'victoria' ? 'text-success' : row.tipo_resultado_partido=== 'empate' ? 'text-dark' : 'text-danger';
             const tablaHtml = `
             <tr>
-                <td>${row.equipo}</td>
-                <td>${row.rival}</td>
-                <td>${row.fechaPartido}</td>
-                <td class="${resultadoColorClass}">${row.resultado}</td>
-                <td>${row.localidad}</td>
-                <td>
-                    <button type="button" class="btn btn-warnig" onclick="seeModal(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
-                    </button>
-                </td>
-                <td>
+                    <td>${row.jugador}</td>
+                    <td>${row.subcontenido}</td>
+                    <td>${row.tarea}<td>
+                    <td>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
                     <button type="button" class="btn transparente" onclick="openDelete(${row.id})">
                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
-                </td>
+                    </td>
             </tr>
             `;
             cargarTabla.innerHTML += tablaHtml;
@@ -265,39 +248,37 @@ window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
     // Carga los componentes de manera síncrona
-    const adminHtml = await loadComponent('../componentes/matches.html');
+    const subcontenidosHtml = await loadComponent('../componentes/SpecificDetailsContents.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
     // Agrega el HTML del encabezado
-    appContainer.innerHTML = adminHtml;
-    cargarTabla();
+    appContainer.innerHTML = subcontenidosHtml;
+    //Agrega el encabezado de la pantalla
+    const titleElement = document.getElementById('title');
+    titleElement.textContent = 'Detalles contenido especifico';
+    fillSelected(lista_datos, 'readAll', 'generador');
+    fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
 
-    SEE_MODAL = new bootstrap.Modal('#seeModal'),
-        MODAL_TITLE = document.getElementById('modalTitle2')
-
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
-        ID_PARTIDO = document.getElementById('idPartido'),
-        EQUIPO = document.getElementById('equipos'),
-        RIVAL = document.getElementById('rival'),
-        FECHA_PARTIDO = document.getElementById('fechaPartido'),
-        CANCHA = document.getElementById('cancha'),
-        RESULTADO_PARTIDO = document.getElementById('resultado'),
-        LOCALIDAD = document.getElementById('localidad'),
-        TIPO_RESULTADO_PARTIDO = document.getElementById('tipoResultado');
+        ID_SUBCONTENIDO = document.getElementById('iddetallecontenido'),
+        SUBCONTENIDO = document.getElementById('subcontenido'),
+        TAREA = document.getElementById('tarea');
+        CANTIDAD_CONTENIDO = document.getElementById('cantidadEquipo');
+        MINUTOS_TAREA = document.getElementById('minutostarea');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
         event.preventDefault();
         // Se verifica la acción a realizar.
-        (ID_PARTIDO.value) ? action = 'updateRow' : action = 'createRow';
+        (ID_SUBCONTENIDO.value) ? action = 'updateRow' : action = 'createRow';
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SAVE_FORM);
         // Petición para guardar los datos del formulario.
-        const DATA = await fetchData(PARTIDO_API, action, FORM);
+        const DATA = await fetchData(SD_CONTENTS_API, action, FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se cierra la caja de diálogo.
@@ -305,7 +286,7 @@ window.onload = async function () {
             // Se muestra un mensaje de éxito.
             sweetAlert(1, DATA.message, true);
             // Se carga nuevamente la tabla para visualizar los cambios.
-            cargarTabla();
+            fillTable();
         } else {
             sweetAlert(2, DATA.error, false);
             console.error(DATA.exception);
@@ -324,6 +305,6 @@ window.onload = async function () {
         console.log(SEARCH_FORM);
         console.log(FORM);
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
-        cargarTabla(FORM);
+        fillTable(FORM);
     });
 };
