@@ -34,10 +34,39 @@ const openCreate = () => {
 
 // Funcion para preparar el formulario al momento de abrirlo
 
-const seeModal = () => {
-    SEE_MODAL.show();
-    MODAL_TITLE.textContent = 'Ver información del partido';
-    SAVE_FORM.reset();
+const seeModal =async (id) => {
+    try {
+        // Se define un objeto con los datos del registro seleccionado.
+        const FORM = new FormData();
+        FORM.append('idPartido', id);
+        // Petición para obtener los datos del registro solicitado.
+        const DATA = await fetchData(PARTIDO_API, 'readOne', FORM);
+        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+        if (DATA.status) {
+            // Se muestra la caja de diálogo con su título.
+            SAVE_MODAL.show();
+            MODAL_TITLE.textContent = 'Ver partido';
+            // Se prepara el formulario.
+            SAVE_FORM.reset();
+            // Se inicializan los campos con los datos.
+            const ROW = DATA.dataset;
+            ID_PARTIDO.value = ROW.ID;
+            EQUIPO.value = ROW.EQUIPOP;
+            RIVAL.value = ROW.RIVALP;
+            FECHA_PARTIDO.value = ROW.FECHAP;
+            CANCHA.value = ROW.CANCHAP;
+            RESULTADO_PARTIDO.value = ROW.RESULTADOP;
+            LOCALIDAD.value = ROW.LOCALIDAD;
+            TIPO_RESULTADO_PARTIDO.value = ROW.TIPORESULTADOP;
+            JORNADA.value = ROW.JORNADAP;
+        } else {
+            sweetAlert(2, DATA.error, false);
+        }
+    } catch (Error) {
+        console.log(Error);
+        SAVE_MODAL.show();
+        MODAL_TITLE.textContent = 'Ver partido';
+    }
 }
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
