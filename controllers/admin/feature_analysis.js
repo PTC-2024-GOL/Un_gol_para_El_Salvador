@@ -1,7 +1,11 @@
 
 
-let SAVE_MODAL;
-let SEE_MODAL;
+let SAVE_MODAL,
+    MODAL_TITLE;
+let SEE_MODAL,
+    MODAL_TITLE1;
+let GRAPHIC_MODAL,
+    MODAL_TITLE2;
 let SEE_FORM,
     ID_ANALISISV,
     JUGADORV,
@@ -71,11 +75,25 @@ const openCreate = () => {
     SAVE_FORM.reset();
 }
 
+/*
+*   Función para abrir la gráfica al momento.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
+const openGraphic = () => {
+    // Se muestra la caja de diálogo con su título.
+    GRAPHIC_MODAL.show();
+    MODAL_TITLE2.textContent = 'Gráfica de análisis del jugador';
+    // Se prepara el formulario.
+    SAVE_FORM.reset();
+    graficoBarrasAnalisis();
+}
+
 // Funcion para preparar el formulario al momento de abrirlo
 
 const seeModal = () => {
     SEE_MODAL.show();
-    MODAL_TITLE.textContent = 'Análisis del jugador';
+    MODAL_TITLE1.textContent = 'Análisis del jugador';
     SAVE_FORM.reset();
 }
 
@@ -235,7 +253,7 @@ async function cargarTabla(form = null) {
                     </button>
                 </td>
                 <td>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
+                    <button type="button" class="btn transparente" onclick="openGraphic(${row.id})">
                     <img src="../../../resources/img/svg/icons_forms/Frame.svg" width="18" height="18">
                     </button>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
@@ -250,6 +268,45 @@ async function cargarTabla(form = null) {
             cargarTabla.innerHTML += tablaHtml;
         });
     }
+}
+
+/*
+*   Función asíncrona para mostrar un gráfico de barras con la cantidad de productos por categoría.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
+const graficoBarrasAnalisis = async () => {
+    /*
+*   Lista de datos de ejemplo en caso de error al obtener los datos reales.
+*/
+    const datosEjemplo = [
+        {
+            caracteristica: 'Fuerza',
+            nota: 7
+        },
+        {
+            caracteristica: 'Resistencia',
+            nota: 5
+        },
+        {
+            caracteristica: 'Agilidad',
+            nota: 7
+        },
+        {
+            caracteristica: 'Velocidad',
+            nota: 2
+        }
+    ];
+   
+        let caracteristicas = [];
+        let notas = [];
+        datosEjemplo.forEach(filter => {
+            caracteristicas.push(filter.caracteristica);
+            notas.push(filter.nota);
+        });
+        // Si ocurre un error, se utilizan los datos de ejemplo definidos arriba.
+        barGraph('analisis', caracteristicas, notas, 'Análisis de características' );
+    
 }
 
 // window.onload
@@ -271,38 +328,42 @@ window.onload = async function () {
         MODAL_TITLE = document.getElementById('modalTitle');
 
     SEE_MODAL = new bootstrap.Modal('#seeModal'),
-        MODAL_TITLE = document.getElementById('modalTitle2')
+        MODAL_TITLE1 = document.getElementById('modalTitle2')
+
+
+    GRAPHIC_MODAL = new bootstrap.Modal('#graphicModal'),
+        MODAL_TITLE2 = document.getElementById('modalTitle3')
 
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
-        ID_ANALISIS = document.getElementById('idEquipo'),
-        JUGADOR = document.getElementById('nombreEquipo'),
-        FUERZA = document.getElementById('telefonoEquipo'),
-        RESISTENCIA = document.getElementById('categoriaEquipo'),
-        VELOCIDAD = document.getElementById('cuerpoTecnico'),
-        AGILIDAD = document.getElementById('idEquipo'),
-        PASE_CORTO = document.getElementById('nombreEquipo'),
-        PASE_MEDIO = document.getElementById('telefonoEquipo'),
-        PASE_LARGO = document.getElementById('categoriaEquipo'),
-        CONDUCCION = document.getElementById('cuerpoTecnico'),
-        RECEPCION = document.getElementById('idEquipo'),
-        CABECEO = document.getElementById('nombreEquipo'),
-        REGATE = document.getElementById('telefonoEquipo'),
-        DEFINICION = document.getElementById('categoriaEquipo'),
-        DECISIONES = document.getElementById('cuerpoTecnico'),
-        OFENSIVOS = document.getElementById('idEquipo'),
-        DEFENSIVOS = document.getElementById('nombreEquipo'),
-        INTERPRETACION = document.getElementById('telefonoEquipo'),
-        CONCENTRACION = document.getElementById('categoriaEquipo'),
-        AUTOCONFIANZA = document.getElementById('cuerpoTecnico'),
-        SACRICIO = document.getElementById('categoriaEquipo'),
-        AUTOCONTROL = document.getElementById('cuerpoTecnico'),
+        ID_ANALISIS = document.getElementById('idAnalisis'),
+        JUGADOR = document.getElementById('jugador'),
+        FUERZA = document.getElementById('fuerza'),
+        RESISTENCIA = document.getElementById('resistencia'),
+        VELOCIDAD = document.getElementById('velocidad'),
+        AGILIDAD = document.getElementById('agilidad'),
+        PASE_CORTO = document.getElementById('paseCorto'),
+        PASE_MEDIO = document.getElementById('paseMedio'),
+        PASE_LARGO = document.getElementById('paseLargo'),
+        CONDUCCION = document.getElementById('conduccion'),
+        RECEPCION = document.getElementById('recepcion'),
+        CABECEO = document.getElementById('cabeceo'),
+        REGATE = document.getElementById('regate'),
+        DEFINICION = document.getElementById('definicionGol'),
+        DECISIONES = document.getElementById('tomaDecisiones'),
+        OFENSIVOS = document.getElementById('conceptosOfensivos'),
+        DEFENSIVOS = document.getElementById('conceptosDefensivos'),
+        INTERPRETACION = document.getElementById('interpretacion'),
+        CONCENTRACION = document.getElementById('concentracion'),
+        AUTOCONFIANZA = document.getElementById('autoconfianza'),
+        SACRICIO = document.getElementById('sacrificio'),
+        AUTOCONTROL = document.getElementById('autocontrol'),
         // Método del evento para cuando se envía el formulario de guardar.
         SAVE_FORM.addEventListener('submit', async (event) => {
             // Se evita recargar la página web después de enviar el formulario.
             event.preventDefault();
             // Se verifica la acción a realizar.
-            (ID_EQUIPO.value) ? action = 'updateRow' : action = 'createRow';
+            (ID_ANALISIS.value) ? action = 'updateRow' : action = 'createRow';
             // Constante tipo objeto con los datos del formulario.
             const FORM = new FormData(SAVE_FORM);
             // Petición para guardar los datos del formulario.
@@ -321,55 +382,33 @@ window.onload = async function () {
             }
         });
 
-        // Constantes para establecer los elementos del formulario de guardar.
+    // Constantes para establecer los elementos del formulario de guardar.
     SEE_FORM = document.getElementById('viewForm'),
-    ID_ANALISISV = document.getElementById('idEquipo'),
-    JUGADORV = document.getElementById('nombreEquipo'),
-    FUERZAV = document.getElementById('telefonoEquipo'),
-    RESISTENCIAv = document.getElementById('categoriaEquipo'),
-    VELOCIDADV = document.getElementById('cuerpoTecnico'),
-    AGILIDADV = document.getElementById('idEquipo'),
-    PASE_CORTOV = document.getElementById('nombreEquipo'),
-    PASE_MEDIOV = document.getElementById('telefonoEquipo'),
-    PASE_LARGOV = document.getElementById('categoriaEquipo'),
-    CONDUCCIONV = document.getElementById('cuerpoTecnico'),
-    RECEPCIONV = document.getElementById('idEquipo'),
-    CABECEOV = document.getElementById('nombreEquipo'),
-    REGATEV = document.getElementById('telefonoEquipo'),
-    DEFINICIONV = document.getElementById('categoriaEquipo'),
-    DECISIONESV = document.getElementById('cuerpoTecnico'),
-    OFENSIVOSV = document.getElementById('idEquipo'),
-    DEFENSIVOSV = document.getElementById('nombreEquipo'),
-    INTERPRETACIONV = document.getElementById('telefonoEquipo'),
-    CONCENTRACIONV = document.getElementById('categoriaEquipo'),
-    AUTOCONFIANZAV = document.getElementById('cuerpoTecnico'),
-    SACRICIOV = document.getElementById('categoriaEquipo'),
-    AUTOCONTROLV = document.getElementById('cuerpoTecnico'),
-    // Método del evento para cuando se envía el formulario de guardar.
-    SEE_FORM.addEventListener('submit', async (event) => {
-        // Se evita recargar la página web después de enviar el formulario.
-        event.preventDefault();
-        // Se verifica la acción a realizar.
-        (ID_EQUIPO.value) ? action = 'updateRow' : action = 'createRow';
-        // Constante tipo objeto con los datos del formulario.
-        const FORM = new FormData(SEE_FORM);
-        // Petición para guardar los datos del formulario.
-        const DATA = await fetchData(EQUIPO_API, action, FORM);
-        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-        if (DATA.status) {
-            // Se cierra la caja de diálogo.
-            SEE_MODAL.hide();
-            // Se muestra un mensaje de éxito.
-            sweetAlert(1, DATA.message, true);
-            // Se carga nuevamente la tabla para visualizar los cambios.
-            cargarTabla();
-        } else {
-            sweetAlert(2, DATA.error, false);
-            console.error(DATA.exception);
-        }
-    });
-    // Constante para establecer el formulario de buscar.
-    SEARCH_FORM = document.getElementById('searchForm');
+        ID_ANALISISV = document.getElementById('idAnalisisV'),
+        JUGADORV = document.getElementById('jugadorV'),
+        FUERZAV = document.getElementById('fuerzaV'),
+        RESISTENCIAV = document.getElementById('resistenciaV'),
+        VELOCIDADV = document.getElementById('velocidadV'),
+        AGILIDADV = document.getElementById('agilidadV'),
+        PASE_CORTOV = document.getElementById('paseCortoV'),
+        PASE_MEDIOV = document.getElementById('paseMedioV'),
+        PASE_LARGOV = document.getElementById('paseLargoV'),
+        CONDUCCIONV = document.getElementById('conduccionV'),
+        RECEPCIONV = document.getElementById('recepcionV'),
+        CABECEOV = document.getElementById('cabeceoV'),
+        REGATEV = document.getElementById('regateV'),
+        DEFINICIONV = document.getElementById('definicionGolV'),
+        DECISIONESV = document.getElementById('tomaDecisionesV'),
+        OFENSIVOSV = document.getElementById('conceptosOfensivosV'),
+        DEFENSIVOSV = document.getElementById('conceptosDefensivosV'),
+        INTERPRETACIONV = document.getElementById('interpretacionV'),
+        CONCENTRACIONV = document.getElementById('concentracionV'),
+        AUTOCONFIANZAV = document.getElementById('autoconfianzaV'),
+        SACRICIOV = document.getElementById('sacrificioV'),
+        AUTOCONTROLV = document.getElementById('autocontrolV'),
+
+        // Constante para establecer el formulario de buscar.
+        SEARCH_FORM = document.getElementById('searchForm');
     // Verificar si SEARCH_FORM está seleccionado correctamente
     console.log(SEARCH_FORM)
     // Método del evento para cuando se envía el formulario de buscar.
@@ -430,6 +469,54 @@ window.onload = async function () {
 
         progress.style.width =
             ((progressActive.length - 1) / (progressSteps.length - 1)) * 100 + "%";
+    }
+
+    const prevBtns1 = document.querySelectorAll(".btn-prev1");
+    const nextBtns1 = document.querySelectorAll(".btn-next1");
+    const progress1 = document.getElementById("progress1");
+    const formSteps1 = document.querySelectorAll(".form-step1");
+    const progressSteps1 = document.querySelectorAll(".progress-step1");
+
+    let formStepsNum1 = 0;
+
+    nextBtns1.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            formStepsNum1++;
+            updateFormSteps1();
+            updateProgressbar1();
+        });
+    });
+
+    prevBtns1.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            formStepsNum1--;
+            updateFormSteps1();
+            updateProgressbar1();
+        });
+    });
+
+    function updateFormSteps1() {
+        formSteps1.forEach((formStep1) => {
+            formStep1.classList.contains("form-step-active1") &&
+                formStep1.classList.remove("form-step-active1");
+        });
+
+        formSteps1[formStepsNum1].classList.add("form-step-active1");
+    }
+
+    function updateProgressbar1() {
+        progressSteps1.forEach((progressStep1, idx) => {
+            if (idx < formStepsNum1 + 1) {
+                progressStep1.classList.add("progress-step-active1");
+            } else {
+                progressStep1.classList.remove("progress-step-active1");
+            }
+        });
+
+        const progressActive1 = document.querySelectorAll(".progress-step-active1");
+
+        progress1.style.width =
+            ((progressActive1.length - 1) / (progressSteps1.length - 1)) * 100 + "%";
     }
 };
 

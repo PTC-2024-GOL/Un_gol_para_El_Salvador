@@ -6,7 +6,8 @@
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
                         name="search" placeholder="Buscar" required>
-                    <button type="submit" class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
+                    <button type="submit"
+                        class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
                     </button>
                     <button type="reset" class="btn" onclick="cargarTabla()">
@@ -17,8 +18,9 @@
 
             <div class="col-sm-12 col-md-6">
                 <!-- Botón Agregar -->
-                <button class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3" type="submit"
-                    onclick="openCreate()">
+                <button
+                    class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
+                    type="submit" onclick="openCreate()">
                     <span class="fs-5 me-2">+</span> Agregar análisis
                 </button>
             </div>
@@ -53,7 +55,8 @@
             <div class="modal-header bg-blue-principal-color text-light">
                 <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
                 <h1 class="modal-title fs-5" id="modalTitle"></h1>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
             <!-- Formulario para crear o actualizar un registro -->
             <form action="#" class="form" id="saveForm">
@@ -62,14 +65,14 @@
                 <!-- Progress bar -->
                 <div class="progressbar">
                     <div class="progress" id="progress"></div>
-        
+
                     <div class="progress-step progress-step-active" data-title="Jugador"></div>
                     <div class="progress-step" data-title="Físicos"></div>
                     <div class="progress-step" data-title="Técnicos"></div>
                     <div class="progress-step" data-title="Tácticos"></div>
                     <div class="progress-step" data-title="Psicológicos"></div>
                 </div>
-        
+
                 <!-- Steps -->
                 <div class="form-step form-step-active">
                     <div class="col-sm-12 col-md-12">
@@ -77,15 +80,16 @@
                         <select id="jugador" type="text" name="jugador" class="form-select" required></select>
                     </div>
                     <div class="mt-5">
-                        <button type="submit" class="btn btn-next bg-blue-principal-color text-white ">Siguiente</button>
+                        <button type="submit"
+                            class="btn btn-next bg-blue-principal-color text-white ">Siguiente</button>
                     </div>
                 </div>
                 <div class="form-step">
                     <div class="row g-3">
                         <div class="col-sm-12 col-md-6">
                             <label for="fuerza" class="form-label">Fuerza</label>
-                            <input id="fuerza" type="text" name="fuerza" class="form-control" placeholder="Escribe la nota"
-                                required>
+                            <input id="fuerza" type="text" name="fuerza" class="form-control"
+                                placeholder="Escribe la nota" required>
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <label for="resistencia" class="form-label">Resistencia</label>
@@ -99,15 +103,17 @@
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <label for="agilidad" class="form-label">Agilidad</label>
-                            <input id="agilidad" type="text" name="agilidad" class="form-control" placeholder="Escribe la nota"
-                                required>
+                            <input id="agilidad" type="text" name="agilidad" class="form-control"
+                                placeholder="Escribe la nota" required>
                         </div>
                         <div class="btns-group">
                             <div class="mt-5 text-start">
-                                <button type="submit" class="btn btn-prev bg-red-cream-color text-white ">Anterior</button>
+                                <button type="submit"
+                                    class="btn btn-prev bg-red-cream-color text-white ">Anterior</button>
                             </div>
                             <div class="mt-5 text-end">
-                                <button type="submit" class="btn btn-next bg-blue-principal-color text-white">Siguiente</button>
+                                <button type="submit"
+                                    class="btn btn-next bg-blue-principal-color text-white">Siguiente</button>
                             </div>
                         </div>
                     </div>
@@ -141,13 +147,13 @@
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <label for="cabeceo" class="form-label">Cabeceo</label>
-                            <input id="cabeceo" type="text" name="cabeceo" class="form-control" placeholder="Escribe la nota"
-                                required>
+                            <input id="cabeceo" type="text" name="cabeceo" class="form-control"
+                                placeholder="Escribe la nota" required>
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <label for="regate" class="form-label">Regate</label>
-                            <input id="regate" type="text" name="regate" class="form-control" placeholder="Escribe la nota"
-                                required>
+                            <input id="regate" type="text" name="regate" class="form-control"
+                                placeholder="Escribe la nota" required>
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <label for="definicionGol" class="form-label">Definición a gol</label>
@@ -156,80 +162,80 @@
                         </div>
                         <div class="btns-group">
                             <div class="mt-5 text-start">
-                                <button type="submit" class="btn btn-prev bg-red-cream-color text-white ">Anterior</button>
+                                <button type="submit"
+                                    class="btn btn-prev bg-red-cream-color text-white ">Anterior</button>
                             </div>
                             <div class="mt-5 text-end">
-                                <button type="submit" class="btn btn-next bg-blue-principal-color text-white">Siguiente</button>
+                                <button type="submit"
+                                    class="btn btn-next bg-blue-principal-color text-white">Siguiente</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                    <div class="form-step">
-                        <div class="row g-3">
-                            <div class="col-sm-12 col-md-6">
-                                <label for="tomaDecisiones" class="form-label">Toma de decisiones</label>
-                                <input id="tomaDecisiones" type="text" name="tomaDecisiones" class="form-control"
-                                    placeholder="Escribe la nota" required>
+                <div class="form-step">
+                    <div class="row g-3">
+                        <div class="col-sm-12 col-md-6">
+                            <label for="tomaDecisiones" class="form-label">Toma de decisiones</label>
+                            <input id="tomaDecisiones" type="text" name="tomaDecisiones" class="form-control"
+                                placeholder="Escribe la nota" required>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="conceptosOfensivos" class="form-label">Conceptos ofensivos</label>
+                            <input id="conceptosOfensivos" type="text" name="conceptosOfensivos" class="form-control"
+                                placeholder="Escribe la nota" required>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="conceptosDefensivos" class="form-label">Conceptos defensivos</label>
+                            <input id="conceptosDefensivos" type="text" name="conceptosDefensivos" class="form-control"
+                                placeholder="Escribe la nota" required>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="interpretacion" class="form-label">Interpretación del juego</label>
+                            <input id="interpretacion" type="text" name="interpretacion" class="form-control"
+                                placeholder="Escribe la nota" required>
+                        </div>
+                        <div class="btns-group">
+                            <div class="mt-5 text-start">
+                                <button type="submit"
+                                    class="btn btn-prev bg-red-cream-color text-white ">Anterior</button>
                             </div>
-                            <div class="col-sm-12 col-md-6">
-                                <label for="conceptosOfensivos" class="form-label">Conceptos ofensivos</label>
-                                <input id="conceptosOfensivos" type="text" name="conceptosOfensivos" class="form-control"
-                                    placeholder="Escribe la nota" required>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                <label for="conceptosDefensivos" class="form-label">Conceptos defensivos</label>
-                                <input id="conceptosDefensivos" type="text" name="conceptosDefensivos" class="form-control"
-                                    placeholder="Escribe la nota" required>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                <label for="interpretacion" class="form-label">Interpretación del juego</label>
-                                <input id="interpretacion" type="text" name="interpretacion" class="form-control"
-                                    placeholder="Escribe la nota" required>
-                            </div>
-                            <div class="btns-group">
-                                <div class="mt-5 text-start">
-                                    <button type="submit" class="btn btn-prev bg-red-cream-color text-white ">Anterior</button>
-                                </div>
-                                <div class="mt-5 text-end">
-                                    <button type="submit"
-                                        class="btn btn-next bg-blue-principal-color text-white">Siguiente</button>
-                                </div>
+                            <div class="mt-5 text-end">
+                                <button type="submit"
+                                    class="btn btn-next bg-blue-principal-color text-white">Siguiente</button>
                             </div>
                         </div>
                     </div>
-                    <div class="form-step">
-                        <div class="row g-3">
-                            <div class="col-sm-12 col-md-6">
-                                <label for="concentracion" class="form-label">Concentración</label>
-                                <input id="concentracion" type="text" name="concentracion" class="form-control"
-                                    placeholder="Escribe la nota" required>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                <label for="autoconfianza" class="form-label">Autoconfianza</label>
-                                <input id="autoconfianza" type="text" name="autoconfianza" class="form-control"
-                                    placeholder="Escribe la nota" required>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                <label for="sacrificio" class="form-label">Sacrifio</label>
-                                <input id="sacrificio" type="text" name="sacrificio" class="form-control"
-                                    placeholder="Escribe la nota" required>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                <label for="autocontrol" class="form-label">Autocontrol</label>
-                                <input id="autocontrol" type="text" name="autocontrol" class="form-control"
-                                    placeholder="Escribe la nota" required>
-                            </div>
-                            <div class="btns-group">
-                                <div class="mt-5 text-start">
-                                    <button type="submit" class="btn btn-prev bg-red-cream-color text-white ">Anterior</button>
-                                </div>
-                                <div class="mt-5 text-end">
-                                    <button type="submit"
-                                        class="btn btn-next bg-blue-principal-color text-white">Siguiente</button>
-                                </div>
+                </div>
+                <div class="form-step">
+                    <div class="row g-3">
+                        <div class="col-sm-12 col-md-6">
+                            <label for="concentracion" class="form-label">Concentración</label>
+                            <input id="concentracion" type="text" name="concentracion" class="form-control"
+                                placeholder="Escribe la nota" required>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="autoconfianza" class="form-label">Autoconfianza</label>
+                            <input id="autoconfianza" type="text" name="autoconfianza" class="form-control"
+                                placeholder="Escribe la nota" required>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="sacrificio" class="form-label">Sacrifio</label>
+                            <input id="sacrificio" type="text" name="sacrificio" class="form-control"
+                                placeholder="Escribe la nota" required>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="autocontrol" class="form-label">Autocontrol</label>
+                            <input id="autocontrol" type="text" name="autocontrol" class="form-control"
+                                placeholder="Escribe la nota" required>
+                        </div>
+                        <div class="btns-group">
+                            <div class="mt-5 text-start">
+                                <button type="submit"
+                                    class="btn btn-prev bg-red-cream-color text-white ">Anterior</button>
                             </div>
                         </div>
                     </div>
+                </div>
             </form>
         </div>
     </div>
@@ -243,40 +249,31 @@
             <div class="modal-header bg-blue-principal-color text-light">
                 <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
                 <h1 class="modal-title fs-5" id="modalTitle2"></h1>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
             <!-- Formulario para crear o actualizar un registro -->
             <!-- Formulario para crear o actualizar un registro -->
             <form action="#" class="form" id="viewForm">
-                <input type="hidden" id="idAdministrador" name="idAdministrador">
+                <input type="hidden" id="idAnalisisV" name="idAnalisisV">
                 <h1 class="text-center">Análisis de características</h1>
                 <!-- Progress bar -->
-                <div class="progressbar">
-                    <div class="progress" id="progress"></div>
-        
-                    <div class="progress-step progress-step-active" data-title="Jugador"></div>
-                    <div class="progress-step" data-title="Físicos"></div>
-                    <div class="progress-step" data-title="Técnicos"></div>
-                    <div class="progress-step" data-title="Tácticos"></div>
-                    <div class="progress-step" data-title="Psicológicos"></div>
+                <div class="progressbar1">
+                    <div class="progress1" id="progress1"></div>
+
+                    <div class="progress-step1 progress-step-active1" data-title="Físicos"></div>
+                    <div class="progress-step1" data-title="Técnicos"></div>
+                    <div class="progress-step1" data-title="Tácticos"></div>
+                    <div class="progress-step1" data-title="Psicológicos"></div>
                 </div>
-        
+
                 <!-- Steps -->
-                <div class="form-step form-step-active">
-                    <div class="col-sm-12 col-md-12">
-                        <label for="jugadorV" class="form-label">Selecciona el jugador</label>
-                        <select id="jugadorV" type="text" name="jugadorV" class="form-select" disabled></select>
-                    </div>
-                    <div class="mt-5">
-                        <button type="submit" class="btn btn-next bg-blue-principal-color text-white ">Siguiente</button>
-                    </div>
-                </div>
-                <div class="form-step">
+                <div class="form-step1 form-step-active1">
                     <div class="row g-3">
                         <div class="col-sm-12 col-md-6">
                             <label for="fuerzaV" class="form-label">Fuerza</label>
-                            <input id="fuerzaV" type="text" name="fuerzaV" class="form-control" placeholder="Escribe la nota"
-                                disabled>
+                            <input id="fuerzaV" type="text" name="fuerzaV" class="form-control"
+                                placeholder="Escribe la nota" disabled>
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <label for="resistenciaV" class="form-label">Resistencia</label>
@@ -290,20 +287,22 @@
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <label for="agilidadV" class="form-label">Agilidad</label>
-                            <input id="agilidadV" type="text" name="agilidadV" class="form-control" placeholder="Escribe la nota"
-                                disabled>
+                            <input id="agilidadV" type="text" name="agilidadV" class="form-control"
+                                placeholder="Escribe la nota" disabled>
                         </div>
-                        <div class="btns-group">
+                        <div class="btns-group1">
                             <div class="mt-5 text-start">
-                                <button type="submit" class="btn btn-prev bg-red-cream-color text-white ">Anterior</button>
+                                <button type="submit"
+                                    class="btn btn-prev1 bg-red-cream-color text-white ">Anterior</button>
                             </div>
                             <div class="mt-5 text-end">
-                                <button type="submit" class="btn btn-next bg-blue-principal-color text-white">Siguiente</button>
+                                <button type="submit"
+                                    class="btn btn-next1 bg-blue-principal-color text-white">Siguiente</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="form-step">
+                <div class="form-step1">
                     <div class="row g-3">
                         <div class="col-sm-12 col-md-6">
                             <label for="paseCortoV" class="form-label">Pase corto</label>
@@ -332,114 +331,117 @@
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <label for="cabeceoV" class="form-label">Cabeceo</label>
-                            <input id="cabeceoV" type="text" name="cabeceoV" class="form-control" placeholder="Escribe la nota"
-                                disabled>
+                            <input id="cabeceoV" type="text" name="cabeceoV" class="form-control"
+                                placeholder="Escribe la nota" disabled>
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <label for="regateV" class="form-label">Regate</label>
-                            <input id="regateV" type="text" name="regateV" class="form-control" placeholder="Escribe la nota"
-                                disabled>
+                            <input id="regateV" type="text" name="regateV" class="form-control"
+                                placeholder="Escribe la nota" disabled>
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <label for="definicionGolV" class="form-label">Definición a gol</label>
                             <input id="definicionGolV" type="text" name="definicionGolV" class="form-control"
                                 placeholder="Escribe la nota" disabled>
                         </div>
-                        <div class="btns-group">
+                        <div class="btns-group1">
                             <div class="mt-5 text-start">
-                                <button type="submit" class="btn btn-prev bg-red-cream-color text-white ">Anterior</button>
+                                <button type="submit"
+                                    class="btn btn-prev1 bg-red-cream-color text-white ">Anterior</button>
                             </div>
                             <div class="mt-5 text-end">
-                                <button type="submit" class="btn btn-next bg-blue-principal-color text-white">Siguiente</button>
+                                <button type="submit"
+                                    class="btn btn-next1 bg-blue-principal-color text-white">Siguiente</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                    <div class="form-step">
-                        <div class="row g-3">
-                            <div class="col-sm-12 col-md-6">
-                                <label for="tomaDecisionesV" class="form-label">Toma de decisiones</label>
-                                <input id="tomaDecisionesV" type="text" name="tomaDecisionesV" class="form-control"
-                                    placeholder="Escribe la nota" disabled>
+                <div class="form-step1">
+                    <div class="row g-3">
+                        <div class="col-sm-12 col-md-6">
+                            <label for="tomaDecisionesV" class="form-label">Toma de decisiones</label>
+                            <input id="tomaDecisionesV" type="text" name="tomaDecisionesV" class="form-control"
+                                placeholder="Escribe la nota" disabled>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="conceptosOfensivosV" class="form-label">Conceptos ofensivos</label>
+                            <input id="conceptosOfensivosV" type="text" name="conceptosOfensivosV" class="form-control"
+                                placeholder="Escribe la nota" disabled>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="conceptosDefensivosV" class="form-label">Conceptos defensivos</label>
+                            <input id="conceptosDefensivosV" type="text" name="conceptosDefensivosV"
+                                class="form-control" placeholder="Escribe la nota" disabled>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="interpretacionV" class="form-label">Interpretación del juego</label>
+                            <input id="interpretacionV" type="text" name="interpretacionV" class="form-control"
+                                placeholder="Escribe la nota" disabled>
+                        </div>
+                        <div class="btns-group1">
+                            <div class="mt-5 text-start">
+                                <button type="submit"
+                                    class="btn btn-prev1 bg-red-cream-color text-white ">Anterior</button>
                             </div>
-                            <div class="col-sm-12 col-md-6">
-                                <label for="conceptosOfensivosV" class="form-label">Conceptos ofensivos</label>
-                                <input id="conceptosOfensivosV" type="text" name="conceptosOfensivosV" class="form-control"
-                                    placeholder="Escribe la nota" disabled>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                <label for="conceptosDefensivosV" class="form-label">Conceptos defensivos</label>
-                                <input id="conceptosDefensivosV" type="text" name="conceptosDefensivosV" class="form-control"
-                                    placeholder="Escribe la nota" disabled>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                <label for="interpretacionV" class="form-label">Interpretación del juego</label>
-                                <input id="interpretacionV" type="text" name="interpretacionV" class="form-control"
-                                    placeholder="Escribe la nota" disabled>
-                            </div>
-                            <div class="btns-group">
-                                <div class="mt-5 text-start">
-                                    <button type="submit" class="btn btn-prev bg-red-cream-color text-white ">Anterior</button>
-                                </div>
-                                <div class="mt-5 text-end">
-                                    <button type="submit"
-                                        class="btn btn-next bg-blue-principal-color text-white">Siguiente</button>
-                                </div>
+                            <div class="mt-5 text-end">
+                                <button type="submit"
+                                    class="btn btn-next1 bg-blue-principal-color text-white">Siguiente</button>
                             </div>
                         </div>
                     </div>
-                    <div class="form-step">
-                        <div class="row g-3">
-                            <div class="col-sm-12 col-md-6">
-                                <label for="concentracionV" class="form-label">Concentración</label>
-                                <input id="concentracionV" type="text" name="concentracionV" class="form-control"
-                                    placeholder="Escribe la nota" disabled>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                <label for="autoconfianzaV" class="form-label">Autoconfianza</label>
-                                <input id="autoconfianzaV" type="text" name="autoconfianzaV" class="form-control"
-                                    placeholder="Escribe la nota" disabled>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                <label for="sacrificioV" class="form-label">Sacrifio</label>
-                                <input id="sacrificioV" type="text" name="sacrificioV" class="form-control"
-                                    placeholder="Escribe la nota" disabled>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                <label for="autocontrolV" class="form-label">Autocontrol</label>
-                                <input id="autocontrolV" type="text" name="autocontrolV" class="form-control"
-                                    placeholder="Escribe la nota" disabled>
-                            </div>
-                            <div class="btns-group">
-                                <div class="mt-5 text-start">
-                                    <button type="submit" class="btn btn-prev bg-red-cream-color text-white ">Anterior</button>
-                                </div>
-                                <div class="mt-5 text-end">
-                                    <button type="submit"
-                                        class="btn btn-next bg-blue-principal-color text-white">Siguiente</button>
-                                </div>
+                </div>
+                <div class="form-step1">
+                    <div class="row g-3">
+                        <div class="col-sm-12 col-md-6">
+                            <label for="concentracionV" class="form-label">Concentración</label>
+                            <input id="concentracionV" type="text" name="concentracionV" class="form-control"
+                                placeholder="Escribe la nota" disabled>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="autoconfianzaV" class="form-label">Autoconfianza</label>
+                            <input id="autoconfianzaV" type="text" name="autoconfianzaV" class="form-control"
+                                placeholder="Escribe la nota" disabled>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="sacrificioV" class="form-label">Sacrifio</label>
+                            <input id="sacrificioV" type="text" name="sacrificioV" class="form-control"
+                                placeholder="Escribe la nota" disabled>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="autocontrolV" class="form-label">Autocontrol</label>
+                            <input id="autocontrolV" type="text" name="autocontrolV" class="form-control"
+                                placeholder="Escribe la nota" disabled>
+                        </div>
+                        <div class="btns-group1">
+                            <div class="mt-5 text-start">
+                                <button type="submit"
+                                    class="btn btn-prev1 bg-red-cream-color text-white ">Anterior</button>
                             </div>
                         </div>
                     </div>
+                </div>
             </form>
         </div>
     </div>
 </div>
 
 <!-- Componente Modal para ver la gráfica de barras -->
-<div class="modal fade" id="seeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+<div class="modal fade" id="graphicModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="modalTitle2" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-blue-principal-color text-light">
                 <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
-                <h1 class="modal-title fs-5" id="modalTitle2"></h1>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h1 class="modal-title fs-5" id="modalTitle3"></h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
-            <!-- Contenedor de la gráfica -->
-            <div class="col-md-6 col-sm-6">
-                <div class="container-fluid">
-                    <canvas id="analisis"></canvas>
+            <div class="row justify-content-center">
+                <!-- Contenedor de la gráfica -->
+                <div class="col-md-9 col-sm-9">
+                    <div class="container-fluid">
+                        <canvas id="analisis"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
