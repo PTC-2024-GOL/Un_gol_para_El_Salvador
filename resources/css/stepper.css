@@ -49,8 +49,6 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    height: 4px;
-    width: 100%;
     background-color: #dcdcdc;
     z-index: -1;
   }
@@ -144,8 +142,6 @@
     box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--primary-color);
   }
   
-  /*aqui*/
-  
   /* Progressbar */
   .progressbar1 {
     position: relative;
@@ -161,8 +157,6 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    height: 4px;
-    width: 100%;
     background-color: #dcdcdc;
     z-index: -1;
   }
@@ -245,3 +239,22 @@
     box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--primary-color);
   }
   
+  @media (max-width:770px){
+
+    .progress-step::after {
+      content: attr(data-title);
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      font-size: 0.60rem;
+      color: #666;
+    }
+    
+
+    .progress-step1.progress-step1::after {
+      content: attr(data-title);
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      font-size: 0.60rem;
+      color: #666;
+    }
+  }
