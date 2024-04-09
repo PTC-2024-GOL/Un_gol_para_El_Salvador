@@ -107,7 +107,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                     <li><a class="dropdown-item text-light" href="detailsContents.html">Detalles</a></li>
                                     <li><a class="dropdown-item text-light" href="tasks.html">Tareas</a></li>
                                     <li><a class="dropdown-item text-light" href="player_characteristics.html">Características de jugadores</a></li>
-                                    <li><a class="dropdown-item text-light" href="#">Análisis de características</a></li>
+                                    <li><a class="dropdown-item text-light" href="feature_analysis.html">Análisis de características</a></li>
                                     <li><a class="dropdown-item text-light" href="schedules.html">Horarios</a></li>
                                     <li><a class="dropdown-item text-light" href="#">Asistencia</a></li>
                                 </ul>

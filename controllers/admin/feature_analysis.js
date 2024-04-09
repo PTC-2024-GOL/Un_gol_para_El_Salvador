@@ -91,10 +91,37 @@ const openGraphic = () => {
 
 // Funcion para preparar el formulario al momento de abrirlo
 
-const seeModal = () => {
-    SEE_MODAL.show();
-    MODAL_TITLE1.textContent = 'Análisis del jugador';
-    SAVE_FORM.reset();
+const seeModal = async (id) => {
+    try {
+        // Se define un objeto con los datos del registro seleccionado.
+        const FORM = new FormData();
+        FORM.append('idAnalisis', id);
+        // Petición para obtener los datos del registro solicitado.
+        const DATA = await fetchData(EQUIPO_API, 'readOne', FORM);
+        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+        if (DATA.status) {
+            // Se muestra la caja de diálogo con su título.
+            SEE_MODAL.show();
+            MODAL_TITLE.textContent = 'Actualizar análisis del jugador';
+            // Se prepara el formulario.
+            SAVE_FORM.reset();
+            // Se inicializan los campos con los datos.
+            const ROW = DATA.dataset;
+            ID_EQUIPO.value = ROW.ID;
+            NOMBRE_EQUIPO.value = ROW.NOMBRE;
+            TELEFONO_EQUIPO.value = ROW.TELEFONO;
+            ID_CUERPO_TECNICO.value = ROW.ID_CUERPO_TECNICO;
+            ID_ADMINISTRADOR.value = ROW.ID_ADMINISTRADOR;
+            ID_CATEGORIA.value = ROW.ID_CATEGORIA;
+            LOGO_EQUIPO.value = ROW.LOGO;
+        } else {
+            sweetAlert(2, DATA.error, false);
+        }
+    } catch (Error) {
+        SEE_MODAL.show();
+        MODAL_TITLE1.textContent = 'Análisis del jugador';
+        SEE_FORM.reset();
+    }
 }
 
 
@@ -182,20 +209,20 @@ async function cargarTabla(form = null) {
             id: 1,
         },
         {
-            promedio: 7.45,
-            jugador: 'Mateo',
+            promedio: 8.45,
+            jugador: 'Sochi',
             caracteristicas: 1,
             id: 2,
         },
         {
-            promedio: 7.45,
-            jugador: 'Mateo',
+            promedio: 9.45,
+            jugador: 'Guayito',
             caracteristicas: 1,
             id: 3,
         },
         {
-            promedio: 7.45,
-            jugador: 'Mateo',
+            promedio: 5.45,
+            jugador: 'Carlos',
             caracteristicas: 1,
             id: 4,
         }
@@ -220,7 +247,7 @@ async function cargarTabla(form = null) {
                     <td>${row.TELEFONO}</td>
                     <td>${row.ID_CATEGORIA}</td>
                     <td>
-                        <button type="button" class="btn btn-warnig" onclick="seeModal(${row.ID_CUERPO_TECNICO})">
+                        <button type="button" class="btn btn-warnig" onclick="seeModal()">
                         <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
                         </button>
                     </td>
@@ -248,7 +275,7 @@ async function cargarTabla(form = null) {
                 <td>${row.promedio}</td>
                 <td>${row.jugador}</td>
                 <td>
-                    <button type="button" class="btn transparente" onclick="seeModal(${row.caracteristicas})">
+                    <button type="button" class="btn transparente" onclick="seeModal()">
                     <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18px" height="18px">
                     </button>
                 </td>
@@ -297,16 +324,16 @@ const graficoBarrasAnalisis = async () => {
             nota: 2
         }
     ];
-   
-        let caracteristicas = [];
-        let notas = [];
-        datosEjemplo.forEach(filter => {
-            caracteristicas.push(filter.caracteristica);
-            notas.push(filter.nota);
-        });
-        // Si ocurre un error, se utilizan los datos de ejemplo definidos arriba.
-        barGraph('analisis', caracteristicas, notas, 'Análisis de características' );
-    
+
+    let caracteristicas = [];
+    let notas = [];
+    datosEjemplo.forEach(filter => {
+        caracteristicas.push(filter.caracteristica);
+        notas.push(filter.nota);
+    });
+    // Si ocurre un error, se utilizan los datos de ejemplo definidos arriba.
+    barGraph('analisis', caracteristicas, notas, 'Análisis de características');
+
 }
 
 // window.onload
@@ -405,10 +432,16 @@ window.onload = async function () {
         CONCENTRACIONV = document.getElementById('concentracionV'),
         AUTOCONFIANZAV = document.getElementById('autoconfianzaV'),
         SACRICIOV = document.getElementById('sacrificioV'),
-        AUTOCONTROLV = document.getElementById('autocontrolV'),
+        AUTOCONTROLV = document.getElementById('autocontrolV');
+    
+    // Método del evento para cuando se envía el formulario de guardar.
+    SEE_FORM.addEventListener('submit', async (event) => {
+        // Se evita recargar la página web después de enviar el formulario.
+        event.preventDefault();
+    });
 
-        // Constante para establecer el formulario de buscar.
-        SEARCH_FORM = document.getElementById('searchForm');
+    // Constante para establecer el formulario de buscar.
+    SEARCH_FORM = document.getElementById('searchForm');
     // Verificar si SEARCH_FORM está seleccionado correctamente
     console.log(SEARCH_FORM)
     // Método del evento para cuando se envía el formulario de buscar.
@@ -468,7 +501,7 @@ window.onload = async function () {
         const progressActive = document.querySelectorAll(".progress-step-active");
 
         progress.style.width =
-            ((progressActive.length - 1) / (progressSteps.length - 1)) * 100 + "%";
+            ((progressActive.length - 1) / (progressSteps.length - 1)) * 90 + "%";
     }
 
     const prevBtns1 = document.querySelectorAll(".btn-prev1");
@@ -516,7 +549,7 @@ window.onload = async function () {
         const progressActive1 = document.querySelectorAll(".progress-step-active1");
 
         progress1.style.width =
-            ((progressActive1.length - 1) / (progressSteps1.length - 1)) * 100 + "%";
+            ((progressActive1.length - 1) / (progressSteps1.length - 1)) * 90 + "%";
     }
 };
 

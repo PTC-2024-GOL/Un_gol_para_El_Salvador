@@ -4,11 +4,28 @@ let SAVE_FORM,
     EQUIPO,
     CATEGORIA,
     HORARIO,
-    SEE_MODAL;
+    SEE_MODAL,
+    SEE_FORM;
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
 const DETALLE_CONTENIDO_API = '';
+const HORARIOS_API = '';
+
+const lista_datos_horario = [
+    {
+        horario: "8:00 AM- 10:20 AM",
+        id: 1,
+    },
+    {
+        horario: '1:30 PM - 3_00 PM',
+        id: 2,
+    },
+    {
+        horario: '4:00 PM- 6:30 PM',
+        id: 3,
+    }
+];
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -16,13 +33,46 @@ async function loadComponent(path) {
     return text;
 }
 
+// Función para poblar un combobox (select) con opciones
+const fillSelected = (data, action, selectId, selectedValue = null) => {
+    const selectElement = document.getElementById(selectId);
+
+    // Limpiar opciones previas del combobox
+    selectElement.innerHTML = '';
+
+    // Crear opción por defecto
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Selecciona a el horario';
+    selectElement.appendChild(defaultOption);
+
+    // Llenar el combobox con los datos proporcionados
+    data.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.id; // Suponiendo que hay una propiedad 'id' en los datos
+        option.textContent = item.horario; // Cambia 'horario' al nombre de la propiedad que deseas mostrar en el combobox
+        selectElement.appendChild(option);
+    });
+
+    // Seleccionar el valor especificado si se proporciona
+    if (selectedValue !== null) {
+        selectElement.value = selectedValue;
+    }
+};
+
 // Funcion para preparar el formulario al momento de abrirlo
 /*
 *   Función asíncrona para preparar el formulario al momento de elegir un horario.
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const seeModal =async (id) => {
+
+
+const openPag = () => {
+    window.location.href = '../paginas/SpecificDetailsContents.html';
+}
+
+const seeModal = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
@@ -35,7 +85,7 @@ const seeModal =async (id) => {
             SEE_MODAL.show();
             MODAL_TITLE.textContent = 'Elegir horario';
             // Se prepara el formulario.
-            SAVE_FORM.reset();
+            SEE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
             ID_CATEGORIA.value = ROW.ID;
@@ -46,6 +96,8 @@ const seeModal =async (id) => {
         console.log(Error);
         SEE_MODAL.show();
         MODAL_TITLE.textContent = 'Elegir horario';
+        SEE_FORM.reset();
+        fillSelected(lista_datos_horario, 'readAll', 'horario');
     }
 }
 
@@ -106,7 +158,7 @@ async function cargarTabla(form = null) {
         console.error('Error al obtener datos de la API:', error);
         // Mostrar materiales de respaldo
         lista_datos.forEach(row => {
-           const tablaHtml = `
+            const tablaHtml = `
             <tr>
                 <td>${row.equipo}</td>
                 <td>${row.categoria}</td>
@@ -133,6 +185,7 @@ window.onload = async function () {
     loadTemplate();
     // Agrega el HTML del encabezado
     appContainer.innerHTML = adminHtml;
+    fillSelected(lista_datos_horario, 'readAll', 'horario');
     cargarTabla();
     // Constantes para establecer los elementos del componente Modal.
 
@@ -157,7 +210,7 @@ window.onload = async function () {
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         //Pondré el metodo para abrir la siguiente pantalla antes del if, luego deberé ponerla
         // Redirige a una nueva página en la misma ventana del navegador
-        window.location.href = '../../views/admin/paginas/SpecificDetailsContents.html';
+       
 
         if (DATA.status) {
             // Se cierra la caja de diálogo.
@@ -169,6 +222,7 @@ window.onload = async function () {
         } else {
             sweetAlert(2, DATA.error, false);
             console.error(DATA.exception);
+            
         }
     });
     // Constante para establecer el formulario de buscar.
