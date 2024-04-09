@@ -76,3 +76,20 @@ hr{
 .result_third {
     background-image: linear-gradient(180deg, rgb(239, 171, 38), rgb(137, 98, 22));
 }
+
+
+.tarjetas {
+    border-radius: 30px;
+}
+
+.titulo-equipo{
+    background-image: linear-gradient(180deg, rgb(2, 8, 135), rgb(1, 2, 37));
+    border-bottom-left-radius: 21px;
+    border-bottom-right-radius: 21px;
+}
+
+.img{
+    border-radius: 100%;
+    width: 80px;
+    height: 80px;
+}
