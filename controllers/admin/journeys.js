@@ -27,14 +27,61 @@ async function loadComponent(path) {
 *   Parámetros: ninguno.
 *   Retorno: ninguno.
 */
+
+
+const lista_select = [
+    {
+        año: 2022,
+        id: 1,
+    },
+    {
+        año: 2023,
+        id: 2,
+    },
+    {
+        año: 2024,
+        id: 3,
+    }
+];
+
+// Función para poblar un combobox (select) con opciones
+const fillSelected = (data, action,selectId, selectedValue = null) => {
+    const selectElement = document.getElementById(selectId);
+
+    // Limpiar opciones previas del combobox
+    selectElement.innerHTML = '';
+
+    // Crear opción por defecto
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Selecciona a el horario';
+    selectElement.appendChild(defaultOption);
+
+    // Llenar el combobox con los datos proporcionados
+    data.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.id; // Suponiendo que hay una propiedad 'id' en los datos
+        option.textContent = item.año; // Cambia 'horario' al nombre de la propiedad que deseas mostrar en el combobox
+        selectElement.appendChild(option);
+    });
+
+    // Seleccionar el valor especificado si se proporciona
+    if (selectedValue !== null) {
+        selectElement.value = selectedValue;
+    }
+};
+
+
 const openCreate = () => {
-    // Se muestra la caja de diálogo con su título.
-    SAVE_MODAL.show();
-    MODAL_TITLE.textContent = 'Agregar una temporada';
-    // Se prepara el formulario.
-    SAVE_FORM.reset();
-    // Se carga la lista utilizando el metodo ReadAll de la api de temporada.
-    fillSelect(TEMPORADA_API, 'readAll', 'temporada');
+        // Se muestra la caja de diálogo con su título.
+        SAVE_MODAL.show();
+        MODAL_TITLE.textContent = 'Agregar una temporada';
+        // Se prepara el formulario.
+        SAVE_FORM.reset();
+        // Se carga la lista utilizando el metodo ReadAll de la api de temporada.
+        fillSelect(TEMPORADA_API, 'readAll', 'temporada');
+        fillSelected(lista_select, 'readAll', 'temporada');
+        
 }
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
@@ -69,6 +116,7 @@ const openUpdate = async (id) => {
         console.log(Error);
         SAVE_MODAL.show();
         MODAL_TITLE.textContent = 'Actualizar la jornada';
+        fillSelected(lista_select, 'readAll', 'temporada');
     }
 
 }
