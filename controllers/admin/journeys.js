@@ -208,7 +208,7 @@ async function fillTable(form = null) {
                     <td>${row.INICIO}</td>
                     <td>${row.FINAL}</td>
                     <td>
-                        <a href="training.html?id=${row.ID}" class="btn btn-primary">
+                        <a href="trainings.html?id=${row.ID}" class="btn btn-primary">
                         <img src="../../recursos/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
                         </a>
                         <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
@@ -236,7 +236,7 @@ async function fillTable(form = null) {
                 <td>${row.fecha_inicio}</td>
                 <td>${row.fecha_final}</td>
                 <td>
-                    <a href="training.html?id=${row.ID}" class="btn transparente">
+                    <a href="trainings.html?id=${row.id}" class="btn transparente">
                     <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18" height="18">
                     </a>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
