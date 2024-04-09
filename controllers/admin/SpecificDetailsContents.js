@@ -16,19 +16,19 @@ const JUGADORES_API = '';
 
 const lista_datos = [
     {
-        jugadores: "Mario",
+        jugadores: "Mario Alboran",
         id: 1,
     },
     {
-        jugadores: 'Marco',
+        jugadores: 'Marco Polo',
         id: 2,
     },
     {
-        jugadores: 'Susan',
+        jugadores: 'Susan Abigail',
         id: 3,
     },
     {
-        jugadores: 'Agustin',
+        jugadores: 'Agustin De Tarso',
         id: 4,
     }
 ];
@@ -48,7 +48,7 @@ const fillSelected = (data, action, selectId, selectedValue = null) => {
     // Crear opción por defecto
     const defaultOption = document.createElement('option');
     defaultOption.value = '';
-    defaultOption.textContent = 'Seleccionar';
+    defaultOption.textContent = 'Selecciona a quién se asignará';
     selectElement.appendChild(defaultOption);
 
     // Llenar el combobox con los datos proporcionados
@@ -70,7 +70,7 @@ const fillSelected = (data, action, selectId, selectedValue = null) => {
 *   Retorno: ninguno.
 */
 
-   
+
 const openCreate = () => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
@@ -118,7 +118,7 @@ const openUpdate = async (id) => {
         SAVE_MODAL.show();
         fillSelected(lista_datos, 'readAll', 'generador');
         MODAL_TITLE.textContent = 'Actualizar detalle';
-    }    
+    }
 }
 
 /*
@@ -267,8 +267,8 @@ window.onload = async function () {
         ID_SUBCONTENIDO = document.getElementById('iddetallecontenido'),
         SUBCONTENIDO = document.getElementById('subcontenido'),
         TAREA = document.getElementById('tarea');
-        CANTIDAD_CONTENIDO = document.getElementById('cantidadEquipo');
-        MINUTOS_TAREA = document.getElementById('minutostarea');
+    CANTIDAD_CONTENIDO = document.getElementById('cantidadEquipo');
+    MINUTOS_TAREA = document.getElementById('minutostarea');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
@@ -307,4 +307,64 @@ window.onload = async function () {
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
         fillTable(FORM);
     });
+
+    // Listener para el cambio en el select de jugadores
+    const selectJugador = document.getElementById('generador');
+    selectJugador.addEventListener('change', (event) => {
+        const selectedJugadorId = event.target.value;
+        const jugadorSeleccionado = lista_datos.find(jugador => jugador.id === parseInt(selectedJugadorId));
+        if (jugadorSeleccionado) {
+            // Crear un nuevo contenedor de fila para el input y el botón
+            const rowContainer = document.createElement('div');
+            rowContainer.classList.add('row', 'py-1');
+
+            // Crear un nuevo input para el nombre del jugador
+            const nombreJugadorInput = document.createElement('input');
+            nombreJugadorInput.id = 'nombreAdministrador_' + jugadorSeleccionado.id;
+            nombreJugadorInput.type = 'text';
+            nombreJugadorInput.name = 'nombreAdministrador_' + jugadorSeleccionado.id;
+            nombreJugadorInput.classList.add( 'col-9', 'rounded-3', 'me-2');
+            nombreJugadorInput.disabled = true;
+            nombreJugadorInput.value = jugadorSeleccionado.jugadores;
+
+            // Crear un nuevo botón de eliminar
+            const botonEliminar = document.createElement('button');
+            botonEliminar.id = 'btnEliminar_' + jugadorSeleccionado.id;
+            botonEliminar.type = 'button';
+            botonEliminar.classList.add('btn', 'transparente', 'col-1');
+            botonEliminar.onclick = function () {
+                eliminarInput(jugadorSeleccionado.id);
+            };
+
+            // Crear la imagen para el botón de eliminar
+            const imagenEliminar = document.createElement('img');
+            imagenEliminar.src = '../../../resources/img/svg/icons_forms/trash 1.svg';
+            imagenEliminar.width = 10;
+            imagenEliminar.height = 10;
+
+            // Agregar la imagen al botón de eliminar
+            botonEliminar.appendChild(imagenEliminar);
+
+            // Agregar el input y el botón al contenedor de fila
+            rowContainer.appendChild(nombreJugadorInput);
+            rowContainer.appendChild(botonEliminar);
+
+            // Obtener el contenedor de los nombres de los jugadores
+            const nombresDeLosJugadoresDiv = document.getElementById('nombresDeLosJugadores');
+
+            // Agregar el contenedor de fila al contenedor de nombres de los jugadores
+            nombresDeLosJugadoresDiv.appendChild(rowContainer);
+        }
+    });
+
+    // Función para eliminar el input del nombre seleccionado
+    function eliminarInput(idJugador) {
+        const inputEliminar = document.getElementById('nombreAdministrador_' + idJugador);
+        const btnEliminar = document.getElementById('btnEliminar_' + idJugador);
+        if (inputEliminar && btnEliminar) {
+            inputEliminar.remove();
+            btnEliminar.remove();
+        }
+    }
+
 };

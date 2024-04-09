@@ -501,7 +501,7 @@ window.onload = async function () {
         const progressActive = document.querySelectorAll(".progress-step-active");
 
         progress.style.width =
-            ((progressActive.length - 1) / (progressSteps.length - 1)) * 100 + "%";
+            ((progressActive.length - 1) / (progressSteps.length - 1)) * 90 + "%";
     }
 
     const prevBtns1 = document.querySelectorAll(".btn-prev1");
@@ -549,7 +549,7 @@ window.onload = async function () {
         const progressActive1 = document.querySelectorAll(".progress-step-active1");
 
         progress1.style.width =
-            ((progressActive1.length - 1) / (progressSteps1.length - 1)) * 100 + "%";
+            ((progressActive1.length - 1) / (progressSteps1.length - 1)) * 90 + "%";
     }
 };
 
