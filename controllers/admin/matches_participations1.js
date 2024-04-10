@@ -4,7 +4,7 @@ let ID_EQUIPO,
 
 // Constantes para completar las rutas de la API.
 const API = '';
-const TEMPORADA_API = '';
+const SOCCER_TEAM_API = '';
 /* 
 Para cargar una lista con la api en php, se hara referencia al metodo ReadAll, del archivo de la api con el cual se quiera
 cargar la lista, en este caso en especifico, API se ocuparia para referenciar el link de la api que contenga todos los metodos
@@ -41,13 +41,7 @@ async function fillCards(form = null) {
             id: 1,
         }
     ];
-    const cargarCartas = document.getElementById('tarjetas');
-
-    // const goToMatches = () => {
-    // window.location.href = '../paginas/matches_participations2.html'
-    // } 
-
-    // tarjeta.addEventListener("click", goToMatches);
+    const cargarCartas = document.getElementById('cards');
 
     try {
         cargarCartas.innerHTML = '';
@@ -63,9 +57,10 @@ async function fillCards(form = null) {
             DATA.dataset.forEach(row => {
                 const cardsHtml =  `
                 <div class="col-md-3 col-sm-12">
-                  <div class="tarjetas shadow" onclick="goToMatches(${row.ID_EQUIPO})"> 
+                  <div class="tarjetas-equipos shadow bg-skyBlue-pastel-color" onclick="goToMatches(${row.ID_EQUIPO})"> 
                     <img src="${row.IMAGEN_EQUIPO}" id="imagenEquipo" class="rounded-circle col-8 p-4"> 
-                    <p class="titulo-equipo text-light p-2" id="tituloEquipo">${row.NOMBRE_EQUIPO}</p> </div>
+                    <p class="titulo-equipo text-light p-2" id="tituloEquipo">${row.NOMBRE_EQUIPO}</p> 
+                  </div>
                 </div>
               `;
                 cargarCartas.innerHTML += cardsHtml;
@@ -79,9 +74,9 @@ async function fillCards(form = null) {
         lista_datos.forEach(row => {
             const cardsHtml = `
             <div class="col-md-3 col-sm-12">
-              <div class="tarjetas shadow" onclick="goToMatches(${row.id})"> 
+              <div class="tarjetas-equipos bg-skyBlue-pastel-color" onclick="goToMatches(${row.id}, '${row.nombre}')"> 
                 <img src="${row.imagen}" id="imagenEquipo" class="rounded-circle col-8 p-4"> 
-                <p class="titulo-equipo text-light p-2" id="tituloEquipo">${row.nombre}</p> </div>
+                <p class="titulo-equipo text-light p-2 fw-semibold" id="tituloEquipo">${row.nombre}</p> </div>
             </div>
           `;
             cargarCartas.innerHTML += cardsHtml;
@@ -89,11 +84,12 @@ async function fillCards(form = null) {
     }
 }
 
-function goToMatches(idEquipo) {
-    // Si necesitas usar el ID del equipo en la otra pantalla, puedes procesarlo aquí.
-  
-    // Redirecciona a la otra pantalla
-    window.location.href = "../paginas/matches_participations2.html?idEquipo=" + idEquipo;
+// Creamos una funcion que recibe como parametro el id del equipo que fue seleccionado
+function goToMatches(idEquipo, nombreEquipo) {
+
+    // Redirecciona a la otra pantalla y manda tambien el id del equipo
+    window.location.href = `../paginas/matches_participations2.html?idEquipo=${idEquipo}&nombreEquipo=${nombreEquipo}`;
+
 }
 
 // window.onload
@@ -101,11 +97,11 @@ window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
     // Carga los componentes de manera síncrona
-    const lesionHtml = await loadComponent('../componentes/matches_participations1.html');
+    const participacionesHtml = await loadComponent('../componentes/matches_participations1.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
     // Agrega el HTML del encabezado
-    appContainer.innerHTML = lesionHtml;
+    appContainer.innerHTML = participacionesHtml;
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Participaciones'; 
