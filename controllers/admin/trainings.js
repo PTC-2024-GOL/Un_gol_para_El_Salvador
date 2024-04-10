@@ -1,12 +1,38 @@
 let CONT_MODAL;
+let GRAPHIC_MODAL,
+    MODAL_TITLE2;
 let CONT_FORM,
     ID_JORNADA,
     FECHA,
     N,
     MODAL_TITLE1,
     JUGADORES,
+    SEE_MODAL2,
+    SEE_FORM2,
     SEE_MODAL,
     CONTENIDO,
+    ID_ANALISISV,
+    JUGADORV,
+    FUERZAV,
+    RESISTENCIAV,
+    VELOCIDADV,
+    AGILIDADV,
+    PASE_CORTOV,
+    PASE_MEDIOV,
+    PASE_LARGOV,
+    CONDUCCIONV,
+    RECEPCIONV,
+    CABECEOV,
+    REGATEV,
+    DEFINICIONV,
+    DECISIONESV,
+    OFENSIVOSV,
+    DEFENSIVOSV,
+    INTERPRETACIONV,
+    CONCENTRACIONV,
+    AUTOCONFIANZAV,
+    SACRICIOV,
+    AUTOCONTROLV,
     SEE_FORM;
 let SEARCH_FORM;
 
@@ -102,10 +128,39 @@ const fillSelected = (data, action, selectId, selectedValue = null) => {
 *   Retorno: ninguno.
 */
 
-
-const openPag = () => {
-    window.location.href = '../paginas/trainings_player.html';
+const seeModal2 = async (id) => {
+    try {
+        // Se define un objeto con los datos del registro seleccionado.
+        const FORM = new FormData();
+        FORM.append('idAnalisis', id);
+        // Petición para obtener los datos del registro solicitado.
+        const DATA = await fetchData(ENTRENAMIENTOS_API, 'readOne', FORM);
+        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+        if (DATA.status) {
+            // Se muestra la caja de diálogo con su título.
+            SEE_MODAL2.show();
+            MODAL_TITLE2.textContent = 'Actualizar análisis del jugador';
+            // Se prepara el formulario.
+            SAVE_FORM2.reset();
+            // Se inicializan los campos con los datos.
+            const ROW = DATA.dataset;
+            ID_EQUIPO.value = ROW.ID;
+            NOMBRE_EQUIPO.value = ROW.NOMBRE;
+            TELEFONO_EQUIPO.value = ROW.TELEFONO;
+            ID_CUERPO_TECNICO.value = ROW.ID_CUERPO_TECNICO;
+            ID_ADMINISTRADOR.value = ROW.ID_ADMINISTRADOR;
+            ID_CATEGORIA.value = ROW.ID_CATEGORIA;
+            LOGO_EQUIPO.value = ROW.LOGO;
+        } else {
+            sweetAlert(2, DATA.error, false);
+        }
+    } catch (Error) {
+        SEE_MODAL2.show();
+        MODAL_TITLE2.textContent = 'Análisis del jugador';
+        SEE_FORM2.reset();
+    }
 }
+
 
 const seeModal = async (id) => {
     try {
@@ -206,7 +261,7 @@ async function cargarTabla(form = null) {
                 <tr>
                     <td>${row.N}</td>
                     <td>${row.FECHA}</td>
-                    <td>
+                    <td class="justify-content-center">
                         <button type="button" class="btn btn-warnig" onclick="seeModal(${row.ID})">
                         <img src="../../../resources/img/svg/icons_forms/stadistic.png" width="30" height="30">
                         </button>
@@ -231,7 +286,7 @@ async function cargarTabla(form = null) {
             <tr>
                     <td>${row.n}</td>
                     <td>${row.fecha}</td>
-                    <td>
+                    <td class="justify-content-center">
                         <button type="button" class="btn btn-warnig" onclick="seeModal(${row.id})">
                         <img src="../../../resources/img/svg/icons_forms/stadistic.png" width="30" height="30">
                         </button>
@@ -258,12 +313,18 @@ window.onload = async function () {
     loadTemplate();
     // Agrega el HTML del encabezado
     appContainer.innerHTML = adminHtml;
+
+    const titleElement = document.getElementById('title');
+    titleElement.textContent = 'Entrenamiento Jornada del 3 de julio - 29 de agosto';
     // Llamar a la función fillContents con la lista de datos de contenidos y el id del ul
     fillContents(lista_datos_contenidos, null, 'lista_contenidos');
 
     fillSelected(lista_datos_horario, 'readAll', 'horario');
     cargarTabla();
     // Constantes para establecer los elementos del componente Modal.
+    SEE_MODAL2 = new bootstrap.Modal('#seeModal2'),
+        MODAL_TITLE2 = document.getElementById('modalTitle3')
+
     CONT_MODAL = new bootstrap.Modal('#contModal'),
         MODAL_TITLE1 = document.getElementById('modalTitle1')
         
@@ -305,6 +366,37 @@ window.onload = async function () {
 
         }
     });
+     // Constantes para establecer los elementos del formulario de guardar.
+     SEE_FORM2 = document.getElementById('viewForm'),
+     ID_ANALISISV = document.getElementById('idAnalisisV'),
+     JUGADORV = document.getElementById('jugadorV'),
+     FUERZAV = document.getElementById('fuerzaV'),
+     RESISTENCIAV = document.getElementById('resistenciaV'),
+     VELOCIDADV = document.getElementById('velocidadV'),
+     AGILIDADV = document.getElementById('agilidadV'),
+     PASE_CORTOV = document.getElementById('paseCortoV'),
+     PASE_MEDIOV = document.getElementById('paseMedioV'),
+     PASE_LARGOV = document.getElementById('paseLargoV'),
+     CONDUCCIONV = document.getElementById('conduccionV'),
+     RECEPCIONV = document.getElementById('recepcionV'),
+     CABECEOV = document.getElementById('cabeceoV'),
+     REGATEV = document.getElementById('regateV'),
+     DEFINICIONV = document.getElementById('definicionGolV'),
+     DECISIONESV = document.getElementById('tomaDecisionesV'),
+     OFENSIVOSV = document.getElementById('conceptosOfensivosV'),
+     DEFENSIVOSV = document.getElementById('conceptosDefensivosV'),
+     INTERPRETACIONV = document.getElementById('interpretacionV'),
+     CONCENTRACIONV = document.getElementById('concentracionV'),
+     AUTOCONFIANZAV = document.getElementById('autoconfianzaV'),
+     SACRICIOV = document.getElementById('sacrificioV'),
+     AUTOCONTROLV = document.getElementById('autocontrolV');
+ 
+ // Método del evento para cuando se envía el formulario de guardar.
+ SEE_FORM2.addEventListener('submit', async (event) => {
+     // Se evita recargar la página web después de enviar el formulario.
+     event.preventDefault();
+ });
+
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');
     // Verificar si SEARCH_FORM está seleccionado correctamente
@@ -320,4 +412,53 @@ window.onload = async function () {
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
         cargarTabla(FORM);
     });
+
+    
+    const prevBtns1 = document.querySelectorAll(".btn-prev1");
+    const nextBtns1 = document.querySelectorAll(".btn-next1");
+    const progress1 = document.getElementById("progress1");
+    const formSteps1 = document.querySelectorAll(".form-step1");
+    const progressSteps1 = document.querySelectorAll(".progress-step1");
+
+    let formStepsNum1 = 0;
+
+    nextBtns1.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            formStepsNum1++;
+            updateFormSteps1();
+            updateProgressbar1();
+        });
+    });
+
+    prevBtns1.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            formStepsNum1--;
+            updateFormSteps1();
+            updateProgressbar1();
+        });
+    });
+
+    function updateFormSteps1() {
+        formSteps1.forEach((formStep1) => {
+            formStep1.classList.contains("form-step-active1") &&
+                formStep1.classList.remove("form-step-active1");
+        });
+
+        formSteps1[formStepsNum1].classList.add("form-step-active1");
+    }
+
+    function updateProgressbar1() {
+        progressSteps1.forEach((progressStep1, idx) => {
+            if (idx < formStepsNum1 + 1) {
+                progressStep1.classList.add("progress-step-active1");
+            } else {
+                progressStep1.classList.remove("progress-step-active1");
+            }
+        });
+
+        const progressActive1 = document.querySelectorAll(".progress-step-active1");
+
+        progress1.style.width =
+            ((progressActive1.length - 1) / (progressSteps1.length - 1)) * 90 + "%";
+    }
 };
