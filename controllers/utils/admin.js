@@ -7,7 +7,7 @@
 const USER_API = 'services/admin/administrador.php';
 // Constante para establecer el elemento del contenido principal.
 const MAIN = document.querySelector('main');
-MAIN.style.paddingTop = '75px';
+MAIN.style.paddingTop = '50px';
 MAIN.style.paddingBottom = '100px';
 MAIN.classList.add('container');
 
@@ -124,7 +124,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                     <li><a class="dropdown-item text-light" href="soccer_team.html">Equipos</a></li>
                                     <li><a class="dropdown-item text-light" href="types_plays.html">Tipos de jugada</a></li>
                                     <li><a class="dropdown-item text-light" href="types_goals.html">Tipos de goles</a></li>
-                                    <li><a class="dropdown-item text-light" href="#">Participaciones</a></li>
+                                    <li><a class="dropdown-item text-light" href="matches_participations1.html">Participaciones</a></li>
                                     <li><a class="dropdown-item text-light" href="positions.html">Posiciones</a></li>
                                     <li><a class="dropdown-item text-light" href="categories.html">Categorías</a></li>
                                     <li><a class="dropdown-item text-light" href="matches.html">Partidos</a></li>
