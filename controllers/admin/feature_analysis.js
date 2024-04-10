@@ -53,6 +53,8 @@ let SAVE_FORM,
     SACRICIO,
     AUTOCONTROL;
 let SEARCH_FORM;
+let ESTADO_INICIAL_SAVE_FORM;
+let ESTADO_INICIAL_VIEW_FORM;
 
 // Constantes para completar las rutas de la API.
 const EQUIPO_API = '';
@@ -73,6 +75,7 @@ const openCreate = () => {
     MODAL_TITLE.textContent = 'Crear análisis del jugador';
     // Se prepara el formulario.
     SAVE_FORM.reset();
+    restaurarFormulario();
 }
 
 /*
@@ -121,6 +124,7 @@ const seeModal = async (id) => {
         SEE_MODAL.show();
         MODAL_TITLE1.textContent = 'Análisis del jugador';
         SEE_FORM.reset();
+        restaurarFormularioVer();
     }
 }
 
@@ -160,6 +164,7 @@ const openUpdate = async (id) => {
         console.log(Error);
         SAVE_MODAL.show();
         MODAL_TITLE.textContent = 'Actualizar análisis del jugador';
+        restaurarFormulario();
     }
 
 }
@@ -336,6 +341,113 @@ const graficoBarrasAnalisis = async () => {
 
 }
 
+// Función para restaurar el formulario guardar
+const restaurarFormulario = async () => {
+    document.getElementById('saveForm').innerHTML = ESTADO_INICIAL_SAVE_FORM;
+
+    const prevBtns = document.querySelectorAll(".btn-prev");
+    const nextBtns = document.querySelectorAll(".btn-next");
+    const progress = document.getElementById("progress");
+    const formSteps = document.querySelectorAll(".form-step");
+    const progressSteps = document.querySelectorAll(".progress-step");
+
+    let formStepsNum = 0;
+
+    nextBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            formStepsNum++;
+            updateFormSteps();
+            updateProgressbar();
+        });
+    });
+
+    prevBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            formStepsNum--;
+            updateFormSteps();
+            updateProgressbar();
+        });
+    });
+
+    function updateFormSteps() {
+        formSteps.forEach((formStep) => {
+            formStep.classList.contains("form-step-active") &&
+                formStep.classList.remove("form-step-active");
+        });
+
+        formSteps[formStepsNum].classList.add("form-step-active");
+    }
+
+    function updateProgressbar() {
+        progressSteps.forEach((progressStep, idx) => {
+            if (idx < formStepsNum + 1) {
+                progressStep.classList.add("progress-step-active");
+            } else {
+                progressStep.classList.remove("progress-step-active");
+            }
+        });
+
+        const progressActive = document.querySelectorAll(".progress-step-active");
+
+        progress.style.width =
+            ((progressActive.length - 1) / (progressSteps.length - 1)) * 95 + "%";
+    }
+}
+
+
+// Función para restaurar el formulario guardar
+const restaurarFormularioVer = async () => {
+    document.getElementById('viewForm').innerHTML = ESTADO_INICIAL_VIEW_FORM;
+
+    const prevBtns1 = document.querySelectorAll(".btn-prev1");
+    const nextBtns1 = document.querySelectorAll(".btn-next1");
+    const progress1 = document.getElementById("progress1");
+    const formSteps1 = document.querySelectorAll(".form-step1");
+    const progressSteps1 = document.querySelectorAll(".progress-step1");
+
+    let formStepsNum1 = 0;
+
+    nextBtns1.forEach((btn1) => {
+        btn1.addEventListener("click", () => {
+            formStepsNum1++;
+            updateFormSteps1();
+            updateProgressbar1();
+        });
+    });
+
+    prevBtns1.forEach((btn1) => {
+        btn1.addEventListener("click", () => {
+            formStepsNum1--;
+            updateFormSteps1();
+            updateProgressbar1();
+        });
+    });
+
+    function updateFormSteps1() {
+        formSteps1.forEach((formStep1) => {
+            formStep1.classList.contains("form-step-active1") &&
+                formStep1.classList.remove("form-step-active1");
+        });
+
+        formSteps1[formStepsNum1].classList.add("form-step-active1");
+    }
+
+    function updateProgressbar1() {
+        progressSteps1.forEach((progressStep1, idx) => {
+            if (idx < formStepsNum1 + 1) {
+                progressStep1.classList.add("progress-step-active1");
+            } else {
+                progressStep1.classList.remove("progress-step-active1");
+            }
+        });
+
+        const progressActive1 = document.querySelectorAll(".progress-step-active1");
+
+        progress1.style.width =
+            ((progressActive1.length - 1) / (progressSteps1.length - 1)) * 95 + "%";
+    }
+}
+
 // window.onload
 window.onload = async function () {
     // Obtiene el contenedor principal
@@ -384,30 +496,31 @@ window.onload = async function () {
         CONCENTRACION = document.getElementById('concentracion'),
         AUTOCONFIANZA = document.getElementById('autoconfianza'),
         SACRICIO = document.getElementById('sacrificio'),
-        AUTOCONTROL = document.getElementById('autocontrol'),
-        // Método del evento para cuando se envía el formulario de guardar.
-        SAVE_FORM.addEventListener('submit', async (event) => {
-            // Se evita recargar la página web después de enviar el formulario.
-            event.preventDefault();
-            // Se verifica la acción a realizar.
-            (ID_ANALISIS.value) ? action = 'updateRow' : action = 'createRow';
-            // Constante tipo objeto con los datos del formulario.
-            const FORM = new FormData(SAVE_FORM);
-            // Petición para guardar los datos del formulario.
-            const DATA = await fetchData(EQUIPO_API, action, FORM);
-            // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-            if (DATA.status) {
-                // Se cierra la caja de diálogo.
-                SAVE_MODAL.hide();
-                // Se muestra un mensaje de éxito.
-                sweetAlert(1, DATA.message, true);
-                // Se carga nuevamente la tabla para visualizar los cambios.
-                cargarTabla();
-            } else {
-                sweetAlert(2, DATA.error, false);
-                console.error(DATA.exception);
-            }
-        });
+        AUTOCONTROL = document.getElementById('autocontrol');
+    // Método del evento para cuando se envía el formulario de guardar.
+    SAVE_FORM.addEventListener('submit', async (event) => {
+        // Se evita recargar la página web después de enviar el formulario.
+        event.preventDefault();
+        // Se verifica la acción a realizar.
+        (ID_ANALISIS.value) ? action = 'updateRow' : action = 'createRow';
+        // Constante tipo objeto con los datos del formulario.
+        const FORM = new FormData(SAVE_FORM);
+        // Petición para guardar los datos del formulario.
+        const DATA = await fetchData(EQUIPO_API, action, FORM);
+        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+        if (DATA.status) {
+            // Se cierra la caja de diálogo.
+            SAVE_MODAL.hide();
+            // Se muestra un mensaje de éxito.
+            sweetAlert(1, DATA.message, true);
+            // Se carga nuevamente la tabla para visualizar los cambios.
+            cargarTabla();
+        } else {
+            sweetAlert(2, DATA.error, false);
+            console.error(DATA.exception);
+        }
+    });
+    ESTADO_INICIAL_SAVE_FORM = document.getElementById('saveForm').innerHTML;
 
     // Constantes para establecer los elementos del formulario de guardar.
     SEE_FORM = document.getElementById('viewForm'),
@@ -433,12 +546,13 @@ window.onload = async function () {
         AUTOCONFIANZAV = document.getElementById('autoconfianzaV'),
         SACRICIOV = document.getElementById('sacrificioV'),
         AUTOCONTROLV = document.getElementById('autocontrolV');
-    
+
     // Método del evento para cuando se envía el formulario de guardar.
     SEE_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
         event.preventDefault();
     });
+    ESTADO_INICIAL_VIEW_FORM = document.getElementById('viewForm').innerHTML;
 
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');
@@ -455,101 +569,5 @@ window.onload = async function () {
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
         cargarTabla(FORM);
     });
-
-    const prevBtns = document.querySelectorAll(".btn-prev");
-    const nextBtns = document.querySelectorAll(".btn-next");
-    const progress = document.getElementById("progress");
-    const formSteps = document.querySelectorAll(".form-step");
-    const progressSteps = document.querySelectorAll(".progress-step");
-
-    let formStepsNum = 0;
-
-    nextBtns.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            formStepsNum++;
-            updateFormSteps();
-            updateProgressbar();
-        });
-    });
-
-    prevBtns.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            formStepsNum--;
-            updateFormSteps();
-            updateProgressbar();
-        });
-    });
-
-    function updateFormSteps() {
-        formSteps.forEach((formStep) => {
-            formStep.classList.contains("form-step-active") &&
-                formStep.classList.remove("form-step-active");
-        });
-
-        formSteps[formStepsNum].classList.add("form-step-active");
-    }
-
-    function updateProgressbar() {
-        progressSteps.forEach((progressStep, idx) => {
-            if (idx < formStepsNum + 1) {
-                progressStep.classList.add("progress-step-active");
-            } else {
-                progressStep.classList.remove("progress-step-active");
-            }
-        });
-
-        const progressActive = document.querySelectorAll(".progress-step-active");
-
-        progress.style.width =
-            ((progressActive.length - 1) / (progressSteps.length - 1)) * 90 + "%";
-    }
-
-    const prevBtns1 = document.querySelectorAll(".btn-prev1");
-    const nextBtns1 = document.querySelectorAll(".btn-next1");
-    const progress1 = document.getElementById("progress1");
-    const formSteps1 = document.querySelectorAll(".form-step1");
-    const progressSteps1 = document.querySelectorAll(".progress-step1");
-
-    let formStepsNum1 = 0;
-
-    nextBtns1.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            formStepsNum1++;
-            updateFormSteps1();
-            updateProgressbar1();
-        });
-    });
-
-    prevBtns1.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            formStepsNum1--;
-            updateFormSteps1();
-            updateProgressbar1();
-        });
-    });
-
-    function updateFormSteps1() {
-        formSteps1.forEach((formStep1) => {
-            formStep1.classList.contains("form-step-active1") &&
-                formStep1.classList.remove("form-step-active1");
-        });
-
-        formSteps1[formStepsNum1].classList.add("form-step-active1");
-    }
-
-    function updateProgressbar1() {
-        progressSteps1.forEach((progressStep1, idx) => {
-            if (idx < formStepsNum1 + 1) {
-                progressStep1.classList.add("progress-step-active1");
-            } else {
-                progressStep1.classList.remove("progress-step-active1");
-            }
-        });
-
-        const progressActive1 = document.querySelectorAll(".progress-step-active1");
-
-        progress1.style.width =
-            ((progressActive1.length - 1) / (progressSteps1.length - 1)) * 90 + "%";
-    }
 };
 
