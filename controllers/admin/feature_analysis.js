@@ -2,33 +2,8 @@
 
 let SAVE_MODAL,
     MODAL_TITLE;
-let SEE_MODAL,
-    MODAL_TITLE1;
 let GRAPHIC_MODAL,
     MODAL_TITLE2;
-let SEE_FORM,
-    ID_ANALISISV,
-    JUGADORV,
-    FUERZAV,
-    RESISTENCIAV,
-    VELOCIDADV,
-    AGILIDADV,
-    PASE_CORTOV,
-    PASE_MEDIOV,
-    PASE_LARGOV,
-    CONDUCCIONV,
-    RECEPCIONV,
-    CABECEOV,
-    REGATEV,
-    DEFINICIONV,
-    DECISIONESV,
-    OFENSIVOSV,
-    DEFENSIVOSV,
-    INTERPRETACIONV,
-    CONCENTRACIONV,
-    AUTOCONFIANZAV,
-    SACRICIOV,
-    AUTOCONTROLV;
 let SAVE_FORM,
     ID_ANALISIS,
     JUGADOR,
@@ -75,7 +50,7 @@ const openCreate = () => {
     MODAL_TITLE.textContent = 'Crear análisis del jugador';
     // Se prepara el formulario.
     SAVE_FORM.reset();
-    restaurarFormulario();
+    restaurarFormulario(25);
 }
 
 /*
@@ -91,6 +66,34 @@ const openGraphic = () => {
     SAVE_FORM.reset();
     graficoBarrasAnalisis();
 }
+
+
+// Ocultar el primer form-step y mostrar el segundo
+function updateSteps(currentStep, nextStep) {
+    // Ocultar el form-step actual y mostrar el siguiente
+    const currentFormStep = document.getElementById(`step${currentStep}`);
+    const nextFormStep = document.getElementById(`step${nextStep}`);
+    currentFormStep.remove();
+    nextFormStep.classList.add('form-step-active');
+
+    // Ocultar el progress-step actual y mostrar el siguiente
+    const currentProgressStep = document.getElementById(`progress-step${currentStep}`);
+    const nextProgressStep = document.getElementById(`progress-step${nextStep}`);
+    currentProgressStep.remove();
+    nextProgressStep.classList.add('progress-step-active');
+
+    const form = document.getElementById('saveForm');
+    const formInputs = form.querySelectorAll("input");
+    formInputs.forEach((input) => {
+        input.disabled = true;
+    });
+    const deletePast = document.getElementById(`past`);
+    deletePast.remove();
+    const deleteSave = document.getElementById(`guardar`);
+    deleteSave.remove();
+
+}
+
 
 // Funcion para preparar el formulario al momento de abrirlo
 
@@ -121,10 +124,13 @@ const seeModal = async (id) => {
             sweetAlert(2, DATA.error, false);
         }
     } catch (Error) {
-        SEE_MODAL.show();
-        MODAL_TITLE1.textContent = 'Análisis del jugador';
-        SEE_FORM.reset();
-        restaurarFormularioVer();
+        SAVE_MODAL.show();
+        MODAL_TITLE.textContent = 'Análisis del jugador';
+        SAVE_FORM.reset();
+        restaurarFormulario(33);
+        // Ejemplo de uso: actualizar del paso 1 al paso 2
+        updateSteps(1, 2);
+
     }
 }
 
@@ -164,7 +170,7 @@ const openUpdate = async (id) => {
         console.log(Error);
         SAVE_MODAL.show();
         MODAL_TITLE.textContent = 'Actualizar análisis del jugador';
-        restaurarFormulario();
+        restaurarFormulario(25);
     }
 
 }
@@ -342,7 +348,7 @@ const graficoBarrasAnalisis = async () => {
 }
 
 // Función para restaurar el formulario guardar
-const restaurarFormulario = async () => {
+const restaurarFormulario = async (num = null) => {
     document.getElementById('saveForm').innerHTML = ESTADO_INICIAL_SAVE_FORM;
 
     const prevBtns = document.querySelectorAll(".btn-prev");
@@ -352,6 +358,9 @@ const restaurarFormulario = async () => {
     const progressSteps = document.querySelectorAll(".progress-step");
 
     let formStepsNum = 0;
+    updateFormSteps(); // Asegurar que el primer paso esté activo al cargar el formulario
+    updateProgressbar(); // Asegurar que la barra de progreso se llene correctamente al cargar el formulario
+
 
     nextBtns.forEach((btn) => {
         btn.addEventListener("click", () => {
@@ -386,65 +395,15 @@ const restaurarFormulario = async () => {
                 progressStep.classList.remove("progress-step-active");
             }
         });
-
+    
         const progressActive = document.querySelectorAll(".progress-step-active");
-
-        progress.style.width =
-            ((progressActive.length - 1) / (progressSteps.length - 1)) * 95 + "%";
-    }
-}
-
-
-// Función para restaurar el formulario guardar
-const restaurarFormularioVer = async () => {
-    document.getElementById('viewForm').innerHTML = ESTADO_INICIAL_VIEW_FORM;
-
-    const prevBtns1 = document.querySelectorAll(".btn-prev1");
-    const nextBtns1 = document.querySelectorAll(".btn-next1");
-    const progress1 = document.getElementById("progress1");
-    const formSteps1 = document.querySelectorAll(".form-step1");
-    const progressSteps1 = document.querySelectorAll(".progress-step1");
-
-    let formStepsNum1 = 0;
-
-    nextBtns1.forEach((btn1) => {
-        btn1.addEventListener("click", () => {
-            formStepsNum1++;
-            updateFormSteps1();
-            updateProgressbar1();
-        });
-    });
-
-    prevBtns1.forEach((btn1) => {
-        btn1.addEventListener("click", () => {
-            formStepsNum1--;
-            updateFormSteps1();
-            updateProgressbar1();
-        });
-    });
-
-    function updateFormSteps1() {
-        formSteps1.forEach((formStep1) => {
-            formStep1.classList.contains("form-step-active1") &&
-                formStep1.classList.remove("form-step-active1");
-        });
-
-        formSteps1[formStepsNum1].classList.add("form-step-active1");
-    }
-
-    function updateProgressbar1() {
-        progressSteps1.forEach((progressStep1, idx) => {
-            if (idx < formStepsNum1 + 1) {
-                progressStep1.classList.add("progress-step-active1");
-            } else {
-                progressStep1.classList.remove("progress-step-active1");
-            }
-        });
-
-        const progressActive1 = document.querySelectorAll(".progress-step-active1");
-
-        progress1.style.width =
-            ((progressActive1.length - 1) / (progressSteps1.length - 1)) * 95 + "%";
+        const widthIncrement = num; // Porcentaje de incremento deseado
+    
+        // Calculamos el nuevo ancho de la barra de progreso
+        let widthPercentage = (progressActive.length - 1) * widthIncrement;
+    
+        // Asignamos el nuevo ancho a la barra de progreso
+        progress.style.width = widthPercentage + "%";
     }
 }
 
@@ -465,10 +424,6 @@ window.onload = async function () {
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
-
-    SEE_MODAL = new bootstrap.Modal('#seeModal'),
-        MODAL_TITLE1 = document.getElementById('modalTitle2')
-
 
     GRAPHIC_MODAL = new bootstrap.Modal('#graphicModal'),
         MODAL_TITLE2 = document.getElementById('modalTitle3')
@@ -521,38 +476,6 @@ window.onload = async function () {
         }
     });
     ESTADO_INICIAL_SAVE_FORM = document.getElementById('saveForm').innerHTML;
-
-    // Constantes para establecer los elementos del formulario de guardar.
-    SEE_FORM = document.getElementById('viewForm'),
-        ID_ANALISISV = document.getElementById('idAnalisisV'),
-        JUGADORV = document.getElementById('jugadorV'),
-        FUERZAV = document.getElementById('fuerzaV'),
-        RESISTENCIAV = document.getElementById('resistenciaV'),
-        VELOCIDADV = document.getElementById('velocidadV'),
-        AGILIDADV = document.getElementById('agilidadV'),
-        PASE_CORTOV = document.getElementById('paseCortoV'),
-        PASE_MEDIOV = document.getElementById('paseMedioV'),
-        PASE_LARGOV = document.getElementById('paseLargoV'),
-        CONDUCCIONV = document.getElementById('conduccionV'),
-        RECEPCIONV = document.getElementById('recepcionV'),
-        CABECEOV = document.getElementById('cabeceoV'),
-        REGATEV = document.getElementById('regateV'),
-        DEFINICIONV = document.getElementById('definicionGolV'),
-        DECISIONESV = document.getElementById('tomaDecisionesV'),
-        OFENSIVOSV = document.getElementById('conceptosOfensivosV'),
-        DEFENSIVOSV = document.getElementById('conceptosDefensivosV'),
-        INTERPRETACIONV = document.getElementById('interpretacionV'),
-        CONCENTRACIONV = document.getElementById('concentracionV'),
-        AUTOCONFIANZAV = document.getElementById('autoconfianzaV'),
-        SACRICIOV = document.getElementById('sacrificioV'),
-        AUTOCONTROLV = document.getElementById('autocontrolV');
-
-    // Método del evento para cuando se envía el formulario de guardar.
-    SEE_FORM.addEventListener('submit', async (event) => {
-        // Se evita recargar la página web después de enviar el formulario.
-        event.preventDefault();
-    });
-    ESTADO_INICIAL_VIEW_FORM = document.getElementById('viewForm').innerHTML;
 
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');
