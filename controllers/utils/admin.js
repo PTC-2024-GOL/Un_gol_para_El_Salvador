@@ -101,14 +101,14 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                     Entrenamientos
                                 </a>
                                 <ul class="dropdown-menu bg-transparent">
-                                    <li><a class="dropdown-item text-light" href="#">Entrenamientos</a></li>
+                                    <li><a class="dropdown-item text-light" href="schedules.html">Horarios</a></li>
+                                    <li><a class="dropdown-item text-light" href="trainings.html">Entrenamientos</a></li>
                                     <li><a class="dropdown-item text-light" href="contents.html">Contenidos</a></li>
                                     <li><a class="dropdown-item text-light" href="subcontents.html">Sub contenidos</a></li>
-                                    <li><a class="dropdown-item text-light" href="detailsContents.html">Detalles</a></li>
                                     <li><a class="dropdown-item text-light" href="tasks.html">Tareas</a></li>
+                                    <li><a class="dropdown-item text-light" href="detailsContents.html">Detalles</a></li>
                                     <li><a class="dropdown-item text-light" href="player_characteristics.html">Características de jugadores</a></li>
                                     <li><a class="dropdown-item text-light" href="feature_analysis.html">Análisis de características</a></li>
-                                    <li><a class="dropdown-item text-light" href="schedules.html">Horarios</a></li>
                                     <li><a class="dropdown-item text-light" href="#">Asistencia</a></li>
                                 </ul>
                             </li>
@@ -120,7 +120,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                     Equipos
                                 </a>
                                 <ul class="dropdown-menu bg-transparent">
-                                    <li><a class="dropdown-item text-light" href="#">Cuerpos técnicos</a></li>
+                                    <li><a class="dropdown-item text-light" href="coaching_staff.html">Cuerpos técnicos</a></li>
                                     <li><a class="dropdown-item text-light" href="soccer_team.html">Equipos</a></li>
                                     <li><a class="dropdown-item text-light" href="types_plays.html">Tipos de jugada</a></li>
                                     <li><a class="dropdown-item text-light" href="types_goals.html">Tipos de goles</a></li>
@@ -156,7 +156,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                 </a>
                             </a>
                             <ul class="dropdown-menu bg-transparent">
-                                <li><a class="dropdown-item text-light" href="#">Pagos</a></li>
+                                <li><a class="dropdown-item text-light" href="payment.html">Pagos</a></li>
                             </ul>
                             </li>
 
