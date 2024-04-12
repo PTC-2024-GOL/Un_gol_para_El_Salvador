@@ -97,19 +97,19 @@ const openDelete = async (id) => {
 async function fillTable(form = null) {
     const lista_datos = [
         {
-            año: 2022,
+            nombre: "2022",
             id: 1,
         },
         {
-            año: 2023,
+            nombre: "2023",
             id: 2,
         },
         {
-            año: 2024,
+            nombre: "2024",
             id: 3,
         },
         {
-            año: 2025,
+            nombre: "2025",
             id: 4,
         }
     ];
@@ -129,7 +129,7 @@ async function fillTable(form = null) {
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
                 <tr class="text-end">
-                    <td>${row.AÑO}</td>
+                    <td>${row.NOMBRE}</td>
                     <td>
                         <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
                         <img src="../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
@@ -151,7 +151,7 @@ async function fillTable(form = null) {
         lista_datos.forEach(row => {
             const tablaHtml = `
             <tr>
-                <td class="text-center">${row.año}</td>
+                <td class="text-center">${row.nombre}</td>
                 <td class="text-end">
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
@@ -188,7 +188,7 @@ window.onload = async function () {
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
         ID_TEMPORADA = document.getElementById('idTemporada'),
-        AÑO_TEMPORADA = document.getElementById('añoTemporada');
+        AÑO_TEMPORADA = document.getElementById('nombreTemporada');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
