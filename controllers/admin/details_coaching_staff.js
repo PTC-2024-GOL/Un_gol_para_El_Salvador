@@ -1,11 +1,13 @@
 let SAVE_MODAL;
 let SAVE_FORM,
-    ID_TEMPORADA,
-    NOMBRE_TEMPORADA;
+    ID_CUERPOTECNICO,
+    TECNICO,
+    ROL,
+    CUERPO_TECNICO;
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
-const TEMPORADA_API = '';
+const API = '';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -20,7 +22,7 @@ async function loadComponent(path) {
 const openCreate = () => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
-    MODAL_TITLE.textContent = 'Agregar una temporada';
+    MODAL_TITLE.textContent = 'Agregar a un cuerpo técnico';
     // Se prepara el formulario.
     SAVE_FORM.reset();
 }
@@ -33,29 +35,30 @@ const openUpdate = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
-        FORM.append('idTemporada', id);
+        FORM.append('idCuerpotecnico', id);
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(TEMPORADA_API, 'readOne', FORM);
+        const DATA = await fetchData(CUERPOTECNICO_API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
-            MODAL_TITLE.textContent = 'Actualizar la temporada';
+            MODAL_TITLE.textContent = 'Actualizar cuerpo técnico';
             // Se prepara el formulario.
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
-            ID_TEMPORADA.value = ROW.ID;
-            NOMBRE_TEMPORADA.value = ROW.NOMBRE;
+            ID_CUERPOTECNICO.value = ROW.ID;
+            TECNICO.value = ROW.TECNICO;
+            ROL.value = ROW.ROL;
+            CUERPO.value =  ROW.CUERPO;
         } else {
             sweetAlert(2, DATA.error, false);
         }
     } catch (Error) {
         console.log(Error);
         SAVE_MODAL.show();
-        MODAL_TITLE.textContent = 'Actualizar la temporada';
+        MODAL_TITLE.textContent = 'Actualizar el cuerpo técnico';
     }
-
 }
 /*
 *   Función asíncrona para eliminar un registro.
@@ -64,16 +67,16 @@ const openUpdate = async (id) => {
 */
 const openDelete = async (id) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar la temporada?');
+    const RESPONSE = await confirmAction('¿Desea eliminar del cuerpo técnico?');
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
             // Se define una constante tipo objeto con los datos del registro seleccionado.
             const FORM = new FormData();
-            FORM.append('idTemporada', id);
+            FORM.append('idCuerpoTecnico', id);
             console.log(id);
             // Petición para eliminar el registro seleccionado.
-            const DATA = await fetchData(TEMPORADA_API, 'deleteRow', FORM);
+            const DATA = await fetchData(API, 'deleteRow', FORM);
             console.log(DATA.status);
             // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
             if (DATA.status) {
@@ -88,7 +91,7 @@ const openDelete = async (id) => {
     }
     catch (Error) {
         console.log(Error + ' Error al cargar el mensaje');
-        confirmAction('¿Desea eliminar la tipología de forma permanente?');
+        confirmAction('¿Desea eliminar del cuerpo técnico?');
     }
 
 }
@@ -97,23 +100,31 @@ const openDelete = async (id) => {
 async function fillTable(form = null) {
     const lista_datos = [
         {
-            nombre: "2022",
+            tecnico: 'Chepe Mártinez',
+            rol: 'Primer técnico',
+            cuerpo: 'Cuerpo técnico equipo sub 12 temporada 2023-24',
             id: 1,
         },
         {
-            nombre: "2023",
+            tecnico: 'Chepe Mártinez',
+            rol: 'Segundo técnico',
+            cuerpo: 'Cuerpo técnico equipo sub 12 temporada 2023-24',
             id: 2,
         },
         {
-            nombre: "2024",
+            tecnico: 'Chepe Mártinez',
+            rol: 'Preparador fisico',
+            cuerpo: 'Cuerpo técnico equipo sub 12 temporada 2023-24',
             id: 3,
         },
         {
-            nombre: "2025",
+            tecnico: 'Chepe Mártinez',
+            rol: 'Delegado',
+            cuerpo: 'Cuerpo técnico equipo sub 12 temporada 2023-24',
             id: 4,
         }
     ];
-    const cargarTabla = document.getElementById('tabla_temporadas');
+    const cargarTabla = document.getElementById('tabla');
 
     try {
         cargarTabla.innerHTML = '';
@@ -121,7 +132,7 @@ async function fillTable(form = null) {
         (form) ? action = 'searchRows' : action = 'readAll';
         console.log(form);
         // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(TEMPORADA_API, action, form);
+        const DATA = await fetchData(API, action, form);
         console.log(DATA);
 
         if (DATA.status) {
@@ -129,7 +140,9 @@ async function fillTable(form = null) {
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
                 <tr class="text-end">
+                    <td>${row.ROL}</td>
                     <td>${row.NOMBRE}</td>
+                    <td>${row.CUERPO}</td>
                     <td>
                         <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
                         <img src="../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
@@ -151,7 +164,9 @@ async function fillTable(form = null) {
         lista_datos.forEach(row => {
             const tablaHtml = `
             <tr>
-                <td class="text-center">${row.nombre}</td>
+                <td class="text-center">${row.rol}</td>
+                <td class="text-center">${row.tecnico}</td>
+                <td class="text-center">${row.cuerpo}</td>
                 <td class="text-end">
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
@@ -172,14 +187,14 @@ window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
     // Carga los componentes de manera síncrona
-    const contentHtml = await loadComponent('../componentes/season.html');
+    const contentHtml = await loadComponent('../componentes/details_coaching_staff.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
     // Agrega el HTML del encabezado
     appContainer.innerHTML = contentHtml;
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
-    titleElement.textContent = 'Temporadas';
+    titleElement.textContent = 'Detalles de los cuerpos técnicos';
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
@@ -187,8 +202,10 @@ window.onload = async function () {
 
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
-        ID_TEMPORADA = document.getElementById('idTemporada'),
-        NOMBRE_TEMPORADA = document.getElementById('nombreTemporada');
+        ID_CUERPOTECNICO = document.getElementById('idCuerpoTecnico'),
+        TECNICO = document.getElementById('tecnico'),
+        ROL = document.getElementById('rol'),
+        CUERPO_TECNICO = document.getElementById('cuerpoTecnico');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
@@ -198,7 +215,7 @@ window.onload = async function () {
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SAVE_FORM);
         // Petición para guardar los datos del formulario.
-        const DATA = await fetchData(TEMPORADA_API, action, FORM);
+        const DATA = await fetchData(API, action, FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se cierra la caja de diálogo.

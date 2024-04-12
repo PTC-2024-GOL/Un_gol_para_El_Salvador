@@ -1,10 +1,7 @@
 let SAVE_MODAL;
 let SAVE_FORM,
     ID_CUERPOTECNICO,
-    PRIMERTECNICO_CUERPOTECNICO,
-    SEGUNDOTECNICO_CUERPOTECNICO,
-    PREPARADORFISICO_CUERPOTECNICO,
-    DELEGADO_CUERPOTECNICO;
+    CUERPOTECNICO;
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
@@ -49,10 +46,7 @@ const openUpdate = async (id) => {
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
             ID_CUERPOTECNICO.value = ROW.ID;
-            PRIMERTECNICO_CUERPOTECNICO.value = ROW.PRIMER;
-            SEGUNDOTECNICO_CUERPOTECNICO.value = ROW.SEGUNDO;
-            PREPARADORFISICO_CUERPOTECNICO.value = ROW.PREPARADOR;
-            DELEGADO_CUERPOTECNICO.value = ROW.DELEGADO
+            CUERPOTECNICO.value = ROW.NOMBRE;
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -103,31 +97,19 @@ const openDelete = async (id) => {
 async function cargarTabla(form = null) {
     const lista_datos = [
         {
-            primer: 'Chepe Mártinez',
-            segundo: 'Daniel Menjívar',
-            preparador: 'Carlos Escobar',
-            delegado: 'David Muñoz',
+            nombre: 'Cuerpo técnico equipo sub 12 temporada 2023-24',
             id: 1,
         },
         {
-            primer: 'Xavi Hernández',
-            segundo: 'Óscar Hernández',
-            preparador: 'Iván Torres',
-            delegado: 'josé de la Fuente',
+            nombre: 'Cuerpo técnico equipo sub 13 temporada 2023-24',
             id: 2,
         },
         {
-            primer: 'Pep Guardiola',
-            segundo: 'Carlos Vicens',
-            preparador: 'Juanma Lillo',
-            delegado: 'Xabier Mancisidor',
+            nombre: 'Cuerpo técnico equipo sub 14 temporada 2023-24',
             id: 3,
         },
         {
-            primer: 'Carlo Ancelotti',
-            segundo: 'Davide Ancelotti',
-            preparador: 'Luis Llopis',
-            delegado: 'Javier Mallo',
+            nombre: 'Cuerpo técnico equipo sub 15 temporada 2023-24',
             id: 4,
         }
     ];
@@ -147,10 +129,7 @@ async function cargarTabla(form = null) {
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
                 <tr>
-                    <td>${row.PRIMER}</td>
-                    <td>${row.SEGUNDO}</td>
-                    <td>${row.PREPARADOR}</td>
-                    <td>${row.DELEGADO}</td>
+                    <td class="text-center">${row.NOMBRE}</td>
                     <td>
                         <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
                         <img src="../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
@@ -172,10 +151,7 @@ async function cargarTabla(form = null) {
         lista_datos.forEach(row => {
             const tablaHtml = `
             <tr>
-                <td>${row.primer}</td>
-                <td>${row.segundo}</td>
-                <td>${row.preparador}</td>
-                <td>${row.delegado}</td>
+                <td class="text-center">${row.nombre}</td>
                 <td>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
