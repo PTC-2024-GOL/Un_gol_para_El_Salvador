@@ -188,10 +188,7 @@ window.onload = async function () {
     // Constantes para establecer los elementos del formulario de guardar.
         SAVE_FORM = document.getElementById('saveForm'),
         ID_CUERPOTECNICO = document.getElementById('idCuerpotecnico'),
-        PRIMERTECNICO_CUERPOTECNICO = document.getElementById('primerTecnico'),
-        SEGUNDOTECNICO_CUERPOTECNICO = document.getElementById('segundoTecnico'),
-        PREPARADORFISICO_CUERPOTECNICO = document.getElementById('preparadorFisico'),
-        DELEGADO_CUERPOTECNICO = document.getElementById('delegadoTecnico');
+        CUERPOTECNICO = document.getElementById('cuerpoTecnico');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
