@@ -107,7 +107,7 @@ const seeModal = async (id) => {
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
-            SEE_MODAL.show();
+            SAVE_MODAL.show();
             MODAL_TITLE.textContent = 'Actualizar análisis del jugador';
             // Se prepara el formulario.
             SAVE_FORM.reset();
