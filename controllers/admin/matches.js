@@ -1,3 +1,6 @@
+const params = new URLSearchParams(window.location.search);
+const idEquipo = params.get("idEquipo");
+const nombreEquipo = params.get("nombreEquipo");
 let SAVE_MODAL,
 SEE_MODAL,
 SEE_FORM;
@@ -7,9 +10,12 @@ let SAVE_FORM,
     RIVAL,
     FECHA_PARTIDO,
     CANCHA,
+    LOGO,
+    LOGO_RIVAL,
     RESULTADO_PARTIDO,
     LOCALIDAD,
     TIPO_RESULTADO_PARTIDO,
+    ID_EQUIPO,
     JORNADA;
 let SEARCH_FORM;
 
@@ -147,83 +153,103 @@ const openDelete = async (id) => {
 }
 
 
-async function cargarTabla(form = null) {
+async function fillCards(form = null) {
     const lista_datos = [
         {
             equipo: 'Leones',
             rival: 'Tigres',
             fechaPartido: '15 de marzo del 2024',
-            resultado: '3-1',
+            resultado_partido: '3-1',
             localidad: 'Visitante',
             id: 1,
-            tipo_resultado_partido: 'victoria',
+            id_equipo: 1,
+            resultado: '5 : 2',
+            logo: '../../../../resources/img/svg/icons_dashboard/logo_gol.svg',
+            logo_rival: '../../../../resources/img/svg/icons_dashboard/logo_rival.svg',
         },
         {
-            equipo: 'Mar',
-            rival: 'FC Migueleños',
-            fechaPartido: '12 de abril del 2024',
-            resultado: '2-2',
-            localidad: 'Local',
-            id: 2,
-            tipo_resultado_partido: 'empate',
-        },
-        {
-            equipo: 'GOL',
-            rival: 'FESA',
-            fechaPartido: '20 de marzo del 2024',
-            resultado: '1-2',
-            localidad: 'Local',
-            id: 3,
-            tipo_resultado_partido: 'derrota',
-        },
-        {
-            equipo: 'Power kid',
-            rival: 'Toluca',
+            equipo: 'Leones',
+            rival: 'Tigres',
             fechaPartido: '15 de marzo del 2024',
-            resultado: '2-0',
+            resultado_partido: '3-1',
             localidad: 'Visitante',
-            id: 4,
-            tipo_resultado_partido: 'victoria',
+            id: 1,
+            id_equipo: 1,
+            resultado: '5 : 2',
+            logo: '../../../../resources/img/svg/icons_dashboard/logo_gol.svg',
+            logo_rival: '../../../../resources/img/svg/icons_dashboard/logo_rival.svg',
+        },
+        {
+            equipo: 'Leones',
+            rival: 'Tigres',
+            fechaPartido: '15 de marzo del 2024',
+            resultado_partido: '3-1',
+            localidad: 'Visitante',
+            id: 1,
+            id_equipo: 1,
+            resultado: '5 : 2',
+            logo: '../../../../resources/img/svg/icons_dashboard/logo_gol.svg',
+            logo_rival: '../../../../resources/img/svg/icons_dashboard/logo_rival.svg',
+        },
+        {
+            equipo: 'Leones',
+            rival: 'Tigres',
+            fechaPartido: '15 de marzo del 2024',
+            resultado_partido: '3-1',
+            localidad: 'Visitante',
+            id: 1,
+            id_equipo: 1,
+            resultado: '5 : 2',
+            logo: '../../../../resources/img/svg/icons_dashboard/logo_gol.svg',
+            logo_rival: '../../../../resources/img/svg/icons_dashboard/logo_rival.svg',
         }
     ];
-    const cargarTabla = document.getElementById('tabla_partido');
+    const cargarCartas = document.getElementById('matches_cards');
 
     try {
-        cargarTabla.innerHTML = '';
+        cargarCartas.innerHTML = '';
         // Se verifica la acción a realizar.
         (form) ? action = 'searchRows' : action = 'readAll';
         console.log(form);
         // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(PARTIDO_API, action, form);
+        const DATA = await fetchData(API, action, form);
         console.log(DATA);
 
         if (DATA.status) {
             // Mostrar elementos obtenidos de la API
             DATA.dataset.forEach(row => {
-                const resultadoColorClass = row.TIPO_RESULTADO_PARTIDO === 'victoria' ? 'text-success' : row.TIPO_RESULTADO_PARTIDO === 'empate' ? 'text-dark' : 'text-danger';
-                const tablaHtml = `
-                <tr>
-                    <td>${row.EQUIPO}</td>
-                    <td>${row.RIVAL}</td>
-                    <td>${row.FECHAPARTIDO}</td>
-                    <td class="${resultadoColorClass}">${row.RESULTADO}</td>
-                    <td>${row.LOCALIDAD}</td>
-                    <td>
-                        <button type="button" class="btn btn-warnig" onclick="seeModal(${row.ID})">
-                        <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
-                        </button>
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
-                        <img src="../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" onclick="openDelete(${row.ID})">
-                            <i class="bi bi-trash-fill"></i>
-                        </button>
-                    </td>
-                </tr>
-                `;
-                cargarTabla.innerHTML += tablaHtml;
+                const cardsHtml =  `<div class="col-md-6 col-sm-12">
+                <div class="tarjetas p-4">
+                    <div class="row">
+                        <div class="col-auto">
+                            <img src="../../../resources/img/svg/calendar.svg" alt="">
+                        </div>
+                        <div class="col">
+                            <p class="fw-semibold mb-0">${row.FECHA_PARTIDO}</p>
+                            <p class="small">${row.LOCALIDAD}</p>
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-4">
+                            <img src="${row.LOGO}" class="img">
+                            <p class="small mt-3">${row.EQUIPO}</p>
+                        </div>
+                        <div class="col-4">
+                            <h2 class="fw-semibold">${row.RESULTADO_PARTIDO}</h2>
+                        </div>
+                        <div class="col-4">
+                            <img src="${row.LOGO_RIVAL}" class="img">
+                            <p class="small mt-3">${row.RIVAL}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <button class="btn bg-blue-principal-color text-white btn-sm rounded-3"  onclick="openUpdate(${row.ID_PARTIDO})">
+                        Editar partido
+                    </button>
+                </div>
+                </div>
+              `;
+                cargarCartas.innerHTML += cardsHtml;
             });
         } else {
             sweetAlert(4, DATA.error, true);
@@ -232,30 +258,38 @@ async function cargarTabla(form = null) {
         console.error('Error al obtener datos de la API:', error);
         // Mostrar materiales de respaldo
         lista_datos.forEach(row => {
-            const resultadoColorClass = row.tipo_resultado_partido === 'victoria' ? 'text-success' : row.tipo_resultado_partido=== 'empate' ? 'text-dark' : 'text-danger';
-            const tablaHtml = `
-            <tr>
-                <td>${row.equipo}</td>
-                <td>${row.rival}</td>
-                <td>${row.fechaPartido}</td>
-                <td class="${resultadoColorClass}">${row.resultado}</td>
-                <td>${row.localidad}</td>
-                <td>
-                    <button type="button" class="btn btn-warnig" onclick="seeModal(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
-                    </button>
-                </td>
-                <td>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                    </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
-                </td>
-            </tr>
-            `;
-            cargarTabla.innerHTML += tablaHtml;
+            const cardsHtml = `<div class="col-md-6 col-sm-12">
+            <div class="tarjetas shadow p-4">
+                <div class="row">
+                    <div class="col-auto">
+                        <img src="../../../resources/img/svg/calendar.svg" alt="">
+                    </div>
+                    <div class="col">
+                        <p class="fw-semibold mb-0">${row.fechaPartido}</p>
+                        <p class="small">${row.localidad}</p>
+                    </div>
+                </div>
+                <div class="row align-items-center">
+                    <div class="col-4">
+                        <img src="${row.logo}" class="img">
+                        <p class="small mt-3">${row.equipo}</p>
+                    </div>
+                    <div class="col-4">
+                        <h2 class="fw-semibold">${row.resultado}</h2>
+                    </div>
+                    <div class="col-4">
+                        <img src="${row.logo_rival}" class="img">
+                        <p class="small mt-3">${row.rival}</p>
+                    </div>
+                </div>
+                <hr>
+                <button class="btn bg-blue-principal-color text-white btn-sm rounded-3"  onclick="openUpdate(${row.id_partido})">
+                    Editar partido
+                </button>
+            </div>
+            </div>
+          `;
+            cargarCartas.innerHTML += cardsHtml;
         });
     }
 }
@@ -270,7 +304,8 @@ window.onload = async function () {
     loadTemplate();
     // Agrega el HTML del encabezado
     appContainer.innerHTML = adminHtml;
-    cargarTabla();
+    titleElement.textContent = 'Partidos'; 
+    fillCards();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
@@ -305,7 +340,7 @@ window.onload = async function () {
             // Se muestra un mensaje de éxito.
             sweetAlert(1, DATA.message, true);
             // Se carga nuevamente la tabla para visualizar los cambios.
-            cargarTabla();
+            fillCards();
         } else {
             sweetAlert(2, DATA.error, false);
             console.error(DATA.exception);
@@ -324,6 +359,6 @@ window.onload = async function () {
         console.log(SEARCH_FORM);
         console.log(FORM);
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
-        cargarTabla(FORM);
+        fillCards();
     });
 };
