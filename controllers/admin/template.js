@@ -6,6 +6,7 @@ let GRAPHIC_MODAL,
     MODAL_TITLE2;
 let SAVE_FORM,
     ID_PLANTILLA,
+    PLANTILLA,
     JUGADOR,
     TEMPORADA,
     EQUIPO;
@@ -83,8 +84,10 @@ const seeModal = async (id) => {
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
             ID_PLANTILLA.value = ROW.ID;
+            PLANTILLA.value = ROW.PLANTILLA;
             JUGADOR.value = ROW.JUGADOR;
             EQUIPO.value = ROW.EQUIPO;
+            TEMPORADA.value = ROW.TEMPORADA;
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -353,25 +356,25 @@ async function cargarTabla(form = null) {
         {
             equipo: 'Gol El Salvador Nivel 4 Femenino',
             jugador: 23,
-            plantilla: 1,
+            plantilla: 'Plantilla para la liga femenina de la ADFA San Salvador',
             id: 1,
         },
         {
             equipo: 'Gol El Salvador Nivel 2 Femenino',
             jugador: 22,
-            plantilla: 1,
+            plantilla: 'Plantilla para la Copa Interclubes de la Uncaf 2024',
             id: 2,
         },
         {
             equipo: 'Gol El Salvador Nivel 1 Femenino',
             jugador: 24,
-            plantilla: 1,
+            plantilla: 'Plantilla para la Copa Interclubes de la Uncaf 2024',
             id: 3,
         },
         {
             equipo: 'Gol El Salvador Nivel 1 Masculino',
             jugador: 17,
-            plantilla: 1,
+            plantilla: 'Plantilla para la liga masculina de la ADFA San Salvador',
             id: 4,
         }
     ];
@@ -391,6 +394,7 @@ async function cargarTabla(form = null) {
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
                 <tr>
+                    <td>${row.PLANTILLA}</td>
                     <td>${row.EQUIPO}</td>
                     <td>${row.JUGADOR}</td>
                     <td>
@@ -419,10 +423,11 @@ async function cargarTabla(form = null) {
         lista_datos.forEach(row => {
             const tablaHtml = `
             <tr>
+                <td>${row.plantilla}</td>
                 <td>${row.equipo}</td>
                 <td>${row.jugador}</td>
                 <td>
-                    <button type="button" class="btn transparente" onclick="seeModal(${row.plantilla})">
+                    <button type="button" class="btn transparente" onclick="seeModal()">
                     <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18px" height="18px">
                     </button>
                 </td>
@@ -524,6 +529,7 @@ window.onload = async function () {
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
         ID_PLANTILLA = document.getElementById('idAnalisis'),
+        PLANTILLA = document.getElementById('plantilla'),
         JUGADOR = document.getElementById('jugador'),
         TEMPORADA = document.getElementById('temporada'),
         EQUIPO = document.getElementById('equipo');

@@ -50,7 +50,7 @@ const openCreate = () => {
     MODAL_TITLE.textContent = 'Crear análisis del jugador';
     // Se prepara el formulario.
     SAVE_FORM.reset();
-    restaurarFormulario(25);
+    restaurarFormulario(23.75);
 }
 
 /*
@@ -127,7 +127,7 @@ const seeModal = async (id) => {
         SAVE_MODAL.show();
         MODAL_TITLE.textContent = 'Análisis del jugador';
         SAVE_FORM.reset();
-        restaurarFormulario(33);
+        restaurarFormulario(31.16);
         // Ejemplo de uso: actualizar del paso 1 al paso 2
         updateSteps(1, 2);
 
@@ -170,7 +170,7 @@ const openUpdate = async (id) => {
         console.log(Error);
         SAVE_MODAL.show();
         MODAL_TITLE.textContent = 'Actualizar análisis del jugador';
-        restaurarFormulario(25);
+        restaurarFormulario(23.75);
     }
 
 }

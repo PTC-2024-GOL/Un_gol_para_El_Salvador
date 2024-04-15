@@ -6,7 +6,8 @@
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
                         name="search" placeholder="Buscar" required>
-                    <button type="submit" class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
+                    <button type="submit"
+                        class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
                     </button>
                     <button type="reset" class="btn" onclick="fillTable()">
@@ -17,10 +18,19 @@
 
             <div class="col-sm-12 col-md-6">
                 <!-- Botón Agregar -->
-                <button class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3" type="submit"
-                    onclick="openCreate()">
-                    <span class="fs-5 me-2">+</span> Agregar rol del técnico
+                <button
+                    class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
+                    type="submit" onclick="openCreate()">
+                    <span class="fs-5 me-2">+</span> Agregar plantilla
                 </button>
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+                <!-- Botón ver plantillas a detalle -->
+                <a href="template.html"
+                    class="btn btn-outlined-light ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3">
+                    Ver plantillas a detalle
+                </a>
             </div>
         </div>
     </div>
@@ -34,7 +44,7 @@
                     <td colspan="6" id="rowsFound"></td>
                 </tr>
                 <tr>
-                    <th>Nombre del rol del técnico</th>
+                    <th>Nombre de la plantilla</th>
                 </tr>
             </thead>
             <!-- Cuerpo de la tabla para mostrar un registro por fila -->
@@ -51,17 +61,18 @@
             <div class="modal-header bg-blue-principal-color">
                 <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
                 <h1 class="modal-title fs-5 text-white" id="modalTitle"></h1>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
             <!-- Formulario para crear o actualizar un registro -->
             <form id="saveForm">
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input type="hidden" id="idRol" name="idRol">
+                    <input type="hidden" id="idPlantilla" name="idPlantilla">
                     <div class="col-sm-12 col-md-6">
-                        <label for="nombreRol" class="form-label">Nombre del rol</label>
-                        <input id="nombreRol" type="text" name="nombreRol" class="form-control"
-                            placeholder="Escribe el nombre del rol" required>
+                        <label for="nombrePlantilla" class="form-label">Nombre de la plantilla</label>
+                        <input id="nombrePlantilla" type="text" name="nombrePlantilla" class="form-control"
+                            placeholder="Escribe el nombre de la plantilla" required>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
