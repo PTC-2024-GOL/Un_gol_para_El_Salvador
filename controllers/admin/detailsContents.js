@@ -164,7 +164,7 @@ async function cargarTabla(form = null) {
                 <td>${row.categoria}</td>
                 
                 <td>
-                    <button type="button" class="btn btn-warnig" onclick="seeModal(${row.id})">
+                    <button type="button" class="btn transparente" onclick="seeModal(${row.id})">
                     <img src="../../../resources/img/svg/icons_forms/reloj.png" width="30" height="30">
                     </button>
                 </td>
@@ -186,6 +186,8 @@ window.onload = async function () {
     // Agrega el HTML del encabezado
     appContainer.innerHTML = adminHtml;
     fillSelected(lista_datos_horario, 'readAll', 'horario');
+    const titleElement = document.getElementById('title');
+    titleElement.textContent = 'Detalles de contenidos';
     cargarTabla();
     // Constantes para establecer los elementos del componente Modal.
 

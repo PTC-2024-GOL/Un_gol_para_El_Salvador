@@ -6,7 +6,8 @@
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
                         name="search" placeholder="Buscar" required>
-                    <button type="submit" class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
+                    <button type="submit"
+                        class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
                     </button>
                     <button type="reset" class="btn" onclick="fillTable()">
@@ -17,8 +18,9 @@
 
             <div class="col-sm-12 col-md-6">
                 <!-- Botón Agregar -->
-                <button class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3" type="submit"
-                    onclick="openCreate()">
+                <button
+                    class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
+                    type="submit" onclick="openCreate()">
                     <span class="fs-5 me-2">+</span> Agregar registro
                 </button>
             </div>
@@ -54,7 +56,8 @@
             <div class="modal-header bg-blue-principal-color text-light">
                 <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
                 <h1 class="modal-title fs-5" id="modalTitle"></h1>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
             <!-- Formulario para crear o actualizar un registro -->
             <form id="saveForm">
@@ -63,11 +66,13 @@
                     <input type="hidden" id="idEstado" name="idEstado">
                     <div class="col-sm-12 col-md-6">
                         <label for="altura" class="form-label fw-semibold">Altura(en cm)</label>
-                        <input type="number" class="form-control" id="altura" name="altura" placeholder="Escribe la altura en centímetros." required>
+                        <input type="number" class="form-control" id="altura" name="altura" min="1"
+                            placeholder="Escribe la altura en centímetros." required>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="peso" class="form-label fw-semibold">Peso(en lbs)</label>
-                        <input type="number" class="form-control" id="peso" name="peso" placeholder="Escribe el peso en libras" required>
+                        <input type="number" class="form-control" id="peso" name="peso" min="1"
+                            placeholder="Escribe el peso en libras" required>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">

@@ -1,9 +1,6 @@
-const params = new URLSearchParams(window.location.search);
-const idEquipo = params.get("idEquipo");
-const nombreEquipo = params.get("nombreEquipo");
 let SAVE_MODAL,
-SEE_MODAL,
-SEE_FORM;
+    SEE_MODAL,
+    SEE_FORM;
 let SAVE_FORM,
     ID_PARTIDO,
     EQUIPO,
@@ -42,7 +39,7 @@ const openCreate = () => {
 
 // Funcion para preparar el formulario al momento de abrirlo
 
-const seeModal =async (id) => {
+const seeModal = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
@@ -218,7 +215,7 @@ async function fillCards(form = null) {
         if (DATA.status) {
             // Mostrar elementos obtenidos de la API
             DATA.dataset.forEach(row => {
-                const cardsHtml =  `<div class="col-md-6 col-sm-12">
+                const cardsHtml = `<div class="col-md-6 col-sm-12">
                 <div class="tarjetas p-4">
                     <div class="row">
                         <div class="col-auto">
@@ -261,13 +258,17 @@ async function fillCards(form = null) {
             const cardsHtml = `<div class="col-md-6 col-sm-12">
             <div class="tarjetas shadow p-4">
                 <div class="row">
-                    <div class="col-auto">
-                        <img src="../../../resources/img/svg/calendar.svg" alt="">
-                    </div>
+                <div class="col-auto">
+                <img src="../../../resources/img/svg/calendar.svg" alt="">
+                </div>
                     <div class="col">
                         <p class="fw-semibold mb-0">${row.fechaPartido}</p>
                         <p class="small">${row.localidad}</p>
                     </div>
+                    <div class="col-auto ms-auto">
+                    <button type="button"  class="btn-close btn-close-black" style="height: 35px;" onclick="openDelete(${row.id_equipo})">
+                </button>
+                </div>  
                 </div>
                 <div class="row align-items-center">
                     <div class="col-4">
@@ -280,7 +281,7 @@ async function fillCards(form = null) {
                     <div class="col-4">
                         <img src="${row.logo_rival}" class="img">
                         <p class="small mt-3">${row.rival}</p>
-                    </div>
+                    </div> 
                 </div>
                 <hr>
                 <button class="btn bg-blue-principal-color text-white btn-sm rounded-3"  onclick="openUpdate(${row.id_partido})">
@@ -304,7 +305,8 @@ window.onload = async function () {
     loadTemplate();
     // Agrega el HTML del encabezado
     appContainer.innerHTML = adminHtml;
-    titleElement.textContent = 'Partidos'; 
+    const titleElement = document.getElementById('title');
+    titleElement.textContent = 'Partidos';
     fillCards();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),

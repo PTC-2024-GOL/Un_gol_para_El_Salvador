@@ -262,12 +262,12 @@ async function cargarTabla(form = null) {
                     <td>${row.N}</td>
                     <td>${row.FECHA}</td>
                     <td class="justify-content-center">
-                        <button type="button" class="btn btn-warnig" onclick="seeModal(${row.ID})">
+                        <button type="button" class="btn transparente" onclick="seeModal(${row.ID})">
                         <img src="../../../resources/img/svg/icons_forms/stadistic.png" width="30" height="30">
                         </button>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-warnig" onclick="seeCont(${row.ID})">
+                        <button type="button" class="btn transparente" onclick="seeCont(${row.ID})">
                         <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
                         </button>
                     </td>
@@ -287,13 +287,13 @@ async function cargarTabla(form = null) {
                     <td>${row.n}</td>
                     <td>${row.fecha}</td>
                     <td class="justify-content-center">
-                        <button type="button" class="btn btn-warnig" onclick="seeModal(${row.id})">
-                        <img src="../../../resources/img/svg/icons_forms/stadistic.png" width="30" height="30">
+                        <button type="button" class="btn transparente" onclick="seeModal(${row.id})">
+                        <img src="../../../resources/img/svg/icons_forms/stadistic.png" width="18" height="18">
                         </button>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-warnig" onclick="seeCont(${row.id})">
-                        <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
+                        <button type="button" class="btn transparente" onclick="seeCont(${row.id})">
+                        <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="|8" height="18">
                         </button>
                     </td>
                 </tr>
