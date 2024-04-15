@@ -39,6 +39,16 @@ const openCreate = () => {
     SAVE_FORM.reset();
 }
 /*
+*   Función para abrir una nueva página.
+*   Parámetros: id jugador.
+*   Retorno: ninguno.
+*/
+const openPage = (id) => {
+    // Cuando se haga clic en el botón, se redirigirá a la página de estado fisica específicas.
+    console.log(id);
+    window.location.href = '../paginas/physical_state.html';
+}
+/*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
@@ -183,6 +193,11 @@ async function fillTable(form = null) {
                     <td>${row.POSICION_PRINCIPAL}</td>
                     <td>${row.NACIMIENTO}</td>
                     <td>
+                <button type="button" class="btn transparente" onclick="openPage(${row.ID})">
+                    <img src="../../../resources/img/svg/icons_forms/history.png" width="18" height="18">
+                    </button>
+                </td>
+                    <td>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
@@ -209,6 +224,11 @@ async function fillTable(form = null) {
                 <td>${row.dorsal}</td>
                 <td>${row.posicion_principal}</td>
                 <td>${row.fecha}</td>
+                <td>
+                <button type="button" class="btn transparente" onclick="openPage(${row.id})">
+                    <img src="../../../resources/img/svg/icons_forms/history.png" width="18" height="18">
+                    </button>
+                </td>
                 <td>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
@@ -250,16 +270,16 @@ window.onload = async function () {
         ALIAS_JUGADOR = document.getElementById('aliasJugador'),
         NACIMIENTO_JUGADOR = document.getElementById('fechaNacimientoJugador'),
         PERFIL_JUGADOR = document.getElementById('perfilJugador'),
-        ID_POSICION_PRINCIPAL= document.getElementById('posicionPrincipal'),
+        ID_POSICION_PRINCIPAL = document.getElementById('posicionPrincipal'),
         ID_POSICION_SECUNDARIA = document.getElementById('posicionSecundaria'),
         ALTURA_JUGADOR = document.getElementById('alturaJugador'),
         PESO_JUGADOR = document.getElementById('pesoJugador');
-        MASA_CORPORAL = document.getElementById('masaCorporal');
-        DORSAL_JUGADOR = document.getElementById('dorsal');
-        ESTATUS_JUGADOR = document.getElementById('estadoJugador');
-        CLAVE_JUGADOR = document.getElementById('claveJugador');
-        REPETIR_CLAVE = document.getElementById('repetirclaveJugador');
-        IMAGEN_JUGADOR = document.getElementById('imagenAdministrador');
+    MASA_CORPORAL = document.getElementById('masaCorporal');
+    DORSAL_JUGADOR = document.getElementById('dorsal');
+    ESTATUS_JUGADOR = document.getElementById('estadoJugador');
+    CLAVE_JUGADOR = document.getElementById('claveJugador');
+    REPETIR_CLAVE = document.getElementById('repetirclaveJugador');
+    IMAGEN_JUGADOR = document.getElementById('imagenAdministrador');
 
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
