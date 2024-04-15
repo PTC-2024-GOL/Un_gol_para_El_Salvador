@@ -221,24 +221,28 @@ const openDelete = async (id) => {
 async function cargarTabla(form = null) {
     const lista_datos = [
         {
+            imagen: '../../../../resources/img/svg/avatar.svg',
             nombre: 'Mateo',
             apellido: 'Ramírez',
             minutosJugados: 30,
             id: 1,
         },
         {
+            imagen:  '../../../../resources/img/svg/avatar.svg',
             nombre: 'Mateo',
             apellido: 'Ramírez',
             minutosJugados: 30,
             id: 2,
         },
         {
+            imagen:  '../../../../resources/img/svg/avatar.svg',
             nombre: 'Mateo',
             apellido: 'Ramírez',
             minutosJugados: 30,
             id: 3,
         },
         {
+            imagen:  '../../../../resources/img/svg/avatar.svg',
             nombre: 'Mateo',
             apellido: 'Ramírez',
             minutosJugados: 30,
@@ -261,6 +265,7 @@ async function cargarTabla(form = null) {
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
                 <tr>
+                    <img src="${SERVER_URL}images/admin/${row.imagen}" height="50" width="50" class="circulo"></td>
                     <td>${row.NOMBRE}</td>
                     <td>${row.APELLIDO}</td>
                     <td>${row.MINUTOS_JUGADOS}</td>
@@ -298,6 +303,7 @@ async function cargarTabla(form = null) {
         lista_datos.forEach(row => {
             const tablaHtml = `
             <tr>
+                <td><img src="${row.imagen}" height="50" width="50" class="circulo"></td>
                 <td>${row.nombre}</td>
                 <td>${row.apellido}</td>
                 <td>${row.minutosJugados}</td>
