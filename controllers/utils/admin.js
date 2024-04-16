@@ -121,7 +121,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                 </a>
                                 <ul class="dropdown-menu bg-transparent">
                                     <li><a class="dropdown-item text-light" href="technical_roles.html">Roles de los técnicos</a></li>
-                                    <li><a class="dropdown-item text-light" href="coaching_staff.html">Cuerpos técnicos</a></li>
+                                    <li><a class="dropdown-item text-light" href="coachings_staffs.html">Cuerpos técnicos</a></li>
                                     <li><a class="dropdown-item text-light" href="soccer_team.html">Equipos</a></li>
                                     <li><a class="dropdown-item text-light" href="templates_name.html">Plantillas</a></li>
                                     <li><a class="dropdown-item text-light" href="types_plays.html">Tipos de jugada</a></li>
