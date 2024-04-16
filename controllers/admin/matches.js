@@ -4,6 +4,8 @@ let SAVE_MODAL,
 let SAVE_FORM,
     ID_PARTIDO,
     EQUIPO,
+    MODAL_TITLE,
+    MODAL_TITLE2,
     RIVAL,
     FECHA_PARTIDO,
     CANCHA,
@@ -32,7 +34,7 @@ async function loadComponent(path) {
 const openCreate = () => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
-    MODAL_TITLE.textContent = 'Agregar partido';
+    MODAL_TITLE2.textContent = 'Agregar partido';
     // Se prepara el formulario.
     SAVE_FORM.reset();
 }
@@ -115,7 +117,7 @@ const openUpdate = async (id) => {
     } catch (Error) {
         console.log(Error);
         SAVE_MODAL.show();
-        MODAL_TITLE.textContent = 'Actualizar partido';
+        MODAL_TITLE2.textContent = 'Actualizar partido';
     }
 
 }
@@ -326,7 +328,7 @@ window.onload = async function () {
     fillCards();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
-        MODAL_TITLE = document.getElementById('modalTitle');
+        MODAL_TITLE2 = document.getElementById('modalTitle');
 
     SEE_MODAL = new bootstrap.Modal('#seeModal'),
         MODAL_TITLE = document.getElementById('modalTitle2')
