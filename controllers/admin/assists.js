@@ -73,7 +73,7 @@ const fillSelected = (data, action, selectId, selectedValue = null) => {
 */
 
 const openPag = () => {
-    window.location.href = '../paginas/SpecificAssistens.html';
+    window.location.href = '../paginas/specific_assistens.html';
 }
 
 // Funcion para preparar el formulario al momento de abrirlo

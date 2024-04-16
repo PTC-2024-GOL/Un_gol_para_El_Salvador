@@ -105,9 +105,9 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                     <li><a class="dropdown-item text-light" href="category_schedules.html">Horarios de las categorías</a></li>
                                     <li><a class="dropdown-item text-light" href="trainings.html">Entrenamientos</a></li>
                                     <li><a class="dropdown-item text-light" href="contents.html">Contenidos</a></li>
-                                    <li><a class="dropdown-item text-light" href="subcontents.html">Sub contenidos</a></li>
+                                    <li><a class="dropdown-item text-light" href="sub_contents.html">Sub contenidos</a></li>
                                     <li><a class="dropdown-item text-light" href="tasks.html">Tareas</a></li>
-                                    <li><a class="dropdown-item text-light" href="detailsContents.html">Detalles</a></li>
+                                    <li><a class="dropdown-item text-light" href="details_contents.html">Detalles</a></li>
                                     <li><a class="dropdown-item text-light" href="player_characteristics.html">Características de jugadores</a></li>
                                     <li><a class="dropdown-item text-light" href="feature_analysis.html">Análisis de características</a></li>
                                     <li><a class="dropdown-item text-light" href="assists.html">Asistencia</a></li>

@@ -74,7 +74,7 @@ const fillSelected = (data, action, selectId, selectedValue = null) => {
 //
 // Función para abrir la página de detalles específicos.
 const openPag = () => {
-    window.location.href = '../paginas/SpecificDetailsContents.html';
+    window.location.href = '../paginas/specific_details_contents.html';
 }
 
 // Funcion para preparar el formulario al momento de abrirlo
@@ -198,7 +198,7 @@ window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
     // Carga los componentes de manera síncrona
-    const adminHtml = await loadComponent('../componentes/detailsContents.html');
+    const adminHtml = await loadComponent('../componentes/details_contents.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
     // Agrega el HTML del encabezado
