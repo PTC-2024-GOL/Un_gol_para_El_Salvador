@@ -3,6 +3,9 @@
         <div class="row gy-3">
             <!-- Buscador -->
             <div class="col-sm-12 col-md-6">
+                <div class="p-2">
+                    <img src="../../../resources/img/svg/icons_dashboard/football_ball.svg" width="35px">
+                </div>
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
                         name="search" placeholder="Buscar" required>
@@ -26,7 +29,6 @@
             </div>
         </div>
     </div>
-    <hr>
     <hr class="mt-4">
 
     <!-- Fila que contiene dos columnas -->
@@ -53,6 +55,40 @@
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
                     <input type="hidden" id="idPartido" name="idPartido">
+                    <div class="container text-center text-md-start text-lg-start">
+                        <div class="row align-items-center justify-content-center gy-10">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12 align-items-end">
+                                    <div class="col-sm-12 col-md-12 text-center py-3">
+                                        <img class="circulo" id="img_admin"
+                                            src="../../../../resources/img/svg/icons_dashboard/logo_gol.svg"
+                                            width="95px">
+                                    </div>
+                                    <div class="col-sm-12 text-center py-2">
+                                        <!-- Botón para cargar imagen -->
+                                        <input type="file" class="form-control" id="imagenTecnico" hidden>
+                                        <!-- Para que tenga el mismo funcionamiento del input file le ponemos el for y le agregamos el id del input file -->
+                                        <label class="btn bg-blue-principal-color text-light" for="imagenTecnico">Cargar
+                                            logo del equipo</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12 align-items-start">
+                                    <div class="col-sm-12 col-md-12 text-center py-3">
+                                        <img class="circulo" id="img_admin"
+                                            src="../../../../resources/img/svg/icons_dashboard/logo_rival.svg"
+                                            width="50px">
+                                    </div>
+                                    <div class="col-sm-12 text-center py-2">
+                                        <!-- Botón para cargar imagen -->
+                                        <input type="file" class="form-control" id="imagenTecnico" hidden>
+                                        <!-- Para que tenga el mismo funcionamiento del input file le ponemos el for y le agregamos el id del input file -->
+                                        <label class="btn bg-blue-principal-color text-light" for="imagenTecnico">Cargar
+                                            logo del rival</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="equipos" class="form-label">Equipo</label>
                         <select id="equipos" type="text" name="equipos" class="form-select" required></select>
@@ -116,6 +152,26 @@
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
                     <input type="hidden" id="idPartido" name="idPartido">
+                    <div class="container text-center text-md-start text-lg-start">
+                        <div class="row align-items-center justify-content-center gy-10">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12 align-items-end">
+                                    <div class="col-sm-12 col-md-12 text-center py-3">
+                                        <img class="circulo" id="img_admin"
+                                            src="../../../../resources/img/svg/icons_dashboard/logo_gol.svg"
+                                            width="95px">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12 align-items-start">
+                                    <div class="col-sm-12 col-md-12 text-center py-3">
+                                        <img class="circulo" id="img_admin"
+                                            src="../../../../resources/img/svg/icons_dashboard/logo_rival.svg"
+                                            width="50px">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="equipos" class="form-label">Equipo</label>
                         <select id="equipos" type="text" name="equipos" class="form-select" required></select>

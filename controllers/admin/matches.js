@@ -25,9 +25,9 @@ async function loadComponent(path) {
     return text;
 }
 /*
-*   Función para preparar el formulario al momento de insertar un registro.
-*   Parámetros: ninguno.
-*   Retorno: ninguno.
+* Función para preparar el formulario al momento de insertar un registro.
+* Parámetros: ninguno.
+* Retorno: ninguno.
 */
 const openCreate = () => {
     // Se muestra la caja de diálogo con su título.
@@ -39,9 +39,9 @@ const openCreate = () => {
 
 // Funcion para preparar el formulario al momento de abrirlo
 /*
-*   Función asíncrona para preparar el formulario al momento de ver un registro.
-*   Parámetros: id (identificador del registro seleccionado).
-*   Retorno: ninguno.
+* Función asíncrona para preparar el formulario al momento de ver un registro.
+* Parámetros: id (identificador del registro seleccionado).
+* Retorno: ninguno.
 */
 //
 
@@ -80,9 +80,9 @@ const seeModal = async (id) => {
     }
 }
 /*
-*   Función asíncrona para preparar el formulario al momento de actualizar un registro.
-*   Parámetros: id (identificador del registro seleccionado).
-*   Retorno: ninguno.
+* Función asíncrona para preparar el formulario al momento de actualizar un registro.
+* Parámetros: id (identificador del registro seleccionado).
+* Retorno: ninguno.
 */
 const openUpdate = async (id) => {
     try {
@@ -120,9 +120,9 @@ const openUpdate = async (id) => {
 
 }
 /*
-*   Función asíncrona para eliminar un registro.
-*   Parámetros: id (identificador del registro seleccionado).
-*   Retorno: ninguno.
+* Función asíncrona para eliminar un registro.
+* Parámetros: id (identificador del registro seleccionado).
+* Retorno: ninguno.
 */
 const openDelete = async (id) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
@@ -157,9 +157,9 @@ const openDelete = async (id) => {
 
 
 /*
-*   Función asíncrona para llenar las cartas con los registros disponibles.
-*   Parámetros: form (formulario de búsqueda).
-*   Retorno: ninguno.
+* Función asíncrona para llenar las cartas con los registros disponibles.
+* Parámetros: form (formulario de búsqueda).
+* Retorno: ninguno.
 */
 async function fillCards(form = null) {
     const lista_datos = [
@@ -227,36 +227,36 @@ async function fillCards(form = null) {
             // Mostrar elementos obtenidos de la API
             DATA.dataset.forEach(row => {
                 const cardsHtml = `<div class="col-md-6 col-sm-12">
-                <div class="tarjetas p-4">
-                    <div class="row">
-                        <div class="col-auto">
-                            <img src="../../../resources/img/svg/calendar.svg" alt="">
-                        </div>
-                        <div class="col">
-                            <p class="fw-semibold mb-0">${row.FECHA_PARTIDO}</p>
-                            <p class="small">${row.LOCALIDAD}</p>
-                        </div>
-                    </div>
-                    <div class="row align-items-center">
-                        <div class="col-4">
-                            <img src="${row.LOGO}" class="img">
-                            <p class="small mt-3">${row.EQUIPO}</p>
-                        </div>
-                        <div class="col-4">
-                            <h2 class="fw-semibold">${row.RESULTADO_PARTIDO}</h2>
-                        </div>
-                        <div class="col-4">
-                            <img src="${row.LOGO_RIVAL}" class="img">
-                            <p class="small mt-3">${row.RIVAL}</p>
-                        </div>
-                    </div>
-                    <hr>
-                    <button class="btn bg-blue-principal-color text-white btn-sm rounded-3"  onclick="openUpdate(${row.ID_PARTIDO})">
-                        Editar partido
-                    </button>
-                </div>
-                </div>
-              `;
+    <div class="tarjetas p-4">
+        <div class="row">
+            <div class="col-auto">
+                <img src="../../../resources/img/svg/calendar.svg" alt="">
+            </div>
+            <div class="col">
+                <p class="fw-semibold mb-0">${row.FECHA_PARTIDO}</p>
+                <p class="small">${row.LOCALIDAD}</p>
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-4">
+                <img src="${row.LOGO}" class="img">
+                <p class="small mt-3">${row.EQUIPO}</p>
+            </div>
+            <div class="col-4">
+                <h2 class="fw-semibold">${row.RESULTADO_PARTIDO}</h2>
+            </div>
+            <div class="col-4">
+                <img src="${row.LOGO_RIVAL}" class="img">
+                <p class="small mt-3">${row.RIVAL}</p>
+            </div>
+        </div>
+        <hr>
+        <button class="btn bg-blue-principal-color text-white btn-sm rounded-3" onclick="openUpdate(${row.ID_PARTIDO})">
+            Editar partido
+        </button>
+    </div>
+</div>
+`;
                 cargarCartas.innerHTML += cardsHtml;
             });
         } else {
@@ -267,40 +267,45 @@ async function fillCards(form = null) {
         // Mostrar materiales de respaldo
         lista_datos.forEach(row => {
             const cardsHtml = `<div class="col-md-6 col-sm-12">
-            <div class="tarjetas shadow p-4">
-                <div class="row">
-                <div class="col-auto">
+    <div class="tarjetas shadow p-4">
+        <div class="row">
+            <div class="col-auto">
                 <img src="../../../resources/img/svg/calendar.svg" alt="">
-                </div>
-                    <div class="col">
-                        <p class="fw-semibold mb-0">${row.fechaPartido}</p>
-                        <p class="small">${row.localidad}</p>
-                    </div>
-                    <div class="col-auto ms-auto">
-                    <button type="button"  class="btn-close btn-close-black" style="height: 35px;" onclick="openDelete(${row.id_equipo})">
-                </button>
-                </div>  
-                </div>
-                <div class="row align-items-center">
-                    <div class="col-4">
-                        <img src="${row.logo}" class="img">
-                        <p class="small mt-3">${row.equipo}</p>
-                    </div>
-                    <div class="col-4">
-                        <h2 class="fw-semibold">${row.resultado}</h2>
-                    </div>
-                    <div class="col-4">
-                        <img src="${row.logo_rival}" class="img">
-                        <p class="small mt-3">${row.rival}</p>
-                    </div> 
-                </div>
-                <hr>
-                <button class="btn bg-blue-principal-color text-white btn-sm rounded-3"  onclick="openUpdate(${row.id_partido})">
-                    Editar partido
-                </button>
             </div>
+            <div class="col">
+                <p class="fw-semibold mb-0">${row.fechaPartido}</p>
+                <p class="small">${row.localidad}</p>
             </div>
-          `;
+        </div>
+        <div class="row align-items-center">
+            <div class="col-4">
+                <img src="${row.logo}" class="img">
+                <p class="small mt-3">${row.equipo}</p>
+            </div>
+            <div class="col-4">
+                <h2 class="fw-semibold">${row.resultado}</h2>
+            </div>
+            <div class="col-4">
+                <img src="${row.logo_rival}" class="img">
+                <p class="small mt-3">${row.rival}</p>
+            </div>
+        </div>
+        <hr>
+        <button class="btn bg-yellow-principal-color text-white btn-sm rounded-3 mb-3"
+            onclick="openUpdate(${row.id_partido})">
+            Editar partido
+        </button>
+        <button class="btn bg-blue-principal-color text-white btn-sm rounded-3 mb-3"
+            onclick="seeModal(${row.id_partido})">
+            Más información
+        </button>
+        <button class="btn bg-red-cream-color text-white btn-sm rounded-3 mb-3"
+            onclick="openDelete(${row.id_partido})">
+            Eliminar
+        </button>
+    </div>
+</div>
+`;
             cargarCartas.innerHTML += cardsHtml;
         });
     }
