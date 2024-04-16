@@ -46,7 +46,7 @@ const openCreate = () => {
 const openPage = (id) => {
     // Cuando se haga clic en el botón, se redirigirá a la página de estado fisica específicas.
     console.log(id);
-    window.location.href = '../paginas/physical_state.html';
+    window.location.href = '../paginas/physical_states.html';
 }
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
@@ -194,7 +194,7 @@ async function fillTable(form = null) {
                     <td>${row.NACIMIENTO}</td>
                     <td>
                 <button type="button" class="btn transparente" onclick="openPage(${row.ID})">
-                    <img src="../../../resources/img/svg/icons_forms/history.png" width="18" height="18">
+                    <img src="../../../resources/img/svg/icons_forms/heart.svg" width="18" height="18">
                     </button>
                 </td>
                     <td>
@@ -226,7 +226,7 @@ async function fillTable(form = null) {
                 <td>${row.fecha}</td>
                 <td>
                 <button type="button" class="btn transparente" onclick="openPage(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/history.png" width="18" height="18">
+                    <img src="../../../resources/img/svg/icons_forms/heart.svg" width="18" height="18">
                     </button>
                 </td>
                 <td>

@@ -102,7 +102,6 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                 </a>
                                 <ul class="dropdown-menu bg-transparent">
                                     <li><a class="dropdown-item text-light" href="schedules.html">Horarios</a></li>
-                                    <li><a class="dropdown-item text-light" href="trainings.html">Entrenamientos</a></li>
                                     <li><a class="dropdown-item text-light" href="contents.html">Contenidos</a></li>
                                     <li><a class="dropdown-item text-light" href="sub_contents.html">Sub contenidos</a></li>
                                     <li><a class="dropdown-item text-light" href="tasks.html">Tareas</a></li>
