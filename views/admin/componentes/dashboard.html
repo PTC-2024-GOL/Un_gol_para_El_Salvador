@@ -1,16 +1,20 @@
 <div class="container ">
     <div class="row gx-5">
-        <div class="col-8">
+        <div class="col-sm-12 col-md-8">
             <!-- Mensaje de Bienvenida al usuario -->
-            <div class="d-flex">
-                <h4 class="fw-semibold">Bienvenido&nbsp;</h4>
-                <h4 class="fw-semibold" id="nombreAdmin"></h4>
+
+            <div class="d-none d-md-block">
+                <div class="d-flex">
+                    <h4 class="fw-semibold">Bienvenido&nbsp;</h4>
+                    <h4 class="fw-semibold" id="nombreAdmin"></h4>
+                </div>
             </div>
+
             <p class="fw-light">Es un gusto tenerte de regreso, ponte al día sobre las nuevas actualizaciones de tu
                 academia de football.</p>
             <!-- Fila que tiene dos col (Select para seleccionar input y la grafica) -->
-            <div class="row mt-5">
-                <div class="col-6">
+            <div class="row mt-5 gx-5">
+                <div class="col-sm-12 col-md-6 ">
                     <div class="container bg-blue-principal-color text-center rounded-3">
                         <p class="p-2 text-light fs-5">Estadísticas</p>
                     </div>
@@ -23,10 +27,10 @@
                     </div>
                     <!-- Fila que contiene el icono e informacion de las estadisticas -->
                     <div class="row d-flex align-items-center mt-4">
-                        <div class="col-2">
+                        <div class="col-sm-12 col-md-2 d-none d-md-block">
                             <img src="../../../resources/img/svg/icons_dashboard/statistics.svg" alt="">
                         </div>
-                        <div class="col-10">
+                        <div class="col-sm-12 col-md-10">
                             <p class="fs-6 fw-semibold mb-0">Estadisticas generales del equipo</p>
                             <p class="small fw-light">Revisa las estadísticas generales tanto en áreas técnicas,
                                 tácticas, técnicas y mentales de los equipos </p>
@@ -34,47 +38,47 @@
                     </div>
                 </div>
                 <!-- Grafica -->
-                <div class="col-6">
+                <div class="col-sm-12 col-md-6 text-center">
                     <!-- Por el momento solo es una imagen -->
-                    <img src="../../../resources/img/svg/icons_dashboard/graphic.svg" alt="">
+                    <img src="../../../resources/img/svg/icons_dashboard/graphic.svg" class="img-fluid" alt="">
                 </div>
             </div>
 
             <!-- Seccion de resultados de partido -->
-            <p class="fs-5 fw-semibold mb-3">Resultados generales de partidos jugados</p>
+            <p class="fs-5 fw-semibold mb-4 mt-5">Resultados generales de partidos jugados</p>
             <div class="row d-flex d-flex text-center">
-                <div class="col-2">
+                <div class="col-sm-12 col-md-2">
                     <h1 class="p-3 fw-semibold text-light result_one rounded-3" id="">5</h1>
                     <p class="fw-light">Partidos ganados</p>
                 </div>
-                <div class="col-2">
+                <div class="col-sm-12 col-md-2">
                     <h1 class="p-3 fw-semibold text-light result_one result_second rounded-3" id="">5</h1>
                     <p class="fw-light">Partidos perdidos</p>
                 </div>
-                <div class="col-2">
+                <div class="col-sm-12 col-md-2">
                     <h1 class="p-3 fw-semibold text-light result_one result_third  rounded-3  " id="">5</h1>
                     <p class="fw-light">Partidos empatados</p>
                 </div>
-                <div class="col-2 resutl4">
+                <div class="col-sm-12 col-md-2 resutl4">
                     <h1 class="p-3 fw-semibold text-light result_one result_second rounded-3" id="">5</h1>
                     <p class="fw-light">Goles en contra</p>
                 </div>
-                <div class="col-2 resutl5">
+                <div class="col-sm-12 col-md-2 resutl5">
                     <h1 class="p-3 fw-semibold text-light result_one rounded-3" id="">5</h1>
                     <p class="fw-light">Goles a favor</p>
                 </div>
-                <div class="col-2 resutl6">
+                <div class="col-sm-12 col-md-2 resutl6">
                     <h1 class="p-3 fw-semibold text-light result_one result_third  rounded-3  " id="">5</h1>
                     <p class="fw-light">Diferencia</p>
                 </div>
             </div>
             
             <!-- Seccion del resultado del ultimo partido jugado-->
-            <div class="row mt-4">
-                <div class="col-10">
+            <div class="row mt-4 ">
+                <div class="col-10 d-none d-md-block">
                     <p class="fs-5 fw-semibold">Resultado del último partido jugado</p>
                 </div>
-                <div class="col-2">
+                <div class="col-2 d-none d-md-block">
                     <div class="row">
                         <div class="col-auto">
                             <P>Detalles</P>
@@ -85,7 +89,7 @@
                     </div>
                 </div>
             </div>
-            <div class="container shadow rounded-4">
+            <div class="container shadow rounded-4 d-none d-md-block">
                 <div class="container mt-3 p-3">
                     <!-- Primera fila que contiene la fecha -->
                     <div class="row d-flex align-items-center">
@@ -119,11 +123,11 @@
             </div>
         </div>
         <!-- Calendario e equipos -->
-        <div class="col-4 justify-contend-start">
-            <p class="fs-5 fw-semibold mb-0">Organizador</p>
-            <p class="fw-light">Lleva todas tus actividades y tareas más organizadas.</p>
+        <div class="col-sm-12 col-md-4 shadow rounded-3">
+            <p class="fs-5 fw-semibold mb-0 d-none d-md-block">Organizador</p>
+            <p class="fw-light d-none d-md-block">Lleva todas tus actividades y tareas más organizadas.</p>
             <!-- Calendario -->
-            <div class="mb-3">
+            <div class="mb-3 d-none d-md-block">
                 <img src="../../../resources/img/svg/icons_dashboard/calendar.svg" width="390px" alt="">
             </div>
             <!-- Equipos registrados -->
@@ -151,7 +155,7 @@
                                 </div>
                               </div>
                               <div class="col-5">
-                                <div class="container text-light bg-blue-principal-color rounded-3 text-center">
+                                <div class="container text-light bg-blue-principal-color rounded-3 text-center d-none d-md-block">
                                     <small>Categoría 16</small>
                                 </div>
                               </div>
@@ -170,7 +174,7 @@
                                 </div>
                               </div>
                               <div class="col-5">
-                                <div class="container text-light bg-blue-principal-color rounded-3 text-center">
+                                <div class="container text-light bg-blue-principal-color rounded-3 text-center d-none d-md-block">
                                     <small>Categoría 16</small>
                                 </div>
                               </div>
@@ -188,7 +192,7 @@
                                     <small>Gol</small>
                                 </div>
                               </div>
-                              <div class="col-5">
+                              <div class="col-5 d-none d-md-block">
                                 <div class="container text-light bg-blue-principal-color rounded-3 text-center">
                                     <small>Categoría 16</small>
                                 </div>
