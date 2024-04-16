@@ -38,6 +38,12 @@ const openCreate = () => {
 }
 
 // Funcion para preparar el formulario al momento de abrirlo
+/*
+*   Función asíncrona para preparar el formulario al momento de ver un registro.
+*   Parámetros: id (identificador del registro seleccionado).
+*   Retorno: ninguno.
+*/
+//
 
 const seeModal = async (id) => {
     try {
@@ -150,6 +156,11 @@ const openDelete = async (id) => {
 }
 
 
+/*
+*   Función asíncrona para llenar las cartas con los registros disponibles.
+*   Parámetros: form (formulario de búsqueda).
+*   Retorno: ninguno.
+*/
 async function fillCards(form = null) {
     const lista_datos = [
         {

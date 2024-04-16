@@ -40,6 +40,8 @@ let SEARCH_FORM;
 const ENTRENAMIENTOS_API = '';
 const HORARIOS_API = '';
 
+
+// Lista de datos para mostrar en la tabla de horarios
 const lista_datos_horario = [
     {
         jugadores: "Mario Alboran",
@@ -59,6 +61,7 @@ const lista_datos_horario = [
     }
 ];
 
+// Lista de datos para mostrar en la tabla de contenidos
 const lista_datos_contenidos = [
     {
         contenidos: "Juegos lúdicos",
@@ -73,6 +76,9 @@ const lista_datos_contenidos = [
         contenidos: "Circuitos/Físico balón",
     }
 ];
+
+
+//Función asíncrona para cargar un componente HTML.
 async function loadComponent(path) {
     const response = await fetch(path);
     const text = await response.text();
@@ -161,7 +167,14 @@ const seeModal2 = async (id) => {
     }
 }
 
-
+//Crea un comentario que describa la función que esta debajo
+/*
+*   Función para abrir la página de detalles específicos.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
+//
+// Función para abrir la página de detalles específicos.
 const seeModal = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
@@ -190,6 +203,13 @@ const seeModal = async (id) => {
         fillSelected(lista_datos_horario, 'readAll', 'horario');
     }
 }
+
+//Crea un comentario que describa la función que esta debajo
+/*
+*   Función asíncrona para cargar la tabla de detalles de contenidos.
+*   Parámetros: form (formulario de búsqueda).
+*   Retorno: ninguno.
+*/
 
 const seeCont = async (id) => {
     try {
@@ -220,6 +240,12 @@ const seeCont = async (id) => {
     }
 }
 
+//Crea un comentario que describa la función que esta debajo
+/*
+*   Función asíncrona para cargar la tabla de detalles de contenidos.
+*   Parámetros: form (formulario de búsqueda).
+*   Retorno: ninguno.
+*/
 async function cargarTabla(form = null) {
     const lista_datos = [
         {

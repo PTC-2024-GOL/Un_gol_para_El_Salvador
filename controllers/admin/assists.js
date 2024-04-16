@@ -26,6 +26,11 @@ const lista_datos_horario = [
         id: 3,
     }
 ];
+// Lista de datos para mostrar en la tabla de horarios
+/*
+*   Lista de datos para pruebas
+*/
+
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -60,18 +65,23 @@ const fillSelected = (data, action, selectId, selectedValue = null) => {
     }
 };
 
+
+
+// Funcion para abrir una página nueva
+/*
+*   En la práctica, esta función redirige a una nueva página en la misma ventana del navegador pero con el id horario.
+*/
+
+const openPag = () => {
+    window.location.href = '../paginas/SpecificAssistens.html';
+}
+
 // Funcion para preparar el formulario al momento de abrirlo
 /*
 *   Función asíncrona para preparar el formulario al momento de elegir un horario.
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-
-
-const openPag = () => {
-    window.location.href = '../paginas/SpecificAssistens.html';
-}
-
 const seeModal = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
@@ -101,6 +111,12 @@ const seeModal = async (id) => {
     }
 }
 
+// Funcion para preparar el formulario al momento de abrirlo
+/*
+*   Función asíncrona para preparar el la tabla que contendrá los datos.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
 async function cargarTabla(form = null) {
     const lista_datos = [
         {

@@ -12,6 +12,7 @@ let SEARCH_FORM;
 const DETALLE_CONTENIDO_API = '';
 const HORARIOS_API = '';
 
+// Lista de datos para mostrar en la tabla de horarios
 const lista_datos_horario = [
     {
         horario: "8:00 AM- 10:20 AM",
@@ -27,12 +28,15 @@ const lista_datos_horario = [
     }
 ];
 
+
+//Función asíncrona para cargar un componente HTML.
 async function loadComponent(path) {
     const response = await fetch(path);
     const text = await response.text();
     return text;
 }
 
+ 
 // Función para poblar un combobox (select) con opciones
 const fillSelected = (data, action, selectId, selectedValue = null) => {
     const selectElement = document.getElementById(selectId);
@@ -60,18 +64,25 @@ const fillSelected = (data, action, selectId, selectedValue = null) => {
     }
 };
 
+
+
+/*
+*   Función para abrir la página de detalles específicos.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
+//
+// Función para abrir la página de detalles específicos.
+const openPag = () => {
+    window.location.href = '../paginas/SpecificDetailsContents.html';
+}
+
 // Funcion para preparar el formulario al momento de abrirlo
 /*
 *   Función asíncrona para preparar el formulario al momento de elegir un horario.
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-
-
-const openPag = () => {
-    window.location.href = '../paginas/SpecificDetailsContents.html';
-}
-
 const seeModal = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
@@ -100,6 +111,13 @@ const seeModal = async (id) => {
         fillSelected(lista_datos_horario, 'readAll', 'horario');
     }
 }
+
+//Crea un comentario que describa la función llamada cargarTabla
+/*
+*   Función asíncrona para cargar la tabla de detalles de contenidos.
+*   Parámetros: form (formulario de búsqueda).
+*   Retorno: ninguno.
+*/
 
 async function cargarTabla(form = null) {
     const lista_datos = [

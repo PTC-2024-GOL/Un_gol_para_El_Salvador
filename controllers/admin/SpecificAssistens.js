@@ -13,6 +13,7 @@ let SEARCH_FORM;
 // Debes verificar que cuando se seleccione una opción se actualiza el jason y que cuando se agregue una nueva observación se actualice el json tambien
 const ASISTENCIAS_API_2 = '';
 
+// Lista de datos para mostrar en la tabla de asistencias
 const lista_datos_asistencias = [
     {
         asistencia: "Asistencia"
@@ -47,6 +48,7 @@ const lista_datos_asistencias = [
     }
 ];
 
+//Función asíncrona para cargar un componente HTML.
 async function loadComponent(path) {
     const response = await fetch(path);
     const text = await response.text();
@@ -72,6 +74,9 @@ async function fillSelected(data, action, selectElement, selectedValue = '') {
         console.error('Error al llenar el combobox:', error);
     }
 }
+
+//Crea un comentario que describa la función que esta debajo de este comentario
+//Función para guardar los datos del modal OpenCreate
 
 const openCreate = () => {
     // Se muestra la caja de diálogo con su título.
@@ -131,9 +136,8 @@ async function createSelect(identificador) {
     }
 }
 
-
-
-
+//Crea un comentario que describa la función que esta debajo
+//Función asíncrona para llenar la tabla con los registros de la base de datos.
 async function fillTable(form = null) {
     const lista_datos = [
         {

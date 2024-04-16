@@ -33,6 +33,8 @@ const lista_datos = [
     }
 ];
 
+
+//Función asíncrona para cargar un componente HTML.
 async function loadComponent(path) {
     const response = await fetch(path);
     const text = await response.text();
@@ -157,7 +159,11 @@ const openDelete = async (id) => {
 
 }
 
-
+/*
+*   Función asíncrona para llenar la tabla con los registros disponibles.
+*   Parámetros: form (formulario de búsqueda).
+*   Retorno: ninguno.
+*/
 async function fillTable(form = null) {
     const lista_datos = [
         {
