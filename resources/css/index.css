@@ -1,9 +1,49 @@
-body{
+body {
     background-image: url(../img/svg/fondo_index.svg);
     background-repeat: no-repeat;
     background-size: cover;
     height: 100vh;
-    
+
+}
+/*
+.position-forms {
+    margin-top: 200px;
+}
+
+.position-img {
+    margin-top: 50px;
+    width: 85vh;
+
+}*/
+
+.color-title {
+    color: #03045E;
+}
+
+.btn-color {
+    background-color: #03045E;
+    color: #fff;
+}
+
+.btn-color:hover {
+    color: #03045E;
+}
+
+.borde-btn {
+    border: 3px solid #03045E;
+    border-radius: 10px;
+    /* Bordes redondeados */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    /* Sombra */
+    transition: all 0.3s ease;
+    /* Animación de transición */
+}
+
+.borde-btn:hover {
+    transform: scale(1.05);
+    /* Escala al 105% en hover */
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.8);
+    /* Sombra más pronunciada en hover */
 }
 
 /* Estilos generales para el borde */
@@ -55,13 +95,13 @@ body{
 
 /* Estilos para el contenedor de iconos en el login público */
 .grupo-campos-texto-publico .icon-container .input-icon {
-    color: #000;
+    color: #000000;
     /* Color por defecto del icono */
 }
 
 /* Estilos para el color del icono y del contenedor cuando se selecciona el input en el login público */
 .grupo-campos-texto-publico:focus-within .icon-container .input-icon {
-    color: #28a745;
+    color: #007bff;
     /* Color verde al seleccionar el input */
 }
 
@@ -69,3 +109,18 @@ body{
     background-color: #d6f5d6;
     /* Fondo verde al seleccionar el input */
 }
+
+/*
+@media only screen and (min-width: 768px) {
+
+    .position-forms {
+        margin-top: 0px;
+    }
+
+    .position-img {
+        margin-top: 0px;
+        width: 0vh;
+
+    }
+
+}*/

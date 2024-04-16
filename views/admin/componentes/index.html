@@ -1,34 +1,39 @@
 <div class="fondo">
-    <div class="container ">
-        <div class="row justify-content-center">
-            <div class="col-6 ">
-                <img src="../../../resources/img/svg/img-login.svg" class="img-fluid" alt="logo-index">
+    <div class="container"> <!---->
+        <div class="row position-absolute top-50 start-50 translate-middle">
+            <div class="col-lg-6 col-md-12 col-sm-12 mb-5">
+                <img src="../../../resources/img/svg/img-login.svg" class="img-fluid position-img" alt="logo-index">
             </div>
-            <div class="col-6"> <!-- Columna para el campo de usuario -->
-                <div class="input-group borde grupo-campos-texto"> <!-- Grupo de entrada con borde -->
-                    <span class="input-group-text icon-container"><img src="../../../node_modules/bootstrap-icons/icons/person.svg" alt="icon-user"></span>
-                    <!-- Icono de usuario -->
-                    <input id="alias" type="text" name="alias" placeholder="Usuario" class="form-control" required>
-                    <!-- Campo de entrada para el usuario -->
-                </div>
-                <div class="input-group borde grupo-campos-texto"> <!-- Grupo de entrada con borde -->
-                    <span class="input-group-text icon-container"><img src="../../../node_modules/bootstrap-icons/icons/lock.svg" alt="icon-pass"></span>
-                    <!-- Icono de candado -->
-                    <input id="clave" type="password" name="clave" placeholder="Contraseña" class="form-control"
-                        required>
-                    <!-- Campo de entrada para la contraseña -->
-                </div>
-                <button href="../paginas/dashboard.html" type="submit" class="btn btn-dark col-sm-12 col-md-8 borde"><img src="../../../node_modules/bootstrap-icons/icons/send.svg" alt=""> Iniciar sesión</button>
-                <!-- Botón para enviar el formulario de inicio de sesión -->
-                <div class="col-sm-12 col-md-8 offset-md-2 offset-sm-0 text-end">
-                    <!-- Columna para el enlace de recuperación de contraseña -->
-                    <a class="text-dark" href="../../../views/admin/paginas/password_recovery.html"> <span>¿Desea recuperar
-                       su contraseña?</span></a> <!-- Enlace para la página de recuperación de contraseña -->
-               </div>
+            <div class="col-lg-6 col-md-12 col-sm-12"> 
+                <div class="position-forms">
+                    <div class="col-sm-12 col-md-8 offset-md-2 offset-sm-0 text-center fs-2 color-title fw-bold">
+                        <!-- Columna para el enlace de recuperación de contraseña -->
+                        <span>OneGoal</span>
+                   </div>
+                    <div class="input-group borde grupo-campos-texto mt-3"> <!-- Grupo de entrada con borde -->
+                        <span class="input-group-text icon-container"><img src="../../../node_modules/bootstrap-icons/icons/person.svg" alt="icon-user"></span>
+                        <!-- Icono de usuario -->
+                        <input id="alias" type="text" name="alias" placeholder="Usuario" class="form-control" required>
+                        <!-- Campo de entrada para el usuario -->
+                    </div>
+                    <div class="input-group borde grupo-campos-texto mt-3 mb-3"> <!-- Grupo de entrada con borde -->
+                        <span class="input-group-text icon-container"><img src="../../../node_modules/bootstrap-icons/icons/lock.svg" alt="icon-pass"></span>
+                        <!-- Icono de candado -->
+                        <input id="clave" type="password" name="clave" placeholder="Contraseña" class="form-control"
+                            required>
+                        <!-- Campo de entrada para la contraseña -->
+                    </div>
+                    <button href="../paginas/dashboard.html" type="submit" class="btn btn-color col-12 col-sm-12 col-md-12 col-lg-12 borde-btn">Iniciar sesión</button>
+                    <!-- Botón para enviar el formulario de inicio de sesión -->
+                    <div class="col-sm-12 col-md-10 offset-md-2 offset-sm-0 text-end ">
+                        <!-- Columna para el enlace de recuperación de contraseña -->
+                        <a class="color-title" href="../../../../vistas/privada/paginas/recuperacion.html">
+                            <span>¿Desea recuperar su contraseña?</span></a> <!-- Enlace para la página de recuperación de contraseña -->
+                   </div>
+                </div><!-- Columna para el campo de usuario -->
             </div>
 
         </div>
     </div>
 
 </div>
-
