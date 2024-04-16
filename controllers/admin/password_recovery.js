@@ -6,7 +6,7 @@ async function loadComponent(path) {
 
 // window.onload
 window.onload = async function () {
-
+    
     // Llamada a la función para establecer la mascara del campo teléfono.
     vanillaTextMask.maskInput({
         inputElement: document.getElementById('codigo'),
