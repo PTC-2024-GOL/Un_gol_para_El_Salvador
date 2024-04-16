@@ -21,7 +21,7 @@ async function loadComponent(path) {
 const openCreate = () => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
-    MODAL_TITLE.textContent = 'Crear sub-tipología';
+    MODAL_TITLE.textContent = 'Crear sub tipología';
     // Se prepara el formulario.
     SAVE_FORM.reset();
 }
@@ -41,7 +41,7 @@ const openUpdate = async (id) => {
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
-            MODAL_TITLE.textContent = 'Actualizar sub-tipología';
+            MODAL_TITLE.textContent = 'Actualizar sub tipología';
             // Se prepara el formulario.
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
@@ -55,7 +55,7 @@ const openUpdate = async (id) => {
     } catch (Error) {
         console.log(Error);
         SAVE_MODAL.show();
-        MODAL_TITLE.textContent = 'Actualizar sub-tipología';
+        MODAL_TITLE.textContent = 'Actualizar sub tipología';
     }
 
 }
@@ -66,7 +66,7 @@ const openUpdate = async (id) => {
 */
 const openDelete = async (id) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar la sub-tipología de forma permanente?');
+    const RESPONSE = await confirmAction('¿Desea eliminar la sub tipología de forma permanente?');
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
@@ -90,7 +90,7 @@ const openDelete = async (id) => {
     }
     catch (Error) {
         console.log(Error + ' Error al cargar el mensaje');
-        confirmAction('¿Desea eliminar la sub-tipología de forma permanente?');
+        confirmAction('¿Desea eliminar la sub tipología de forma permanente?');
     }
 
 }
