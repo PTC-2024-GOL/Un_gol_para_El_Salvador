@@ -73,7 +73,7 @@ const fillSelected = (data, action, selectId, selectedValue = null) => {
 */
 
 const openPag = () => {
-    window.location.href = '../paginas/specific_assistens.html';
+    window.location.href = '../pages/specific_assistens.html';
 }
 
 // Funcion para preparar el formulario al momento de abrirlo
@@ -195,8 +195,8 @@ async function cargarTabla(form = null) {
 window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
-    // Carga los componentes de manera síncrona
-    const adminHtml = await loadComponent('../componentes/assists.html');
+    // Carga los components de manera síncrona
+    const adminHtml = await loadComponent('../components/assists.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
     // Agrega el HTML del encabezado

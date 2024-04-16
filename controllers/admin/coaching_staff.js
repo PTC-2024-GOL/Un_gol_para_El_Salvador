@@ -171,8 +171,8 @@ async function cargarTabla(form = null) {
 window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
-    // Carga los componentes de manera síncrona
-    const cuerpoTecnicoHtml = await loadComponent('../componentes/coaching_staff.html');
+    // Carga los components de manera síncrona
+    const cuerpoTecnicoHtml = await loadComponent('../components/coaching_staff.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
     // Agrega el HTML del encabezado

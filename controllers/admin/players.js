@@ -46,7 +46,7 @@ const openCreate = () => {
 const openPage = (id) => {
     // Cuando se haga clic en el botón, se redirigirá a la página de estado fisica específicas.
     console.log(id);
-    window.location.href = '../paginas/physical_states.html';
+    window.location.href = '../pages/physical_states.html';
 }
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
@@ -248,8 +248,8 @@ async function fillTable(form = null) {
 window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
-    // Carga los componentes de manera síncrona
-    const playersHtml = await loadComponent('../componentes/players.html');
+    // Carga los components de manera síncrona
+    const playersHtml = await loadComponent('../components/players.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
     // Agrega el HTML del encabezado

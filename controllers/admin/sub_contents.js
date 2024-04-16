@@ -183,8 +183,8 @@ async function fillTable(form = null) {
 window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
-    // Carga los componentes de manera síncrona
-    const subcontenidosHtml = await loadComponent('../componentes/sub_contents.html');
+    // Carga los components de manera síncrona
+    const subcontenidosHtml = await loadComponent('../components/sub_contents.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
     // Agrega el HTML del encabezado

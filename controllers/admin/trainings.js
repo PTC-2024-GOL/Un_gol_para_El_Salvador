@@ -422,8 +422,8 @@ const restaurarFormulario = async (num = null) => {
 window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
-    // Carga los componentes de manera síncrona
-    const adminHtml = await loadComponent('../componentes/trainings.html');
+    // Carga los components de manera síncrona
+    const adminHtml = await loadComponent('../components/trainings.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
     // Agrega el HTML del encabezado

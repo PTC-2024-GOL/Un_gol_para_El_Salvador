@@ -7,8 +7,8 @@ async function loadComponent(path) {
 window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
-    // Carga los componentes de manera síncrona
-    const adminHtml = await loadComponent('../componentes/index.html');
+    // Carga los components de manera síncrona
+    const adminHtml = await loadComponent('../components/index.html');
 
     appContainer.innerHTML = adminHtml;
     

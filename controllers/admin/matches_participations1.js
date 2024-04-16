@@ -96,8 +96,8 @@ function goToMatches(idEquipo, nombreEquipo) {
 window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
-    // Carga los componentes de manera síncrona
-    const participacionesHtml = await loadComponent('../componentes/matches_participations1.html');
+    // Carga los components de manera síncrona
+    const participacionesHtml = await loadComponent('../components/matches_participations1.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
     // Agrega el HTML del encabezado
