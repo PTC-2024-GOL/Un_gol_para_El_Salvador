@@ -5,16 +5,6 @@ body {
     height: 100vh;
 
 }
-/*
-.position-forms {
-    margin-top: 200px;
-}
-
-.position-img {
-    margin-top: 50px;
-    width: 85vh;
-
-}*/
 
 .color-title {
     color: #03045E;
@@ -30,7 +20,7 @@ body {
 }
 
 .borde-btn {
-    border: 3px solid #03045E;
+    border: 2px solid #03045E;
     border-radius: 10px;
     /* Bordes redondeados */
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
@@ -48,7 +38,7 @@ body {
 
 /* Estilos generales para el borde */
 .borde {
-    border: 3px solid #000;
+    border: 2px solid #03045E;
     border-radius: 10px;
     /* Bordes redondeados */
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
@@ -109,18 +99,3 @@ body {
     background-color: #d6f5d6;
     /* Fondo verde al seleccionar el input */
 }
-
-/*
-@media only screen and (min-width: 768px) {
-
-    .position-forms {
-        margin-top: 0px;
-    }
-
-    .position-img {
-        margin-top: 0px;
-        width: 0vh;
-
-    }
-
-}*/
