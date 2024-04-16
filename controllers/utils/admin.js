@@ -76,7 +76,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                 </a>
                                 <ul class="dropdown-menu bg-transparent">
                                     <li><a class="dropdown-item text-light" href="players.html">Jugadores</a></li>
-                                    <li><a class="dropdown-item text-light" href="technical.html">Técnicos</a></li>
+                                    <li><a class="dropdown-item text-light" href="technicals.html">Técnicos</a></li>
                                     <li><a class="dropdown-item text-light" href="admins.html">Administradores</a></li>
                                 </ul>
                             </li>
@@ -122,7 +122,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                 <ul class="dropdown-menu bg-transparent">
                                     <li><a class="dropdown-item text-light" href="technical_roles.html">Roles de los técnicos</a></li>
                                     <li><a class="dropdown-item text-light" href="coachings_staffs.html">Cuerpos técnicos</a></li>
-                                    <li><a class="dropdown-item text-light" href="soccer_team.html">Equipos</a></li>
+                                    <li><a class="dropdown-item text-light" href="soccer_teams.html">Equipos</a></li>
                                     <li><a class="dropdown-item text-light" href="templates_name.html">Plantillas</a></li>
                                     <li><a class="dropdown-item text-light" href="types_plays.html">Tipos de jugada</a></li>
                                     <li><a class="dropdown-item text-light" href="types_goals.html">Tipos de goles</a></li>
@@ -142,10 +142,10 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                 </a>
                             </a>
                             <ul class="dropdown-menu bg-transparent">
-                                <li><a class="dropdown-item text-light" href="medical_record.html">Registro médico</a></li>
+                                <li><a class="dropdown-item text-light" href="medical_records.html">Registro médico</a></li>
                                 <li><a class="dropdown-item text-light" href="types_injuries.html">Tipos de lesiones</a></li>
-                                <li><a class="dropdown-item text-light" href="typology.html">Tipologías</a></li>
-                                <li><a class="dropdown-item text-light" href="sub_typology.html">Sub Tipologías</a></li>
+                                <li><a class="dropdown-item text-light" href="typologies.html">Tipologías</a></li>
+                                <li><a class="dropdown-item text-light" href="sub_typologies.html">Sub Tipologías</a></li>
                                 <li><a class="dropdown-item text-light" href="injuries.html">Lesiones</a></li>
                             </ul>
                             </li>
@@ -158,7 +158,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                 </a>
                             </a>
                             <ul class="dropdown-menu bg-transparent">
-                                <li><a class="dropdown-item text-light" href="payment.html">Pagos</a></li>
+                                <li><a class="dropdown-item text-light" href="payments.html">Pagos</a></li>
                             </ul>
                             </li>
 
