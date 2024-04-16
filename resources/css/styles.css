@@ -1,26 +1,29 @@
 /* Estilo para el menu */
-.offcanvas, .offcanvas-body, .title-content{
+.offcanvas,
+.offcanvas-body,
+.title-content {
     scrollbar-width: none;
     background-image: linear-gradient(180deg, rgb(2, 8, 135), rgb(1, 2, 37));
 }
 
-.dropdown-menu{
+.dropdown-menu {
     margin-left: 30px;
     border: none;
 }
 
-.dropdown-item:hover, .dropdown-item:focus {
+.dropdown-item:hover,
+.dropdown-item:focus {
     color: var(--bs-dropdown-link-hover-color);
-    background-color:  rgb(13, 56, 126);
-  }
-  
-.contenedor{
+    background-color: rgb(13, 56, 126);
+}
+
+.contenedor {
     background-color: rgb(1, 4, 79);
     margin-top: 100px;
     margin-bottom: 40px;
 }
 
-.navbar{
+.navbar {
     --bs-navbar-toggler-border-color: none;
 }
 
@@ -59,7 +62,7 @@
     border-radius: 50%;
 }
 
-hr{
+hr {
     color: rgb(158, 154, 154);
 }
 
@@ -79,7 +82,8 @@ hr{
 
 /* Participaciones jugadores estilos */
 
-.tarjetas, .tarjetas-equipos {
+.tarjetas,
+.tarjetas-equipos {
     border-radius: 30px;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
 }
@@ -94,14 +98,33 @@ hr{
 }
 
 
-.titulo-equipo{
+.titulo-equipo {
     background-image: linear-gradient(180deg, rgb(2, 8, 135), rgb(1, 2, 37));
     border-bottom-left-radius: 21px;
     border-bottom-right-radius: 21px;
 }
 
-.img{
+.img {
     border-radius: 100%;
     width: 80px;
     height: 80px;
+}
+
+.margen {
+    margin-bottom: 0px;
+}
+
+.titulo {
+    font-size: 20px;
+}
+
+@media (max-width: 770px) {
+    .margen {
+        margin-bottom: 2rem;
+    }
+
+
+    .titulo {
+        font-size: 16px;
+    }
 }
