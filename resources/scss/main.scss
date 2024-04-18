@@ -38,6 +38,48 @@ $yellow-principal-color: (
   "yellow-principal-color": rgb(235, 173, 13)
 );
 
+// Colores usados en la pantalla de ingresos - admin
+
+//Colores pasteles
+$blue-light-color: (
+  "blue-light-color": rgb(218, 237, 255)
+);
+
+$yellow-light-color: (
+  "yellow-light-color": rgb(255, 251, 218)
+);
+
+$green-light-color: (
+  "green-light-color": rgb(218, 255, 224)
+);
+
+$orange-light-color: (
+  "orange-light-color": rgb(255, 245, 218)
+);
+
+$beige-color: (
+  "beige-color": rgb(247, 249, 245)
+);
+
+//Colores fuertes
+$orange-color: (
+  "orange-color": rgb(244, 157, 56)
+);
+
+$blue-color: (
+  "blue-color": rgb(119, 159, 229)
+);
+
+$green-color: (
+  "green-color": rgb(117, 249, 76)
+);
+
+$yellow-color: (
+  "yellow-color": rgb(249, 242, 76)
+);
+
+
+
 // Agregar variables al tema de colores de boostrap, mergearlas
 $theme-colors: map-merge($theme-colors, $yellow-principal-color);
 $theme-colors: map-merge($theme-colors, $skyBlue-pastel-color);
@@ -45,6 +87,18 @@ $theme-colors: map-merge($theme-colors, $red-cream-color);
 $theme-colors: map-merge($theme-colors, $blue-principal-color);
 $theme-colors: map-merge($theme-colors, $blue-secondary-color);
 $theme-colors: map-merge($theme-colors, $green-w-color);
+
+
+//Colores de la pantalla de ingresos
+$theme-colors: map-merge($theme-colors, $blue-light-color);
+$theme-colors: map-merge($theme-colors, $yellow-light-color);
+$theme-colors: map-merge($theme-colors, $green-light-color);
+$theme-colors: map-merge($theme-colors, $orange-light-color);
+$theme-colors: map-merge($theme-colors, $orange-color);
+$theme-colors: map-merge($theme-colors, $blue-color);
+$theme-colors: map-merge($theme-colors, $green-color);
+$theme-colors: map-merge($theme-colors, $yellow-color);
+$theme-colors: map-merge($theme-colors, $beige-color);
 
 // Cambiar el color del estilo de la tabla
 $table-striped-bg: rgb(242, 247, 255);

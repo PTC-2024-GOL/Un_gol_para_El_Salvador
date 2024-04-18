@@ -158,6 +158,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                             </a>
                             <ul class="dropdown-menu bg-transparent">
                                 <li><a class="dropdown-item text-light" href="payments.html">Pagos</a></li>
+                                <li><a class="dropdown-item text-light" href="earnings.html">Ingresos</a></li>
                             </ul>
                             </li>
 

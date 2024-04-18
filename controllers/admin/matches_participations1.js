@@ -88,7 +88,7 @@ async function fillCards(form = null) {
 function goToMatches(idEquipo, nombreEquipo) {
 
     // Redirecciona a la otra pantalla y manda tambien el id del equipo
-    window.location.href = `../paginas/matches_participations2.html?idEquipo=${idEquipo}&nombreEquipo=${nombreEquipo}`;
+    window.location.href = `../pages/matches_participations2.html?idEquipo=${idEquipo}&nombreEquipo=${nombreEquipo}`;
 
 }
 
