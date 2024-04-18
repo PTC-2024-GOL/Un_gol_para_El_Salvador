@@ -6,7 +6,7 @@ async function loadComponent(path) {
 }
 
 
-const graficoBarrasAnalisis = async () => {
+const graficoLinealIngresos = async () => {
     /*
 *   Lista de datos de ejemplo en caso de error al obtener los datos reales.
 */
@@ -86,7 +86,7 @@ window.onload = async function () {
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Ingresos'; 
-    graficoBarrasAnalisis();
+    graficoLinealIngresos();
 
 
 }

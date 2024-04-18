@@ -5,6 +5,49 @@ async function loadComponent(path) {
     return text;
 }
 
+const graficoPieDashboard = async () => {
+    /*
+*   Lista de datos de ejemplo en caso de error al obtener los datos reales.
+*/
+    const datosEjemplo = [
+        {
+            partido: 'Partidos ganados',
+            resultado: 5
+        },
+        {
+            partido: 'Partidos perdidos',
+            resultado: 5
+        },
+        {
+            partido: 'Partidos empatados',
+            resultado: 5
+        },
+        {
+            partido: 'Goles en contra',
+            resultado: 6
+        },
+        {
+            partido: 'Goles a favor',
+            resultado: 5
+        },
+        {
+            partido: 'Diferencia',
+            resultado: 5
+        }
+    ];
+
+    let partido = [];
+    let resultado = [];
+    datosEjemplo.forEach(filter => {
+        partido.push(filter.partido);
+        resultado.push(filter.resultado);
+    });
+    // Si ocurre un error, se utilizan los datos de ejemplo definidos arriba.
+    DoughnutGraph('estadistica', partido, resultado, 'Total');
+
+}
+
+
 window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
@@ -21,6 +64,6 @@ window.onload = async function () {
     //Agrega el nombre del admin que ha iniciado sesion
     const adminName = document.getElementById('nombreAdmin');
     adminName.textContent ='José Gonzáles';
-    
+    graficoPieDashboard();
     console.log(adminName.text)
 }
