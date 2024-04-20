@@ -31,7 +31,7 @@
             <!-- Cabeza de la tabla para mostrar la cantidad de registros y los títulos de las columnas -->
             <thead>
                 <tr>
-                    <td colspan="6" id="rowsFound"></td>
+                    <td colspan="7" id="rowsFound"></td>
                 </tr>
                 <tr>
                     <th>Imagen</th>
@@ -39,7 +39,8 @@
                     <th>Correo</th>
                     <th>Teléfono</th>
                     <th>Dui</th>
-                    <th>Fecha de nacimiento</th>
+                    <th>Fecha de creación</th>
+                    <th>Estado</th>
                 </tr>
             </thead>
             <!-- Cuerpo de la tabla para mostrar un registro por fila -->
@@ -78,46 +79,52 @@
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="nombreTecnico" class="form-label">Nombre</label>
+                        <label for="nombreTecnico" class="form-label fw-semibold">Nombre</label>
                         <input id="nombreTecnico" type="text" name="nombreTecnico" class="form-control"
                             placeholder="Ingresa el nombre del Técnico" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="apellidoTecnico" class="form-label">Apellido</label>
+                        <label for="apellidoTecnico" class="form-label fw-semibold">Apellido</label>
                         <input id="apellidoTecnico" type="text" name="apellidoTecnico" class="form-control"
                             placeholder="Ingresa el apellido del técnico" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="correoTecnico" class="form-label">Correo</label>
+                        <label for="correoTecnico" class="form-label fw-semibold">Correo</label>
                         <input id="correoTecnico" type="email" name="correoTecnico" class="form-control"
                             placeholder="Ingresa el correo de técnico" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="telefonoTecnico" class="form-label">Teléfono</label>
+                        <label for="telefonoTecnico" class="form-label fw-semibold">Teléfono</label>
                         <input id="telefonoTecnico" type="text" name="telefonoTecnico" class="form-control"
                             placeholder="0000-0000" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="duiTecnico" class="form-label">DUI</label>
+                        <label for="duiTecnico" class="form-label fw-semibold">DUI</label>
                         <input id="duiTecnico" type="text" name="duiTecnico" class="form-control"
                             placeholder="00000000-0" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="nacimientoTecnico" class="form-label">Fecha de nacimiento</label>
+                        <label for="nacimientoTecnico" class="form-label fw-semibold">Fecha de nacimiento</label>
                         <input id="nacimientoTecnico" type="date" name="nacimientoTecnico"
                             class="form-control" placeholder="Ingresa la fecha de nacimiento del técnico"
                             required>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="claveTecnico" class="form-label">Contraseña</label>
+                        <label for="claveTecnico" class="form-label fw-semibold">Contraseña</label>
                         <input id="claveTecnico" type="password" name="claveTecnico" min="0.01" step="0.01"
                             class="form-control" placeholder="Ingresa la clave del técnico" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="repetirclaveTecnico" class="form-label">Repetir contraseña</label>
+                        <label for="repetirclaveTecnico" class="form-label fw-semibold">Repetir contraseña</label>
                         <input id="repetirclaveTecnico" type="password" name="repetirTecnico"
                             min="0.01" step="0.01" class="form-control" placeholder="Repite la clave del técnico"
                             required>
+                    </div>
+                    <div class="col-sm-12 col-md-6 align-self-end">
+                        <div class="form-check form-switch float-end">
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+                            <label class="form-check-label" for="flexSwitchCheckChecked">Estado</label>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">

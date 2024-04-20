@@ -179,6 +179,11 @@ async function fillTable(form = null) {
                 <td>${row.dui}</td>
                 <td>${row.fecha}</td>
                 <td>
+                    <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckCheckedDisabled" checked disabled>
+                    </div>
+                </td>
+                <td>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>

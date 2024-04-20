@@ -45,7 +45,7 @@
                     <th>Apellido</th>
                     <th>Dorsal</th>
                     <th>Posición principal</th>
-                    <th>Fecha de nacimiento</th>
+                    <th>Fecha de creación</th>
                     <th>Estado físico</th>
                 </tr>
             </thead>
@@ -96,15 +96,14 @@
                             placeholder="Ingresa el apellido del jugador" required>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
-                        <label for="aliasJugador" class="form-label fw-semibold">Alías</label>
-                        <input id="aliasJugador" type="text" name="aliasJugador" class="form-control"
-                            placeholder="Escribe el alías del jugador" required>
-                    </div>
-                    <div class="col-sm-12 col-md-6 mb-2">
                         <label for="fechaNacimientoJugador" class="form-label fw-semibold">Fecha de nacimiento</label>
                         <input id="fechaNacimientoJugador" type="date" name="fechaNacimientoJugador" class="form-control"
                             placeholder="Selecciona la fecha de nacimiento del jugador" required>
                     </div> 
+                    <div class="col-sm-12 col-md-6 mb-2">
+                        <label for="generoJugador" class="form-label fw-semibold">Genéro del jugador</label>
+                        <select id="generoJugador" name="generoJugador" class="form-select" required></select>
+                    </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="perfilJugador" class="form-label fw-semibold">Perfil del jugador</label>
                         <select id="perfilJugador" name="perfilJugador" class="form-select" required></select>
@@ -116,23 +115,6 @@
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="posicionSecundaria" class="form-label fw-semibold">Posición secundaria</label>
                         <select id="posicionSecundaria" name="posicionSecundaria" class="form-select" required></select>
-                    </div>
-                    <div class="col-sm-12 col-md-6 mb-2">
-                        <label for="alturaJugador" class="form-label fw-semibold">Altura del jugador</label>
-                        <input id="alturaJugador" type="number" name="alturaJugador" step=".01"  max="2"
-                            class="form-control" placeholder="Escribe la altura del jugador" required>
-                    </div>
-                    <div class="col-sm-12 col-md-6 mb-2">
-                        <label for="pesoJugador" class="form-label fw-semibold">Peso del jugador</label>
-                        <input id="pesoJugador" type="number" name="pesoJugador" max="200"
-                            class="form-control" placeholder="Escribe el peso de jugador en libras" required>
-                    </div>
-                    <div  class="col-sm-12 col-md-6 mb-2">
-                        <label for="masaCorporal" class="form-label fw-semibold">Índice de masa corporal</label>
-                        <input id="masaCorporal" type="number" name="masaCorporal" class="form-control" disabled>
-                        <div class="form-text">
-                            Este será calculado automáticamente cuando guardes la altura y peso.
-                        </div>
                     </div>
                     <div  class="col-sm-12 col-md-6 mb-2">
                         <label for="dorsal" class="form-label fw-semibold">Dorsal</label>
