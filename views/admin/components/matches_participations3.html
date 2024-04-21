@@ -29,7 +29,7 @@
     <hr>
     <div class="d-flex align-items-center mb-3">
         <img src="../../../resources/img/svg/icons_forms/info.svg" class="img-fluid me-2" alt="">
-        Recuerda  agregar los goles y amonestaciones que el jugador tuvo en el partido
+        Recuerda agregar los goles y amonestaciones que el jugador tuvo en el partido
     </div>
 
     <!-- Tabla para mostrar los registros existentes -->
@@ -273,10 +273,11 @@
             <div class="container">
                 <div class="row p-4 d-flex align-items-center justify-content-center text-center" id="gol_card">
 
-    
+
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center mt-5">
-                    <button type="submit" class="btn bg-blue-principal-color text-white " onclick="openCreateGol()">Agregar gol al jugador</button>
+                    <button type="submit" class="btn bg-blue-principal-color text-white "
+                        onclick="openCreateGol()">Agregar gol al jugador</button>
                 </div>
             </div>
         </div>
@@ -305,7 +306,7 @@
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="tipoGoles" class="form-label fw-semibold">Tipo de goles</label>
-                        <select id="tipoGoles"name="tipoGoles" class="form-select"></select>
+                        <select id="tipoGoles" name="tipoGoles" class="form-select"></select>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center">
@@ -330,12 +331,14 @@
                     aria-label="Close"></button>
             </div>
             <div class="container">
-                <div class="row p-4 d-flex align-items-center justify-content-center text-center" id="amonestacion_card">
+                <div class="row p-4 d-flex align-items-center justify-content-center text-center"
+                    id="amonestacion_card">
 
-    
+
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center mt-5">
-                    <button type="submit" class="btn bg-blue-principal-color text-white " onclick="openCreateAmonestacion()">Agregar amonestación al jugador</button>
+                    <button type="submit" class="btn bg-blue-principal-color text-white "
+                        onclick="openCreateAmonestacion()">Agregar amonestación al jugador</button>
                 </div>
             </div>
         </div>
@@ -359,13 +362,14 @@
                 <input type="hidden" id="idAmonestacion" name="idAmonestacion">
                 <div class="row py-4">
                     <div class="col-sm-12 col-md-6">
-                        <label for="cantidadAmonestacion" class="form-label fw-semibold">Cantidad de amonestación</label>
+                        <label for="cantidadAmonestacion" class="form-label fw-semibold">Cantidad de
+                            amonestación</label>
                         <input id="cantidadAmonestacion" type="number" name="cantidadAmonestacion" class="form-control"
                             placeholder="Escribe la cantidad de amonestaciones" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="tipoAmonestacion" class="form-label fw-semibold">Tipo de amonestación</label>
-                        <select id="tipoAmonestacion"name="tipoAmonestacion" class="form-select"></select>
+                        <select id="tipoAmonestacion" name="tipoAmonestacion" class="form-select"></select>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center">

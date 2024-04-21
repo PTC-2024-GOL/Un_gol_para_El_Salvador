@@ -99,40 +99,43 @@
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="equipos" class="form-label">Equipo</label>
+                        <label for="equipos" class="form-label fw-semibold">Equipo</label>
                         <select id="equipos" type="text" name="equipos" class="form-select" required></select>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="rival" class="form-label">Rival</label>
+                        <label for="rival" class="form-label fw-semibold">Rival</label>
                         <input id="rival" type="text" name="rival" class="form-control"
                             placeholder="Ingresa el nombre del rival" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="fechaPartido" class="form-label">Fecha partido</label>
+                        <label for="fechaPartido" class="form-label fw-semibold">Fecha partido</label>
                         <input id="fechaPartido" min="1" step="1" type="date" name="fechaPartido" class="form-control"
                             placeholder="Fecha del partido" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="cancha" class="form-label">Cancha</label>
+                        <label for="cancha" class="form-label fw-semibold">Cancha</label>
                         <input id="cancha" type="text" name="cancha" class="form-control"
-                            placeholder="Ingresa el nombre del campo" required>
+                            placeholder="Ingresa el nombre de la cancha" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="resultado" class="form-label">Resultado del partido</label>
+                        <label for="resultado" class="form-label fw-semibold">Resultado del partido</label>
                         <input id="resultado" type="text" name="resultado" class="form-control"
-                            placeholder="Ingresa el marcador" required>
+                            placeholder="Ingresa el marcador. Ejem: 5:1" required>
+                        <div id="passwordHelpBlock" class="form-text">
+                            Ingesa primero el resultado del equipo y luego la del rival
+                        </div>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="localidad" class="form-label">Localidad</label>
+                        <label for="localidad" class="form-label fw-semibold">Localidad</label>
                         <select id="localidad" type="text" name="localidad" class="form-select" required></select>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="tipoResultado" class="form-label">Tipo de resultado</label>
+                        <label for="tipoResultado" class="form-label fw-semibold">Tipo de resultado</label>
                         <select id="tipoResultado" type="text" name="tipoResultado" class="form-select"
                             required></select>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="jornada" class="form-label">Jornada</label>
+                        <label for="jornada" class="form-label fw-semibold">Jornada</label>
                         <select id="jornada" type="text" name="jornada" class="form-select" required></select>
                     </div>
                 </div>
@@ -182,41 +185,38 @@
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="equipos" class="form-label">Equipo</label>
-                        <select id="equipos" type="text" name="equipos" class="form-select" required></select>
+                        <label for="equipos" class="form-label fw-semibold">Equipo</label>
+                        <select id="equipos" type="text" name="equipos" class="form-select" disabled></select>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="rival" class="form-label">Rival</label>
-                        <input id="rival" type="text" name="rival" class="form-control"
-                            placeholder="Ingresa la fecha del pago" required>
+                        <label for="rival" class="form-label fw-semibold">Rival</label>
+                        <input id="rival" type="text" name="rival" class="form-control" disabled>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="fechaPartido" class="form-label">Fecha partido</label>
+                        <label for="fechaPartido" class="form-label fw-semibold">Fecha partido</label>
                         <input id="fechaPartido" min="1" step="1" type="date" name="fechaPartido" class="form-control"
-                            placeholder="Escribe la cantidad del pago" required>
+                            disabled>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="cancha" class="form-label">Cancha</label>
-                        <input id="cancha" type="text" name="cancha" class="form-control"
-                            placeholder="Ingresa el nombre del campo" required>
+                        <label for="cancha" class="form-label fw-semibold">Cancha</label>
+                        <input id="cancha" type="text" name="cancha" class="form-control" disabled>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="resultado" class="form-label">Resultado del partido</label>
-                        <input id="resultado" type="text" name="resultado" class="form-control"
-                            placeholder="Ingresa el marcador" required>
+                        <label for="resultado" class="form-label fw-semibold">Resultado del partido</label>
+                        <input id="resultado" type="text" name="resultado" class="form-control" disabled>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="localidad" class="form-label">Localidad</label>
-                        <select id="localidad" type="text" name="localidad" class="form-select" required></select>
+                        <label for="localidad" class="form-label fw-semibold">Localidad</label>
+                        <select id="localidad" type="text" name="localidad" class="form-select" disabled></select>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="tipoResultado" class="form-label">Tipo de resultado</label>
+                        <label for="tipoResultado" class="form-label fw-semibold">Tipo de resultado</label>
                         <select id="tipoResultado" type="text" name="tipoResultado" class="form-select"
-                            required></select>
+                            disabled></select>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="jornada" class="form-label">Jornada</label>
-                        <select id="jornada" type="text" name="jornada" class="form-select" required></select>
+                        <label for="jornada" class="form-label fw-semibold">Jornada</label>
+                        <select id="jornada" type="text" name="jornada" class="form-select" disabled></select>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">

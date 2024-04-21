@@ -1,8 +1,11 @@
+<!-- Contiene un contenedor que cuenta una fila y dentro dos col. -->
 <div class="container">
     <div class="row d-flex align-items-center">
+        <!-- Primer col -->
         <div class="col-auto">
             <img src="../../../resources/img/svg/icons_generals/coins.svg" alt="">
         </div>
+        <!-- Segunda col -->
         <div class="col">
             <div class="container bg-blue-light-color rounded-3">
                 <h4 class="fw-semibold p-3">Ingresos mensuales</h4>
@@ -11,10 +14,14 @@
         </div>
     </div>
 
+    <!-- Insertamos la grafica lineal, por medio del id analisis -->
     <canvas id="analisis"></canvas>
 
+    <!-- Contenedor que tiene una fila y dentro dos filas -->
+    <!-- con la propiedad d-none y d-md-block hacemos que cuando este en pantallas pequeñas se desaparezca -->
     <div class="container bg-beige-color mt-5 d-none d-md-block">
         <div class="row p-5 d-flex justify-content-center mx-2 gx-5">
+            <!-- Primera col -->
             <div class="col-sm-12 col-md-6 text-center">
                 <h4 class="fw-bold mb-3">Ingreso anual</h4>
                 <div class="container bg-blue-light-color p-5 rounded-3 shadow">
@@ -22,14 +29,16 @@
                     <p class="fw-semibold">Total</p>
                 </div>
             </div>
+            <!-- Segunda col -->
             <div class="col-sm-12 col-md-6 text-center">
                 <h4 class="fw-bold mb-3">Total de pagos con mora</h4>
-                
-                <label for="inputPassword" class="form-label float-start">Selecciona el mes del cual quieres ver la cantidad de moras</label>
+
+                <label for="inputPassword" class="form-label float-start">Selecciona el mes del cual quieres ver la
+                    cantidad de moras</label>
                 <div class="col-sm-12">
                     <select type="password" class="form-select rounded-3 shadow" id="inputPassword"></select>
                 </div>
-                
+
                 <div class="container bg-blue-light-color p-5 rounded-3 mt-3 shadow">
                     <h1 class="fw-bold">10</h1>
                     <p class="fw-semibold">Pagos con mora</p>
@@ -38,33 +47,43 @@
         </div>
     </div>
 
+    <!-- Contenedor que contiene una fila y dentro cuatro columnas -->
     <div class="container mt-5">
-        <p class="fw-semibold">A continuación podrás observar la cantidad de jugadores con beca completa, media beca  y los que no están becados</p>
+        <p class="fw-semibold">A continuación podrás observar la cantidad de jugadores con beca completa, media beca y
+            los que no están becados</p>
         <div class="row justify-content-center gy-4">
+            <!-- Primera col -->
             <div class="col text-center">
                 <div class="container bg-yellow-light-color p-4 rounded-4">
-                    <img src="../../../resources/img/svg/icons_generals/t_beca.svg" class="bg-white rounded-circle p-3" width="110px" height="110px" alt="">
+                    <img src="../../../resources/img/svg/icons_generals/t_beca.svg" class="bg-white rounded-circle p-3"
+                        width="110px" height="110px" alt="">
                     <p class="fw-bold mt-3">Total de alumnos</p>
                     <h3 class="p-2 bg-yellow-color rounded-4 text-light fw-bold">60</h3>
                 </div>
             </div>
+            <!-- Segunda col -->
             <div class="col text-center">
                 <div class="container bg-green-light-color p-4 rounded-4">
-                    <img src="../../../resources/img/svg/icons_generals/n_beca.svg" class="bg-white rounded-circle p-3" width="110px" height="110px" alt="">
+                    <img src="../../../resources/img/svg/icons_generals/n_beca.svg" class="bg-white rounded-circle p-3"
+                        width="110px" height="110px" alt="">
                     <p class="fw-bold mt-3">Sin becas</p>
                     <h3 class="p-2 bg-green-color rounded-4 text-light fw-bold">10</h3>
                 </div>
             </div>
+            <!-- Tercera col -->
             <div class="col text-center">
                 <div class="container bg-blue-light-color p-4 rounded-4">
-                    <img src="../../../resources/img/svg/icons_generals/c_beca.svg" class="bg-white rounded-circle p-3" width="110px" height="110px" alt="">
+                    <img src="../../../resources/img/svg/icons_generals/c_beca.svg" class="bg-white rounded-circle p-3"
+                        width="110px" height="110px" alt="">
                     <p class="fw-bold mt-3">Becas completas</p>
                     <h3 class="p-2 bg-blue-color rounded-4 text-light fw-bold">40</h3>
                 </div>
             </div>
+            <!-- Cuarta col -->
             <div class="col text-center">
                 <div class="container bg-orange-light-color p-4 rounded-4">
-                    <img src="../../../resources/img/svg/icons_generals/m_beca.svg" class="bg-white rounded-circle p-3" width="110px" height="110px" alt="">
+                    <img src="../../../resources/img/svg/icons_generals/m_beca.svg" class="bg-white rounded-circle p-3"
+                        width="110px" height="110px" alt="">
                     <p class="fw-bold mt-3">Medias becas</p>
                     <h3 class="p-2 bg-orange-color rounded-4 text-light fw-bold">10</h3>
                 </div>
@@ -72,6 +91,3 @@
         </div>
     </div>
 </div>
-
-  
-                        
