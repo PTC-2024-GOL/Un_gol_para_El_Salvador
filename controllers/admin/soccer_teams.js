@@ -1,5 +1,9 @@
-let SAVE_MODAL;
-let SEE_MODAL;
+let SAVE_MODAL,
+    MODAL_TITLE;
+
+let SEE_MODAL,
+    MODAL_TITLE1;
+
 let SAVE_FORM,
     ID_EQUIPO,
     NOMBRE_EQUIPO,
@@ -35,8 +39,7 @@ const openCreate = () => {
 
 const seeModal = () => {
     SEE_MODAL.show();
-    MODAL_TITLE.textContent = 'Cuerpo Técnico del equipo';
-    SAVE_FORM.reset();
+    MODAL_TITLE1.textContent = 'Cuerpo Técnico del equipo';
 }
 
 
@@ -239,7 +242,7 @@ window.onload = async function () {
         MODAL_TITLE = document.getElementById('modalTitle');
 
     SEE_MODAL = new bootstrap.Modal('#seeModal'),
-        MODAL_TITLE = document.getElementById('modalTitle2')
+        MODAL_TITLE1 = document.getElementById('modalTitle1')
 
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
@@ -285,5 +288,11 @@ window.onload = async function () {
         console.log(FORM);
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
         cargarTabla(FORM);
+    });
+
+    // Llamada a la función para establecer la mascara del campo teléfono.
+    vanillaTextMask.maskInput({
+        inputElement: document.getElementById('telefonoEquipo'),
+        mask: [/\d/, /\d/, /\d/, /\d/, '-' , /\d/, /\d/, /\d/, /\d/]
     });
 };

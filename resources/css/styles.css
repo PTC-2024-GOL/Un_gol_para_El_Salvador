@@ -116,6 +116,7 @@ hr {
 
 .margen {
     margin-bottom: 0px;
+    margin-top: 85px;
 }
 
 .titulo {
@@ -125,6 +126,7 @@ hr {
 @media (max-width: 770px) {
     .margen {
         margin-bottom: 2rem;
+        margin-top: 50px;
     }
 
 

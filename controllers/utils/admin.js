@@ -21,7 +21,7 @@ const loadTemplate = async () => {
 // Se agrega el encabezado de la página web antes del contenido principal.
 MAIN.insertAdjacentHTML('beforebegin', `
 <header class="margen">
-    <nav class="navbar bg-skyBlue-pastel-color fixed-top sticky-sm-top">
+    <nav class="navbar bg-skyBlue-pastel-color fixed-top">
         <div class="container-fluid">
             <button class="navbar-toggler " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
                 aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
@@ -178,7 +178,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                 </li>
                                 <!-- Etiqueta para log out -->
                                 <li class="nav-item">
-                                    <a class="nav-link active text-light" aria-current="page" href="#">
+                                    <a class="nav-link active text-light" aria-current="page" href="index.html">
                                         <img src="../../../resources/img/svg/icons_menu/log_out.svg" class="me-3" alt="">
                                         Cerrar sesión</a>
                                 </li>

@@ -268,12 +268,12 @@ window.onload = async function () {
     });
     // Llamada a la función para establecer la mascara del campo teléfono.
     vanillaTextMask.maskInput({
-        inputElement: document.getElementById('telefonoAdministrador'),
+        inputElement: document.getElementById('telefonoTecnico'),
         mask: [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
     });
     // Llamada a la función para establecer la mascara del campo DUI.
     vanillaTextMask.maskInput({
-        inputElement: document.getElementById('duiAdministrador'),
+        inputElement: document.getElementById('duiTecnico'),
         mask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/]
     });
 };

@@ -4,7 +4,7 @@
 */
 
 // Constante para completar la ruta de la API.
-const USER_API = 'services/technics/tecnicos.php';
+const USER_API = 'services/admin/administrador.php';
 // Constante para establecer el elemento del contenido principal.
 const MAIN = document.querySelector('main');
 MAIN.style.paddingTop = '50px';
@@ -21,7 +21,7 @@ const loadTemplate = async () => {
 // Se agrega el encabezado de la página web antes del contenido principal.
 MAIN.insertAdjacentHTML('beforebegin', `
 <header class="margen">
-    <nav class="navbar bg-skyBlue-pastel-color fixed-top sticky-sm-top">
+    <nav class="navbar bg-skyBlue-pastel-color fixed-top">
         <div class="container-fluid">
             <button class="navbar-toggler " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
                 aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
@@ -36,7 +36,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                             <p class="mb-0 float-end fw-semibold" id="name"></p>
                         </div>
                         <div>
-                            <p class="text-body-secondary small float-end">Administrador</p>
+                            <p class="text-body-secondary small float-end">Técnico</p>
                         </div>
                     </div>
                     <div class="col">
@@ -194,6 +194,6 @@ MAIN.insertAdjacentHTML('beforebegin', `
 `);
 
 const userName = document.getElementById('name');
-userName.textContent = 'Chepe Martínez';
+userName.textContent = 'Susan Castillo';
 
 }
