@@ -1,6 +1,8 @@
 body {
     background-image: url(../img/svg/fondo_index.svg);
+    /* Imagen de fondo en toda la pantalla */
     background-repeat: no-repeat;
+    /* No se repite lka imagen */
     background-size: cover;
     height: 100vh;
 
@@ -12,11 +14,14 @@ body {
 
 .btn-color {
     background-color: #03045E;
+    /* Color del botón */
     color: #fff;
+    /* Letra del botón */
 }
 
 .btn-color:hover {
     color: #03045E;
+    /* Cambia la letra del botón al poner el mouse encima */
 }
 
 .borde-btn {
