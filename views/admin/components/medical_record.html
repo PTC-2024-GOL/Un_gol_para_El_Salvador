@@ -6,7 +6,8 @@
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
                         name="search" placeholder="Buscar" required>
-                    <button type="submit" class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
+                    <button type="submit"
+                        class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
                     </button>
                     <button type="reset" class="btn" onclick="fillTable()">
@@ -17,8 +18,9 @@
 
             <div class="col-sm-12 col-md-6">
                 <!-- Botón Agregar -->
-                <button class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3" type="submit"
-                    onclick="openCreate()">
+                <button
+                    class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
+                    type="submit" onclick="openCreate()">
                     <span class="fs-5 me-2">+</span> Agregar un registro médico
                 </button>
             </div>
@@ -57,7 +59,8 @@
             <div class="modal-header bg-blue-principal-color">
                 <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
                 <h1 class="modal-title fs-5 text-white" id="modalTitle"></h1>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
             <!-- Formulario para crear o actualizar un registro -->
             <form id="saveForm">
@@ -69,14 +72,14 @@
                         <select id="jugador" type="text" name="jugador" class="form-select" required></select>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="fechaLesion" class="form-label fw-semibold">Seleccione la fecha en que se hizo la lesión</label>
-                        <input id="fechaLesion" type="date" name="fechaLesion"
-                            class="form-control" required>
+                        <label for="fechaLesion" class="form-label fw-semibold">Seleccione la fecha en que se hizo la
+                            lesión</label>
+                        <input id="fechaLesion" type="date" name="fechaLesion" class="form-control" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="fechaRegistro" class="form-label fw-semibold">Selecciona la fecha en que se registro la lesión</label>
-                        <input id="fechaRegistro" type="date" name="fechaRegistro"
-                            class="form-control" required>
+                        <label for="fechaRegistro" class="form-label fw-semibold">Selecciona la fecha en que se registro
+                            la lesión</label>
+                        <input id="fechaRegistro" type="date" name="fechaRegistro" class="form-control" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="diasLesionado" class="form-label fw-semibold">Días lesionado</label>
@@ -88,14 +91,14 @@
                         <select id="lesion" type="text" name="lesion" class="form-select" required></select>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="retornoEntreno" class="form-label fw-semibold">Selecciona la fecha de retorno a entrenos</label>
-                        <input id="retornoEntreno" type="date" name="retornoEntreno"
-                            class="form-control" required>
+                        <label for="retornoEntreno" class="form-label fw-semibold">Selecciona la fecha de retorno a
+                            entrenos</label>
+                        <input id="retornoEntreno" type="date" name="retornoEntreno" class="form-control" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="retornoPartido" class="form-label fw-semibold">Selecciona la fecha de retorno a partidos</label>
-                        <select id="retornoPartido" type="date" name="retornoPartido"
-                            class="form-select" required>
+                        <label for="retornoPartido" class="form-label fw-semibold">Selecciona la fecha de retorno a
+                            partidos</label>
+                        <select id="retornoPartido" type="date" name="retornoPartido" class="form-select" required>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">

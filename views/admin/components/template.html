@@ -4,24 +4,22 @@
 			<!-- Buscador -->
 			<div class="col-sm-12 col-md-6">
 				<form id="searchForm" class="d-flex">
-					<input type="search"
-						class="form-control me-3 borde-transparente campo rounded-3 shadow"
+					<input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
 						name="search" placeholder="Buscar" required>
 					<button type="submit"
 						class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
-						<img src="../../../resources/img/svg/icons_forms/search.svg"
-							width="18px" height="18px">
+						<img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
 					</button>
 					<button type="reset" class="btn" onclick="fillTable()">
-						<img src="../../../resources/img/svg/icons_forms/reset.svg" width="18px"
-							height="18px">
+						<img src="../../../resources/img/svg/icons_forms/reset.svg" width="18px" height="18px">
 					</button>
 				</form>
 			</div>
 
 			<div class="col-sm-12 col-md-6">
 				<!-- Botón Agregar -->
-				<button class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
+				<button
+					class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
 					type="submit" onclick="openCreate()">
 					<span class="fs-5 me-2">+</span> Agregar a una plantilla
 				</button>
@@ -57,8 +55,7 @@
 	<div class="modal-dialog modal-lg modal-dialog-centered">
 		<div class="modal-content">
 			<div class="modal-header bg-blue-principal-color text-light">
-				<img height="30" width="30" class="me-2"
-					src="../../../resources/img/svg/logos/logo_blanco.svg">
+				<img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
 				<h1 class="modal-title fs-5" id="modalTitle"></h1>
 				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
 					aria-label="Close"></button>
@@ -70,8 +67,7 @@
 				<div class="progressbar p-3 container-fluid" id="progressBar">
 					<div class="progress" id="progress"></div>
 
-					<div class="progress-step progress-step-active" id="progress-step1"
-						data-title="Plantilla"></div>
+					<div class="progress-step progress-step-active" id="progress-step1" data-title="Plantilla"></div>
 					<div class="progress-step" id="progress-step2" data-title="Jugador"></div>
 				</div>
 				<!-- Steps -->
@@ -102,14 +98,12 @@
 					<div class="row g-3">
 						<div class="col-sm-12 col-md-6">
 							<label for="plantilla" class="form-label fw-semibold">Elige la plantilla</label>
-							<select id="plantilla" name="plantilla" class="form-select"
-								required>
+							<select id="plantilla" name="plantilla" class="form-select" required>
 							</select>
 						</div>
 						<div class="col-sm-12 col-md-6">
 							<label for="equipo" class="form-label fw-semibold">Elige al Equipo</label>
-							<select id="equipo" name="equipo" class="form-select"
-								required>
+							<select id="equipo" name="equipo" class="form-select" required>
 							</select>
 						</div>
 						<div class="col-sm-12 col-md-6">
@@ -119,15 +113,13 @@
 						</div>
 						<div class="col-sm-12 col-md-6">
 							<label for="temporada" class="form-label fw-semibold">Elige la temporada</label>
-							<select id="temporada" name="temporada"
-								class="form-select" required>
+							<select id="temporada" name="temporada" class="form-select" required>
 							</select>
 						</div>
 					</div>
 					<div class="btns-group">
 						<div class="mt-5 text-start" id="past">
-							<button
-								class="btn btn-prev bg-red-cream-color text-white">Anterior</button>
+							<button class="btn btn-prev bg-red-cream-color text-white">Anterior</button>
 						</div>
 						<div class="mt-5 text-end">
 							<button type="submit" id="guardar"

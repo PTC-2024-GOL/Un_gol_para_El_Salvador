@@ -6,7 +6,8 @@
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
                         name="search" placeholder="Buscar" required>
-                    <button type="submit" class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
+                    <button type="submit"
+                        class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
                     </button>
                     <button type="reset" class="btn" onclick="fillTable()">
@@ -17,8 +18,9 @@
 
             <div class="col-sm-12 col-md-6">
                 <!-- Botón Agregar -->
-                <button class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3" type="submit"
-                    onclick="openCreate()">
+                <button
+                    class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
+                    type="submit" onclick="openCreate()">
                     <span class="fs-5 me-2">+</span> Agregar técnico
                 </button>
             </div>
@@ -56,7 +58,8 @@
             <div class="modal-header bg-blue-principal-color">
                 <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
                 <h1 class="modal-title fs-5 text-white" id="modalTitle"></h1>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
             <!-- Formulario para crear o actualizar un registro -->
             <form id="saveForm">
@@ -73,7 +76,8 @@
                                 <!-- Botón para cargar imagen -->
                                 <input type="file" class="form-control" id="imagenTecnico" hidden>
                                 <!-- Para que tenga el mismo funcionamiento del input file le ponemos el for y le agregamos el id del input file -->
-                                <label class="btn bg-blue-secondary-color rounded-4 text-light" for="imagenTecnico">Cargar
+                                <label class="btn bg-blue-secondary-color rounded-4 text-light"
+                                    for="imagenTecnico">Cargar
                                     imagen</label>
                             </div>
                         </div>
@@ -105,9 +109,8 @@
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="nacimientoTecnico" class="form-label fw-semibold">Fecha de nacimiento</label>
-                        <input id="nacimientoTecnico" type="date" name="nacimientoTecnico"
-                            class="form-control" placeholder="Ingresa la fecha de nacimiento del técnico"
-                            required>
+                        <input id="nacimientoTecnico" type="date" name="nacimientoTecnico" class="form-control"
+                            placeholder="Ingresa la fecha de nacimiento del técnico" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="claveTecnico" class="form-label fw-semibold">Contraseña</label>
@@ -116,13 +119,13 @@
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="repetirclaveTecnico" class="form-label fw-semibold">Repetir contraseña</label>
-                        <input id="repetirclaveTecnico" type="password" name="repetirTecnico"
-                            min="0.01" step="0.01" class="form-control" placeholder="Repite la clave del técnico"
-                            required>
+                        <input id="repetirclaveTecnico" type="password" name="repetirTecnico" min="0.01" step="0.01"
+                            class="form-control" placeholder="Repite la clave del técnico" required>
                     </div>
                     <div class="col-sm-12 col-md-6 mt-4">
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
+                                checked>
                             <label class="form-check-label" for="flexSwitchCheckChecked">Estado</label>
                         </div>
                     </div>

@@ -6,7 +6,8 @@
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
                         name="search" placeholder="Buscar" required>
-                    <button type="submit" class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
+                    <button type="submit"
+                        class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
                     </button>
                     <button type="reset" class="btn" onclick="fillTable()">
@@ -17,8 +18,9 @@
 
             <div class="col-sm-12 col-md-6">
                 <!-- Botón Agregar -->
-                <button class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3" type="submit"
-                    onclick="openCreate()">
+                <button
+                    class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
+                    type="submit" onclick="openCreate()">
                     <span class="fs-5 me-2">+</span> Agregar jugador
                 </button>
             </div>
@@ -63,7 +65,8 @@
             <div class="modal-header bg-blue-principal-color">
                 <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
                 <h1 class="modal-title fs-5 text-white" id="modalTitle"></h1>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
             <!-- Formulario para crear o actualizar un registro -->
             <form id="saveForm">
@@ -80,7 +83,8 @@
                                 <!-- Botón para cargar imagen -->
                                 <input type="file" class="form-control" id="imagenAdministrador" hidden>
                                 <!-- Para que tenga el mismo funcionamiento del input file le ponemos el for y le agregamos el id del input file -->
-                                <label class="btn bg-blue-secondary-color rounded-4 text-light" for="imagenAdministrador">Elige la
+                                <label class="btn bg-blue-secondary-color rounded-4 text-light"
+                                    for="imagenAdministrador">Elige la
                                     imagen</label>
                             </div>
                         </div>
@@ -97,9 +101,9 @@
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="fechaNacimientoJugador" class="form-label fw-semibold">Fecha de nacimiento</label>
-                        <input id="fechaNacimientoJugador" type="date" name="fechaNacimientoJugador" class="form-control"
-                            placeholder="Selecciona la fecha de nacimiento del jugador" required>
-                    </div> 
+                        <input id="fechaNacimientoJugador" type="date" name="fechaNacimientoJugador"
+                            class="form-control" placeholder="Selecciona la fecha de nacimiento del jugador" required>
+                    </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="generoJugador" class="form-label fw-semibold">Genéro del jugador</label>
                         <select id="generoJugador" name="generoJugador" class="form-select" required></select>
@@ -116,10 +120,10 @@
                         <label for="posicionSecundaria" class="form-label fw-semibold">Posición secundaria</label>
                         <select id="posicionSecundaria" name="posicionSecundaria" class="form-select" required></select>
                     </div>
-                    <div  class="col-sm-12 col-md-6 mb-2">
+                    <div class="col-sm-12 col-md-6 mb-2">
                         <label for="dorsal" class="form-label fw-semibold">Dorsal</label>
-                        <input id="dorsal" type="number" name="dorsal" max="99" min="1"
-                            class="form-control" placeholder="Escribe el número dorsal del jugador" required>
+                        <input id="dorsal" type="number" name="dorsal" max="99" min="1" class="form-control"
+                            placeholder="Escribe el número dorsal del jugador" required>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="estadoJugador" class="form-label fw-semibold">Estado del jugador</label>
@@ -135,10 +139,10 @@
                             class="form-control" placeholder="Ingresa la clave del jugador" required>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
-                        <label for="repetirclaveJugador" class="form-label fw-semibold">Repetir clave del jugador</label>
-                        <input id="repetirclaveJugador" type="password" name="repetirclaveJugador"
-                            min="0.01" step="0.01" class="form-control" placeholder="Repite la clave del jugador"
-                            required>
+                        <label for="repetirclaveJugador" class="form-label fw-semibold">Repetir clave del
+                            jugador</label>
+                        <input id="repetirclaveJugador" type="password" name="repetirclaveJugador" min="0.01"
+                            step="0.01" class="form-control" placeholder="Repite la clave del jugador" required>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center">
