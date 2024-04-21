@@ -5,7 +5,7 @@ let SAVE_FORM,
     CLASIFICACION_CARACTERISTICA;
 let SEARCH_FORM;
 
-// Constantes para completar las rutas de la API.
+// Constantes para completar las rutas de la API
 const CARACTERISTICA_API = '';
 
 async function loadComponent(path) {

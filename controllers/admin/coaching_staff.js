@@ -1,10 +1,10 @@
 let SAVE_MODAL;
-let SAVE_FORM,
+let SAVE_FORM;
     ID_CUERPOTECNICO,
     CUERPOTECNICO;
 let SEARCH_FORM;
 
-// Constantes para completar las rutas de la API.
+// Constante para completar la rutas de la API
 const CUERPOTECNICO_API = '';
 
 async function loadComponent(path) {
