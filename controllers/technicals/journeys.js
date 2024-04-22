@@ -248,9 +248,6 @@ window.onload = async function () {
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Jornadas';
     fillTable();
-    // Constantes para establecer los elementos del componente Modal.
-    SAVE_MODAL = new bootstrap.Modal('#saveModal'),
-        MODAL_TITLE = document.getElementById('modalTitle');
 
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');
