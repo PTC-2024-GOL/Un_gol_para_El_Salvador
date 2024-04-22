@@ -27,7 +27,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                 aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand fw-semibold titulo" href="#" id='title' style="word-wrap: break-word; white-space: normal; @media (max-width: 915px) { font-size: 7px; word-break: break-all; }"></a>
+            <a class="navbar-brand fw-semibold titulo" href="#" id='title'></a>
             <!-- Imagen de perfil y nombre -->
             <div class="d-none d-sm-block">
                 <div class="row align-items-center justify-content-center">
