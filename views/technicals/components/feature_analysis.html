@@ -1,0 +1,261 @@
+<div class="container">
+    <div class="container-fluid mb-5">
+        <div class="row gy-3">
+            <!-- Buscador -->
+            <div class="col-sm-12 col-md-6">
+                <form id="searchForm" class="d-flex">
+                    <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
+                        name="search" placeholder="Buscar" required>
+                    <button type="submit"
+                        class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
+                        <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
+                    </button>
+                    <button type="reset" class="btn" onclick="cargarTabla()">
+                        <img src="../../../resources/img/svg/icons_forms/reset.svg" width="18px" height="18px">
+                    </button>
+                </form>
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+                <!-- Botón Agregar -->
+                <button
+                    class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
+                    type="submit" onclick="openCreate()">
+                    <span class="fs-5 me-2">+</span> Agregar análisis
+                </button>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <!-- Tabla para mostrar los registros existentes -->
+    <div class="table-responsive">
+        <table class="table table align-middle table-striped table-borderless text-center">
+            <!-- Cabeza de la tabla para mostrar la cantidad de registros y los títulos de las columnas -->
+            <thead>
+                <tr>
+                    <td colspan="5" id="rowsFound"></td>
+                </tr>
+                <tr>
+                    <th class="fw-semibold">Promedio de la nota</th>
+                    <th class="fw-semibold">Jugador</th>
+                    <th class="fw-semibold">Características del jugador</th>
+                </tr>
+            </thead>
+            <!-- Cuerpo de la tabla para mostrar un registro por fila -->
+            <tbody id="tabla_analisis"></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Componente Modal para guardar un registro -->
+<div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-principal-color text-light">
+                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                <h1 class="modal-title fs-5" id="modalTitle"></h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <!-- Formulario para crear o actualizar un registro -->
+            <form class="form container-fluid" id="saveForm">
+                <input type="hidden" id="idAnalisis" name="idAnalisis">
+                <h3 class="text-center">Análisis de características</h3>
+                <!-- Progress bar -->
+                <div class="progressbar p-3 container-fluid">
+                    <div class="progress" id="progress"></div>
+
+                    <div class="progress-step progress-step-active" id="progress-step1" data-title="Jugador"></div>
+                    <div class="progress-step" id="progress-step2" data-title="Físicos"></div>
+                    <div class="progress-step" data-title="Técnicos"></div>
+                    <div class="progress-step" data-title="Tácticos"></div>
+                    <div class="progress-step" data-title="Psicológicos"></div>
+                </div>
+
+                <!-- Steps -->
+                <div class="form-step form-step-active" id="step1">
+                    <div class="col-sm-12 col-md-12">
+                        <label for="jugador" class="form-label">Selecciona el jugador</label>
+                        <select id="jugador" type="text" name="jugador" class="form-select"></select>
+                    </div>
+                    <div class="mt-5">
+                        <button class="btn btn-next bg-blue-principal-color text-white ">Siguiente</button>
+                    </div>
+                </div>
+                <div class="form-step" id="step2">
+                    <div class="row g-3">
+                        <div class="col-sm-12 col-md-6">
+                            <label for="fuerza" class="form-label">Fuerza</label>
+                            <input id="fuerza" type="number" name="fuerza" class="form-control" min="1" max="10"
+                                placeholder="Ingrese la nota">
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="resistencia" class="form-label">Resistencia</label>
+                            <input id="resistencia" type="number" name="resistencia" class="form-control" min="1" max="10"
+                                placeholder="Ingrese la nota">
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="velocidad" class="form-label">Velocidad</label>
+                            <input id="velocidad" type="number" name="velocidad" class="form-control" min="1" max="10"
+                                placeholder="Ingrese la nota">
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="agilidad" class="form-label">Agilidad</label>
+                            <input id="agilidad" type="number" name="agilidad" class="form-control" min="1" max="10"
+                                placeholder="Ingrese la nota">
+                        </div>
+                        <div class="btns-group">
+                            <div class="mt-5 text-start" id="past">
+                                <button class="btn btn-prev bg-red-cream-color text-white ">Anterior</button>
+                            </div>
+                            <div class="mt-5 text-end">
+                                <button class="btn btn-next bg-blue-principal-color text-white">Siguiente</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-step">
+                    <div class="row g-3">
+                        <div class="col-sm-12 col-md-6">
+                            <label for="paseCorto" class="form-label">Pase corto</label>
+                            <input id="paseCorto" type="number" name="paseCorto" class="form-control" min="1" max="10"
+                                placeholder="Ingrese la nota">
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="paseMedio" class="form-label">Pase medio</label>
+                            <input id="paseMedio" type="number" name="paseMedio" class="form-control" min="1" max="10"
+                                placeholder="Ingrese la nota">
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="paseLargo" class="form-label">Pase largo</label>
+                            <input id="paseLargo" type="number" name="paseLargo" class="form-control" min="1" max="10"
+                                placeholder="Ingrese la nota">
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="conduccion" class="form-label">Conducción</label>
+                            <input id="conduccion" type="number" name="conduccion" class="form-control" min="1" max="10"
+                                placeholder="Ingrese la nota">
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="recepcion" class="form-label">Recepción</label>
+                            <input id="recepcion" type="number" name="recepcion" class="form-control" min="1" max="10"
+                                placeholder="Ingrese la nota">
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="cabeceo" class="form-label">Cabeceo</label>
+                            <input id="cabeceo" type="number" name="cabeceo" class="form-control" min="1" max="10"
+                                placeholder="Ingrese la nota">
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="regate" class="form-label">Regate</label>
+                            <input id="regate" type="number" name="regate" class="form-control" min="1" max="10"
+                                placeholder="Ingrese la nota">
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="definicionGol" class="form-label">Definición a gol</label>
+                            <input id="definicionGol" type="number" name="definicionGol" class="form-control" min="1" max="10"
+                                placeholder="Ingrese la nota">
+                        </div>
+                        <div class="btns-group">
+                            <div class="mt-5 text-start">
+                                <button class="btn btn-prev bg-red-cream-color text-white ">Anterior</button>
+                            </div>
+                            <div class="mt-5 text-end">
+                                <button class="btn btn-next bg-blue-principal-color text-white">Siguiente</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-step">
+                    <div class="row g-3">
+                        <div class="col-sm-12 col-md-6">
+                            <label for="tomaDecisiones" class="form-label">Toma de decisiones</label>
+                            <input id="tomaDecisiones" type="number" name="tomaDecisiones" class="form-control" min="1" max="10"
+                                placeholder="Ingrese la nota">
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="conceptosOfensivos" class="form-label">Conceptos ofensivos</label>
+                            <input id="conceptosOfensivos" type="number" name="conceptosOfensivos" class="form-control" min="1" max="10"
+                                placeholder="Ingrese la nota">
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="conceptosDefensivos" class="form-label">Conceptos defensivos</label>
+                            <input id="conceptosDefensivos" type="number" name="conceptosDefensivos" class="form-control" min="1" max="10"
+                                placeholder="Ingrese la nota">
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="interpretacion" class="form-label">Interpretación del juego</label>
+                            <input id="interpretacion" type="number" name="interpretacion" class="form-control" min="1" max="10"
+                                placeholder="Ingrese la nota">
+                        </div>
+                        <div class="btns-group">
+                            <div class="mt-5 text-start">
+                                <button class="btn btn-prev bg-red-cream-color text-white ">Anterior</button>
+                            </div>
+                            <div class="mt-5 text-end">
+                                <button class="btn btn-next bg-blue-principal-color text-white">Siguiente</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-step">
+                    <div class="row g-3">
+                        <div class="col-sm-12 col-md-6">
+                            <label for="concentracion" class="form-label">Concentración</label>
+                            <input id="concentracion" type="number" name="concentracion" class="form-control" min="1" max="10"
+                                placeholder="Ingrese la nota">
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="autoconfianza" class="form-label">Autoconfianza</label>
+                            <input id="autoconfianza" type="number" name="autoconfianza" class="form-control" min="1" max="10"
+                                placeholder="Ingrese la nota">
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="sacrificio" class="form-label">Sacrifio</label>
+                            <input id="sacrificio" type="number" name="sacrificio" class="form-control" min="1" max="10"
+                                placeholder="Ingrese la nota">
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="autocontrol" class="form-label">Autocontrol</label>
+                            <input id="autocontrol" type="number" name="autocontrol" class="form-control" min="1" max="10"
+                                placeholder="Ingrese la nota">
+                        </div>
+                        <div class="btns-group">
+                            <div class="mt-5 text-start">
+                                <button class="btn btn-prev bg-red-cream-color text-white ">Anterior</button>
+                            </div>
+                            <div class="mt-5 text-end">
+                                <button type="submit" id="guardar"
+                                    class="btn bg-blue-principal-color text-white ">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Componente Modal para ver la gráfica de barras -->
+<div class="modal fade" id="graphicModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modalTitle2" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-principal-color text-light">
+                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                <h1 class="modal-title fs-5" id="modalTitle3"></h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="row justify-content-center">
+                <!-- Contenedor de la gráfica -->
+                <div class="col-md-9 col-sm-9">
+                    <div class="container-fluid">
+                        <canvas id="analisis"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
