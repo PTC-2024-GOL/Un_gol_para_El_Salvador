@@ -227,7 +227,6 @@ const openDelete = async (id) => {
     }
     catch (Error) {
         console.log(Error + ' Error al cargar el mensaje');
-        confirmAction('¿Desea eliminar la participación del jugador?');
     }
 
 }
@@ -294,7 +293,6 @@ const openDeleteGoles = async (id) => {
     }
     catch (Error) {
         console.log(Error + ' Error al cargar el mensaje');
-        confirmAction('¿Desea eliminar el tipo de gol de la participación del jugador?');
     }
 
 }
@@ -362,7 +360,6 @@ const openDeleteAmonestacion = async (id) => {
     }
     catch (Error) {
         console.log(Error + ' Error al cargar el mensaje');
-        confirmAction('¿Desea eliminar la amonestación de la participación del jugador?');
     }
 
 }

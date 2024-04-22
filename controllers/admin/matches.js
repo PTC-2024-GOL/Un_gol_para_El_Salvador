@@ -152,7 +152,6 @@ const openDelete = async (id) => {
     }
     catch (Error) {
         console.log(Error + ' Error al cargar el mensaje');
-        confirmAction('¿Desea eliminar el partido de forma permanente?');
     }
 
 }
