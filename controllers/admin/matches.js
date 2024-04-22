@@ -381,4 +381,9 @@ window.onload = async function () {
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
         fillCards();
     });
+
+    vanillaTextMask.maskInput({
+        inputElement: document.getElementById('resultado'),
+        mask: [/\d/, ':', /\d/]
+    });
 };

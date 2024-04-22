@@ -113,7 +113,7 @@ const fillSelected = (data, action, selectId, selectedValue = null) => {
     // Crear opción por defecto
     const defaultOption = document.createElement('option');
     defaultOption.value = '';
-    defaultOption.textContent = 'Selecciona un jugador';
+    defaultOption.textContent = 'Seleccionar un jugador para su análisis';
     selectElement.appendChild(defaultOption);
 
     // Llenar el combobox con los datos proporcionados

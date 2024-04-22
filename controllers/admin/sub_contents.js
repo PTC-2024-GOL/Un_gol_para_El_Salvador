@@ -21,7 +21,7 @@ async function loadComponent(path) {
 const openCreate = () => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
-    MODAL_TITLE.textContent = 'Agregar subcontenido';
+    MODAL_TITLE.textContent = 'Agregar sub-contenido';
     // Se prepara el formulario.
     SAVE_FORM.reset();
 }
