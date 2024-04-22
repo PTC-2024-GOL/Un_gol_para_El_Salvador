@@ -96,6 +96,9 @@ const seeModal = async (id) => {
         MODAL_TITLE.textContent = 'Plantilla';
         SAVE_FORM.reset();
         restaurarFormulario(95);
+        eliminarBotonesTablaJugadores();
+        // Ejemplo de uso: actualizar del paso 1 al paso 2
+        updateSteps(2, 1);
     }
 }
 
@@ -246,6 +249,24 @@ const openDeletePlayer = async (id) => {
 
 }
 
+function eliminarBotonesTablaJugadores() {
+    const botonesEditar = document.querySelectorAll('#tabla_jugadores #btnAct');
+    const botonesEliminar = document.querySelectorAll('#tabla_jugadores #btnEli');
+    const progressBar = document.getElementById('progressBar'); // Eliminamos la progress bar
+
+    botonesEditar.forEach(boton => {
+        boton.remove();
+    });
+
+    botonesEliminar.forEach(boton => {
+        boton.remove();
+    });
+
+    if (progressBar) {
+        progressBar.remove(); // Aseguramos que la progress bar exista antes de intentar eliminarla
+    }
+}
+
 
 async function fillTable(form = null) {
     const lista_jugadores = [
@@ -336,10 +357,10 @@ async function fillTable(form = null) {
                 <td>${row.posicion_principal}</td>
                 <td>${row.fecha}</td>
                 <td>
-                    <button type="button" class="btn btn-next transparente" onclick="openUpdatePlayer(${row.id})">
+                    <button type="button" id="btnAct" class="btn btn-next transparente" onclick="openUpdatePlayer(${row.id})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente" onclick="openDeletePlayer(${row.id})">
+                    <button type="button" id="btnEli" class="btn transparente" onclick="openDeletePlayer(${row.id})">
                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
                 </td>
