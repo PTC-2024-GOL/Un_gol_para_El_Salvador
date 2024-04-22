@@ -86,6 +86,7 @@ function updateSteps(currentStep, nextStep) {
     const formInputs = form.querySelectorAll("input");
     formInputs.forEach((input) => {
         input.disabled = true;
+        input.placeholder = "";
     });
     const deletePast = document.getElementById(`past`);
     deletePast.remove();
