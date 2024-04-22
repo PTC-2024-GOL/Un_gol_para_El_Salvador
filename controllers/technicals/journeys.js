@@ -1,10 +1,3 @@
-let SAVE_MODAL;
-let SAVE_FORM,
-    ID_JORNADA,
-    NUMERO_JORNADA,
-    PLANTILLA,
-    FECHA_INICIO,
-    FECHA_FINAL;
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
