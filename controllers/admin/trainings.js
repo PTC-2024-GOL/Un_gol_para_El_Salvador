@@ -430,7 +430,7 @@ window.onload = async function () {
     appContainer.innerHTML = adminHtml;
 
     const titleElement = document.getElementById('title');
-    titleElement.textContent = 'Entrenamiento Jornada del 3 de julio - 29 de agosto';
+    titleElement.textContent = 'Jornada del 3 de julio - 29 de agosto';
     // Llamar a la función fillContents con la lista de datos de contenidos y el id del ul
     fillContents(lista_datos_contenidos, null, 'lista_contenidos');
 
