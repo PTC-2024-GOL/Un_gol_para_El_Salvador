@@ -259,14 +259,6 @@ window.onload = async function () {
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
 
-    // Constantes para establecer los elementos del formulario de guardar.
-    SAVE_FORM = document.getElementById('saveForm'),
-        ID_JORNADA = document.getElementById('idJornada'),
-        NUMERO_JORNADA = document.getElementById('numeroJornada'),
-        PLANTILLA = document.getElementById('plantilla'),
-        FECHA_INICIO = document.getElementById('fechaInicial'),
-        FECHA_FINAL = document.getElementById('fechaFinal');
-
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');
     // Verificar si SEARCH_FORM está seleccionado correctamente
