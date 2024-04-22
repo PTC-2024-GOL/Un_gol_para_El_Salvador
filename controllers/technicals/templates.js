@@ -169,10 +169,6 @@ window.onload = async function () {
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
 
-    // Constantes para establecer los elementos del formulario de guardar.
-    SAVE_FORM = document.getElementById('saveForm'),
-        ID_PLANTILLA = document.getElementById('idPlantilla'),
-        NOMBRE_PLANTILLA = document.getElementById('nombrePlantilla');
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');
     // Verificar si SEARCH_FORM está seleccionado correctamente
