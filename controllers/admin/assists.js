@@ -235,7 +235,7 @@ window.onload = async function () {
     appContainer.innerHTML = adminHtml;
     fillSelected(lista_datos_horario, 'readAll', 'horario');
     const titleElement = document.getElementById('title');
-    titleElement.textContent = 'Asistencias- elegir horario';
+    titleElement.textContent = 'Asistencias - elegir horario';
     cargarTabla();
     // Constantes para establecer los elementos del componente Modal.
 
