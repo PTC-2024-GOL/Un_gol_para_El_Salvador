@@ -104,23 +104,23 @@
 
                     <div class="col-sm-12 col-md-6 mb-3">
                         <label for="min_jugados" class="form-label fw-semibold">Minutos jugados</label>
-                        <input id="min_jugados" type="number" name="min_jugados" class="form-control"
+                        <input id="min_jugados" type="number" name="min_jugados" class="form-control" min="0" step="1"
                             placeholder="Escriba la cantidad de minutos jugados" required>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-3">
                         <label for="asistencias" class="form-label fw-semibold">Asistencias</label>
-                        <input id="asistencias" type="number" name="asistencias" class="form-control"
+                        <input id="asistencias" type="number" name="asistencias" class="form-control" min="0" step="1"
                             placeholder="Escriba la cantidad de asistencias del jugador" required>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-3">
                         <label for="puntuacion" class="form-label fw-semibold">Puntuación</label>
-                        <input id="puntuacion" type="number" step=".1" name="puntuacion" class="form-control"
+                        <input id="puntuacion" type="number" name="puntuacion" class="form-control" min="0" step=".1"
                             placeholder="Escribe la puntuación del jugador en este partido" required>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-3">
                         <label for="goles" class="form-label fw-semibold">Goles</label>
-                        <input id="goles" type="number" name="goles" class="form-control"
-                            placeholder="Escribe la cantidad de goles en este partido" required>
+                        <input id="goles" type="number" name="goles" class="form-control" min="0" step="1"
+                            placeholder="Escribe la cantidad de goles en este partido" required> 
                     </div>
                 </div>
 
@@ -214,23 +214,23 @@
 
                     <div class="col-sm-12 col-md-6 mb-3">
                         <label for="min_jugados" class="form-label fw-semibold">Minutos jugados</label>
-                        <input id="min_jugados" type="number" name="min_jugados" class="form-control"
+                        <input id="min_jugados" type="number" name="min_jugados" class="form-control" min="0" step="1"
                             placeholder="Escriba la cantidad de minutos jugados" disabled>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-3">
                         <label for="asistencias" class="form-label fw-semibold">Asistencias</label>
-                        <input id="asistencias" type="number" name="asistencias" class="form-control"
+                        <input id="asistencias" type="number" name="asistencias" class="form-control" min="0" step="1"
                             placeholder="Escriba la cantidad de asistencias del jugador" disabled>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-3">
                         <label for="puntuacion" class="form-label fw-semibold">Puntuación</label>
-                        <input id="puntuacion" type="number" step=".1" name="puntuacion" class="form-control"
+                        <input id="puntuacion" type="number" name="puntuacion" class="form-control" min="0" step=".1"
                             placeholder="Escribe la puntuación del jugador en este partido" disabled>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-3">
                         <label for="goles" class="form-label fw-semibold">Goles</label>
-                        <input id="goles" type="number" name="goles" class="form-control"
-                            placeholder="Escribe la cantidad de goles en este partido" disabled>
+                        <input id="goles" type="number" name="goles" class="form-control" min="0" step="1"
+                            placeholder="Escribe la cantidad de goles en este partido" disabled> 
                     </div>
                 </div>
 
@@ -300,8 +300,8 @@
                 <input type="hidden" id="idGol" name="idGol">
                 <div class="row py-4">
                     <div class="col-sm-12 col-md-6">
-                        <label for="cantidadGoles" class="form-label fw-semibold">Cantidad de goles</label>
-                        <input id="cantidadGoles" type="number" name="cantidadGoles" class="form-control"
+                        <label for="cantidadGoles" class="form-label fw-semibold">Cantidad de goles</label> 
+                        <input id="cantidadGoles" type="number" name="cantidadGoles" class="form-control" min="0" step="1"
                             placeholder="Escribe la cantidad de goles" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
@@ -364,7 +364,7 @@
                     <div class="col-sm-12 col-md-6">
                         <label for="cantidadAmonestacion" class="form-label fw-semibold">Cantidad de
                             amonestación</label>
-                        <input id="cantidadAmonestacion" type="number" name="cantidadAmonestacion" class="form-control"
+                        <input id="cantidadAmonestacion" type="number" name="cantidadAmonestacion" class="form-control" min="0" step="1"
                             placeholder="Escribe la cantidad de amonestaciones" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
