@@ -1,0 +1,89 @@
+<div class="container">
+    <div class="container-fluid mb-5">
+        <div class="row gy-3">
+            <!-- Buscador -->
+            <div class="col-sm-12 col-md-6">
+                <form id="searchForm" class="d-flex">
+                    <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
+                        name="search" placeholder="Buscar" required>
+                    <button type="submit"
+                        class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
+                        <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
+                    </button>
+                    <button type="reset" class="btn" onclick="fillTable()">
+                        <img src="../../../resources/img/svg/icons_forms/reset.svg" width="18px" height="18px">
+                    </button>
+                </form>
+            </div>
+
+            <div class="col-sm-12 col-md-12">
+                <!-- Botón ver plantillas a detalle -->
+                <a href="category_schedules.html"
+                    class="btn btn-outline-secondary  borde-transparente btn-sm rounded-3">
+                    Ver horarios de las categorías a detalle
+                </a>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <!-- Tabla para mostrar los registros existentes -->
+    <div class="table-responsive">
+        <table class="table table align-middle table-striped table-borderless">
+            <!-- Cabeza de la tabla para mostrar la cantidad de registros y los títulos de las columnas -->
+            <thead>
+                <tr>
+                    <td colspan="6" id="rowsFound"></td>
+                </tr>
+                <tr>
+                    <th>Nombre de la categoría</th>
+                    <th>Edad mínima</th>
+                    <th>Edad máxima</th>
+                    <th>Temporada</th>
+                    <th>Horario</th>
+                </tr>
+            </thead>
+            <!-- Cuerpo de la tabla para mostrar un registro por fila -->
+            <tbody id="tabla_categorias"></tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="seeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modalTitle2" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-principal-color">
+                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                <h1 class="modal-title fs-5 text-white" id="modalTitle2"></h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <!-- Formulario para visualizar un registro -->
+            <form id="seeForm">
+                <div class="modal-body row g-3">
+                    <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                    <input type="hidden" id="idHorario" name="idHorario">
+                    <div class="table-responsive">
+                        <table class="table table align-middle table-striped table-borderless">
+                            <!-- Cabeza de la tabla para mostrar la cantidad de registros y los títulos de las columnas -->
+                            <thead>
+                                <tr>
+                                    <td colspan="6" id="rowsFound"></td>
+                                </tr>
+                                <tr>
+                                    <th>Nombre del Horario</th>
+                                    <th>Día</th>
+                                    <th>Campo de entrenamiento</th>
+                                    <th>Hora inicial</th>
+                                    <th>Hora final</th>
+                                </tr>
+                            </thead>
+                            <!-- Cuerpo de la tabla para mostrar un registro por fila -->
+                            <tbody id="tabla_horarios"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
