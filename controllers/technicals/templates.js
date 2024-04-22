@@ -165,10 +165,6 @@ window.onload = async function () {
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Plantillas';
     fillTable();
-    // Constantes para establecer los elementos del componente Modal.
-    SAVE_MODAL = new bootstrap.Modal('#saveModal'),
-        MODAL_TITLE = document.getElementById('modalTitle');
-
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');
     // Verificar si SEARCH_FORM está seleccionado correctamente
