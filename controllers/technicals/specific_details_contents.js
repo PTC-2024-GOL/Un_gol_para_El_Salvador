@@ -260,7 +260,7 @@ window.onload = async function () {
     appContainer.innerHTML = subcontenidosHtml;
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
-    titleElement.textContent = 'Detalles contenido especifico';
+    titleElement.textContent = 'Detalles contenido específico';
     fillSelected(lista_datos, 'readAll', 'generador');
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
