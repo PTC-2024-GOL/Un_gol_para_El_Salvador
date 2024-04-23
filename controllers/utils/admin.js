@@ -168,7 +168,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                     <a class="nav-link active text-light" aria-current="page" href="contact_us.html">
                                         <img src="../../../resources/img/svg/icons_menu/contactanos.svg" class="me-3"
                                             alt="">
-                                        contáctanos</a>
+                                        Contáctanos</a>
                                 </li>
                                 <!-- Etiqueta para log out -->
                                 <li class="nav-item">
