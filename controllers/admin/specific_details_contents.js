@@ -8,6 +8,7 @@ let SAVE_FORM,
     MINUTOS_TAREA,
     IDDETALLE_CONTENIDO,
     JUGADORES;
+
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
@@ -33,13 +34,39 @@ const lista_datos = [
     }
 ];
 
+function eliminarInput(idJugador) {
+    const inputEliminar = document.getElementById('nombreAdministrador_' + idJugador);
+    const btnEliminar = document.getElementById('btnEliminar_' + idJugador);
+    const rowContainer = document.getElementById('rowContainer_' + idJugador);
+    if (inputEliminar && btnEliminar && rowContainer) {
+        rowContainer.remove();
+        inputEliminar.remove();
+        btnEliminar.remove();
+    }
+}
+
 //Aqui esta vacío pero se rellenará a base de que se agreguén registros
 const datosguardados = [];
 
-async function eliminardata(data, accion)
-{
-    accion = 'delete full' ? data.forEach((element) => eliminarInput(data[element]), data.shift()) : data.filter(jugadorrr => jugadorrr != accion)
+async function eliminardata(accion) {
+    if (accion == 'delete full') {
+        console.log('entro al if');
+        for (let i = 0; i < datosguardados.length; i++) {
+            console.log('Eliminaré el input ', datosguardados[i]);
+            eliminarInput(datosguardados[i]);
+        }
+        datosguardados.length = 0; // Vaciar el array
+    } else {
+        const datoEliminado = datosguardados.findIndex(elemento => elemento === accion);
+        if (datoEliminado !== -1) { // Verificar si se encontró el elemento
+            datosguardados.splice(datoEliminado, 1);
+            console.log('Dato eliminado: ', accion);
+        } else {
+            console.log('El elemento no está presente en el arreglo.');
+        }
+    }
 }
+
 
 //Función asíncrona para cargar un componente HTML.
 async function loadComponent(path) {
@@ -82,6 +109,7 @@ const fillSelected = (data, action, selectId, selectedValue = null) => {
 
 const openCreate = () => {
     // Se muestra la caja de diálogo con su título.
+    eliminardata('delete full');
     SAVE_MODAL.show();
     MODAL_TITLE.textContent = 'Agregar detalle';
     // Se prepara el formulario.
@@ -97,7 +125,7 @@ const openCreate = () => {
 */
 const openUpdate = async (id) => {
     try {
-        eliminardata(datosguardados, 'delete full');
+        eliminardata('delete full');
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
         FORM.append('iddetallecontenido', id);
@@ -124,7 +152,7 @@ const openUpdate = async (id) => {
         }
     } catch (Error) {
         console.error(Error);
-        eliminardata(datosguardados, 'delete full');
+        eliminardata('delete full');
         // En caso de error, llenar el combobox con datos simulados
         SAVE_MODAL.show();
         fillSelected(lista_datos, 'readAll', 'generador');
@@ -328,9 +356,12 @@ window.onload = async function () {
     selectJugador.addEventListener('change', (event) => {
         const selectedJugadorId = event.target.value;
         const jugadorSeleccionado = lista_datos.find(jugador => jugador.id === parseInt(selectedJugadorId)); 
-        if (jugadorSeleccionado) {
+        console.log(jugadorSeleccionado);
+        const elementoAgregado = datosguardados.some(elemento => elemento === jugadorSeleccionado.id);
+        if (!elementoAgregado) {
             // Crear un nuevo contenedor de fila para el input y el botón
             const rowContainer = document.createElement('div');
+            rowContainer.id = 'rowContainer_' + jugadorSeleccionado.id;
             rowContainer.classList.add('row', 'py-1');
 
             // Crear un nuevo input para el nombre del jugador
@@ -348,8 +379,9 @@ window.onload = async function () {
             botonEliminar.type = 'button';
             botonEliminar.classList.add('btn', 'transparente', 'col-1');
             datosguardados.push(jugadorSeleccionado.id);
+            console.log(datosguardados);
             botonEliminar.onclick = function () {
-                eliminardata(datosguardados, jugadorSeleccionado.id);
+                eliminardata(jugadorSeleccionado.id);
                 eliminarInput(jugadorSeleccionado.id);
             };
 
@@ -373,15 +405,5 @@ window.onload = async function () {
             nombresDeLosJugadoresDiv.appendChild(rowContainer);
         }
     });
-
-    // Función para eliminar el input del nombre seleccionado
-    function eliminarInput(idJugador) {
-        const inputEliminar = document.getElementById('nombreAdministrador_' + idJugador);
-        const btnEliminar = document.getElementById('btnEliminar_' + idJugador);
-        if (inputEliminar && btnEliminar) {
-            inputEliminar.remove();
-            btnEliminar.remove();
-        }
-    }
 
 };
