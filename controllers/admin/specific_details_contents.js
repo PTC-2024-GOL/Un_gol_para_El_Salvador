@@ -157,7 +157,7 @@ const openUpdate = async (id) => {
         SAVE_MODAL.show();
         fillSelected(lista_datos, 'readAll', 'generador');
         MODAL_TITLE.textContent = 'Actualizar detalle';
-        
+
     }
 }
 
@@ -355,7 +355,7 @@ window.onload = async function () {
     const selectJugador = document.getElementById('generador');
     selectJugador.addEventListener('change', (event) => {
         const selectedJugadorId = event.target.value;
-        const jugadorSeleccionado = lista_datos.find(jugador => jugador.id === parseInt(selectedJugadorId)); 
+        const jugadorSeleccionado = lista_datos.find(jugador => jugador.id === parseInt(selectedJugadorId));
         console.log(jugadorSeleccionado);
         const elementoAgregado = datosguardados.some(elemento => elemento === jugadorSeleccionado.id);
         if (!elementoAgregado) {
