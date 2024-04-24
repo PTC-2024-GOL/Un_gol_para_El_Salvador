@@ -138,3 +138,13 @@ hr {
         text-align: center;
     }
 }
+
+/* Calendar */
+a{
+    text-decoration: none;
+    color: black;
+}
+
+#fc-dom-1 {
+    font-size: larger;
+}
