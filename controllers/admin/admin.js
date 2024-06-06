@@ -9,11 +9,13 @@ let SAVE_FORM,
     DUI_ADMINISTRADOR,
     NACIMIENTO_ADMINISTRADOR,
     IMAGEN_ADMINISTRADOR,
+    FOTO_ADMINISTRADOR,
     REPETIR_CLAVE;
 let SEARCH_FORM;
+let ROWS_FOUND;
 
 // Constantes para completar las rutas de la API.
-const ADMINISTRADOR_API = '';
+const ADMINISTRADOR_API = 'services/admin/administradores.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -29,8 +31,11 @@ const openCreate = () => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
     MODAL_TITLE.textContent = 'Crear administrador';
+    CLAVE_ADMINISTRADOR.disabled = false;
+    REPETIR_CLAVE.disabled = false;
     // Se prepara el formulario.
     SAVE_FORM.reset();
+    FOTO_ADMINISTRADOR.src = "../../../resources/img/svg/avatar.svg";
 }
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
@@ -60,7 +65,9 @@ const openUpdate = async (id) => {
             TELEFONO_ADMINISTRADOR.value = ROW.TELÉFONO;
             DUI_ADMINISTRADOR.value = ROW.DUI;
             NACIMIENTO_ADMINISTRADOR.value = ROW.NACIMIENTO;
-            CLAVE_ADMINISTRADOR.value = ROW.CLAVE;
+            FOTO_ADMINISTRADOR.src = SERVER_URL.concat('images/administradores/', ROW.IMAGEN);
+            CLAVE_ADMINISTRADOR.disabled = true;
+            REPETIR_CLAVE.disabled = true;
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -78,14 +85,13 @@ const openUpdate = async (id) => {
 */
 const openDelete = async (id) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar el administrador?');
+    const RESPONSE = await confirmAction('¿Desea eliminar el administrador de forma permanente?');
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
             // Se define una constante tipo objeto con los datos del registro seleccionado.
             const FORM = new FormData();
             FORM.append('idAdministrador', id);
-            console.log(id);
             // Petición para eliminar el registro seleccionado.
             const DATA = await fetchData(ADMINISTRADOR_API, 'deleteRow', FORM);
             console.log(DATA.status);
@@ -102,7 +108,42 @@ const openDelete = async (id) => {
     }
     catch (Error) {
         console.log(Error + ' Error al cargar el mensaje');
-        
+        confirmAction('¿Desea eliminar el administrador de forma permanente?');
+    }
+
+}
+
+
+/*
+*   Función asíncrona para cambiar el estado de un registro.
+*   Parámetros: id (identificador del registro seleccionado).
+*   Retorno: ninguno.
+*/
+const openState = async (id) => {
+    // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
+    const RESPONSE = await confirmUpdateAction('¿Desea cambiar el estado del administrador?');
+    try {
+        // Se verifica la respuesta del mensaje.
+        if (RESPONSE) {
+            // Se define una constante tipo objeto con los datos del registro seleccionado.
+            const FORM = new FormData();
+            FORM.append('idAdministrador', id);
+            // Petición para eliminar el registro seleccionado.
+            const DATA = await fetchData(ADMINISTRADOR_API, 'changeState', FORM);
+            console.log(DATA.status);
+            // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+            if (DATA.status) {
+                // Se muestra un mensaje de éxito.
+                await sweetAlert(1, DATA.message, true);
+                // Se carga nuevamente la tabla para visualizar los cambios.
+                fillTable();
+            } else {
+                sweetAlert(2, DATA.error, false);
+            }
+        }
+    }
+    catch (Error) {
+        console.log(Error + ' Error al cargar el mensaje');
     }
 
 }
@@ -153,23 +194,24 @@ async function fillTable(form = null) {
         cargarTabla.innerHTML = '';
         // Se verifica la acción a realizar.
         (form) ? action = 'searchRows' : action = 'readAll';
-        console.log(form);
         // Petición para obtener los registros disponibles.
         const DATA = await fetchData(ADMINISTRADOR_API, action, form);
-        console.log(DATA);
 
         if (DATA.status) {
             // Mostrar elementos obtenidos de la API
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
-                <tr>
-                    <td><img src="${SERVER_URL}images/admin/${row.IMAGEN}" height="50" width="50" class="circulo"></td>
+                <tr class="${getRowBackgroundColor(row.ESTADO)}">
+                    <td><img src="${SERVER_URL}images/administradores/${row.IMAGEN}" height="50" width="50" class="circulo"></td>
                     <td>${row.NOMBRE}</td>
                     <td>${row.CORREO}</td>
                     <td>${row.TELÉFONO}</td>
                     <td>${row.DUI}</td>
-                    <td>${row.NACIMIENTO}</td>
+                    <td class="${getRowColor(row.ESTADO)}">${row.ESTADO}</td>
                     <td>
+                    <button type="button" class="btn transparente" onclick="openState(${row.ID})">
+                    <img src="../../../resources/img/svg/icons_forms/amonestacion.svg" width="18" height="18">
+                    </button>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
@@ -180,9 +222,18 @@ async function fillTable(form = null) {
                 </tr>
                 `;
                 cargarTabla.innerHTML += tablaHtml;
+                // Se muestra un mensaje de acuerdo con el resultado.
+                ROWS_FOUND.textContent = DATA.message;
             });
         } else {
-            sweetAlert(4, DATA.error, true);
+            const tablaHtml = `
+            <tr class="border-danger">
+                <td class="text-danger">${DATA.error}</td>
+            </tr>
+            `;
+            cargarTabla.innerHTML += tablaHtml;
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = "Existen 0 coincidencias";
         }
     } catch (error) {
         console.error('Error al obtener datos de la API:', error);
@@ -211,6 +262,29 @@ async function fillTable(form = null) {
     }
 }
 
+
+function getRowColor(estado) {
+    switch (estado) {
+        case 'Bloqueado':
+            return 'text-danger';
+        case 'Activo':
+            return 'text-success';
+        default:
+            return '';
+    }
+}
+
+function getRowBackgroundColor(estado) {
+    switch (estado) {
+        case 'Bloqueado':
+            return 'border-danger';
+        case 'Activo':
+            return 'border-success';
+        default:
+            return '';
+    }
+}
+
 // window.onload
 window.onload = async function () {
     // Obtiene el contenedor principal
@@ -225,6 +299,7 @@ window.onload = async function () {
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Administradores';
     fillTable();
+    ROWS_FOUND = document.getElementById('rowsFound');
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
@@ -240,6 +315,7 @@ window.onload = async function () {
         NACIMIENTO_ADMINISTRADOR = document.getElementById('nacimientoAdministrador'),
         CLAVE_ADMINISTRADOR = document.getElementById('claveAdministrador'),
         REPETIR_CLAVE = document.getElementById('repetirclaveAdministrador'),
+        FOTO_ADMINISTRADOR = document.getElementById('img_admin'),
         IMAGEN_ADMINISTRADOR = document.getElementById('imagenAdministrador');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
@@ -288,5 +364,16 @@ window.onload = async function () {
     vanillaTextMask.maskInput({
         inputElement: document.getElementById('duiAdministrador'),
         mask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/]
+    });
+
+    IMAGEN_ADMINISTRADOR.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                FOTO_ADMINISTRADOR.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
     });
 };

@@ -1,6 +1,6 @@
 <?php
 // Se incluyen las credenciales para conectar con la base de datos.
-require_once('conexion.php');
+require_once('config.php');
 
 /*
  *   Clase para realizar las operaciones en la base de datos.
@@ -108,7 +108,7 @@ class Database
                 self::$error = 'Violación de restricción de integridad';
                 break;
             default:
-                self::$error = 'Ocurrió un problema en la base de datos';
+                self::$error;
         }
     }
 
