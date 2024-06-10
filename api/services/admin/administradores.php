@@ -12,7 +12,7 @@ if (isset($_GET['action'])) {
     $result = array('status' => 0, 'session' => 0, 'message' => null, 'dataset' => null, 'error' => null, 'exception' => null, 'username' => null);
     // Se verifica si existe una sesión iniciada como administrador, de lo contrario se finaliza el script con un mensaje de error.
     // También se verifica que el tiempo de su sesión no haya caducado aun.
-    if (isset($_SESSION['idAdministrador']) or true /*and Validator::validateSessionTime()*/) {
+    if (isset($_SESSION['idAdministrador'])/*and Validator::validateSessionTime()*/) {
         $result['session'] = 1;
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {

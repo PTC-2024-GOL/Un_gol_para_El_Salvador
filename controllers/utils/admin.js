@@ -4,7 +4,7 @@
 */
 
 // Constante para completar la ruta de la API.
-const USER_API = 'services/admin/administrador.php';
+const USER_API = 'services/admin/administradores.php';
 // Constante para establecer el elemento del contenido principal.
 const MAIN = document.querySelector('main');
 MAIN.style.paddingTop = '50px';
@@ -172,7 +172,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                 </li>
                                 <!-- Etiqueta para log out -->
                                 <li class="nav-item">
-                                    <a class="nav-link active text-light" aria-current="page" href="index.html">
+                                    <a class="nav-link active text-light" aria-current="page" onclick="logOut()">
                                         <img src="../../../resources/img/svg/icons_menu/log_out.svg" class="me-3" alt="">
                                         Cerrar sesión</a>
                                 </li>
