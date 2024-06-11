@@ -1,6 +1,3 @@
-##Ignora subir el archivo config de helpers al repositorio
-.api/helpers/config.php
-
 # Default ignored files
 /shelf/
 /workspace.xml
@@ -9,7 +6,8 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
-
-#Ignore this carpet
+# Ignora subir el archivo config de helpers al repositorio
+/api/helpers/config.php
+# Ignore this carpet
 .vscode
 .idea
