@@ -50,7 +50,7 @@ window.onload = async function () {
 
     } else {
         // Se direcciona a la página web del primer uso.
-        location.href = 'primer_uso.html';
+        location.href = 'first_user.html';
         sweetAlert(4, DATA.error, true);
     }
 };
