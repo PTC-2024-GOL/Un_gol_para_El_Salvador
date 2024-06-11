@@ -7,11 +7,11 @@ if (isset($_GET['action'])) {
     // Se crea una sesión o se reanuda la actual para poder utilizar variables de sesión en el script.
     session_start();
     // Se instancia la clase correspondiente.
-    $cliente = new TecnicosData;
+    $tecnico = new TecnicosData;
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
     $result = array('status' => 0, 'session' => 0, 'recaptcha' => 0, 'message' => null, 'error' => null, 'exception' => null, 'username' => null);
     // Se verifica si existe una sesión iniciada como cliente para realizar las acciones correspondientes.
-    if (isset($_SESSION['idCliente'])) {
+    if (isset($_SESSION['idTecnico'])) {
         $result['session'] = 1;
         // Se compara la acción a realizar cuando un cliente ha iniciado sesión.
         switch ($_GET['action']) {
@@ -26,7 +26,7 @@ if (isset($_GET['action'])) {
                 break;
             // Ver uno
             case 'readOne':
-                if ($result['dataset'] = $cliente->readOne()) {
+                if ($result['dataset'] = $tecnico->readOne()) {
                     $result['status'] = 1;
                 } else {
                     $result['error'] = 'Perfil inexistente';
@@ -35,15 +35,15 @@ if (isset($_GET['action'])) {
             // Cambiar contraseña
             case 'changePassword':
                 $_POST = Validator::validateForm($_POST);
-                if (!$cliente->checkPassword($_POST['claveActual'])) {
+                if (!$tecnico->checkPassword($_POST['claveActual'])) {
                     $result['error'] = 'Contraseña actual incorrecta';
                 } elseif ($_POST['claveCliente'] == $_POST['claveActual']) {
                     $result['error'] = 'No puedes reutilizar la clave actual';
                 } elseif ($_POST['claveCliente'] != $_POST['repetirclaveCliente']) {
                     $result['error'] = 'Confirmación de contraseña diferente';
-                } elseif (!$cliente->setClave($_POST['claveCliente'])) {
-                    $result['error'] = $cliente->getDataError();
-                } elseif ($cliente->changePassword()) {
+                } elseif (!$tecnico->setClave($_POST['claveCliente'])) {
+                    $result['error'] = $tecnico->getDataError();
+                } elseif ($tecnico->changePassword()) {
                     $result['status'] = 1;
                     $result['message'] = 'Contraseña cambiada correctamente';
                 } else {
@@ -66,9 +66,9 @@ if (isset($_GET['action'])) {
         switch ($_GET['action']) {
             case 'logIn':
                 $_POST = Validator::validateForm($_POST);
-                if (!$cliente->checkUser($_POST['correo'], $_POST['clave'])) {
+                if (!$tecnico->checkUser($_POST['correo'], $_POST['clave'])) {
                     $result['error'] = 'Datos incorrectos';
-                } elseif ($cliente->checkStatus()) {
+                } elseif ($tecnico->checkStatus()) {
                     $result['status'] = 1;
                     $result['message'] = 'Autenticación correcta';
                 } else {
