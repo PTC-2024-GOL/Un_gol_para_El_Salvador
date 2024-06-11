@@ -65,7 +65,7 @@
             <form id="saveForm">
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input type="hidden" id="idTecnico" name="idTecnico">
+                    <input type="number" class="d-none" id="idTecnico" name="idTecnico">
                     <div class="container text-center text-md-start text-lg-start">
                         <div class="row align-items-center justify-content-center gy-3">
                             <div class="col-sm-12 col-md-auto">
@@ -74,7 +74,7 @@
                             </div>
                             <div class="col-sm-12 text-center">
                                 <!-- Botón para cargar imagen -->
-                                <input type="file" class="form-control" accept=".png .jpg" id="imagenTecnico" hidden>
+                                <input type="file" class="form-control" accept=".png .jpg" id="imagenTecnico" name="imagenTecnico" hidden>
                                 <!-- Para que tenga el mismo funcionamiento del input file le ponemos el for y le agregamos el id del input file -->
                                 <label class="btn bg-blue-secondary-color rounded-4 text-light"
                                     for="imagenTecnico">Cargar
@@ -119,15 +119,8 @@
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="repetirclaveTecnico" class="form-label fw-semibold">Repetir contraseña</label>
-                        <input id="repetirclaveTecnico" type="password" name="repetirTecnico" min="0.01" step="0.01"
+                        <input id="repetirclaveTecnico" type="password" name="repetirclaveTecnico" min="0.01" step="0.01"
                             class="form-control" placeholder="Repite la clave del técnico" required>
-                    </div>
-                    <div class="col-sm-12 col-md-6 mt-4">
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
-                                checked>
-                            <label class="form-check-label" for="flexSwitchCheckChecked">Estado</label>
-                        </div>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">

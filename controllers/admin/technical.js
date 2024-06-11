@@ -9,11 +9,13 @@ let SAVE_FORM,
     DUI_TECNICO,
     NACIMIENTO_TECNICO,
     IMAGEN_TECNICO,
+    FOTO_TECNICO,
     REPETIR_CLAVE;
 let SEARCH_FORM;
+let ROWS_FOUND;
 
 // Constantes para completar las rutas de la API.
-const API = '';
+const API = 'services/admin/tecnicos.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -28,9 +30,12 @@ async function loadComponent(path) {
 const openCreate = () => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
-    MODAL_TITLE.textContent = 'Agregar un técnico';
+    MODAL_TITLE.textContent = 'Crear administrador';
+    CLAVE_TECNICO.disabled = false;
+    REPETIR_CLAVE.disabled = false;
     // Se prepara el formulario.
     SAVE_FORM.reset();
+    FOTO_ADMINISTRADOR.src = "../../../resources/img/svg/avatar.svg";
 }
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
@@ -55,12 +60,14 @@ const openUpdate = async (id) => {
             const ROW = DATA.dataset;
             ID_TECNICO.value = ROW.ID;
             NOMBRE_TECNICO.value = ROW.NOMBRE;
-            APELLIDO_ADMINISTRADOR.value = ROW.APELLIDO;
-            CORREO_ADMINISTRADOR.value = ROW.CORREO;
-            TELEFONO_ADMINISTRADOR.value = ROW.TELÉFONO;
-            DUI_ADMINISTRADOR.value = ROW.DUI;
-            NACIMIENTO_ADMINISTRADOR.value = ROW.NACIMIENTO;
-            CLAVE_ADMINISTRADOR.value = ROW.CLAVE;
+            APELLIDO_TECNICO.value = ROW.APELLIDO;
+            CORREO_TECNICO.value = ROW.CORREO;
+            TELEFONO_TECNICO.value = ROW.TELÉFONO;
+            DUI_TECNICO.value = ROW.DUI;
+            NACIMIENTO_TECNICO.value = ROW.NACIMIENTO;
+            FOTO_ADMINISTRADOR.src = SERVER_URL.concat('images/tecnicos/', ROW.IMAGEN);
+            CLAVE_TECNICO.disabled = true;
+            REPETIR_CLAVE.disabled = true;
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -88,6 +95,41 @@ const openDelete = async (id) => {
             console.log(id);
             // Petición para eliminar el registro seleccionado.
             const DATA = await fetchData(API, 'deleteRow', FORM);
+            console.log(DATA.status);
+            // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+            if (DATA.status) {
+                // Se muestra un mensaje de éxito.
+                await sweetAlert(1, DATA.message, true);
+                // Se carga nuevamente la tabla para visualizar los cambios.
+                fillTable();
+            } else {
+                sweetAlert(2, DATA.error, false);
+            }
+        }
+    }
+    catch (Error) {
+        console.log(Error + ' Error al cargar el mensaje');
+    }
+
+}
+
+
+/*
+*   Función asíncrona para cambiar el estado de un registro.
+*   Parámetros: id (identificador del registro seleccionado).
+*   Retorno: ninguno.
+*/
+const openState = async (id) => {
+    // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
+    const RESPONSE = await confirmUpdateAction('¿Desea cambiar el estado del técnico?');
+    try {
+        // Se verifica la respuesta del mensaje.
+        if (RESPONSE) {
+            // Se define una constante tipo objeto con los datos del registro seleccionado.
+            const FORM = new FormData();
+            FORM.append('idTecnico', id);
+            // Petición para eliminar el registro seleccionado.
+            const DATA = await fetchData(API, 'changeState', FORM);
             console.log(DATA.status);
             // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
             if (DATA.status) {
@@ -143,14 +185,17 @@ async function fillTable(form = null) {
             // Mostrar elementos obtenidos de la API
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
-                <tr>
-                    <td><img src="${SERVER_URL}images/admin/${row.IMAGEN}" height="50" width="50" class="circulo"></td>
+                <tr class="${getRowBackgroundColor(row.ESTADO)}">
+                    <td><img src="${SERVER_URL}images/tecnicos/${row.IMAGEN}" height="50" width="50" class="circulo"></td>
                     <td>${row.NOMBRE}</td>
                     <td>${row.CORREO}</td>
                     <td>${row.TELÉFONO}</td>
                     <td>${row.DUI}</td>
-                    <td>${row.NACIMIENTO}</td>
+                    <td class="${getRowColor(row.ESTADO)}">${row.ESTADO}</td>
                     <td>
+                    <button type="button" class="btn transparente" onclick="openState(${row.ID})">
+                    <img src="../../../resources/img/svg/icons_forms/amonestacion.svg" width="18" height="18">
+                    </button>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
@@ -161,6 +206,8 @@ async function fillTable(form = null) {
                 </tr>
                 `;
                 cargarTabla.innerHTML += tablaHtml;
+                // Se muestra un mensaje de acuerdo con el resultado.
+                ROWS_FOUND.textContent = DATA.message;
             });
         } else {
             sweetAlert(4, DATA.error, true);
@@ -197,6 +244,30 @@ async function fillTable(form = null) {
     }
 }
 
+
+function getRowColor(estado) {
+    switch (estado) {
+        case 'Bloqueado':
+            return 'text-danger';
+        case 'Activo':
+            return 'text-success';
+        default:
+            return '';
+    }
+}
+
+function getRowBackgroundColor(estado) {
+    switch (estado) {
+        case 'Bloqueado':
+            return 'border-danger';
+        case 'Activo':
+            return 'border-success';
+        default:
+            return '';
+    }
+}
+
+
 // window.onload
 window.onload = async function () {
     // Obtiene el contenedor principal
@@ -210,6 +281,7 @@ window.onload = async function () {
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Técnicos';
+    ROWS_FOUND = document.getElementById('rowsFound');
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
@@ -226,6 +298,7 @@ window.onload = async function () {
         NACIMIENTO_TECNICO = document.getElementById('nacimientoTecnico'),
         CLAVE_TECNICO = document.getElementById('claveTecnico'),
         REPETIR_CLAVE = document.getElementById('repetirclaveTecnico'),
+        FOTO_ADMINISTRADOR = document.getElementById('img_admin'),
         IMAGEN_TECNICO = document.getElementById('imagenTecnico');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
@@ -274,5 +347,16 @@ window.onload = async function () {
     vanillaTextMask.maskInput({
         inputElement: document.getElementById('duiTecnico'),
         mask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/]
+    });
+    
+    IMAGEN_TECNICO.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                FOTO_TECNICO.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
     });
 };
