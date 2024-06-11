@@ -147,7 +147,7 @@ const openState = async (id) => {
     }
 
 }
-
+// Variables y constantes para la paginación
 const tecnicosPorPagina = 10;
 let paginaActual = 1;
 let tecnicos = [];
