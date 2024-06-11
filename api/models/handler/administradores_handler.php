@@ -286,7 +286,7 @@ class AdministradoresHandler
     //Función para ingresar el primer usuario.
     public function firstUser()
     {
-        $sql = 'CALL insertar_administrador(?,?,?,?,?,?,?,1,?);';
+        $sql = 'CALL insertar_administrador_validado(?,?,?,?,?,?,?,?);';
         $params = array(
             $this->nombre,
             $this->apellido,

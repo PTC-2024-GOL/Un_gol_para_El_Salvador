@@ -1,0 +1,78 @@
+<div class="">
+    <div class="row">
+        <div class="col-12">
+            <h1 class=" text-center">Registrarte</h1>
+            <h5 class=" text-center">Es rápido y fácil.</h5>
+        </div>
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <div class="col-8 ">
+            <img src="../../../resources/img/svg/first_user.svg" alt="">
+        </div>
+        <div class="col-4 color-form">
+            <!--texto de presentación-->
+            
+            <!--formulario para registrar usuaario -->
+            <form class="mt-5 row g-3 form-margin" id="saveForm">
+                <div class="col-sm-12 col-md-12 col-lg-12 col-12 contenedor-boton   ">
+                    <div class=" form-floating borde ">
+                        <input id="nombreAdministrador" type="text" name="nombreAdministrador" placeholder="Nombre"
+                            class="form-control" autocomplete="off" required />
+                        <label for="nombreAdministrador">Nombre</label>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12 col-12 contenedor-boton">
+                    <div class="form-floating borde">
+                        <input id="nacimientoAdministrador" type="date" name="nacimientoAdministrador"
+                            placeholder="fechanacimiento" class="form-control" autocomplete="off" required />
+                        <label for="nacimientoAdministrador">Fecha nacimiento</label>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12 col-12 contenedor-boton">
+                    <div class="form-floating borde ">
+                        <input id="apellidoAdministrador" type="text" name="apellidoAdministrador"
+                            placeholder="Apellido" class="form-control" autocomplete="off" required />
+                        <label for="apellidoAdministrador">Apellido</label>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12 col-12 contenedor-boton">
+                    <div class="form-floating borde">
+                        <input id="telefonoAdministrador" type="text" name="telefonoAdministrador" class="form-control"
+                            placeholder="0000-0000" autocomplete="off" required />
+                        <label for="telefonoAdministrador">Teléfono</label>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12 col-12 contenedor-boton">
+                    <div class="form-floating borde ">
+                        <input id="correoAdministrador" autocomplete="off" type="email" name="correoAdministrador"
+                            placeholder="Correo electrónico" class="form-control" required />
+                        <label for="correoAdministrador">Correo electrónico</label>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12 col-12 contenedor-boton">
+                    <div class="form-floating borde">
+                        <input id="imagenAdministrador" autocomplete="off" type="file" name="imagenAdministrador"
+                            class="form-control" accept=".png, .jpg">
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12 col-12 contenedor-boton">
+                    <div class="form-floating borde">
+                        <input id="duiAdministrador" type="text" name="duiAdministrador" placeholder="00000000-0"
+                            class="form-control" autocomplete="off" required />
+                        <label for="duiAdministrador">DUI</label>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12 col-12 contenedor-boton">
+                    <div class="form-floating borde">
+                        <input id="claveAdministrador" type="password" name="claveAdministrador" class="form-control"
+                            placeholder="Ingresa la clave del administrador" autocomplete="off" required>
+                        <label for="claveAdministrador">Contraseña</label>
+                    </div>
+                </div>
+                <!--Botón que envia los datos ingresados y lo redirige a la pantalla correspodiente -->
+                <button type="submit" class="btn btn-dark"><i class="bi bi-send"></i>
+                    REGISTRARTE</button>
+            </form>
+        </div>
+    </div>
+</div>
