@@ -1,6 +1,6 @@
 <?php
 // Se incluye la clase del modelo.
-require_once('../../modelos/data/clientes_data.php');
+require_once('../../models/data/tecnicos_data.php');
 
 // Se comprueba si existe una acción a realizar, de lo contrario se finaliza el script con un mensaje de error.
 if (isset($_GET['action'])) {
@@ -13,7 +13,7 @@ if (isset($_GET['action'])) {
     // Se verifica si existe una sesión iniciada como cliente para realizar las acciones correspondientes.
     if (isset($_SESSION['idTecnico'])) {
         $result['session'] = 1;
-        // Se compara la acción a realizar cuando un cliente ha iniciado sesión.
+        // Se compara la acción a realizar cuando un técnico ha iniciado sesión.
         switch ($_GET['action']) {
             case 'getUser':
                 if (isset($_SESSION['correoCliente'])) {
