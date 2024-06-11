@@ -152,7 +152,7 @@ const tecnicosPorPagina = 10;
 let paginaActual = 1;
 let tecnicos = [];
 
-// Función para cargar técnicos con paginación
+// Función para cargar tabla de técnicos con paginación
 async function fillTable(form = null) {
     const cargarTabla = document.getElementById('tabla_tecnicos');
     try {
