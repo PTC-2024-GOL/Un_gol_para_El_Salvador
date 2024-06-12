@@ -15,16 +15,18 @@ if (isset($_GET['action'])) {
         $result['session'] = 1;
         // Se compara la acción a realizar cuando un técnico ha iniciado sesión.
         switch ($_GET['action']) {
+                // Traer datos del usuario
             case 'getUser':
-                if (isset($_SESSION['correoCliente'])) {
+                if (isset($_SESSION['aliasTecnico'])) {
                     $result['status'] = 1;
-                    $result['username'] = $_SESSION['correoCliente'];
-                    $result['foto'] = $_SESSION['fotoCliente'];
+                    $result['username'] = $_SESSION['aliasTecnico'];
+                    $result['foto'] = $_SESSION['fotoTecnico'];
+                    $result['nombre'] = $_SESSION['nombreTecnico'];
                 } else {
-                    $result['error'] = 'Correo de usuario indefinido';
+                    $result['error'] = 'Alias de Tecnico indefinido';
                 }
                 break;
-            // Ver uno
+                // Ver uno
             case 'readOne':
                 if ($result['dataset'] = $tecnico->readOne()) {
                     $result['status'] = 1;
@@ -32,7 +34,7 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Perfil inexistente';
                 }
                 break;
-            // Cambiar contraseña
+                // Cambiar contraseña
             case 'changePassword':
                 $_POST = Validator::validateForm($_POST);
                 if (!$tecnico->checkPassword($_POST['claveActual'])) {

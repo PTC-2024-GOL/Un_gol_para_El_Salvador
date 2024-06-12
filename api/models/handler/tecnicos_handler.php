@@ -37,7 +37,7 @@ class TecnicosHandler
     
     public function checkUser($username, $password)
     {
-        $sql = 'SELECT id_tecnico, correo_tecnico, clave_tecnico, estado_tecnico, foto_tecnico, alias_tecnico
+        $sql = 'SELECT id_tecnico, correo_tecnico, clave_tecnico, estado_tecnico, foto_tecnico, alias_tecnico, nombre_tecnico
                 FROM tecnicos
                 WHERE correo_tecnico = ?';
         $params = array($username);
@@ -48,6 +48,7 @@ class TecnicosHandler
             $this->alias = $data['alias_tecnico'];
             $this->estado = $data['estado_tecnico'];
             $this->imagen = $data['foto_tecnico'];
+            $this->nombre = $data['nombre_tecnico'];
             return true;
         } else {
             return false;
@@ -62,6 +63,7 @@ class TecnicosHandler
             $_SESSION['correoTecnico'] = $this->correo;
             $_SESSION['fotoTecnico'] = $this->imagen;
             $_SESSION['aliasTecnico'] = $this->alias;
+            $_SESSION['nombreTecnico'] = $this->nombre;
             return true;
         } else {
             return false;
