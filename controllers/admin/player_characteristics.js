@@ -4,15 +4,17 @@ let SAVE_FORM,
     NOMBRECARACTERISTICA_CARACTERISTICA,
     CLASIFICACION_CARACTERISTICA;
 let SEARCH_FORM;
+let ROWS_FOUND;
 
 // Constantes para completar las rutas de la API
-const CARACTERISTICA_API = '';
+const CARACTERISTICA_API = 'services/admin/caracteristicas_jugadores.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
     const text = await response.text();
     return text;
 }
+
 /*
 *   Función para preparar el formulario al momento de insertar un registro.
 *   Parámetros: ninguno.
@@ -25,6 +27,34 @@ const openCreate = () => {
     // Se prepara el formulario.
     SAVE_FORM.reset();
 }
+
+// Función para poblar un combobox (select) con opciones quemadas
+const fillSelected = (data, action, selectId, selectedValue = null) => {
+    const selectElement = document.getElementById(selectId);
+
+    // Limpiar opciones previas del combobox
+    selectElement.innerHTML = '';
+
+    // Crear opción por defecto
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Selecciona la clasificación de la característica';
+    selectElement.appendChild(defaultOption);
+
+    // Llenar el combobox con los datos proporcionados
+    data.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.id; // Suponiendo que hay una propiedad 'id' en los datos
+        option.textContent = item.clasificacion; // Cambia 'horario' al nombre de la propiedad que deseas mostrar en el combobox
+        selectElement.appendChild(option);
+    });
+
+    // Seleccionar el valor especificado si se proporciona
+    if (selectedValue !== null) {
+        selectElement.value = selectedValue;
+    }
+};
+
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
 *   Parámetros: id (identificador del registro seleccionado).
@@ -47,8 +77,8 @@ const openUpdate = async (id) => {
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
             ID_CARACTERISTICA.value = ROW.ID;
-            NOMBRECARACTERISTICA_CARACTERISTICA.value = ROW.CARACTERISTICA;
-            CLASIFICACION_CARACTERISTICA.value = ROW.CARACTERISTICA;
+            NOMBRECARACTERISTICA_CARACTERISTICA.value = ROW.NOMBRE;
+            CLASIFICACION_CARACTERISTICA.value = ROW.CLASIFICACIÓN;
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -134,7 +164,7 @@ async function cargarTabla(form = null) {
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
                 <tr>
-                    <td>${row.CARACTERISTICA}</td>
+                    <td>${row.NOMBRE}</td>
                     <td>${row.CLASIFICACION}</td>
                     <td>
                         <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
@@ -147,30 +177,21 @@ async function cargarTabla(form = null) {
                 </tr>
                 `;
                 cargarTabla.innerHTML += tablaHtml;
+                // Se muestra un mensaje de acuerdo con el resultado.
+                ROWS_FOUND.textContent = DATA.message;
             });
         } else {
             sweetAlert(4, DATA.error, true);
         }
     } catch (error) {
-        console.error('Error al obtener datos de la API:', error);
-        // Mostrar materiales de respaldo
-        lista_datos.forEach(row => {
-            const tablaHtml = `
-            <tr>
-                <td>${row.caracteristica}</td>
-                <td>${row.clasificacion}</td>
-                <td>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                    </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
-                </td>
-            </tr>
-            `;
+         const tablaHtml = `
+        <tr class="border-danger">
+            <td class="text-danger">${DATA.error}</td>
+        </tr>
+        `;
             cargarTabla.innerHTML += tablaHtml;
-        });
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = "Existen 0 coincidencias";
     }
 }
 
