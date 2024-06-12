@@ -6,6 +6,6 @@ date_default_timezone_set('America/El_Salvador');
 // Constantes para establecer las credenciales de conexión con el servidor de bases de datos.
 define('SERVER', 'localhost');
 define('DATABASE', 'db_gol_sv');
-define('USERNAME', ''); //Poner dbGol de usuario
+define('USERNAME', 'root'); //Poner dbGol de usuario
 define('PASSWORD', ''); //Poner de clave del 1 al 4
 ?>
