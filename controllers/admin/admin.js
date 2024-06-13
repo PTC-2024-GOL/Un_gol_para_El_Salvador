@@ -192,6 +192,7 @@ function mostrarAdministradores(pagina) {
     const cargarTabla = document.getElementById('tabla_administradores');
     cargarTabla.innerHTML = '';
     administradoresPagina.forEach(row => {
+        const estadoColor = row.ESTADO === 'Activo' ? 'green' : 'red';
         const tablaHtml = `
             <tr class="${getRowBackgroundColor(row.ESTADO)}">
                 <td><img src="${SERVER_URL}images/administradores/${row.IMAGEN}" height="50" width="50" class="circulo"></td>
@@ -202,7 +203,9 @@ function mostrarAdministradores(pagina) {
                 <td class="${getRowColor(row.ESTADO)}">${row.ESTADO}</td>
                 <td>
                     <button type="button" class="btn transparente" onclick="openState(${row.ID})">
-                        <img src="../../../resources/img/svg/icons_forms/amonestacion.svg" width="18" height="18">
+                         <svg width="24" height="24" viewBox="0 0 24 24" fill="${estadoColor}" xmlns="http://www.w3.org/2000/svg">
+                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM12 20c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2v-6zm0 8h2v2h-2v-2z" stroke="currentColor" stroke-width="0.15"/>
+                         </svg>
                     </button>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
                         <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
@@ -349,11 +352,11 @@ window.onload = async function () {
         mask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/]
     });
 
-    IMAGEN_ADMINISTRADOR.addEventListener('change', function(event) {
+    IMAGEN_ADMINISTRADOR.addEventListener('change', function (event) {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 FOTO_ADMINISTRADOR.src = e.target.result;
             }
             reader.readAsDataURL(file);

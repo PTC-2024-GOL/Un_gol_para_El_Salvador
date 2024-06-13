@@ -123,6 +123,14 @@ hr {
     font-size: 20px;
 }
 
+.icono-verde {
+    fill: green;
+}
+
+.icono-rojo {
+    fill: red;
+}
+
 @media (max-width: 770px) {
     .margen {
         margin-bottom: 2rem;
