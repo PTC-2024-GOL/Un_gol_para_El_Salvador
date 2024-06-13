@@ -44,6 +44,11 @@
             <tbody id="tabla_caracteristica_jugador"></tbody>
         </table>
     </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <!-- Aquí se insertarán los elementos de la paginación -->
+        </ul>
+    </nav>
 </div>
 <!-- Componente Modal para guardar un registro -->
 <div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -68,8 +73,17 @@
                             placeholder="Escribe el nombre de la característica" required autocomplete="off">
                     </div>
                     <div class="col-sm-12 col-md-6">
+                        <label for="caracteristicaJugador" class="form-label fw-semibold">Clasificación de la
+                            característica</label>
                         <select id="clasificacionCaracteristica" name="clasificacionCaracteristica"
-                            class="form-select" required></select>
+                            class="form-select" required>
+                            <option selected>Selecciona la clasificación</option>
+                            <option value="1">Técnicos</option>
+                            <option value="2">Tácticos</option>
+                            <option value="3">Condicionales</option>
+                            <option value="4">Psicologicos</option>
+                            <option value="5">Personales    </option>
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">

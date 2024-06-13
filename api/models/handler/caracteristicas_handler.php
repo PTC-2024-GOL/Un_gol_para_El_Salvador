@@ -4,7 +4,7 @@ require_once('../../helpers/database.php');
 /*
  *  Clase para manejar el comportamiento de los datos de la tabla características jugadores.
  */
-class CaracteristicasJugadoresHandler
+class CaracteristicasHandler
 {
     /*
      *  Declaración de atributos para el manejo de datos.
@@ -43,8 +43,7 @@ class CaracteristicasJugadoresHandler
     //Función para leer todas las característica.
     public function readAll()
     {
-        $sql = 'SELECT * FROM vista_caracteristicas_jugadores
-        ORDER BY NOMBRE;';
+        $sql = 'SELECT * FROM vista_caracteristicas_jugadores;';
         return Database::getRows($sql);
     }
 
@@ -53,7 +52,7 @@ class CaracteristicasJugadoresHandler
     {
         $sql = 'SELECT id_caracteristica_jugador AS ID,
         nombre_caracteristica_jugador AS NOMBRE,
-        clasificacion_caracteristica_jugador AS CLASIFICACIÓN
+        clasificacion_caracteristica_jugador AS CLASIFICACION
         FROM caracteristicas_jugadores
         WHERE id_caracteristica_jugador LIKE ?';
         $params = array($this->id);

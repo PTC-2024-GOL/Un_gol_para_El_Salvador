@@ -7,7 +7,7 @@ let SEARCH_FORM;
 let ROWS_FOUND;
 
 // Constantes para completar las rutas de la API
-const CARACTERISTICA_API = 'services/admin/caracteristicas_jugadores.php';
+const API = 'services/admin/caracteristicas.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -24,9 +24,32 @@ const openCreate = () => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
     MODAL_TITLE.textContent = 'Crear característica';
-    // Se prepara el formulario.
+
     SAVE_FORM.reset();
 }
+
+const lista_datos = [
+    {
+        clasificacion: "Técnicos",
+        id: "Técnicos",
+    },
+    {
+        clasificacion: 'Tácticos',
+        id: 'Tácticos',
+    },
+    {
+        clasificacion: 'Condicionales',
+        id: 'Condicionales',
+    },
+    {
+        clasificacion: 'Psicologicos',
+        id: 'Psicologicos',
+    },
+    {
+        clasificacion: 'Personales',
+        id: 'Personales',
+    }
+];
 
 // Función para poblar un combobox (select) con opciones quemadas
 const fillSelected = (data, action, selectId, selectedValue = null) => {
@@ -38,7 +61,7 @@ const fillSelected = (data, action, selectId, selectedValue = null) => {
     // Crear opción por defecto
     const defaultOption = document.createElement('option');
     defaultOption.value = '';
-    defaultOption.textContent = 'Selecciona la clasificación de la característica';
+    defaultOption.textContent = 'Selecciona la clasificación';
     selectElement.appendChild(defaultOption);
 
     // Llenar el combobox con los datos proporcionados
@@ -66,7 +89,7 @@ const openUpdate = async (id) => {
         const FORM = new FormData();
         FORM.append('idCaracteristica', id);
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(CARACTERISTICA_API, 'readOne', FORM);
+        const DATA = await fetchData(API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
@@ -78,7 +101,7 @@ const openUpdate = async (id) => {
             const ROW = DATA.dataset;
             ID_CARACTERISTICA.value = ROW.ID;
             NOMBRECARACTERISTICA_CARACTERISTICA.value = ROW.NOMBRE;
-            CLASIFICACION_CARACTERISTICA.value = ROW.CLASIFICACIÓN;
+            fillSelected(lista_datos, 'readAll', 'clasificacionCaracteristica', ROW.CLASIFICACION)
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -105,14 +128,14 @@ const openDelete = async (id) => {
             FORM.append('idCaracteristica', id);
             console.log(id);
             // Petición para eliminar el registro seleccionado.
-            const DATA = await fetchData(CARACTERISTICA_API, 'deleteRow', FORM);
+            const DATA = await fetchData(API, 'deleteRow', FORM);
             console.log(DATA.status);
             // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
             if (DATA.status) {
                 // Se muestra un mensaje de éxito.
                 await sweetAlert(1, DATA.message, true);
                 // Se carga nuevamente la tabla para visualizar los cambios.
-                cargarTabla();
+                fillTable();
             } else {
                 sweetAlert(2, DATA.error, false);
             }
@@ -124,75 +147,97 @@ const openDelete = async (id) => {
 
 }
 
+// Variables y constantes para la paginación
+const caracteristicaJugadorPorPagina = 10;
+let paginaActual = 1;
+let caracteristica = [];
 
-async function cargarTabla(form = null) {
-    const lista_datos = [
-        {
-            caracteristica: 'Pase largo',
-            clasificacion: 'Técnicos',
-            id: 1,
-        },
-        {
-            caracteristica: 'Sacrificio',
-            clasificacion: 'Psicologicos',
-            id: 2,
-        },
-        {
-            caracteristica: 'Pase corto',
-            clasificacion: 'Técnicos',
-            id: 3,
-        },
-        {
-            caracteristica: 'Toma de decisiones',
-            clasificacion: 'Tacticos',
-            id: 4,
-        }
-    ];
+// Función para cargar tabla de caracteristica jugador con paginación
+async function fillTable(form = null) {
     const cargarTabla = document.getElementById('tabla_caracteristica_jugador');
-
     try {
         cargarTabla.innerHTML = '';
-        // Se verifica la acción a realizar.
-        (form) ? action = 'searchRows' : action = 'readAll';
-        console.log(form);
         // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(CARACTERISTICA_API, action, form);
+        let action;
+        form ? action = 'searchRows' : action = 'readAll';
+        
+        const DATA = await fetchData(API, action, form);
+        console.log(form);
         console.log(DATA);
-
         if (DATA.status) {
-            // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-                const tablaHtml = `
-                <tr>
-                    <td>${row.NOMBRE}</td>
-                    <td>${row.CLASIFICACION}</td>
-                    <td>
-                        <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
-                        <img src="../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" onclick="openDelete(${row.ID})">
-                            <i class="bi bi-trash-fill"></i>
-                        </button>
-                    </td>
-                </tr>
-                `;
-                cargarTabla.innerHTML += tablaHtml;
-                // Se muestra un mensaje de acuerdo con el resultado.
-                ROWS_FOUND.textContent = DATA.message;
-            });
+            caracteristica = DATA.dataset;
+            mostrarCaracteristicaJugador(paginaActual);
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = DATA.message;
         } else {
-            sweetAlert(4, DATA.error, true);
+            // Se muestra un mensaje de acuerdo con el resultado.
+            const tablaHtml = `
+                <tr class="border-danger">
+                    <td class="text-danger">${DATA.error}</td>
+                </tr>
+            `;
+            cargarTabla.innerHTML += tablaHtml;
+            ROWS_FOUND.textContent = "Existen 0 coincidencias";
         }
     } catch (error) {
-         const tablaHtml = `
-        <tr class="border-danger">
-            <td class="text-danger">${DATA.error}</td>
-        </tr>
-        `;
-            cargarTabla.innerHTML += tablaHtml;
-            // Se muestra un mensaje de acuerdo con el resultado.
-            ROWS_FOUND.textContent = "Existen 0 coincidencias";
+        console.log(error);
+        console.error('Error al obtener datos de la API:', error);
     }
+}
+
+// Función para mostrar característica de jugador en una página específica
+function mostrarCaracteristicaJugador(pagina) {
+    const inicio = (pagina - 1) * caracteristicaJugadorPorPagina;
+    const fin = inicio + caracteristicaJugadorPorPagina;
+    const caracteristicaPagina = caracteristica.slice(inicio, fin);
+
+    const cargarTabla = document.getElementById('tabla_caracteristica_jugador');
+    cargarTabla.innerHTML = '';
+    caracteristicaPagina.forEach(row => {
+        const tablaHtml = `
+            <tr>
+                <td>${row.NOMBRE}</td>
+                <td>${row.CLASIFICACION}</td>
+                <td>
+                    <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
+                        <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                    </button>
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.ID})">
+                        <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                    </button>
+                </td>
+            </tr>
+        `;
+        cargarTabla.innerHTML += tablaHtml;
+    });
+
+    actualizarPaginacion();
+}
+
+// Función para actualizar los controles de paginación
+function actualizarPaginacion() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
+
+    const totalPaginas = Math.ceil(caracteristica.length / caracteristicaJugadorPorPagina);
+
+    if (paginaActual > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
+    }
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
+    }
+
+    if (paginaActual < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
+    }
+}
+
+// Función para cambiar de página
+function cambiarPagina(nuevaPagina) {
+    paginaActual = nuevaPagina;
+    mostrarCaracteristicaJugador(paginaActual);
 }
 
 // window.onload
@@ -208,7 +253,8 @@ window.onload = async function () {
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Características de los jugadores';
-    cargarTabla();
+    ROWS_FOUND = document.getElementById('rowsFound');
+    fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
@@ -227,7 +273,7 @@ window.onload = async function () {
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SAVE_FORM);
         // Petición para guardar los datos del formulario.
-        const DATA = await fetchData(CARACTERISTICA_API, action, FORM);
+        const DATA = await fetchData(API, action, FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se cierra la caja de diálogo.
@@ -235,7 +281,7 @@ window.onload = async function () {
             // Se muestra un mensaje de éxito.
             sweetAlert(1, DATA.message, true);
             // Se carga nuevamente la tabla para visualizar los cambios.
-            cargarTabla();
+            fillTable();
         } else {
             sweetAlert(2, DATA.error, false);
             console.error(DATA.exception);
@@ -251,9 +297,8 @@ window.onload = async function () {
         event.preventDefault();
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SEARCH_FORM);
-        console.log(SEARCH_FORM);
         console.log(FORM);
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
-        cargarTabla(FORM);
+        fillTable(FORM);
     });
 };

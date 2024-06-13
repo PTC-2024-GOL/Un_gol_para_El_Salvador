@@ -266,6 +266,7 @@ const fetchData = async (filename, action, form = null) => {
     } else {
         OPTIONS.method = 'get';
     }
+    
     try {
         // Se declara una constante tipo objeto con la ruta específica del servidor.
         const PATH = new URL(SERVER_URL + filename);

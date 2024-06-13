@@ -1,12 +1,12 @@
 <?php
 // Se incluye la clase para validar los datos de entrada.
-require_once('../../auxiliares/validator.php');
+require_once('../../helpers/validator.php');
 // Se incluye la clase padre.
-require_once('../../modelos/handler/caracteristicas_jugaores_handler.php.php');
+require_once('../../models/handler/caracteristicas_handler.php');
 /*
  *  Clase para manejar el encapsulamiento de los datos de la tabla clientes.
  */
-class CaracteristicasJugaoresData extends CaracteristicasJugadoresHandler
+class CaracteristicasData extends CaracteristicasHandler
 {
     // Atributo genérico para manejo de errores.
     private $data_error = null;
