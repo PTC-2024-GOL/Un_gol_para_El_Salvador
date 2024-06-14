@@ -44,6 +44,11 @@
             <tbody id="tabla_sub_tipologia"></tbody>
         </table>
     </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <!-- Aquí se insertarán los elementos de la paginación -->
+        </ul>
+    </nav>
 </div>
 <!-- Componente Modal para guardar un registro -->
 <div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -60,7 +65,7 @@
             <form id="saveForm">
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input type="hidden" id="idSubtipologia" name="idSubtipologia">
+                    <input type="number" class="d-none" id="idSubtipologia" name="idSubtipologia">
                     <div class="col-sm-12 col-md-6">
                         <label for="nombreTipologia" class="form-label fw-semibold">Selecciona la tipología</label>
                         <select id="nombreTipologia" type="text" name="nombreTipologia" class="form-select"
