@@ -43,6 +43,11 @@
             <tbody id="tabla_temporadas"></tbody>
         </table>
     </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <!-- Aquí se insertarán los elementos de la paginación -->
+        </ul>
+    </nav>
 </div>
 
 <!-- Componente Modal para guardar un registro -->
@@ -60,7 +65,7 @@
             <form id="saveForm">
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input type="hidden" id="idTemporada" name="idTemporada">
+                    <input type="number" class="d-none" id="idTemporada" name="idTemporada">
                     <div class="col-sm-12 col-md-12">
                         <label for="nombreTemporada" class="form-label fw-semibold">Nombre de la temporada</label>
                         <input id="nombreTemporada" min="1" step="1" type="text" name="nombreTemporada"

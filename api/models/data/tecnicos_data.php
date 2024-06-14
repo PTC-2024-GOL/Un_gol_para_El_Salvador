@@ -23,7 +23,7 @@ class TecnicosData extends TecnicosHandler
             $this->id = $value;
             return true;
         } else {
-            $this->data_error = 'El identificador del administrador es incorrecto';
+            $this->data_error = 'El identificador del técnico es incorrecto';
             return false;
         }
     }
