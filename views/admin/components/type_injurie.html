@@ -43,6 +43,11 @@
             <tbody id="tabla_lesiones"></tbody>
         </table>
     </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <!-- Aquí se insertarán los elementos de la paginación -->
+        </ul>
+    </nav>
 </div>
 
 <!-- Componente Modal para guardar un registro -->
@@ -60,7 +65,7 @@
             <form id="saveForm">
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input type="hidden" id="idTipoLesion" name="idTipoLesion">
+                    <input type="number" class="d-none" id="idTipoLesion" name="idTipoLesion">
                     <div class="col-sm-12 col-md-12">
                         <label for="tipoLesion" class="form-label fw-semibold">Nombre del tipo de lesión</label>
                         <input id="tipoLesion" type="text" name="tipoLesion" class="form-control"

@@ -2,11 +2,11 @@
 // Se incluye la clase para validar los datos de entrada.
 require_once('../../helpers/validator.php');
 // Se incluye la clase padre.
-require_once('../../models/handler/temporadas_handler.php');
+require_once('../../models/handler/plantillas_handler.php');
 /*
  *  Clase para manejar el encapsulamiento de los datos de la tabla USUARIO.
  */
-class TemporadasData extends TemporadasHandler
+class PlantillasData extends PlantillasHandler
 {
     // Atributo genérico para manejo de errores.
     private $data_error = null;
@@ -14,7 +14,7 @@ class TemporadasData extends TemporadasHandler
     /*
      *  Métodos para validar y asignar valores de los atributos.
      */
-    // Validación y asignación del ID de la temporada.
+    // Validación y asignación del ID del rol.
     public function setId($value)
     {
         if (Validator::validateNaturalNumber($value)) {

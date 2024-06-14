@@ -3,9 +3,11 @@ let SAVE_FORM,
     ID_ROL,
     NOMBRE_ROL;
 let SEARCH_FORM;
+let ROWS_FOUND;
+
 
 // Constantes para completar las rutas de la API.
-const API = '';
+const API = 'services/admin/roles_tecnicos.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -93,78 +95,92 @@ const openDelete = async (id) => {
 }
 
 
-async function fillTable(form = null) {
-    const lista_datos = [
-        {
-            nombre: "Primer técnico",
-            id: 1,
-        },
-        {
-            nombre: "Segundo técnico",
-            id: 2,
-        },
-        {
-            nombre: "Preparador fisico",
-            id: 3,
-        },
-        {
-            nombre: "Delegado",
-            id: 4,
-        }
-    ];
-    const cargarTabla = document.getElementById('tabla');
 
+// Variables y constantes para la paginación
+const rolesPorPagina = 10;
+let paginaActual = 1;
+let roles = [];
+
+// Función para cargar tabla de técnicos con paginación
+async function fillTable(form = null) {
+    const cargarTabla = document.getElementById('tabla_roles');
     try {
         cargarTabla.innerHTML = '';
-        // Se verifica la acción a realizar.
-        (form) ? action = 'searchRows' : action = 'readAll';
-        console.log(form);
         // Petición para obtener los registros disponibles.
+        let action;
+        form ? action = 'searchRows' : action = 'readAll';
+        console.log(form);
         const DATA = await fetchData(API, action, form);
         console.log(DATA);
 
         if (DATA.status) {
-            // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-                const tablaHtml = `
-                <tr class="text-end">
-                    <td>${row.NOMBRE}</td>
-                    <td>
-                        <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
-                        <img src="../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" onclick="openDelete(${row.ID})">
-                            <i class="bi bi-trash-fill"></i>
-                        </button>
-                    </td>
-                </tr>
-                `;
-                cargarTabla.innerHTML += tablaHtml;
-            });
+            roles = DATA.dataset;
+            mostrarRoles(paginaActual);
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = DATA.message;
         } else {
-            sweetAlert(4, DATA.error, true);
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = "Existen 0 coincidencias";
         }
     } catch (error) {
         console.error('Error al obtener datos de la API:', error);
-        // Mostrar materiales de respaldo
-        lista_datos.forEach(row => {
-            const tablaHtml = `
-            <tr>
-                <td class="text-center">${row.nombre}</td>
-                <td class="text-end">
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                    </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
-                </td>
-            </tr>
-            `;
-            cargarTabla.innerHTML += tablaHtml;
-        });
     }
 }
+
+// Función para mostrar técnicos en una página específica
+function mostrarRoles(pagina) {
+    const inicio = (pagina - 1) * rolesPorPagina;
+    const fin = inicio + rolesPorPagina;
+    const rolesPagina = roles.slice(inicio, fin);
+
+    const cargarTabla = document.getElementById('tabla_roles');
+    cargarTabla.innerHTML = '';
+    rolesPagina.forEach(row => {
+        const tablaHtml = `
+                <tr class="text-center">
+                    <td>${row.NOMBRE}</td>
+                    <td>
+                    <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
+                        <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                    </button>
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.ID})">
+                        <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                    </button>
+                    </td>
+                </tr>
+        `;
+        cargarTabla.innerHTML += tablaHtml;
+    });
+
+    actualizarPaginacion();
+}
+
+// Función para actualizar los controles de paginación
+function actualizarPaginacion() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
+
+    const totalPaginas = Math.ceil(roles.length / rolesPorPagina);
+
+    if (paginaActual > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
+    }
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
+    }
+
+    if (paginaActual < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
+    }
+}
+
+// Función para cambiar de página
+function cambiarPagina(nuevaPagina) {
+    paginaActual = nuevaPagina;
+    mostrarRoles(paginaActual);
+}
+
 
 // window.onload
 window.onload = async function () {
@@ -179,6 +195,7 @@ window.onload = async function () {
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Roles de los técnicos';
+    ROWS_FOUND = document.getElementById('rowsFound');
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
@@ -186,8 +203,8 @@ window.onload = async function () {
 
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
-        ID_ROL = document.getElementById('idTemporada'),
-        NOMBRE_TEMPORADA = document.getElementById('nombreTemporada');
+        ID_ROL = document.getElementById('idRol'),
+        NOMBRE_ROL = document.getElementById('nombreRol');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
