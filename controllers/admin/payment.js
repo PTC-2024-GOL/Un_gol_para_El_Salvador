@@ -32,8 +32,11 @@ const openCreate = () => {
     SAVE_FORM.reset();
     fillSelect(JUGADOR_API, 'readAll', 'nombreJugador');
     Selected(lista_datos, 'readAll', 'mesPago');
+    updateMoraPago();
     
 }
+
+
 
 const lista_datos = [
     {
@@ -113,6 +116,8 @@ const Selected = (data, action, selectId, selectedValue = null) => {
     }
 };
 
+
+
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
 *   Parámetros: id (identificador del registro seleccionado).
@@ -138,7 +143,7 @@ const openUpdate = async (id) => {
             fillSelect(JUGADOR_API, 'readAll', 'nombreJugador', ROW.NOMBRE);
             FECHA_PAGO.value = ROW.FECHAPAGO;
             CANTIDAD_PAGO.value = ROW.CANTIDAD;
-            PAGOTARDIO_PAGO.value = ROW.PAGOTARDIO;
+            PAGOTARDIO_PAGO.value = ROW.TARDIO;
             MORA_PAGO.value = ROW.MORA;
             Selected(lista_datos, 'readAll', 'mesPago', ROW.MES)
         } else {
@@ -281,6 +286,14 @@ function cambiarPagina(nuevaPagina) {
     mostrarPago(paginaActual);
 }
 
+function updateMoraPago() {
+    if (PAGOTARDIO_PAGO.value == 1) {
+        MORA_PAGO.disabled = false;
+    } else {
+        MORA_PAGO.disabled = true;
+    }
+}
+
 
 // window.onload
 window.onload = async function () {
@@ -310,6 +323,8 @@ window.onload = async function () {
         PAGOTARDIO_PAGO = document.getElementById('tardioPago'),
         MORA_PAGO = document.getElementById('moraPago'),
         MES_PAGO = document.getElementById('mesPago');
+
+    PAGOTARDIO_PAGO.addEventListener('change', updateMoraPago);
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
