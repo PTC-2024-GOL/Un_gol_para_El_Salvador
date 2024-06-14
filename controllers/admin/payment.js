@@ -8,9 +8,11 @@ let SAVE_FORM,
     MORA_PAGO,
     MES_PAGO;
 let SEARCH_FORM;
+let ROWS_FOUND;
 
 // Constantes para completar las rutas de la API.
-const PAGO_API = '';
+const PAGO_API = 'services/admin/pagos.php';
+const JUGADOR_API = '';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -28,7 +30,89 @@ const openCreate = () => {
     MODAL_TITLE.textContent = 'Crear pago';
     // Se prepara el formulario.
     SAVE_FORM.reset();
+    fillSelect(JUGADOR_API, 'readAll', 'nombreJugador');
+    Selected(lista_datos, 'readAll', 'mesPago');
+    
 }
+
+const lista_datos = [
+    {
+        mes: "Enero",
+        id: "Enero",
+    },
+    {
+        mes: "Febrero",
+        id: "Febrero",
+    },
+    {
+        mes: "Marzo",
+        id: "Marzo",
+    },
+    {
+        mes: "Abril",
+        id: "Abril",
+    },
+    {
+        mes: "Mayo",
+        id: "Mayo",
+    },
+    {
+        mes: "Junio",
+        id: "Junio",
+    },
+    {
+        mes: "Julio",
+        id: "Julio",
+    },
+    {
+        mes: "Agosto",
+        id: "Agosto",
+    },
+    {
+        mes: "Septiembre",
+        id: "Septiembre",
+    },
+    {
+        mes: "Octubre",
+        id: "Octubre",
+    },
+    {
+        mes: "Noviembre",
+        id: "Noviembre",
+    },
+    {
+        mes: "Diciembre",
+        id: "Diciembre",
+    }
+];
+
+// Función para poblar un combobox (select) con opciones quemadas
+const Selected = (data, action, selectId, selectedValue = null) => {
+    const selectElement = document.getElementById(selectId);
+
+    // Limpiar opciones previas del combobox
+    selectElement.innerHTML = '';
+
+    // Crear opción por defecto
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Selecciona el mes';
+    selectElement.appendChild(defaultOption);
+
+    // Llenar el combobox con los datos proporcionados
+    data.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.id; // Suponiendo que hay una propiedad 'id' en los datos
+        option.textContent = item.mes; // Cambia 'horario' al nombre de la propiedad que deseas mostrar en el combobox
+        selectElement.appendChild(option);
+    });
+
+    // Seleccionar el valor especificado si se proporciona
+    if (selectedValue !== null) {
+        selectElement.value = selectedValue;
+    }
+};
+
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
 *   Parámetros: id (identificador del registro seleccionado).
@@ -51,12 +135,12 @@ const openUpdate = async (id) => {
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
             ID_PAGO.value = ROW.ID;
-            JUGADOR_PAGO.value = ROW.JUGADOR;
+            fillSelect(JUGADOR_API, 'readAll', 'nombreJugador', ROW.NOMBRE);
             FECHA_PAGO.value = ROW.FECHAPAGO;
             CANTIDAD_PAGO.value = ROW.CANTIDAD;
             PAGOTARDIO_PAGO.value = ROW.PAGOTARDIO;
             MORA_PAGO.value = ROW.MORA;
-            MES_PAGO.value = ROW.MES;
+            Selected(lista_datos, 'readAll', 'mesPago', ROW.MES)
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -90,7 +174,7 @@ const openDelete = async (id) => {
                 // Se muestra un mensaje de éxito.
                 await sweetAlert(1, DATA.message, true);
                 // Se carga nuevamente la tabla para visualizar los cambios.
-                cargarTabla();
+                fillTable();
             } else {
                 sweetAlert(2, DATA.error, false);
             }
@@ -102,109 +186,101 @@ const openDelete = async (id) => {
 
 }
 
+// Variables y constantes para la paginación
+const pagoPorPagina = 10;
+let paginaActual = 1;
+let pago = [];
 
-async function cargarTabla(form = null) {
-    const lista_datos = [
-        {
-            jugador: 'Mateo',
-            fecha: '20/05/2024',
-            cantidad: '$20.25',
-            tardio: 'No',
-            mora: '$0.25',
-            mes: 'Enero',
-            id: 1,
-        },
-        {
-            jugador: 'León',
-            fecha: '20/05/2024',
-            cantidad: '$20.25',
-            tardio: 'No',
-            mora: '$0.25',
-            mes: 'Marzo',
-            id: 2,
-        },
-        {
-            jugador: 'Pedro',
-            fecha: '20/05/2024',
-            cantidad: '$20.25',
-            tardio: 'No',
-            mora: '$0.25',
-            mes: 'Febrero',
-            id: 3,
-        },
-        {
-            jugador: 'Andy',
-            fecha: '20/05/2024',
-            cantidad: '$20.25',
-            tardio: 'No',
-            mora: '$0.25',
-            mes: 'Enero',
-            id: 4,
-        }
-    ];
+// Función para cargar tabla de caracteristica jugador con paginación
+async function fillTable(form = null) {
     const cargarTabla = document.getElementById('tabla_pago');
-
     try {
         cargarTabla.innerHTML = '';
-        // Se verifica la acción a realizar.
-        (form) ? action = 'searchRows' : action = 'readAll';
-        console.log(form);
         // Petición para obtener los registros disponibles.
+        let action;
+        form ? action = 'searchRows' : action = 'readAll';
+        
         const DATA = await fetchData(PAGO_API, action, form);
-        console.log(DATA);
-
         if (DATA.status) {
-            // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-                const tablaHtml = `
-                <tr>
-                    <td>${row.JUGADOR}</td>
-                    <td>${row.FECHA}</td>
-                    <td>${row.CANTIDAD}</td>
-                    <td>${row.TARDIO}</td>
-                    <td>${row.MORA}</td>
-                    <td>${row.MES}</td>
-                    <td>
-                        <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
-                        <img src="../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" onclick="openDelete(${row.ID})">
-                            <i class="bi bi-trash-fill"></i>
-                        </button>
-                    </td>
-                </tr>
-                `;
-                cargarTabla.innerHTML += tablaHtml;
-            });
+            pago = DATA.dataset;
+            mostrarPago(paginaActual);
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = DATA.message;
         } else {
-            sweetAlert(4, DATA.error, true);
+            // Se muestra un mensaje de acuerdo con el resultado.
+            const tablaHtml = `
+                <tr class="border-danger">
+                    <td class="text-danger">${DATA.error}</td>
+                </tr>
+            `;
+            cargarTabla.innerHTML += tablaHtml;
+            ROWS_FOUND.textContent = "Existen 0 coincidencias";
         }
     } catch (error) {
+        console.log(error);
         console.error('Error al obtener datos de la API:', error);
-        // Mostrar materiales de respaldo
-        lista_datos.forEach(row => {
-            const tablaHtml = `
+    }
+}
+
+// Función para mostrar característica de jugador en una página específica
+function mostrarPago(pagina) {
+    const inicio = (pagina - 1) * pagoPorPagina;
+    const fin = inicio + pagoPorPagina;
+    const pagoPagina = pago.slice(inicio, fin);
+
+    const cargarTabla = document.getElementById('tabla_pago');
+    cargarTabla.innerHTML = '';
+    pagoPagina.forEach(row => {
+        const tablaHtml = `
             <tr>
-                <td>${row.jugador}</td>
-                <td>${row.fecha}</td>
-                <td>${row.cantidad}</td>
-                <td>${row.tardio}</td>
-                <td>${row.mora}</td>
-                <td>${row.mes}</td>
+                <td>${row.NOMBRE}</td>
+                <td>${row.FECHA}</td>
+                <td>${row.CANTIDAD}</td>
+                <td>${row.TARDIO}</td>
+                <td>${row.MORA}</td>
+                <td>${row.MES}</td>
                 <td>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                    <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
+                        <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.ID})">
+                        <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
                 </td>
             </tr>
-            `;
-            cargarTabla.innerHTML += tablaHtml;
-        });
+        `;
+        cargarTabla.innerHTML += tablaHtml;
+    });
+
+    actualizarPaginacion();
+}
+
+// Función para actualizar los controles de paginación
+function actualizarPaginacion() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
+
+    const totalPaginas = Math.ceil(pago.length / pagoPorPagina);
+
+    if (paginaActual > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
+    }
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
+    }
+
+    if (paginaActual < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
     }
 }
+
+// Función para cambiar de página
+function cambiarPagina(nuevaPagina) {
+    paginaActual = nuevaPagina;
+    mostrarPago(paginaActual);
+}
+
 
 // window.onload
 window.onload = async function () {
@@ -219,7 +295,8 @@ window.onload = async function () {
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Pagos';
-    cargarTabla();
+    ROWS_FOUND = document.getElementById('rowsFound');
+    fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
@@ -250,7 +327,7 @@ window.onload = async function () {
             // Se muestra un mensaje de éxito.
             sweetAlert(1, DATA.message, true);
             // Se carga nuevamente la tabla para visualizar los cambios.
-            cargarTabla();
+            fillTable();
         } else {
             sweetAlert(2, DATA.error, false);
             console.error(DATA.exception);
@@ -269,6 +346,6 @@ window.onload = async function () {
         console.log(SEARCH_FORM);
         console.log(FORM);
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
-        cargarTabla(FORM);
+        fillTable(FORM);
     });
 };

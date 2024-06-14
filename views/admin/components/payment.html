@@ -48,6 +48,11 @@
             <tbody id="tabla_pago"></tbody>
         </table>
     </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <!-- Aquí se insertarán los elementos de la paginación -->
+        </ul>
+    </nav>
 </div>
 <!-- Componente Modal para guardar un registro -->
 <div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -64,7 +69,7 @@
             <form id="saveForm">
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input type="hidden" id="idPago" name="idPago">
+                    <input type="number" class="d-none" id="idPago" name="idPago">
                     <div class="col-sm-12 col-md-6">
                         <label for="nombreJugador" class="form-label fw-semibold">Nombre jugador</label>
                         <select id="nombreJugador" type="text" name="nombreJugador" class="form-select"

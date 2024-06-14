@@ -26,6 +26,7 @@ const openCreate = () => {
     MODAL_TITLE.textContent = 'Crear característica';
 
     SAVE_FORM.reset();
+    fillSelected(lista_datos, 'readAll', 'clasificacionCaracteristica');
 }
 
 const lista_datos = [
