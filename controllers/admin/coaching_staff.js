@@ -139,7 +139,7 @@ function mostrarCuerpoTecnico(pagina) {
     cargarTabla.innerHTML = '';
     cuerpoTecnicoPagina.forEach(row => {
         const tablaHtml = `
-            <tr>
+            <tr class="text-center">
                 <td>${row.NOMBRE}</td>
                 <td>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
