@@ -24,9 +24,9 @@ class DetalleCuerpoTecnicoHandler
     {
         $value = '%' . Validator::getSearchValue() . '%';
         $sql = 'SELECT * FROM vw_detalles_cuerpos_tecnicos
-        WHERE CUERPO_TECNICO LIKE ?
+        WHERE CUERPO_TECNICO LIKE ? OR TECNICO LIKE ? OR ROL_TECNICO LIKE ?
         ORDER BY CUERPO_TECNICO;';
-        $params = array($value);
+        $params = array($value, $value, $value);
         return Database::getRows($sql, $params);
     }
 
