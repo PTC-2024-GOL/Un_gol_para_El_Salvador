@@ -5,9 +5,13 @@ let SAVE_FORM,
     ROL,
     CUERPO_TECNICO;
 let SEARCH_FORM;
+let ROWS_FOUND;
 
 // Constantes para completar las rutas de la API.
-const API = '';
+const API = 'services/admin/detalle_cuerpo_tecnico.php';
+const CUERPO_TECNICO_API = 'services/admin/cuerpo_tecnico.php';
+const TECNICO_API = 'services/admin/tecnicos.php';
+const ROL_API = 'services/admin/roles_tecnicos.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -25,6 +29,9 @@ const openCreate = () => {
     MODAL_TITLE.textContent = 'Agregar a un cuerpo técnico';
     // Se prepara el formulario.
     SAVE_FORM.reset();
+    fillSelect(CUERPO_TECNICO_API, 'readAll', 'cuerpoTecnico');
+    fillSelect(TECNICO_API, 'readAll', 'tecnico');
+    fillSelect(ROL_API, 'readAll', 'rol');
 }
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
@@ -35,9 +42,9 @@ const openUpdate = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
-        FORM.append('idCuerpotecnico', id);
+        FORM.append('idCuerpoTecnico', id);
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(CUERPOTECNICO_API, 'readOne', FORM);
+        const DATA = await fetchData(API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
@@ -48,9 +55,9 @@ const openUpdate = async (id) => {
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
             ID_CUERPOTECNICO.value = ROW.ID;
-            TECNICO.value = ROW.TECNICO;
-            ROL.value = ROW.ROL;
-            CUERPO.value =  ROW.CUERPO;
+            fillSelect(CUERPO_TECNICO_API, 'readAll', 'cuerpoTecnico', ROW.ID_CUERPO_TECNICO);
+            fillSelect(TECNICO_API, 'readAll', 'tecnico', ROW.ID_TECNICO);
+            fillSelect(ROL_API, 'readAll', 'rol', ROW.ID_ROL);
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -96,89 +103,98 @@ const openDelete = async (id) => {
 }
 
 
-async function fillTable(form = null) {
-    const lista_datos = [
-        {
-            tecnico: 'Chepe Mártinez',
-            rol: 'Primer técnico',
-            cuerpo: 'Cuerpo técnico equipo sub 12 temporada 2023-24',
-            id: 1,
-        },
-        {
-            tecnico: 'Chepe Mártinez',
-            rol: 'Segundo técnico',
-            cuerpo: 'Cuerpo técnico equipo sub 12 temporada 2023-24',
-            id: 2,
-        },
-        {
-            tecnico: 'Chepe Mártinez',
-            rol: 'Preparador fisico',
-            cuerpo: 'Cuerpo técnico equipo sub 12 temporada 2023-24',
-            id: 3,
-        },
-        {
-            tecnico: 'Chepe Mártinez',
-            rol: 'Delegado',
-            cuerpo: 'Cuerpo técnico equipo sub 12 temporada 2023-24',
-            id: 4,
-        }
-    ];
-    const cargarTabla = document.getElementById('tabla');
+// Variables y constantes para la paginación
+const cuerpoTecnicoPorPagina = 10;
+let paginaActual = 1;
+let cuerpoTecnico = [];
 
+// Función para cargar tabla de tipología con paginación
+async function fillTable(form = null) {
+    const cargarTabla = document.getElementById('tabla');
     try {
         cargarTabla.innerHTML = '';
-        // Se verifica la acción a realizar.
-        (form) ? action = 'searchRows' : action = 'readAll';
-        console.log(form);
         // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(API, action, form);
-        console.log(DATA);
+        let action;
+        form ? action = 'searchRows' : action = 'readAll';
 
+        const DATA = await fetchData(API, action, form);
         if (DATA.status) {
-            // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-                const tablaHtml = `
-                <tr class="text-end">
-                    <td>${row.ROL}</td>
-                    <td>${row.NOMBRE}</td>
-                    <td>${row.CUERPO}</td>
-                    <td>
-                        <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
-                        <img src="../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" onclick="openDelete(${row.ID})">
-                            <i class="bi bi-trash-fill"></i>
-                        </button>
-                    </td>
-                </tr>
-                `;
-                cargarTabla.innerHTML += tablaHtml;
-            });
+            cuerpoTecnico = DATA.dataset;
+            mostrarCuerpoTecnico(paginaActual);
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = DATA.message;
         } else {
-            sweetAlert(4, DATA.error, true);
+            // Se muestra un mensaje de acuerdo con el resultado.
+            const tablaHtml = `
+                <tr class="border-danger">
+                    <td class="text-danger">${DATA.error}</td>
+                </tr>
+            `;
+            cargarTabla.innerHTML += tablaHtml;
+            ROWS_FOUND.textContent = "Existen 0 coincidencias";
         }
     } catch (error) {
+        console.log(error);
         console.error('Error al obtener datos de la API:', error);
-        // Mostrar materiales de respaldo
-        lista_datos.forEach(row => {
-            const tablaHtml = `
+    }
+}
+
+// Función para mostrar tipología en una página específica
+function mostrarCuerpoTecnico(pagina) {
+    const inicio = (pagina - 1) * cuerpoTecnicoPorPagina;
+    const fin = inicio + cuerpoTecnicoPorPagina;
+    const cuerpoTecnicoPagina = cuerpoTecnico.slice(inicio, fin);
+
+    const cargarTabla = document.getElementById('tabla');
+    cargarTabla.innerHTML = '';
+    cuerpoTecnicoPagina.forEach(row => {
+        const tablaHtml = `
             <tr>
-                <td class="text-center">${row.rol}</td>
-                <td class="text-center">${row.tecnico}</td>
-                <td class="text-center">${row.cuerpo}</td>
-                <td class="text-end">
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                <td>${row.ROL_TECNICO}</td>
+                <td>${row.TECNICO}</td>
+                <td>${row.CUERPO_TECNICO}</td>
+                <td>
+                    <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
+                        <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.ID})">
+                        <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
                 </td>
             </tr>
-            `;
-            cargarTabla.innerHTML += tablaHtml;
-        });
+        `;
+        cargarTabla.innerHTML += tablaHtml;
+    });
+
+    actualizarPaginacion();
+}
+
+
+
+// Función para actualizar los controles de paginación
+function actualizarPaginacion() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
+
+    const totalPaginas = Math.ceil(cuerpoTecnico.length / cuerpoTecnicoPorPagina);
+
+    if (paginaActual > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
     }
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
+    }
+
+    if (paginaActual < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
+    }
+}
+
+// Función para cambiar de página
+function cambiarPagina(nuevaPagina) {
+    paginaActual = nuevaPagina;
+    mostrarCuerpoTecnico(paginaActual);
 }
 
 // window.onload
@@ -194,6 +210,7 @@ window.onload = async function () {
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Detalles de los cuerpos técnicos';
+    ROWS_FOUND = document.getElementById('rowsFound');
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),

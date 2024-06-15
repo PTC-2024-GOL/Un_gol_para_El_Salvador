@@ -1,12 +1,12 @@
 <?php
 // Se incluye la clase del modelo.
-require_once('../../models/data/cuerpo_tecnico_data.php');
+require_once('../../models/data/detalle_cuerpo_tecnico_data.php');
 // Se comprueba si existe una acción a realizar, de lo contrario se finaliza el script con un mensaje de error.
 if (isset($_GET['action'])) {
     // Se crea una sesión o se reanuda la actual para poder utilizar variables de sesión en el script.
     session_start();
     // Se instancia la clase correspondiente.
-    $cuerpotecnico = new CuerpoTecnicoData;
+    $cuerpotecnico = new DetalleCuerpoTecnicoData;
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
     $result = array('status' => 0, 'session' => 0, 'message' => null, 'dataset' => null, 'error' => null, 'exception' => null, 'username' => null);
     // Se verifica si existe una sesión iniciada como administrador, de lo contrario se finaliza el script con un mensaje de error.
@@ -26,70 +26,75 @@ if (isset($_GET['action'])) {
                 }
                 break;
                 //crear
-                case 'createRow':
-                    $_POST = Validator::validateForm($_POST);
-                    if (
-                        !$cuerpotecnico->setNombre($_POST['cuerpoTecnico'])
-                    ) {
-                        $result['error'] = $cuerpotecnico->getDataError();
-                    } elseif ($cuerpotecnico->createRow()) {
-                        $result['status'] = 1;
-                        $result['message'] = 'Cuerpo técnico creado correctamente';
-                    } else {
-                        $result['error'] = 'Ocurrió un problema al crear el cuerpo técnico';
-                    }
-                    break;
+            case 'createRow':
+                $_POST = Validator::validateForm($_POST);
+                if (
+                    !$cuerpotecnico->setCuerpo($_POST['cuerpoTecnico']) or
+                    !$cuerpotecnico->setTecnico($_POST['tecnico']) or
+                    !$cuerpotecnico->setRol($_POST['rol'])
+                ) {
+                    $result['error'] = $cuerpotecnico->getDataError();
+                } elseif ($cuerpotecnico->createRow()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Detalle de cuerpo técnico creado correctamente';
+                } else {
+                    $result['error'] = 'Ocurrió un problema al crear el detalle cuerpo técnico';
+                }
+                break;
                 // Leer todos
             case 'readAll':
                 if ($result['dataset'] = $cuerpotecnico->readAll()) {
                     $result['status'] = 1;
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
-                    $result['error'] = 'No hay cuerpo técnico registrados';
+                    $result['error'] = 'No hay detalle de cuerpo técnico registrados';
                 }
                 break;
                 // Leer uno
             case 'readOne':
-                if (!$cuerpotecnico->setId($_POST['idCuerpotecnico'])) {
+                if (
+                    !$cuerpotecnico->setId($_POST['idCuerpoTecnico'])
+                ) {
                     $result['error'] = $cuerpotecnico->getDataError();
                 } elseif ($result['dataset'] = $cuerpotecnico->readOne()) {
                     $result['status'] = 1;
                 } else {
-                    $result['error'] = 'Cuerpo técnico inexistente';
+                    $result['error'] = 'Detalle cuerpo técnico inexistente';
                 }
                 break;
                 // Actualizar
             case 'updateRow':
                 $_POST = Validator::validateForm($_POST);
                 if (
-                    !$cuerpotecnico->setId($_POST['idCuerpotecnico']) or
-                    !$cuerpotecnico->setNombre($_POST['cuerpoTecnico']) 
+                    !$cuerpotecnico->setId($_POST['idCuerpoTecnico']) or
+                    !$cuerpotecnico->setCuerpo($_POST['cuerpoTecnico']) or
+                    !$cuerpotecnico->setTecnico($_POST['tecnico']) or
+                    !$cuerpotecnico->setRol($_POST['rol'])
                 ) {
                     $result['error'] = $cuerpotecnico->getDataError();
                 } elseif ($cuerpotecnico->updateRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Cuerpo técnico modificado correctamente';
+                    $result['message'] = 'Detalle cuerpo técnico modificado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al modificar el cuerpo técnico';
+                    $result['error'] = 'Ocurrió un problema al modificar el detalle de cuerpo técnico';
                 }
                 break;
                 // Eliminar
             case 'deleteRow':
                 if (
-                    !$cuerpotecnico->setId($_POST['idCuerpotecnico'])
+                    !$cuerpotecnico->setId($_POST['idCuerpoTecnico'])
                 ) {
                     $result['error'] = $cuerpotecnico->getDataError();
                 } elseif ($cuerpotecnico->deleteRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Cuerpo técnico eliminada correctamente';
+                    $result['message'] = 'Detalle de cuerpo técnico eliminada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar el cuerpo técnico';
+                    $result['error'] = 'Ocurrió un problema al eliminar el detalle de cuerpo técnico';
                 }
                 break;
             default:
                 $result['error'] = 'Acción no disponible dentro de la sesión';
         }
-        
     } else {
         switch ($_GET['action']) {
 

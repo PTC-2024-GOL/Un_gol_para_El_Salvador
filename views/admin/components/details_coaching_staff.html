@@ -45,6 +45,11 @@
             <tbody id="tabla"></tbody>
         </table>
     </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <!-- Aquí se insertarán los elementos de la paginación -->
+        </ul>
+    </nav>
 </div>
 
 <!-- Componente Modal para guardar un registro -->
@@ -62,7 +67,7 @@
             <form id="saveForm">
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input type="hidden" id="idCuerpoTecnico" name="idCuerpoTecnico">
+                    <input type="number" class="d-none" id="idCuerpoTecnico" name="idCuerpoTecnico">
                     <div class="col-sm-12 col-md-6">
                         <label for="tecnico" class="form-label fw-semibold">Seleccione el técnico</label>
                         <select id="tecnico" name="tecnico" class="form-select" required>
