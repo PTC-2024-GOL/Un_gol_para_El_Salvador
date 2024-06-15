@@ -12,6 +12,7 @@ let SAVE_FORM,
     EQUIPO;
 let SEARCH_FORM;
 let ESTADO_INICIAL_SAVE_FORM;
+let ROWS_FOUND;
 
 // Constantes para completar las rutas de la API.
 const API = 'services/admin/plantillas_equipos.php';
@@ -39,6 +40,10 @@ const openCreate = () => {
     restaurarFormulario(25);
     // Ejemplo de uso: actualizar del paso 1 al paso 2
     updateSteps(1, 2);
+    fillSelect(PLANTILLA_API, 'readAll', 'plantilla');
+    fillSelect(JUGADOR_API, 'readAll', 'jugador');
+    fillSelect(TEMPORADA_API, 'readAll', 'temporada');
+    fillSelect(EQUIPO_API, 'readAll', 'equipo');
 }
 
 
@@ -75,7 +80,7 @@ const seeModal = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
-        FORM.append('idAnalisis', id);
+        FORM.append('idPlantilla', id);
         // Petición para obtener los datos del registro solicitado.
         const DATA = await fetchData(API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
@@ -112,7 +117,7 @@ const seeModal = async (id) => {
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const openUpdate = async (id) => {
+const openUpdate = async (id, id_jugador) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
@@ -124,17 +129,16 @@ const openUpdate = async (id) => {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
             MODAL_TITLE.textContent = 'Actualizar la plantilla';
+            restaurarFormulario(95);
             // Se prepara el formulario.
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
-            ID_EQUIPO.value = ROW.ID;
-            NOMBRE_EQUIPO.value = ROW.NOMBRE;
-            TELEFONO_EQUIPO.value = ROW.TELEFONO;
-            ID_CUERPO_TECNICO.value = ROW.ID_CUERPO_TECNICO;
-            ID_ADMINISTRADOR.value = ROW.ID_ADMINISTRADOR;
-            ID_CATEGORIA.value = ROW.ID_CATEGORIA;
-            LOGO_EQUIPO.value = ROW.LOGO;
+            ID_PLANTILLA.value = ROW.ID;
+            fillSelect(PLANTILLA_API, 'readAll', 'plantilla', ROW.ID_PLANTILLA);
+            fillSelect(JUGADOR_API, 'readAll', 'jugador', id_jugador);
+            fillSelect(TEMPORADA_API, 'readAll', 'temporada', ROW.ID_TEMPORADA);
+            fillSelect(EQUIPO_API, 'readAll', 'equipo', ROW.ID_EQUIPO);
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -326,9 +330,9 @@ async function fillTable(form = null) {
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
                 <tr>
-                    <td><img src="${SERVER_URL}images/admin/${row.IMAGEN}" height="50" width="50" class="circulo"></td>
-                    <td>${row.NOMBRE}</td>
-                    <td>${row.APELLIDO}</td>
+                    <td><img src="${SERVER_URL}images/jugadores/${row.IMAGEN}" height="50" width="50" class="circulo"></td>
+                    <td>${row.NOMBRE_JUGADOR}</td>
+                    <td>${row.APELLIDO_JUGADOR}</td>
                     <td>${row.DORSAL}</td>
                     <td>${row.POSICION_PRINCIPAL}</td>
                     <td>${row.NACIMIENTO}</td>
@@ -374,100 +378,96 @@ async function fillTable(form = null) {
     }
 }
 
+// Variables y constantes para la paginación
+const plantillasPorPagina = 10;
+let paginaActual = 1;
+let plantillas = [];
 
+// Función para cargar tabla de técnicos con paginación
 async function cargarTabla(form = null) {
-    const lista_datos = [
-        {
-            equipo: 'Gol El Salvador Nivel 4 Femenino',
-            jugador: 23,
-            plantilla: 'Plantilla para la liga femenina de la ADFA San Salvador',
-            id: 1,
-        },
-        {
-            equipo: 'Gol El Salvador Nivel 2 Femenino',
-            jugador: 22,
-            plantilla: 'Plantilla para la Copa Interclubes de la Uncaf 2024',
-            id: 2,
-        },
-        {
-            equipo: 'Gol El Salvador Nivel 1 Femenino',
-            jugador: 24,
-            plantilla: 'Plantilla para la Copa Interclubes de la Uncaf 2024',
-            id: 3,
-        },
-        {
-            equipo: 'Gol El Salvador Nivel 1 Masculino',
-            jugador: 17,
-            plantilla: 'Plantilla para la liga masculina de la ADFA San Salvador',
-            id: 4,
-        }
-    ];
     const cargarTabla = document.getElementById('tabla');
-
     try {
         cargarTabla.innerHTML = '';
-        // Se verifica la acción a realizar.
-        (form) ? action = 'searchRows' : action = 'readAll';
-        console.log(form);
         // Petición para obtener los registros disponibles.
+        let action;
+        form ? action = 'searchRows' : action = 'readAll';
+        console.log(form);
         const DATA = await fetchData(API, action, form);
         console.log(DATA);
 
         if (DATA.status) {
-            // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-                const tablaHtml = `
+            plantillas = DATA.dataset;
+            mostrarPlantillas(paginaActual);
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = DATA.message;
+        } else {
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = "Existen 0 coincidencias";
+        }
+    } catch (error) {
+        console.error('Error al obtener datos de la API:', error);
+    }
+}
+
+// Función para mostrar técnicos en una página específica
+function mostrarPlantillas(pagina) {
+    const inicio = (pagina - 1) * plantillasPorPagina;
+    const fin = inicio + plantillasPorPagina;
+    const plantillasPagina = plantillas.slice(inicio, fin);
+
+    const cargarTabla = document.getElementById('tabla');
+    cargarTabla.innerHTML = '';
+    plantillasPagina.forEach(row => {
+        const tablaHtml = `
                 <tr>
-                    <td>${row.PLANTILLA}</td>
-                    <td>${row.EQUIPO}</td>
-                    <td>${row.JUGADOR}</td>
+                    <td>${row.NOMBRE_PLANTILLA}</td>
+                    <td>${row.NOMBRE_EQUIPO}</td>
+                    <td>${row.TOTAL_JUGADORES}</td>
                     <td>
-                        <button type="button" class="btn btn-warnig" onclick="seeModal()">
+                        <button type="button" class="btn btn-warnig" onclick="seeModal(${row.ID})">
                         <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
                         </button>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
-                        <img src="../../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" onclick="openDelete(${row.ID})">
-                            <i class="bi bi-trash-fill"></i>
-                        </button>
+                    <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
+                        <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                    </button>
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.ID})">
+                        <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                    </button>
                     </td>
                 </tr>
-                `;
-                cargarTabla.innerHTML += tablaHtml;
-            });
-        } else {
-            sweetAlert(4, DATA.error, true);
-        }
-    } catch (error) {
-        console.error('Error al obtener datos de la API:', error);
-        // Mostrar materiales de respaldo
-        lista_datos.forEach(row => {
-            const tablaHtml = `
-            <tr>
-                <td>${row.plantilla}</td>
-                <td>${row.equipo}</td>
-                <td>${row.jugador}</td>
-                <td>
-                    <button type="button" class="btn transparente" onclick="seeModal()">
-                    <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18px" height="18px">
-                    </button>
-                </td>
-                <td>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                    </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
-                </td>
-            </tr>
-            `;
-            cargarTabla.innerHTML += tablaHtml;
-        });
+        `;
+        cargarTabla.innerHTML += tablaHtml;
+    });
+
+    actualizarPaginacion();
+}
+
+// Función para actualizar los contplantillas de paginación
+function actualizarPaginacion() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
+
+    const totalPaginas = Math.ceil(plantillas.length / plantillasPorPagina);
+
+    if (paginaActual > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
     }
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
+    }
+
+    if (paginaActual < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
+    }
+}
+
+// Función para cambiar de página
+function cambiarPagina(nuevaPagina) {
+    paginaActual = nuevaPagina;
+    mostrarPlantillas(paginaActual);
 }
 
 // Función para restaurar el formulario guardar
@@ -545,6 +545,7 @@ window.onload = async function () {
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Plantillas';
+    ROWS_FOUND = document.getElementById('rowsFound');
     cargarTabla();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
@@ -552,7 +553,7 @@ window.onload = async function () {
 
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
-        ID_PLANTILLA = document.getElementById('idAnalisis'),
+        ID_PLANTILLA = document.getElementById('idPlantilla'),
         PLANTILLA = document.getElementById('plantilla'),
         JUGADOR = document.getElementById('jugador'),
         TEMPORADA = document.getElementById('temporada'),
@@ -562,7 +563,7 @@ window.onload = async function () {
         // Se evita recargar la página web después de enviar el formulario.
         event.preventDefault();
         // Se verifica la acción a realizar.
-        (ID_ANALISIS.value) ? action = 'updateRow' : action = 'createRow';
+        (ID_PLANTILLA.value) ? action = 'updateRow' : action = 'createRow';
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SAVE_FORM);
         // Petición para guardar los datos del formulario.

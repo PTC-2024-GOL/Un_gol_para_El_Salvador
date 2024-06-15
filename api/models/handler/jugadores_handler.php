@@ -19,8 +19,10 @@ class JugadoresHandler
     public function readAll()
     {
         $sql = 'SELECT id_jugador AS ID,  
-        CONCAT(nombre_jugador, " ", apellido_jugador) AS NOMBRE, FROM jugadores
-        ORDER BY NOMBRE;';
+        CONCAT(nombre_jugador, " ", apellido_jugador) AS NOMBRE,
+        nombre_jugador AS NOMBRE_JUGADOR, apellido_jugador AS APELLIDO_JUGADOR,
+        dorsal_jugador AS DORSAL, fecha_nacimiento_jugador AS NACIMIENTO, p.posicion AS POSICION_PRINCIPAL,
+        foto_jugador AS IMAGEN FROM jugadores j INNER JOIN posiciones p ON j.id_posicion_principal = p.id_posicion;';
         return Database::getRows($sql);
     }
 }

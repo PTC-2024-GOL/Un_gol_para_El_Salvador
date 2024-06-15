@@ -19,8 +19,7 @@ class EquiposHandler
     public function readAll()
     {
         $sql = 'SELECT id_equipo AS ID,  
-        nombre_equipo AS NOMBRE, FROM equipos
-        ORDER BY NOMBRE;';
+        nombre_equipo AS NOMBRE FROM equipos;';
         return Database::getRows($sql);
     }
 }
