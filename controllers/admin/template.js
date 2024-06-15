@@ -14,7 +14,11 @@ let SEARCH_FORM;
 let ESTADO_INICIAL_SAVE_FORM;
 
 // Constantes para completar las rutas de la API.
-const EQUIPO_API = '';
+const API = 'services/admin/plantillas_equipos.php';
+const PLANTILLA_API = 'services/admin/plantillas.php';
+const JUGADOR_API = 'services/admin/jugadores.php';
+const TEMPORADA_API = 'services/admin/temporadas.php';
+const EQUIPO_API = 'services/admin/equipos.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -73,7 +77,7 @@ const seeModal = async (id) => {
         const FORM = new FormData();
         FORM.append('idAnalisis', id);
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(EQUIPO_API, 'readOne', FORM);
+        const DATA = await fetchData(API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
@@ -114,7 +118,7 @@ const openUpdate = async (id) => {
         const FORM = new FormData();
         FORM.append('idPlantilla', id);
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(EQUIPO_API, 'readOne', FORM);
+        const DATA = await fetchData(API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
@@ -158,7 +162,7 @@ const openDelete = async (id) => {
             FORM.append('idPlantilla', id);
             console.log(id);
             // Petición para eliminar el registro seleccionado.
-            const DATA = await fetchData(EQUIPO_API, 'deleteRow', FORM);
+            const DATA = await fetchData(API, 'deleteRow', FORM);
             console.log(DATA.status);
             // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
             if (DATA.status) {
@@ -188,7 +192,7 @@ const openUpdatePlayer = async (id) => {
         const FORM = new FormData();
         FORM.append('idJugador', id);
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(EQUIPO_API, 'readOne', FORM);
+        const DATA = await fetchData(API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
@@ -229,7 +233,7 @@ const openDeletePlayer = async (id) => {
             FORM.append('idAnalisis', id);
             console.log(id);
             // Petición para eliminar el registro seleccionado.
-            const DATA = await fetchData(EQUIPO_API, 'deleteRow', FORM);
+            const DATA = await fetchData(API, 'deleteRow', FORM);
             console.log(DATA.status);
             // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
             if (DATA.status) {
@@ -406,7 +410,7 @@ async function cargarTabla(form = null) {
         (form) ? action = 'searchRows' : action = 'readAll';
         console.log(form);
         // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(EQUIPO_API, action, form);
+        const DATA = await fetchData(API, action, form);
         console.log(DATA);
 
         if (DATA.status) {
@@ -562,7 +566,7 @@ window.onload = async function () {
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SAVE_FORM);
         // Petición para guardar los datos del formulario.
-        const DATA = await fetchData(EQUIPO_API, action, FORM);
+        const DATA = await fetchData(API, action, FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se cierra la caja de diálogo.
