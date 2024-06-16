@@ -25,9 +25,9 @@ class PlantillasEquiposHandler
     {
         $value = '%' . Validator::getSearchValue() . '%';
         $sql = 'SELECT * FROM vw_plantillas_equipos_agrupadas
-        WHERE NOMBRE_PLANTILLA LIKE ? OR NOMBRE_TEMPORADA LIKE ? OR NOMBRE_EQUIPO LIKE ?
+        WHERE NOMBRE_PLANTILLA LIKE ? OR NOMBRE_EQUIPO LIKE ?
         ORDER BY NOMBRE_PLANTILLA;';
-        $params = array($value, $value, $value);
+        $params = array($value, $value);
         return Database::getRows($sql, $params);
     }
 

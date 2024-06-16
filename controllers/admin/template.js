@@ -81,6 +81,9 @@ const seeModal = async (id) => {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
         FORM.append('idPlantilla', id);
+        restaurarFormulario(95);
+        // Ejemplo de uso: actualizar del paso 1 al paso 2
+        updateSteps(2, 1);
         // Petición para obtener los datos del registro solicitado.
         const DATA = await fetchData(API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
@@ -117,7 +120,7 @@ const seeModal = async (id) => {
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const openUpdate = async (id, id_jugador) => {
+const openUpdate = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
@@ -130,13 +133,14 @@ const openUpdate = async (id, id_jugador) => {
             SAVE_MODAL.show();
             MODAL_TITLE.textContent = 'Actualizar la plantilla';
             restaurarFormulario(95);
+            // Ejemplo de uso: actualizar del paso 1 al paso 2
+            updateSteps(2, 1);
             // Se prepara el formulario.
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
             ID_PLANTILLA.value = ROW.ID;
             fillSelect(PLANTILLA_API, 'readAll', 'plantilla', ROW.ID_PLANTILLA);
-            fillSelect(JUGADOR_API, 'readAll', 'jugador', id_jugador);
             fillSelect(TEMPORADA_API, 'readAll', 'temporada', ROW.ID_TEMPORADA);
             fillSelect(EQUIPO_API, 'readAll', 'equipo', ROW.ID_EQUIPO);
         } else {
@@ -192,34 +196,10 @@ const openDelete = async (id) => {
 */
 const openUpdatePlayer = async (id) => {
     try {
-        // Se define un objeto con los datos del registro seleccionado.
-        const FORM = new FormData();
-        FORM.append('idJugador', id);
-        // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(API, 'readOne', FORM);
-        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-        if (DATA.status) {
-            // Se muestra la caja de diálogo con su título.
-            SAVE_MODAL.show();
-            MODAL_TITLE.textContent = 'Actualizar el jugador de la plantilla';
-            // Se prepara el formulario.
-            SAVE_FORM.reset();
-            // Se inicializan los campos con los datos.
-            const ROW = DATA.dataset;
-            ID_EQUIPO.value = ROW.ID;
-            NOMBRE_EQUIPO.value = ROW.NOMBRE;
-            TELEFONO_EQUIPO.value = ROW.TELEFONO;
-            ID_CUERPO_TECNICO.value = ROW.ID_CUERPO_TECNICO;
-            ID_ADMINISTRADOR.value = ROW.ID_ADMINISTRADOR;
-            ID_CATEGORIA.value = ROW.ID_CATEGORIA;
-            LOGO_EQUIPO.value = ROW.LOGO;
-        } else {
-            sweetAlert(2, DATA.error, false);
-        }
+        fillSelect(JUGADOR_API, 'readAll', 'jugador', id);
     } catch (Error) {
         console.log(Error);
     }
-
 }
 /*
 *   Función asíncrona para eliminar un registro.
@@ -234,7 +214,7 @@ const openDeletePlayer = async (id) => {
         if (RESPONSE) {
             // Se define una constante tipo objeto con los datos del registro seleccionado.
             const FORM = new FormData();
-            FORM.append('idAnalisis', id);
+            FORM.append('idJugador', id);
             console.log(id);
             // Petición para eliminar el registro seleccionado.
             const DATA = await fetchData(API, 'deleteRow', FORM);
@@ -276,44 +256,6 @@ function eliminarBotonesTablaJugadores() {
 
 
 async function fillTable(form = null) {
-    const lista_jugadores = [
-        {
-            imagen: '../../../../resources/img/svg/avatar.svg',
-            nombre: 'Angel',
-            apellido: 'Presidente',
-            dorsal: '14',
-            posicion_principal: 'Delantero',
-            fecha: '2000-02-09',
-            id: 1,
-        },
-        {
-            imagen: '../../../../resources/img/svg/avatar.svg',
-            nombre: 'Angel',
-            apellido: 'Presidente',
-            dorsal: '14',
-            posicion_principal: 'Delantero',
-            fecha: '2000-02-09',
-            id: 1,
-        },
-        {
-            imagen: '../../../../resources/img/svg/avatar.svg',
-            nombre: 'Angel',
-            apellido: 'Presidente',
-            dorsal: '14',
-            posicion_principal: 'Delantero',
-            fecha: '2000-02-09',
-            id: 1,
-        },
-        {
-            imagen: '../../../../resources/img/svg/avatar.svg',
-            nombre: 'Angel',
-            apellido: 'Presidente',
-            dorsal: '14',
-            posicion_principal: 'Delantero',
-            fecha: '2000-02-09',
-            id: 1,
-        }
-    ];
     const cargarTabla = document.getElementById('tabla_jugadores');
 
     try {
@@ -353,28 +295,6 @@ async function fillTable(form = null) {
         }
     } catch (error) {
         console.error('Error al obtener datos de la API:', error);
-        // Mostrar materiales de respaldo
-        lista_jugadores.forEach(row => {
-            const tablaHtml = `
-            <tr>
-                <td><img src="${row.imagen}" height="50" width="50" class="circulo"></td>
-                <td>${row.nombre}</td>
-                <td>${row.apellido}</td>
-                <td>${row.dorsal}</td>
-                <td>${row.posicion_principal}</td>
-                <td>${row.fecha}</td>
-                <td>
-                    <button type="button" id="btnAct" class="btn btn-next transparente" onclick="openUpdatePlayer(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                    </button>
-                    <button type="button" id="btnEli" class="btn transparente" onclick="openDeletePlayer(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
-                </td>
-            </tr>
-            `;
-            cargarTabla.innerHTML += tablaHtml;
-        });
     }
 }
 
@@ -432,7 +352,7 @@ function mostrarPlantillas(pagina) {
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
                         <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.ID})">
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.ID_PLANTILLA})">
                         <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
                     </td>
