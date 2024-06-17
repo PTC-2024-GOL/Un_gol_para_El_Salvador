@@ -10,6 +10,8 @@ class PlantillasEquiposHandler
      *  Declaración de atributos para el manejo de datos.
      */
     protected $id = null;
+    protected $id_plantilla = null;
+    protected $id_equipo = null;
     protected $plantilla = null;
     protected $jugador = null;
     protected $temporada = null;
@@ -52,6 +54,28 @@ class PlantillasEquiposHandler
         return Database::getRows($sql);
     }
 
+    //Función para leer todas las cuerpo técnico.
+    public function readOneTemplate()
+    {
+        $sql = 'SELECT 
+        pe.id_plantilla_equipo AS IDP,
+        j.id_jugador AS ID,  
+        CONCAT(j.nombre_jugador, " ", j.apellido_jugador) AS NOMBRE,
+        j.nombre_jugador AS NOMBRE_JUGADOR, 
+        j.apellido_jugador AS APELLIDO_JUGADOR,
+        j.dorsal_jugador AS DORSAL, 
+        j.fecha_nacimiento_jugador AS NACIMIENTO, 
+        p.posicion AS POSICION_PRINCIPAL,
+        j.foto_jugador AS IMAGEN
+        FROM 
+        plantillas_equipos pe JOIN 
+        jugadores j ON pe.id_jugador = j.id_jugador JOIN 
+        posiciones p ON j.id_posicion_principal = p.id_posicion
+        WHERE 
+        pe.id_plantilla = ? AND pe.id_equipo = ? AND pe.id_temporada = ?;';
+        $params = array($this->id_plantilla, $this->id_equipo, $this->temporada);
+        return Database::getRows($sql, $params);
+    }
     //Función para leer una cuerpo técnico.
     public function readOne()
     {
@@ -79,8 +103,8 @@ class PlantillasEquiposHandler
     //Función para eliminar una cuerpo técnico.
     public function deleteRow()
     {
-        $sql = 'CALL sp_eliminar_plantilla_equipo(?);';
-        $params = array($this->id);
+        $sql = 'CALL sp_eliminar_plantilla_equipo(?,?,?);';
+        $params = array($this->id, $this->equipo, $this->temporada);
         return Database::executeRow($sql, $params);
     }
 }

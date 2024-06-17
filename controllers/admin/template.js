@@ -66,43 +66,40 @@ function updateSteps(currentStep, nextStep) {
     formInputs.forEach((input) => {
         input.disabled = true;
     });
-    const deletePast = document.getElementById(`past`);
-    deletePast.remove();
 
     const deleteProgressBar = document.getElementById(`progressBar`);
     deleteProgressBar.remove();
 }
 
 
+
+// Ocultar el primer form-step y mostrar el segundo
+function updateStepsTwo(currentStep, nextStep) {
+    // Ocultar el form-step actual y mostrar el siguiente
+    const currentFormStep = document.getElementById(`step${currentStep}`);
+    const nextFormStep = document.getElementById(`step${nextStep}`);
+    currentFormStep.remove();
+    nextFormStep.classList.add('form-step-active');
+}
+
+
 // Funcion para preparar el formulario al momento de abrirlo
 
-const seeModal = async (id) => {
+const seeModal = async (idPlantilla, idEquipo, idTemporada) => {
     try {
+        SAVE_MODAL.show();
+        MODAL_TITLE.textContent = 'Actualizar la plantilla';
+        restaurarFormulario(95);
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
-        FORM.append('idPlantilla', id);
+        FORM.append('idPlantillaEquipo', idPlantilla);
+        FORM.append('idEquipo', idEquipo);
+        FORM.append('temporada', idTemporada);
         restaurarFormulario(95);
         // Ejemplo de uso: actualizar del paso 1 al paso 2
         updateSteps(2, 1);
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(API, 'readOne', FORM);
-        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-        if (DATA.status) {
-            // Se muestra la caja de diálogo con su título.
-            SAVE_MODAL.show();
-            MODAL_TITLE.textContent = 'Plantilla';
-            // Se prepara el formulario.
-            SAVE_FORM.reset();
-            // Se inicializan los campos con los datos.
-            const ROW = DATA.dataset;
-            ID_PLANTILLA.value = ROW.ID;
-            PLANTILLA.value = ROW.PLANTILLA;
-            JUGADOR.value = ROW.JUGADOR;
-            EQUIPO.value = ROW.EQUIPO;
-            TEMPORADA.value = ROW.TEMPORADA;
-        } else {
-            sweetAlert(2, DATA.error, false);
-        }
+        fillTable(FORM);
     } catch (Error) {
         SAVE_MODAL.show();
         MODAL_TITLE.textContent = 'Plantilla';
@@ -120,7 +117,7 @@ const seeModal = async (id) => {
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const openUpdate = async (id) => {
+const openUpdate = async (id, idPlantilla, idEquipo, idTemporada) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
@@ -133,18 +130,22 @@ const openUpdate = async (id) => {
             SAVE_MODAL.show();
             MODAL_TITLE.textContent = 'Actualizar la plantilla';
             restaurarFormulario(95);
-            // Ejemplo de uso: actualizar del paso 1 al paso 2
-            updateSteps(2, 1);
-            // Se prepara el formulario.
-            SAVE_FORM.reset();
+            const form = new FormData();
+            form.append('idPlantillaEquipo', idPlantilla);
+            form.append('idEquipo', idEquipo);
+            FORM.append('temporada', idTemporada);
+            console.log('Id Plantilla ' +idPlantilla);
+            console.log('Id Equipo '+idEquipo);
+            fillTable(form);
+            const deleteProgressBar = document.getElementById(`progressBar`);
+            deleteProgressBar.remove();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
-            ID_PLANTILLA.value = ROW.ID;
             fillSelect(PLANTILLA_API, 'readAll', 'plantilla', ROW.ID_PLANTILLA);
             fillSelect(TEMPORADA_API, 'readAll', 'temporada', ROW.ID_TEMPORADA);
             fillSelect(EQUIPO_API, 'readAll', 'equipo', ROW.ID_EQUIPO);
         } else {
-            sweetAlert(2, DATA.error, false);
+            console.log(id)
         }
     } catch (Error) {
         console.log(Error);
@@ -159,7 +160,7 @@ const openUpdate = async (id) => {
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const openDelete = async (id) => {
+const openDelete = async (id, idEquipo, idTemporada) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
     const RESPONSE = await confirmAction('¿Desea eliminar el análisis?');
     try {
@@ -168,6 +169,8 @@ const openDelete = async (id) => {
             // Se define una constante tipo objeto con los datos del registro seleccionado.
             const FORM = new FormData();
             FORM.append('idPlantilla', id);
+            FORM.append('idEquipo', idEquipo);
+            FORM.append('idTemporada', idTemporada);
             console.log(id);
             // Petición para eliminar el registro seleccionado.
             const DATA = await fetchData(API, 'deleteRow', FORM);
@@ -194,9 +197,14 @@ const openDelete = async (id) => {
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const openUpdatePlayer = async (id) => {
+const openUpdatePlayer = async (id, idp) => {
     try {
+        ID_PLANTILLA.value = idp;
+        console.log('idPlantilla ' + ID_PLANTILLA.value)
         fillSelect(JUGADOR_API, 'readAll', 'jugador', id);
+        console.log(id);
+        console.log(ID_PLANTILLA.value)
+        updateStepsTwo(1, 2);
     } catch (Error) {
         console.log(Error);
     }
@@ -214,7 +222,7 @@ const openDeletePlayer = async (id) => {
         if (RESPONSE) {
             // Se define una constante tipo objeto con los datos del registro seleccionado.
             const FORM = new FormData();
-            FORM.append('idJugador', id);
+            FORM.append('idPlantilla', id);
             console.log(id);
             // Petición para eliminar el registro seleccionado.
             const DATA = await fetchData(API, 'deleteRow', FORM);
@@ -255,46 +263,97 @@ function eliminarBotonesTablaJugadores() {
 }
 
 
-async function fillTable(form = null) {
+async function fillTable(FORM = null) {
     const cargarTabla = document.getElementById('tabla_jugadores');
-
+    const lista_jugadores = [
+        {
+            imagen: '../../../../resources/img/svg/avatar.svg',
+            nombre: 'Angel',
+            apellido: 'Presidente',
+            dorsal: '14',
+            posicion_principal: 'Delantero',
+            fecha: '2000-02-09',
+            id: 1,
+        },
+        {
+            imagen: '../../../../resources/img/svg/avatar.svg',
+            nombre: 'Angel',
+            apellido: 'Presidente',
+            dorsal: '14',
+            posicion_principal: 'Delantero',
+            fecha: '2000-02-09',
+            id: 2,
+        },
+        {
+            imagen: '../../../../resources/img/svg/avatar.svg',
+            nombre: 'Angel',
+            apellido: 'Presidente',
+            dorsal: '14',
+            posicion_principal: 'Delantero',
+            fecha: '2000-02-09',
+            id: 3,
+        },
+        {
+            imagen: '../../../../resources/img/svg/avatar.svg',
+            nombre: 'Angel',
+            apellido: 'Presidente',
+            dorsal: '14',
+            posicion_principal: 'Delantero',
+            fecha: '2000-02-09',
+            id: 4,
+        }
+    ];
     try {
         cargarTabla.innerHTML = '';
-        // Se verifica la acción a realizar.
-        (form) ? action = 'searchRows' : action = 'readAll';
-        console.log(form);
         // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(JUGADOR_API, action, form);
+        const DATA = await fetchData(API, 'readOneTemplate', FORM);
         console.log(DATA);
-
-        if (DATA.status) {
-            // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-                const tablaHtml = `
-                <tr>
-                    <td><img src="${SERVER_URL}images/jugadores/${row.IMAGEN}" height="50" width="50" class="circulo"></td>
-                    <td>${row.NOMBRE_JUGADOR}</td>
-                    <td>${row.APELLIDO_JUGADOR}</td>
-                    <td>${row.DORSAL}</td>
-                    <td>${row.POSICION_PRINCIPAL}</td>
-                    <td>${row.NACIMIENTO}</td>
-                    <td>
-                    <button type="button" class="btn btn-next transparente" onclick="openUpdatePlayer(${row.ID})">
+        // Mostrar elementos obtenidos de la API
+        DATA.dataset.forEach(row => {
+            const tablaHtml = `
+            <tr>
+                <td><img src="${SERVER_URL}images/jugadores/${row.IMAGEN}" height="50" width="50" class="circulo"></td>
+                <td>${row.NOMBRE_JUGADOR}</td>
+                <td>${row.APELLIDO_JUGADOR}</td>
+                <td>${row.DORSAL}</td>
+                <td>${row.POSICION_PRINCIPAL}</td>
+                <td>${row.NACIMIENTO}</td>
+                <td>
+                    <button type="button" id="btnAct" class="btn btn-next transparente" onclick="openUpdatePlayer(${row.ID}, ${row.IDP})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente" onclick="openDeletePlayer(${row.ID})">
+                    <button type="button" id="btnEli" class="btn transparente" onclick="openDeletePlayer(${row.IDP})">
                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
-                    </td>
-                </tr>
+                </td>
+            </tr>
                 `;
-                cargarTabla.innerHTML += tablaHtml;
-            });
-        } else {
-            sweetAlert(4, DATA.error, true);
-        }
+            cargarTabla.innerHTML += tablaHtml;
+        });
     } catch (error) {
         console.error('Error al obtener datos de la API:', error);
+        // Mostrar materiales de respaldo
+        lista_jugadores.forEach(row => {
+            const tablaHtml = `
+            <tr>
+                <td><img src="${row.imagen}" height="50" width="50" class="circulo"></td>
+                <td>${row.nombre}</td>
+                <td>${row.apellido}</td>
+                <td>${row.dorsal}</td>
+                <td>${row.posicion_principal}</td>
+                <td>${row.fecha}</td>
+                <td>
+                    <button type="button" id="btnAct" class="btn btn-next transparente" onclick="openUpdatePlayer(${row.id})">
+                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                    </button>
+                    <button type="button" id="btnEli" class="btn transparente" onclick="openDeletePlayer(${row.id})">
+                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                    </button>
+                </td>
+            </tr>
+            `;
+            cargarTabla.innerHTML += tablaHtml;
+        });
     }
 }
 
@@ -344,15 +403,15 @@ function mostrarPlantillas(pagina) {
                     <td>${row.NOMBRE_EQUIPO}</td>
                     <td>${row.TOTAL_JUGADORES}</td>
                     <td>
-                        <button type="button" class="btn btn-warnig" onclick="seeModal(${row.ID})">
+                        <button type="button" class="btn btn-warnig" onclick="seeModal(${row.ID_PLANTILLA}, ${row.ID_EQUIPO}, ${row.ID_TEMPORADA})">
                         <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
                         </button>
                     </td>
                     <td>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
+                    <button type="button" class="btn transparente" onclick="openUpdate(${row.ID}, ${row.ID_PLANTILLA}, ${row.ID_EQUIPO}, ${row.ID_TEMPORADA})">
                         <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.ID_PLANTILLA})">
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.ID_PLANTILLA}, ${row.ID_EQUIPO}, ${row.ID_TEMPORADA})">
                         <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
                     </td>
@@ -392,9 +451,7 @@ function cambiarPagina(nuevaPagina) {
 
 // Función para restaurar el formulario guardar
 const restaurarFormulario = async (num = null) => {
-    document.getElementById('saveForm').innerHTML = ESTADO_INICIAL_SAVE_FORM;
-    
-    fillTable();
+    SAVE_FORM.innerHTML = ESTADO_INICIAL_SAVE_FORM;
 
     const prevBtns = document.querySelectorAll(".btn-prev");
     const nextBtns = document.querySelectorAll(".btn-next");
@@ -440,13 +497,13 @@ const restaurarFormulario = async (num = null) => {
                 progressStep.classList.remove("progress-step-active");
             }
         });
-    
+
         const progressActive = document.querySelectorAll(".progress-step-active");
         const widthIncrement = num; // Porcentaje de incremento deseado
-    
+
         // Calculamos el nuevo ancho de la barra de progreso
         let widthPercentage = (progressActive.length - 1) * widthIncrement;
-    
+
         // Asignamos el nuevo ancho a la barra de progreso
         progress.style.width = widthPercentage + "%";
     }
@@ -498,7 +555,7 @@ window.onload = async function () {
             cargarTabla();
         } else {
             sweetAlert(2, DATA.error, false);
-            console.error(DATA.exception);
+            console.error(DATA.error);
         }
     });
     ESTADO_INICIAL_SAVE_FORM = document.getElementById('saveForm').innerHTML;

@@ -10,9 +10,11 @@ class JornadasHandler
      *  Declaración de atributos para el manejo de datos.
      */
     protected $id = null;
-    protected $cuerpo = null;
-    protected $tecnico = null;
-    protected $rol = null;
+    protected $nombre = null;
+    protected $numero = null;
+    protected $plantilla = null;
+    protected $fecha_inicio = null;
+    protected $fecha_final = null;
 
 
     /*
@@ -23,21 +25,23 @@ class JornadasHandler
     public function searchRows()
     {
         $value = '%' . Validator::getSearchValue() . '%';
-        $sql = 'SELECT * FROM vw_detalles_cuerpos_tecnicos
-        WHERE CUERPO_TECNICO LIKE ? OR TECNICO LIKE ? OR ROL_TECNICO LIKE ?
-        ORDER BY CUERPO_TECNICO;';
-        $params = array($value, $value, $value);
+        $sql = 'SELECT * FROM vw_jornadas
+        WHERE NOMBRE LIKE ? OR NUMERO LIKE ? OR PLANTILLA LIKE ? OR FECHA_INICIO LIKE ? OR FECHA_FIN LIKE ?
+        ORDER BY NOMBRE;';
+        $params = array($value, $value, $value, $value, $value);
         return Database::getRows($sql, $params);
     }
 
     //Función para insertar una cuerpo técnico.
     public function createRow()
     {
-        $sql = 'CALL sp_insertar_detalle_cuerpo_tecnico(?,?,?);';
+        $sql = 'CALL insertar_jornada(?,?,?,?,?);';
         $params = array(
-            $this->cuerpo,
-            $this->tecnico,
-            $this->rol
+            $this->nombre,
+            $this->numero,
+            $this->plantilla,
+            $this->fecha_inicio,
+            $this->fecha_final
         );
         return Database::executeRow($sql, $params);
     }
@@ -45,15 +49,15 @@ class JornadasHandler
     //Función para leer todas las cuerpo técnico.
     public function readAll()
     {
-        $sql = 'SELECT * FROM vw_detalles_cuerpos_tecnicos
-        ORDER BY CUERPO_TECNICO;';
+        $sql = 'SELECT * FROM vw_jornadas
+        ORDER BY NOMBRE;';
         return Database::getRows($sql);
     }
 
     //Función para leer una cuerpo técnico.
     public function readOne()
     {
-        $sql = 'SELECT * FROM vw_detalles_cuerpos_tecnicos
+        $sql = 'SELECT * FROM vw_jornadas
         WHERE ID LIKE ?';
         $params = array($this->id);
         return Database::getRow($sql, $params);
@@ -63,12 +67,14 @@ class JornadasHandler
     //Función para actualizar una cuerpo técnico.
     public function updateRow()
     {
-        $sql = 'CALL sp_actualizar_detalle_cuerpo_tecnico(?,?,?,?);';
+        $sql = 'CALL actualizar_jornada(?,?,?,?,?,?);';
         $params = array(
             $this->id,
-            $this->cuerpo,
-            $this->tecnico,
-            $this->rol
+            $this->nombre,
+            $this->numero,
+            $this->plantilla,
+            $this->fecha_inicio,
+            $this->fecha_final
         );
         return Database::executeRow($sql, $params);
     }
@@ -76,7 +82,7 @@ class JornadasHandler
     //Función para eliminar una cuerpo técnico.
     public function deleteRow()
     {
-        $sql = 'CALL sp_eliminar_detalle_cuerpo_tecnico(?);';
+        $sql = 'CALL sp_eliminar_jornada(?);';
         $params = array($this->id);
         return Database::executeRow($sql, $params);
     }

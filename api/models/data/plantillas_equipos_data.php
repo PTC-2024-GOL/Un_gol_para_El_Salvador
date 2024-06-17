@@ -30,6 +30,29 @@ class PlantillasEquiposData extends PlantillasEquiposHandler
     }
 
     // Validación y asignación del IDl cuerpo técnico.
+    public function setIdPlantilla($value)
+    {
+        if (Validator::validateNaturalNumber($value)) {
+            $this->id_plantilla = $value;
+            return true;
+        } else {
+            $this->data_error = 'El identificador del diferenciador de plantilla es incorrecto';
+            return false;
+        }
+    }
+    // Validación y asignación del IDl cuerpo técnico.
+    public function setIdEquipo($value)
+    {
+        if (Validator::validateNaturalNumber($value)) {
+            $this->id_equipo = $value;
+            return true;
+        } else {
+            $this->data_error = 'El identificador del diferenciador de equipo es incorrecto';
+            return false;
+        }
+    }
+
+    // Validación y asignación del IDl cuerpo técnico.
     public function setPlantilla($value)
     {
         if (Validator::validateNaturalNumber($value)) {
