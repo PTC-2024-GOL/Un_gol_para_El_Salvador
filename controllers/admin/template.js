@@ -133,7 +133,7 @@ const openUpdate = async (id, idPlantilla, idEquipo, idTemporada) => {
             const form = new FormData();
             form.append('idPlantillaEquipo', idPlantilla);
             form.append('idEquipo', idEquipo);
-            FORM.append('temporada', idTemporada);
+            form.append('temporada', idTemporada);
             console.log('Id Plantilla ' +idPlantilla);
             console.log('Id Equipo '+idEquipo);
             fillTable(form);
