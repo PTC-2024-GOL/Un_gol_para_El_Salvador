@@ -5,7 +5,7 @@ let SAVE_FORM,
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
-const TIPO_JUGADA_API = '';
+const TIPO_JUGADA_API = 'services/admin/tipos_jugadas.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -18,6 +18,7 @@ async function loadComponent(path) {
 *   Retorno: ninguno.
 */
 const openCreate = () => {
+    ID_TIPO_JUGADA.value = ''
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
     MODAL_TITLE.textContent = 'Crear tipo de jugada';
@@ -45,8 +46,8 @@ const openUpdate = async (id) => {
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
-            ID_TIPO_JUGADA.value = ROW.ID;
-            NOMBRE_TIPO_JUEGO.value = ROW.TIPO_JUEGO;
+            ID_TIPO_JUGADA.value = ROW.id_tipo_jugada;
+            NOMBRE_TIPO_JUEGO.value = ROW.nombre_tipo_juego;
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -71,7 +72,6 @@ const openDelete = async (id) => {
             // Se define una constante tipo objeto con los datos del registro seleccionado.
             const FORM = new FormData();
             FORM.append('idTipoJugada', id);
-            console.log(id);
             // Petición para eliminar el registro seleccionado.
             const DATA = await fetchData(TIPO_JUGADA_API, 'deleteRow', FORM);
             console.log(DATA.status);
@@ -92,74 +92,86 @@ const openDelete = async (id) => {
 
 }
 
+// Manejo para la paginacion
+const playersByPage = 10;
+let currentPage = 1;
+let typesPlays = [];
+
+function showTypesPlayers(page) {
+    const start = (page - 1) * playersByPage;
+    const end = start + playersByPage;
+    const playersPage = typesPlays.slice(start, end);
+
+    const fillTable = document.getElementById('tabla_tipoJugada');
+    fillTable.innerHTML = '';
+    playersPage.forEach(row => {
+        const tablaHtml = `
+                <tr>
+                    <td>${row.nombre_tipo_juego}</td>
+                    <td>
+                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id_tipo_jugada})">
+                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                    </button>
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_tipo_jugada})">
+                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                    </button>
+                    </td>
+                </tr>
+                `;
+        fillTable.innerHTML += tablaHtml;
+    });
+
+    updatePaginate();
+}
+
 
 async function fillTable(form = null) {
-    const lista_datos = [
-        {
-            tipo_jugada: 'Juego directo',
-            id: 1,
-        },
-        {
-            tipo_jugada: 'Juego combinativo',
-            id: 2,
-        },
-        {
-            tipo_jugada: 'Contrataque',
-            id: 3,
-        },
-    ];
     const cargarTabla = document.getElementById('tabla_tipoJugada');
-
     try {
         cargarTabla.innerHTML = '';
         // Se verifica la acción a realizar.
         (form) ? action = 'searchRows' : action = 'readAll';
         console.log(form);
         // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(LESIONES_API, action, form);
+        const DATA = await fetchData(TIPO_JUGADA_API, action, form);
         console.log(DATA);
 
         if (DATA.status) {
-            // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-                const tablaHtml = `
-                <tr>
-                    <td>${row.NOMBRE_TIPO_JUEGO}</td>
-                    <td>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.ID_TIPO_JUGADA})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                    </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.ID_TIPO_JUGADA})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
-                    </td>
-                </tr>
-                `;
-                cargarTabla.innerHTML += tablaHtml;
-            });
+            typesPlays = DATA.dataset;
+            showTypesPlayers(currentPage);
         } else {
-            sweetAlert(4, DATA.error, true);
+            await sweetAlert(3, DATA.error, true);
         }
     } catch (error) {
         console.error('Error al obtener datos de la API:', error);
-        // Mostrar materiales de respaldo
-        lista_datos.forEach(row => {
-            const tablaHtml = `
-            <tr>
-                <td>${row.tipo_jugada}</td>
-                <td>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                    </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
-                </td>
-            </tr>
-            `;
-            cargarTabla.innerHTML += tablaHtml;
-        });
     }
+}
+
+
+// Función para actualizar los contlesiones de paginación
+function updatePaginate() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
+
+    const totalPaginas = Math.ceil(typesPlays.length / playersByPage);
+
+    if (currentPage> 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="nextPage(${currentPage - 1})">Anterior</a></li>`;
+    }
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link text-light" href="#" onclick="nextPage(${i})">${i}</a></li>`;
+    }
+
+    if (currentPage < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="nextPage(${currentPage + 1})">Siguiente</a></li>`;
+    }
+}
+
+// Función para cambiar de página
+function nextPage(newPage) {
+    currentPage = newPage;
+    showTypesPlayers(currentPage);
 }
 
 // window.onload
@@ -189,7 +201,7 @@ window.onload = async function () {
         // Se evita recargar la página web después de enviar el formulario.
         event.preventDefault();
         // Se verifica la acción a realizar.
-        (ID_ADMINISTRADOR.value) ? action = 'updateRow' : action = 'createRow';
+        (ID_TIPO_JUGADA.value) ? action = 'updateRow' : action = 'createRow';
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SAVE_FORM);
         // Petición para guardar los datos del formulario.
@@ -199,11 +211,11 @@ window.onload = async function () {
             // Se cierra la caja de diálogo.
             SAVE_MODAL.hide();
             // Se muestra un mensaje de éxito.
-            sweetAlert(1, DATA.message, true);
+            await sweetAlert(1, DATA.message, true);
             // Se carga nuevamente la tabla para visualizar los cambios.
-            fillTable();
+            await fillTable();
         } else {
-            sweetAlert(2, DATA.error, false);
+            await sweetAlert(2, DATA.error, false);
             console.error(DATA.exception);
         }
     });
