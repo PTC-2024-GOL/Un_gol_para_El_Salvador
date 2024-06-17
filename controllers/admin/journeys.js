@@ -1,6 +1,7 @@
 let SAVE_MODAL;
 let SAVE_FORM,
     ID_JORNADA,
+    NOMBRE_JORNADA,
     NUMERO_JORNADA,
     PLANTILLA,
     FECHA_INICIO,
@@ -8,8 +9,8 @@ let SAVE_FORM,
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
-const API = '';
-const TEMPORADA_API = '';
+const API = 'services/admin/jornadas.php';
+const PLANTILLA_API = 'services/admin/plantillas.php';
 /* 
 Para cargar una lista con la api en php, se hara referencia al metodo ReadAll, del archivo de la api con el cual se quiera
 cargar la lista, en este caso en especifico, API se ocuparia para referenciar el link de la api que contenga todos los metodos
@@ -79,9 +80,7 @@ const openCreate = () => {
         // Se prepara el formulario.
         SAVE_FORM.reset();
         // Se carga la lista utilizando el metodo ReadAll de la api de temporada.
-        fillSelect(TEMPORADA_API, 'readAll', 'plantilla');
-        fillSelected(lista_select, 'readAll', 'plantilla');
-        
+        fillSelect(PLANTILLA_API, 'readAll', 'plantilla');
 }
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
@@ -106,9 +105,10 @@ const openUpdate = async (id) => {
             const ROW = DATA.dataset;
             ID_JORNADA.value = ROW.ID;
             NUMERO_JORNADA.value = ROW.NUMERO;
-            fillSelect(TEMPORADA_API, 'readAll', 'temporada', ROW.TEMPORADA);
-            FECHA_INICIO.value = ROW.INICIO;
-            FECHA_FINAL.value = ROW.FINAL;
+            NOMBRE_JORNADA.value = ROW.NOMBRE;
+            fillSelect(PLANTILLA_API, 'readAll', 'plantilla', ROW.ID_PLANTILLA);
+            FECHA_INICIO.value = ROW.FECHA_INICIO;
+            FECHA_FINAL.value = ROW.FECHA_FIN;
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -202,21 +202,21 @@ async function fillTable(form = null) {
             // Mostrar elementos obtenidos de la API
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
-                <tr class="text-end">
+                <tr>
                     <td>${row.NUMERO}</td>
-                    <td>${row.TEMPORADA}</td>
-                    <td>${row.INICIO}</td>
-                    <td>${row.FINAL}</td>
+                    <td>${row.NOMBRE}</td>
+                    <td>${row.FECHA_INICIO}</td>
+                    <td>${row.FECHA_FIN}</td>
                     <td>
-                        <a href="trainings.html?id=${row.ID}" class="btn btn-primary">
-                        <img src="../../recursos/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
-                        </a>
-                        <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
-                        <img src="../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" onclick="openDelete(${row.ID})">
-                            <i class="bi bi-trash-fill"></i>
-                        </button>
+                    <a href="trainings.html?id=${row.ID}" class="btn transparente">
+                    <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18" height="18">
+                    </a>
+                    <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
+                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                    </button>
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.ID})">
+                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                    </button>
                     </td>
                 </tr>
                 `;
@@ -274,6 +274,7 @@ window.onload = async function () {
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
         ID_JORNADA = document.getElementById('idJornada'),
+        NOMBRE_JORNADA = document.getElementById('nombreJornada'),
         NUMERO_JORNADA = document.getElementById('numeroJornada'),
         PLANTILLA = document.getElementById('plantilla'),
         FECHA_INICIO = document.getElementById('fechaInicial'),
@@ -296,9 +297,12 @@ window.onload = async function () {
             sweetAlert(1, DATA.message, true);
             // Se carga nuevamente la tabla para visualizar los cambios.
             fillTable();
-        } else {
+        }
+        else if(!DATA.exception){
             sweetAlert(2, DATA.error, false);
-            console.error(DATA.exception);
+        }
+        else {
+            sweetAlert(2, DATA.exception, false);
         }
     });
     // Constante para establecer el formulario de buscar.
