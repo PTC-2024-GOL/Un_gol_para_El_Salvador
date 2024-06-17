@@ -134,6 +134,7 @@ if (isset($_GET['action'])) {
                     $result['username'] = $_SESSION['aliasAdministrador'];
                     $result['foto'] = $_SESSION['fotoAdministrador'];
                     $result['nombre'] = $_SESSION['nombreAdministrador'];
+                    $result['apellido'] = $_SESSION['apellidoAdministrador'];
                 } else {
                     $result['error'] = 'Alias de administrador indefinido';
                 }

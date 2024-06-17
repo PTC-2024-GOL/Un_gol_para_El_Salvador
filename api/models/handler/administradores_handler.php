@@ -60,7 +60,7 @@ class AdministradoresHandler
     {
         //Se escribe la consulta
         $sql = 'SELECT id_administrador AS ID, alias_administrador AS ALIAS, CONCAT(nombre_administrador, " ", apellido_administrador) AS NOMBRECOMPLETO,
-        clave_administrador AS CLAVE, foto_administrador AS FOTO, estado_administrador AS ESTADO, 
+        clave_administrador AS CLAVE, foto_administrador AS FOTO, estado_administrador AS ESTADO, apellido_administrador AS APELLIDO,
         intentos_administrador AS INTENTOS, DATEDIFF(CURRENT_DATE, fecha_clave) as DIAS, 
         tiempo_intento AS TIEMPO, fecha_bloqueo AS BLOQUEO
         FROM administradores WHERE (BINARY alias_administrador = ? OR BINARY correo_administrador = ?)';
@@ -110,6 +110,7 @@ class AdministradoresHandler
                 $_SESSION['aliasAdministrador'] = $data['ALIAS'];
                 $_SESSION['fotoAdministrador'] = $data['FOTO'];
                 $_SESSION['nombreAdministrador'] = $data['NOMBRECOMPLETO'];
+                $_SESSION['apellidoAdministrador'] = $data['APELLIDO'];
                 $this->dias = $data['DIAS'];
                 $this->estado = $data['ESTADO'];
                 return true;
