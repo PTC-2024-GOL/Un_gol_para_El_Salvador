@@ -62,9 +62,7 @@ if (isset($_GET['action'])) {
                 break;
                 // Leer una plantilla
             case 'readOneTemplate':
-                if (!$plantilla->setIdPlantilla($_POST['idPlantillaEquipo']) or
-                    !$plantilla->setIdEquipo($_POST['idEquipo'])or
-                    !$plantilla->setTemporada($_POST['temporada'])
+                if (!$plantilla->setIdPlantilla($_POST['idPlantillaEquipo'])
                     ) {
                     $result['error'] = $plantilla->getDataError();
                 } elseif ($result['dataset'] = $plantilla->readOneTemplate()) {

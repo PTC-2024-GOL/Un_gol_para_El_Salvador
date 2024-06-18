@@ -44,6 +44,8 @@
                 </tr>
                 <tr>
                     <th>Nombre de la plantilla</th>
+					<th>Ver plantilla a detalle</th>
+					<th>Acciones</th>
                 </tr>
             </thead>
             <!-- Cuerpo de la tabla para mostrar un registro por fila -->
@@ -86,4 +88,27 @@
             </form>
         </div>
     </div>
+</div>
+
+
+<!-- Componente Modal para guardar un registro -->
+<div class="modal fade" id="detailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+	aria-labelledby="modalTitle" aria-hidden="true">
+	<div class="modal-dialog modal-xl modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header bg-blue-principal-color text-light">
+				<img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+				<h1 class="modal-title fs-5" id="modalTitleDetail"></h1>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<!-- Formulario para crear o actualizar un registro -->
+			<form class="form container-fluid" id="detailForm">
+				<input type="number" class="d-none" id="idPlantilla" name="idPlantilla">
+                <div id="stepper-container">
+                    <div id="stepper"></div>
+                </div>
+			</form>
+		</div>
+	</div>
 </div>

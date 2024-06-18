@@ -66,14 +66,21 @@ class PlantillasEquiposHandler
         j.dorsal_jugador AS DORSAL, 
         j.fecha_nacimiento_jugador AS NACIMIENTO, 
         p.posicion AS POSICION_PRINCIPAL,
+        pe.id_temporada AS ID_TEMPORADA,
+        t.nombre_temporada AS NOMBRE_TEMPORADA,
+        pe.id_equipo AS ID_EQUIPO,
+        e.nombre_equipo AS NOMBRE_EQUIPO,
+        e.logo_equipo AS LOGO,
         j.foto_jugador AS IMAGEN
         FROM 
         plantillas_equipos pe JOIN 
-        jugadores j ON pe.id_jugador = j.id_jugador JOIN 
-        posiciones p ON j.id_posicion_principal = p.id_posicion
+        jugadores j ON pe.id_jugador = j.id_jugador 
+        JOIN posiciones p ON j.id_posicion_principal = p.id_posicion
+        JOIN temporadas t ON pe.id_temporada = t.id_temporada
+        JOIN equipos e ON pe.id_equipo = e.id_equipo
         WHERE 
-        pe.id_plantilla = ? AND pe.id_equipo = ? AND pe.id_temporada = ?;';
-        $params = array($this->id_plantilla, $this->id_equipo, $this->temporada);
+        pe.id_plantilla = ?;';
+        $params = array($this->id_plantilla);
         return Database::getRows($sql, $params);
     }
     //Función para leer una cuerpo técnico.
