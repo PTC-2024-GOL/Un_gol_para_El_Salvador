@@ -44,6 +44,11 @@
             <tbody id="tabla_tipoGol"></tbody>
         </table>
     </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <!-- Aquí se insertarán los elementos de la paginación -->
+        </ul>
+    </nav>
 </div>
 
 <!-- Componente Modal para guardar un registro -->
@@ -61,14 +66,14 @@
             <form id="saveForm">
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input type="hidden" id="idTipoGol" name="idTipoGol">
+                    <input type="hidden" id="idGol" name="idGol">
                     <div class="col-sm-12 col-md-6 mb-3">
-                        <label for="tipoJugada" class="form-label fw-semibold">Selecciona el tipo de jugada</label>
-                        <select id="tipoJugada" type="text" name="tipoJugada" class="form-select" required></select>
+                        <label for="jugadaSelect" class="form-label fw-semibold">Selecciona el tipo de jugada</label>
+                        <select id="jugadaSelect" type="text" name="idJugada" class="form-select" required></select>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="tipoGol" class="form-label fw-semibold">Tipo de gol</label>
-                        <input id="tipoGol" type="text" name="tipoGol" class="form-control"
+                        <input id="tipoGol" type="text" name="nombreGol" class="form-control"
                             placeholder="Escribe el nombre de tipo del gol" required>
                     </div>
                 </div>

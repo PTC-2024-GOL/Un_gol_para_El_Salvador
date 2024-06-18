@@ -80,9 +80,9 @@ const openDelete = async (id) => {
                 // Se muestra un mensaje de éxito.
                 await sweetAlert(1, DATA.message, true);
                 // Se carga nuevamente la tabla para visualizar los cambios.
-                fillTable();
+                await fillTable();
             } else {
-                sweetAlert(2, DATA.error, false);
+                await sweetAlert(2, DATA.error, false);
             }
         }
     }
@@ -131,10 +131,8 @@ async function fillTable(form = null) {
         cargarTabla.innerHTML = '';
         // Se verifica la acción a realizar.
         (form) ? action = 'searchRows' : action = 'readAll';
-        console.log(form);
         // Petición para obtener los registros disponibles.
         const DATA = await fetchData(TIPO_JUGADA_API, action, form);
-        console.log(DATA);
 
         if (DATA.status) {
             typesPlays = DATA.dataset;
@@ -187,7 +185,7 @@ window.onload = async function () {
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Tipos de jugada';
-    fillTable();
+    await fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
@@ -221,16 +219,13 @@ window.onload = async function () {
     });
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');
-    // Verificar si SEARCH_FORM está seleccionado correctamente
-    console.log(SEARCH_FORM)
+
     // Método del evento para cuando se envía el formulario de buscar.
     SEARCH_FORM.addEventListener('submit', (event) => {
         // Se evita recargar la página web después de enviar el formulario.
         event.preventDefault();
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SEARCH_FORM);
-        console.log(SEARCH_FORM);
-        console.log(FORM);
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
         fillTable(FORM);
     });
