@@ -10,19 +10,117 @@ class JugadoresHandler
      *  Declaración de atributos para el manejo de datos.
      */
     protected $id = null;
-    protected $nombre = null;
+    protected $dorsalJ = null;
+    protected $nombreJ = null;
+    protected  $apellidoJ = null;
+    protected $estatusJ = null;
+    protected $nacimientoJ = null;
+    protected $generoJ = null;
+    protected $perfilJ = null;
+    protected $becado = null;
+    protected $posicionPrincipal = null;
+    protected $posicionSecundaria = null;
+    protected $aliasJ = null;
+    protected $claveJ = null;
+    protected $fotoJ = null;
+    protected $creacionJ = null;
+
+    // Constante para establecer la ruta de las imágenes.
+    const RUTA_IMAGEN = '../../images/jugadores/';
+
 
     /*
      *  Métodos para realizar las operaciones SCRUD (search, create, read, update, and delete).
      */
-    //Función para mostrar todos los jugadores (CAMBIAR CUANDO SE VAYA A HACER EL SCRUD, ESTO ES SOLO PARA CARGAR EL COMBOBOX)
+
+    //Función para buscar un jugador.
+    public function searchRows()
+    {
+        $value = '%' . Validator::getSearchValue() . '%';
+        $sql = 'SELECT * FROM jugadores
+        WHERE jugadores.nombre_jugador LIKE ? OR jugadores.apellido_jugador LIKE ?
+        ORDER BY fecha_creacion;';
+        $params = array($value, $value);
+        return Database::getRows($sql, $params);
+    }
+
+    //Función para insertar un jugador.
+    public function createRow()
+    {
+        $sql = 'INSERT INTO jugadores(dorsal_jugador, nombre_jugador, apellido_jugador, estatus_jugador, fecha_nacimiento_jugador, genero_jugador, perfil_jugador, becado, id_posicion_principal, id_posicion_secundaria, alias_jugador, clave_jugador, foto_jugador, fecha_creacion) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+        $params = array(
+            $this->dorsalJ,
+            $this->nombreJ,
+            $this->apellidoJ,
+            $this->estatusJ,
+            $this->nacimientoJ,
+            $this->generoJ,
+            $this->perfilJ,
+            $this->becado,
+            $this->posicionPrincipal,
+            $this->posicionSecundaria,
+            $this->aliasJ,
+            $this->claveJ,
+            $this->fotoJ,
+            $this->creacionJ
+        );
+        return Database::executeRow($sql, $params);
+    }
+
+
+    //Función para mostrar todos los jugadores
     public function readAll()
     {
-        $sql = 'SELECT id_jugador AS ID,  
-        CONCAT(nombre_jugador, " ", apellido_jugador) AS NOMBRE,
-        nombre_jugador AS NOMBRE_JUGADOR, apellido_jugador AS APELLIDO_JUGADOR,
-        dorsal_jugador AS DORSAL, fecha_nacimiento_jugador AS NACIMIENTO, p.posicion AS POSICION_PRINCIPAL,
-        foto_jugador AS IMAGEN FROM jugadores j INNER JOIN posiciones p ON j.id_posicion_principal = p.id_posicion;';
+        $sql = 'SELECT * FROM vista_jugadores ORDER BY fecha_creacion;';
         return Database::getRows($sql);
     }
+
+    //Función para mostrar uno de los jugadores
+    public function readOne()
+    {
+        $sql = 'SELECT * FROM vista_jugadores
+                WHERE id_jugador= ?';
+        $params = array($this->id);
+        return Database::getRow($sql, $params);
+    }
+
+    public function readFilename()
+    {
+        $sql = 'SELECT foto_jugador
+                FROM jugadores
+                WHERE id_jugador = ?';
+        $params = array($this->id);
+        return Database::getRow($sql, $params);
+    }
+
+
+    //Función para actualizar jugadores
+    public function updateRow()
+    {
+        $sql = 'CALL actualizar_jugador (?,?,?,?,?,?,?,?,?,?,?,?)';
+        $params = array(
+            $this->id,
+            $this->dorsalJ,
+            $this->nombreJ,
+            $this->apellidoJ,
+            $this->estatusJ,
+            $this->nacimientoJ,
+            $this->generoJ,
+            $this->perfilJ,
+            $this->becado,
+            $this->posicionPrincipal,
+            $this->posicionSecundaria,
+            $this->fotoJ,
+        );
+        return Database::executeRow($sql, $params);
+    }
+
+    //Función para eliminar una jugador.
+    public function deleteRow()
+    {
+        $sql = 'DELETE FROM jugadores WHERE id_jugador = ?';
+        $params = array($this->id);
+        return Database::executeRow($sql, $params);
+    }
+
 }
