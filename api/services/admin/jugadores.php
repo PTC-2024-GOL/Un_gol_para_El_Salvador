@@ -31,7 +31,7 @@ if (isset($_GET['action'])) {
                     !$jugador->setDorsal($_POST['dorsal']) or
                     !$jugador->setNombre($_POST['nombre']) or
                     !$jugador->setApellido($_POST['apellido']) or
-                    !$jugador->setEstatus($_POST['estatus']) or
+                    !$jugador->setEstatus($_POST['estado']) or
                     !$jugador->setNacimiento($_POST['nacimiento']) or
                     !$jugador->setGenero($_POST['genero']) or
                     !$jugador->setPerfil($_POST['perfil']) or
@@ -72,15 +72,27 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Jugador inexistente';
                 }
                 break;
+            // Ver uno
+            case 'readAllByGender':
+                if (!$jugador->setGenero($_POST['genero'])) {
+                    $result['error'] = 'Jugador incorrecto';
+                } elseif ($result['dataset'] = $jugador->readAllByGender()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
+                } else {
+                    $result['error'] = 'Jugador inexistente';
+                }
+                break;
             // Actualizar
             case 'updateRow':
                 $_POST = Validator::validateForm($_POST);
                 if (
                     !$jugador->setId($_POST['idJugador']) or
+                    !$jugador->setFilename() or
                     !$jugador->setNombre($_POST['nombre']) or
                     !$jugador->setApellido($_POST['apellido']) or
                     !$jugador->setDorsal($_POST['dorsal']) or
-                    !$jugador->setEstatus($_POST['estatus']) or
+                    !$jugador->setEstatus($_POST['estado']) or
                     !$jugador->setNacimiento($_POST['nacimiento']) or
                     !$jugador->setGenero($_POST['genero']) or
                     !$jugador->setPerfil($_POST['perfil']) or

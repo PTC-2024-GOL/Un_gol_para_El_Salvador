@@ -73,21 +73,25 @@ class JugadoresData extends JugadoresHandler
     public function setEstatus($value)
     {
         $this->estatusJ = $value;
+        return true;
     }
 
     public function setGenero($value)
     {
         $this->generoJ = $value;
+        return true;
     }
 
     public function setPerfil($value)
     {
         $this->perfilJ = $value;
+        return true;
     }
 
     public function setBecado($value)
     {
         $this->becado = $value;
+        return true;
     }
 
     // Validación para la fecha de nacimiento.
@@ -164,13 +168,6 @@ class JugadoresData extends JugadoresHandler
             return false;
         }
     }
-
-    // Validación y asignación del ID del rol.
-    public function setCreacion($value)
-    {
-        $this->creacionJ = $value;
-    }
-
 
     // Método para obtener el error de los datos.
     public function getDataError()

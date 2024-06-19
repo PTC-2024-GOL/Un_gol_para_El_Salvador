@@ -5,7 +5,7 @@
             <div class="col-sm-12 col-md-6">
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
-                        name="search" placeholder="Buscar" required>
+                        name="search" placeholder="Busca al jugador por su nombre o apellido" required>
                     <button type="submit"
                         class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
@@ -28,9 +28,13 @@
     </div>
     <hr>
 
-    <label for="inputPassword" class="form-label">Selecciona el género de los jugadores</label>
+    <label for="selectGenero" class="form-label">Selecciona el género de los jugadores</label>
     <div class="col-sm-6">
-        <select type="password" class="form-select rounded-3 shadow" id="inputPassword"></select>
+        <select type="password" class="form-select rounded-3 shadow" id="selectGenero" onchange="FilterByGender()">
+            <option>Filtrar por género</option>
+            <option>Masculino</option>
+            <option>Femenino</option>
+        </select>
     </div>
 
     <!-- Tabla para mostrar los registros existentes -->
@@ -55,6 +59,11 @@
             <tbody id="tabla_jugadores"></tbody>
         </table>
     </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <!-- Aquí se insertarán los elementos de la paginación -->
+        </ul>
+    </nav>
 </div>
 
 <!-- Componente Modal para guardar un registro -->
@@ -76,50 +85,59 @@
                     <div class="container text-center text-md-start text-lg-start">
                         <div class="row align-items-center justify-content-center gy-3 mt-3 mb-2">
                             <div class="col-sm-12 col-md-auto">
-                                <img class="circulo" id="img_admin" src="../../../resources/img/svg/avatar.svg"
-                                    width="120px">
+                                <img class="circulo" id="imagenJugador" src="../../../resources/img/png/default.jpg"
+                                     width="130px" height="130px">
                             </div>
                             <div class="col-sm-12 text-center">
                                 <!-- Botón para cargar imagen -->
-                                <input type="file" class="form-control" accept=".png .jpg" id="imagenAdministrador"
+                                <input type="file" class="form-control" id="imagen_jugador" name="imagen"
                                     hidden>
                                 <!-- Para que tenga el mismo funcionamiento del input file le ponemos el for y le agregamos el id del input file -->
                                 <label class="btn bg-blue-secondary-color rounded-4 text-light"
-                                    for="imagenAdministrador">Elige la
+                                    for="imagen_jugador">Cargar
                                     imagen</label>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="nombreJugador" class="form-label fw-semibold">Nombre</label>
-                        <input id="nombreJugador" type="text" name="nombreJugador" class="form-control"
+                        <input id="nombreJugador" type="text" name="nombre" class="form-control"
                             placeholder="Ingresa el nombre del jugador" required>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="apellidoJugador" class="form-label fw-semibold">Apellido</label>
-                        <input id="apellidoJugador" type="text" name="apellidoJugador" class="form-control"
+                        <input id="apellidoJugador" type="text" name="apellido" class="form-control"
                             placeholder="Ingresa el apellido del jugador" required>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="fechaNacimientoJugador" class="form-label fw-semibold">Fecha de nacimiento</label>
-                        <input id="fechaNacimientoJugador" type="date" name="fechaNacimientoJugador"
+                        <input id="fechaNacimientoJugador" type="date" name="nacimiento"
                             class="form-control" placeholder="Selecciona la fecha de nacimiento del jugador" required>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="generoJugador" class="form-label fw-semibold">Género del jugador</label>
-                        <select id="generoJugador" name="generoJugador" class="form-select" required></select>
+                        <select id="generoJugador" name="genero" class="form-select" required>
+                            <option>Selecciona una opción</option>
+                            <option>Masculino</option>
+                            <option>Femenino</option>
+                        </select>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="perfilJugador" class="form-label fw-semibold">Perfil del jugador</label>
-                        <select id="perfilJugador" name="perfilJugador" class="form-select" required></select>
+                        <select id="perfilJugador" name="perfil" class="form-select" required>
+                            <option>Selecciona una opción</option>
+                            <option>Zurdo</option>
+                            <option>Diestro</option>
+                            <option>Ambidiestro</option>
+                        </select>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="posicionPrincipal" class="form-label fw-semibold">Posición principal</label>
-                        <select id="posicionPrincipal" name="posicionPrincipal" class="form-select" required></select>
+                        <select id="posicionPrincipal" name="posicion1" class="form-select" required></select>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="posicionSecundaria" class="form-label fw-semibold">Posición secundaria</label>
-                        <select id="posicionSecundaria" name="posicionSecundaria" class="form-select" required></select>
+                        <select id="posicionSecundaria" name="posicion2" class="form-select" required></select>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="dorsal" class="form-label fw-semibold">Dorsal</label>
@@ -128,22 +146,30 @@
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="estadoJugador" class="form-label fw-semibold">Estado del jugador</label>
-                        <select id="estadoJugador" name="estadoJugador" class="form-select" required></select>
+                        <select id="estadoJugador" name="estado" class="form-select" required>
+                            <option>Activo</option>
+                            <option>Baja temporal</option>
+                            <option>Baja definitiva</option>
+                        </select>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="beca" class="form-label fw-semibold">Selecciona la beca del jugador</label>
-                        <select id="beca" name="beca" class="form-select" required></select>
+                        <select id="beca" name="beca" class="form-select" required>
+                            <option>Selecciona una opción</option>
+                            <option>Beca completa</option>
+                            <option>Media beca</option>
+                            <option>Ninguna</option>
+                        </select>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="claveJugador" class="form-label fw-semibold">Clave del jugador</label>
-                        <input id="claveJugador" type="password" name="claveJugador" min="0.01" step="0.01"
+                        <input id="claveJugador" type="password" name="clave"
                             class="form-control" placeholder="Ingresa la clave del jugador" required>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="repetirclaveJugador" class="form-label fw-semibold">Repetir clave del
                             jugador</label>
-                        <input id="repetirclaveJugador" type="password" name="repetirclaveJugador" min="0.01"
-                            step="0.01" class="form-control" placeholder="Repite la clave del jugador" required>
+                        <input id="repetirclaveJugador" type="password" name="repetirClave" class="form-control" placeholder="Repite la clave del jugador" required>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center">

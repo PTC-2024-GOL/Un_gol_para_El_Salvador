@@ -20,10 +20,8 @@ class JugadoresHandler
     protected $becado = null;
     protected $posicionPrincipal = null;
     protected $posicionSecundaria = null;
-    protected $aliasJ = null;
     protected $claveJ = null;
     protected $fotoJ = null;
-    protected $creacionJ = null;
 
     // Constante para establecer la ruta de las imágenes.
     const RUTA_IMAGEN = '../../images/jugadores/';
@@ -47,7 +45,7 @@ class JugadoresHandler
     //Función para insertar un jugador.
     public function createRow()
     {
-        $sql = 'INSERT INTO jugadores(dorsal_jugador, nombre_jugador, apellido_jugador, estatus_jugador, fecha_nacimiento_jugador, genero_jugador, perfil_jugador, becado, id_posicion_principal, id_posicion_secundaria, alias_jugador, clave_jugador, foto_jugador, fecha_creacion) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+        $sql = 'CALL insertar_jugador (?,?,?,?,?,?,?,?,?,?,?,?)';
         $params = array(
             $this->dorsalJ,
             $this->nombreJ,
@@ -59,10 +57,8 @@ class JugadoresHandler
             $this->becado,
             $this->posicionPrincipal,
             $this->posicionSecundaria,
-            $this->aliasJ,
             $this->claveJ,
-            $this->fotoJ,
-            $this->creacionJ
+            $this->fotoJ
         );
         return Database::executeRow($sql, $params);
     }
@@ -74,6 +70,15 @@ class JugadoresHandler
         $sql = 'SELECT * FROM vista_jugadores ORDER BY fecha_creacion;';
         return Database::getRows($sql);
     }
+
+    //Función para mostrar todos los jugadores filtrados por el genero
+    public function readAllByGender()
+    {
+        $sql = 'SELECT * FROM vista_jugadores WHERE genero_jugador = ? ORDER BY fecha_creacion;';
+        $params = array($this->generoJ);
+        return Database::getRows($sql, $params);
+    }
+
 
     //Función para mostrar uno de los jugadores
     public function readOne()
