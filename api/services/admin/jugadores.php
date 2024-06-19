@@ -13,6 +13,46 @@ if (isset($_GET['action'])) {
     if (isset($_SESSION['idAdministrador']) /*and Validator::validateSessionTime()*/) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
+            // Buscar
+            case 'searchRows':
+                if (!Validator::validateSearch($_POST['search'])) {
+                    $result['error'] = Validator::getSearchError();
+                } elseif ($result['dataset'] = $jugador->searchRows()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Existen ' . count($result['dataset']) . ' coincidencias';
+                } else {
+                    $result['error'] = 'No hay coincidencias';
+                }
+                break;
+            // Crear
+            case 'createRow':
+                $_POST = Validator::validateForm($_POST);
+                if (
+                    !$jugador->setDorsal($_POST['dorsal']) or
+                    !$jugador->setNombre($_POST['nombre']) or
+                    !$jugador->setApellido($_POST['apellido']) or
+                    !$jugador->setEstatus($_POST['estado']) or
+                    !$jugador->setNacimiento($_POST['nacimiento']) or
+                    !$jugador->setGenero($_POST['genero']) or
+                    !$jugador->setPerfil($_POST['perfil']) or
+                    !$jugador->setBecado($_POST['beca']) or
+                    !$jugador->setIdPosicion1($_POST['posicion1']) or
+                    !$jugador->setIdPosicion2($_POST['posicion2']) or
+                    !$jugador->setClave($_POST['clave']) or
+                    !$jugador->setImagen($_FILES['imagen'])
+                ) {
+                    $result['error'] = $jugador->getDataError();
+                } elseif ($_POST['clave'] != $_POST['repetirClave']) {
+                    $result['error'] = 'Contraseñas diferentes';
+                } elseif ($jugador->createRow()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Jugador creado correctamente';
+                    // Se asigna el estado del archivo después de insertar.
+                    $result['fileStatus'] = Validator::saveFile($_FILES['imagen'], $jugador::RUTA_IMAGEN);
+                } else {
+                    $result['error'] = 'Ocurrió un problema al ingresar al jugador.';
+                }
+                break;
                 // Leer todos
             case 'readAll':
                 if ($result['dataset'] = $jugador->readAll()) {
@@ -20,6 +60,71 @@ if (isset($_GET['action'])) {
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
                     $result['error'] = 'No existen jugadores registrados';
+                }
+                break;
+            // Ver uno
+            case 'readOne':
+                if (!$jugador->setId($_POST['idJugador'])) {
+                    $result['error'] = 'Jugador incorrecto';
+                } elseif ($result['dataset'] = $jugador->readOne()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Jugador inexistente';
+                }
+                break;
+            // Ver uno
+            case 'readAllByGender':
+                if (!$jugador->setGenero($_POST['genero'])) {
+                    $result['error'] = 'Jugador incorrecto';
+                } elseif ($result['dataset'] = $jugador->readAllByGender()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
+                } else {
+                    $result['error'] = 'Jugador inexistente';
+                }
+                break;
+            // Actualizar
+            case 'updateRow':
+                $_POST = Validator::validateForm($_POST);
+                if (
+                    !$jugador->setId($_POST['idJugador']) or
+                    !$jugador->setFilename() or
+                    !$jugador->setNombre($_POST['nombre']) or
+                    !$jugador->setApellido($_POST['apellido']) or
+                    !$jugador->setDorsal($_POST['dorsal']) or
+                    !$jugador->setEstatus($_POST['estado']) or
+                    !$jugador->setNacimiento($_POST['nacimiento']) or
+                    !$jugador->setGenero($_POST['genero']) or
+                    !$jugador->setPerfil($_POST['perfil']) or
+                    !$jugador->setBecado($_POST['beca']) or
+                    !$jugador->setIdPosicion1($_POST['posicion1']) or
+                    !$jugador->setIdPosicion2($_POST['posicion2']) or
+                    !$jugador->setImagen($_FILES['imagen'], $jugador->getFilename())
+                ) {
+                    $result['error'] = $jugador->getDataError();
+                } elseif ($jugador->updateRow()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Jugador modificado correctamente';
+                    // Se asigna el estado del archivo después de actualizar.
+                    $result['fileStatus'] = Validator::changeFile($_FILES['imagen'], $jugador::RUTA_IMAGEN, $jugador->getFilename());
+                } else {
+                    $result['error'] = 'Ocurrió un problema al modificar al jugador';
+                }
+                break;
+            // Eliminar
+            case 'deleteRow':
+                if (
+                    !$jugador->setId($_POST['idJugador']) or
+                    !$jugador->setFilename()
+                ) {
+                    $result['error'] = $jugador->getDataError();
+                } elseif ($jugador->deleteRow()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Jugador eliminado correctamente';
+                    // Se asigna el estado del archivo después de eliminar.
+                    $result['fileStatus'] = Validator::deleteFile($jugador::RUTA_IMAGEN, $jugador->getFilename());
+                } else {
+                    $result['error'] = 'Ocurrió un problema al eliminar al jugador';
                 }
                 break;
             default:

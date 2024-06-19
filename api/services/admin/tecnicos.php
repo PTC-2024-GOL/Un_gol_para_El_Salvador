@@ -76,6 +76,7 @@ if (isset($_GET['action'])) {
                 $_POST = Validator::validateForm($_POST);
                 if (
                     !$Tecnico->setId($_POST['idTecnico']) or
+                    !$Tecnico->setFilename() or
                     !$Tecnico->setNombre($_POST['nombreTecnico']) or
                     !$Tecnico->setApellido($_POST['apellidoTecnico']) or
                     !$Tecnico->setCorreo($_POST['correoTecnico']) or
