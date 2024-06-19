@@ -22,9 +22,12 @@ class SubContenidosHandler
     public function searchRows()
     {
         $value = '%' . Validator::getSearchValue() . '%';
-        $sql = 'SELECT * FROM sub_temas_contenidos
-        WHERE sub_tema_contenido LIKE ?
-        ORDER BY sub_tema_contenido;';
+        $sql = 'SELECT stc.*, tc.nombre_tema_contenido
+                FROM sub_temas_contenidos stc
+                INNER JOIN temas_contenidos tc 
+                ON stc.id_tema_contenido = tc.id_tema_contenido
+                WHERE sub_tema_contenido LIKE ?
+                ORDER BY sub_tema_contenido;';
         $params = array($value);
         return Database::getRows($sql, $params);
     }
@@ -44,7 +47,9 @@ class SubContenidosHandler
     //Función para leer todas las un Subcontenido o varios. 
     public function readAll()
     {
-        $sql = 'SELECT * FROM sub_temas_contenidos;';
+        $sql = 'SELECT stc.*, tc.nombre_tema_contenido
+                FROM sub_temas_contenidos stc
+                INNER JOIN temas_contenidos tc ON stc.id_tema_contenido = tc.id_tema_contenido;';
         return Database::getRows($sql);
     }
 
@@ -52,7 +57,10 @@ class SubContenidosHandler
     
     public function readOne()
     {
-        $sql = 'SELECT * FROM sub_temas_contenidos WHERE id_sub_tema_contenido = ?;';
+        $sql = 'SELECT stc.*, tc.nombre_tema_contenido
+                FROM sub_temas_contenidos stc
+                INNER JOIN temas_contenidos tc ON stc.id_tema_contenido = tc.id_tema_contenido 
+                WHERE id_sub_tema_contenido = ?;';
         $params = array($this->id);
         return Database::getRow($sql, $params);
     }

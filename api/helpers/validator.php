@@ -420,4 +420,19 @@ class Validator
         }   
 
     }
+
+    /*
+    *   Método para validar un número decimal positivo.
+    *   Parámetros: $value (dato a validar).
+    *   Retorno: booleano (true si el valor es correcto o false en caso contrario).
+    */
+    public static function validatePositiveDecimal($value)
+    {
+        // Se verifica que el valor sea un número decimal positivo.
+        if (filter_var($value, FILTER_VALIDATE_FLOAT) && $value > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
