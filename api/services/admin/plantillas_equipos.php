@@ -92,9 +92,7 @@ if (isset($_GET['action'])) {
                 // Eliminar
             case 'deleteRow':
                 if (
-                    !$plantilla->setId($_POST['idPlantilla']) or
-                    !$plantilla->setEquipo($_POST['idEquipo']) or
-                    !$plantilla->setTemporada($_POST['idTemporada'])
+                    !$plantilla->setId($_POST['idPlantilla'])
                 ) {
                     $result['error'] = $plantilla->getDataError();
                 } elseif ($plantilla->deleteRow()) {

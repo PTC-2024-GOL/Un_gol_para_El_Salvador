@@ -110,8 +110,8 @@ class PlantillasEquiposHandler
     //Función para eliminar una cuerpo técnico.
     public function deleteRow()
     {
-        $sql = 'CALL sp_eliminar_plantilla_equipo(?,?,?);';
-        $params = array($this->id, $this->equipo, $this->temporada);
+        $sql = 'CALL sp_eliminar_plantilla_equipo(?);';
+        $params = array($this->id);
         return Database::executeRow($sql, $params);
     }
 }
