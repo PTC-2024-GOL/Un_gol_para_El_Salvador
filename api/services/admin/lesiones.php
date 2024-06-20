@@ -63,8 +63,8 @@ if (isset($_GET['action'])) {
             case 'updateRow':
                 $_POST = Validator::validateForm($_POST);
                 if (
-                    !$lesion->setIdTipoLesion($_POST['idLesion']) or
-                    !$lesion->setIdSubTipologia($_POST['idSubTipologia']) or
+                    !$lesion->setIdTipoLesion($_POST['tipoLesion']) or
+                    !$lesion->setIdSubTipologia($_POST['subTipologia']) or
                     !$lesion->setIdLesion($_POST['idLesion'])
                 ) {
                     $result['error'] = $lesion->getDataError();
@@ -85,7 +85,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Lesión eliminada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar la lesión';
+                    $result['error'] = 'Ocurrió un problema al eliminarla. Por seguridad no la puedes eliminar porque esta siendo ocupada en el registro médico.';
                 }
                 break;
             default:

@@ -26,6 +26,14 @@
             </div>
         </div>
     </div>
+    <div class="row justify-content-center align-items-center">
+        <div class="col-auto">
+            <img src="../../../resources/img/svg/icons_forms/info.svg" width="30px" height="30px">
+        </div>
+        <div class="col">
+            <p>Acá podrás observar todas las lesiones que has ingresado, así como también el porcentaje y la cantidad total por lesiones que han sido ingresadas en el registro médico.</p>
+        </div>
+    </div>
     <hr>
     <!-- Tabla para mostrar los registros existentes -->
     <div class="table-responsive">
@@ -39,13 +47,18 @@
                     <th class="fw-semibold">Tipo de lesión</th>
                     <th class="fw-semibold">Tipología</th>
                     <th class="fw-semibold">N° de lesiones</th>
-                    <th class="fw-semibold">Promedio de lesiones</th>
+                    <th class="fw-semibold">% del total</th>
                 </tr>
             </thead>
             <!-- Cuerpo de la tabla para mostrar un registro por fila -->
             <tbody id="tabla_lesiones"></tbody>
         </table>
     </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <!-- Aquí se insertarán los elementos de la paginación -->
+        </ul>
+    </nav>
 </div>
 
 <!-- Componente Modal para guardar un registro -->
@@ -70,7 +83,7 @@
                     </div>
                     <div class="col-sm-12 col-md-12">
                         <label for="tipologia" class="form-label fw-semibold">Selecciona la sub-tipología</label>
-                        <select id="tipologia" type="text" name="tipologia" class="form-select" required></select>
+                        <select id="tipologia" type="text" name="subTipologia" class="form-select" required></select>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
