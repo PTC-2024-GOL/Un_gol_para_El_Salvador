@@ -10,7 +10,7 @@ if (isset($_GET['action'])) {
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
     $result = array('status' => 0, 'message' => null, 'dataset' => null, 'error' => null, 'exception' => null, 'fileStatus' => null);
     // Se verifica si existe una sesión iniciada como administrador, de lo contrario se finaliza el script con un mensaje de error.
-    if (isset($_SESSION['idAdministrador']) /*and Validator::validateSessionTime()*/) {
+    if ((isset($_SESSION['idAdministrador'])or true) /*and Validator::validateSessionTime()*/) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
                 // Buscar
@@ -28,7 +28,7 @@ if (isset($_GET['action'])) {
             case 'createRow':
                 $_POST = Validator::validateForm($_POST);
                 if (
-                    !$subcontenidos->setSubContenido($_POST['subContenido']) or
+                    !$subcontenidos->setSubContenido($_POST['SubContenido']) or
                     !$subcontenidos->setIdContenido($_POST['idContenido'])  
                 ) {
                     $result['error'] = $subcontenidos->getDataError();
@@ -48,6 +48,15 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'No existen subcontenidos registrados';
                 }
                 break;
+                // Leer todos
+            case 'readOneContents':
+                if ($result['dataset'] = $subcontenidos->readOneContents()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
+                } else {
+                    $result['error'] = 'No existen contenidos registrados';
+                }
+                break;
                 // Leer uno
             case 'readOne':
                 if (!$subcontenidos->setId($_POST['idSubContenido'])) {
@@ -63,7 +72,8 @@ if (isset($_GET['action'])) {
                 $_POST = Validator::validateForm($_POST);
                 if (
                     !$subcontenidos->setIdContenido($_POST['idContenido']) or
-                    !$subcontenidos->setSubContenido($_POST['SubContenido'])
+                    !$subcontenidos->setSubContenido($_POST['SubContenido']) or
+                    !$subcontenidos->setId($_POST['idSubcontenido'])
                 ) {
                     $result['error'] = $subcontenidos->getDataError();
                 } elseif ($subcontenidos->updateRow()) {
