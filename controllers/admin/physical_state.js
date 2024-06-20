@@ -4,11 +4,16 @@ let SAVE_FORM,
     PESO,
     ALTURA,
     IMC,
-    FECHA;
+    ID_JUGADOR,
+    FECHA,
+    titleElement;
 let SEARCH_FORM;
+const PARAMS = new URLSearchParams(window.location.search);
+//Guarda en una variable el parametro obtenido
+const JUGADOR = PARAMS.get("id");
 
 // Constantes para completar las rutas de la API.
-const ESTADO_API = '';
+const ESTADO_API = 'services/admin/estado_fisico_jugador.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -26,6 +31,8 @@ const openCreate = () => {
     MODAL_TITLE.textContent = 'Agregar registro';
     // Se prepara el formulario.
     SAVE_FORM.reset();
+    ID_JUGADOR.value = JUGADOR;
+    ID_ESTADO.value = null;
 }
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
@@ -48,9 +55,10 @@ const openUpdate = async (id) => {
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
-            ID_ESTADO.value = ROW.IDESTADO;
-            PESO.value = ROW.PESOO;
-            ALTURA.value = ROW.ALTURAA;
+            ID_ESTADO.value = ROW.id_estado_fisico_jugador;
+            ID_JUGADOR.value = ROW.id_jugador;
+            PESO.value = ROW.peso_jugador;
+            ALTURA.value = ROW.altura_jugador;
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -134,32 +142,44 @@ async function fillTable(form = null) {
         cargarTabla.innerHTML = '';
         // Se verifica la acción a realizar.
         (form) ? action = 'searchRows' : action = 'readAll';
-        console.log(form);
+        console.log('form antes del parametro' + form + ' y el action es ' + action);
+        console.log('El parametro de URL contiene esto ' + JUGADOR);
+        const FORM = new FormData();
+        if (action === 'readAll') { 
+            FORM.append('idJugador', JUGADOR);
+            form = FORM;
+            console.log('entré al parametro de readAll ');
+        }
+        console.log('form despues del parametro' + FORM);
         // Petición para obtener los registros disponibles.
         const DATA = await fetchData(ESTADO_API, action, form);
-        console.log(DATA);
-
+        console.log('Esto contiene la consulta '+ DATA);
+        let nombreJugador;
         if (DATA.status) {
             // Mostrar elementos obtenidos de la API
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
                 <tr>
-                    <td>${row.FECHA}</td>
-                    <td>${row.ALTURA}</td>
-                    <td>${row.PESO}</td>
-                    <td>${row.IMC}</td>
+                    <td>${row.fecha_creacion_format}</td>
+                    <td>${row.altura_jugador}</td>
+                    <td>${row.peso_jugador}</td>
+                    <td>${row.indice_masa_corporal}</td>
                     <td>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.ID_LESION})">
+                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id_estado_fisico_jugador})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.ID_LESION})">
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_estado_fisico_jugador})">
                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
                     </td>
                 </tr>
-                `;
+                `
+                nombreJugador = row.nombre_jugador;
+                titleElement.textContent = 'Estado fisico del jugador ' + nombreJugador;
                 cargarTabla.innerHTML += tablaHtml;
             });
+
+            
         } else {
             sweetAlert(4, DATA.error, true);
         }
@@ -204,9 +224,9 @@ window.onload = async function () {
     loadTemplate();
     // Agrega el HTML del encabezado
     appContainer.innerHTML = lesionHtml;
+    titleElement = document.getElementById('title');
+    titleElement.textContent = 'Estado fisico del jugador';
     //Agrega el encabezado de la pantalla
-    const titleElement = document.getElementById('title');
-    titleElement.textContent = 'Estado físico de Eduardo Cubias';
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
@@ -214,21 +234,25 @@ window.onload = async function () {
 
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
-        ID_ESTADO = document.getElementById('idEtsado'),
+        ID_ESTADO = document.getElementById('idEstado'),
         PESO = document.getElementById('peso'),
+        ID_JUGADOR = document.getElementById('idJugador'),
         ALTURA = document.getElementById('altura'),
         // Método del evento para cuando se envía el formulario de guardar.
         SAVE_FORM.addEventListener('submit', async (event) => {
             // Se evita recargar la página web después de enviar el formulario.
             event.preventDefault();
             // Se verifica la acción a realizar.
-            (ID_ADMINISTRADOR.value) ? action = 'updateRow' : action = 'createRow';
+            (ID_ESTADO.value) ? action = 'updateRow' : action = 'createRow';
+            console.log('El valor de la acción es ' + action);
+            console.log('Esto contiene el estado' + ID_ESTADO.value);
             // Constante tipo objeto con los datos del formulario.
             const FORM = new FormData(SAVE_FORM);
             // Petición para guardar los datos del formulario.
             const DATA = await fetchData(ESTADO_API, action, FORM);
             // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
             if (DATA.status) {
+                console.log('Entré al if de que se agrego el coso '+ DATA);
                 // Se cierra la caja de diálogo.
                 SAVE_MODAL.hide();
                 // Se muestra un mensaje de éxito.
@@ -236,6 +260,7 @@ window.onload = async function () {
                 // Se carga nuevamente la tabla para visualizar los cambios.
                 fillTable();
             } else {
+                console.log('Esto contiene el parametro ID_JUGADOR '+ ID_JUGADOR.value);
                 sweetAlert(2, DATA.error, false);
                 console.error(DATA.exception);
             }

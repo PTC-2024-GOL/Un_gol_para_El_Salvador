@@ -42,11 +42,12 @@ if (isset($_GET['action'])) {
                 break;
                 // Leer todos
             case 'readAll':
-                if ($result['dataset'] = $estadofisico->readAll()) {
+                if (!$estadofisico->setIdJugador($_POST['idJugador'])) {
+                    $result['error'] = $estadofisico->getDataError();
+                } elseif ($result['dataset'] = $estadofisico->readAll()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
-                    $result['error'] = 'No existen registros';
+                    $result['error'] = 'Este jugador no tiene registros de estado fisico';
                 }
                 break;
                 // Leer uno
