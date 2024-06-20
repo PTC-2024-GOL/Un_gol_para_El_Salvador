@@ -30,7 +30,7 @@ if (isset($_GET['action'])) {
                 if (
                     !$partido->setIdEquipo($_POST['idEquipo']) or
                     !$partido->setIdJornada($_POST['idJornada']) or
-                    !$partido->setlogoRival($_POST['logoRival']) or
+                    !$partido->setlogoRival($_FILES['logoRival']) or
                     !$partido->setRivalEquipo($_POST['nombrerival']) or
                     !$partido->setCancha($_POST['cancha']) or
                     !$partido->setResultadoPartido($_POST['resultado']) or
@@ -66,12 +66,20 @@ if (isset($_GET['action'])) {
                 break;
                 // Leer jornadas
             case 'readJornadas':
-                if (!$partido->setIdJornada($_POST['idJornada'])) {
-                    $result['error'] = $partido->getDataError();
-                } elseif ($result['dataset'] = $partido->readOneJornada()) {
+                if ($result['dataset'] = $partido->readOneJornada()) {
                     $result['status'] = 1;
+                    $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
-                    $result['error'] = 'Jornadas inexistentes';
+                    $result['error'] = 'No existen registros';
+                }
+                break;
+                // Leer equipos
+            case 'readEquipos':
+                if ($result['dataset'] = $partido->readOneEquipos()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
+                } else {
+                    $result['error'] = 'No existen registros';
                 }
                 break;
                 // Actualizar
@@ -80,7 +88,7 @@ if (isset($_GET['action'])) {
                 if (
                     !$partido->setIdEquipo($_POST['idEquipo']) or
                     !$partido->setIdJornada($_POST['idJornada']) or
-                    !$partido->setlogoRival($_POST['logoRival']) or
+                    !$partido->setlogoRival($_FILES['logoRival']) or
                     !$partido->setRivalEquipo($_POST['nombrerival']) or
                     !$partido->setCancha($_POST['cancha']) or
                     !$partido->setResultadoPartido($_POST['resultado']) or

@@ -69,13 +69,20 @@ class PartidosHandler
         return Database::getRow($sql, $params);
     }
 
-    //Función para leer un partido o varios. 
+    //Función para leer una jornada o varios. 
     
     public function readOneJornada()
     {
-        $sql = "SELECT id_jornada,  nombre_jornada FROM jornadas WHERE id_jornada = ?;";
-        $params = array($this->idJornada);
-        return Database::getRow($sql, $params);
+        $sql = "SELECT id_jornada,  nombre_jornada FROM jornadas;";
+        return Database::getRows($sql);
+    }
+
+    //Función para leer una equipo o varios. 
+    
+    public function readOneEquipos()
+    {
+        $sql = "SELECT id_equipo,  nombre_equipo FROM equipos;";
+        return Database::getRows($sql);
     }
 
     //Función para actualizar un partidio o varios. 

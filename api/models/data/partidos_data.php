@@ -91,7 +91,7 @@ class PartidosData extends PartidosHandler
     }
 
     // Validación y asignación de la altura
-    public function setResultadoPartido($value, $min = 3, $max = 7)
+    public function setResultadoPartido($value, $min = 3, $max = 9)
     {
         if (Validator::validateLength($value, $min, $max)) {
             $this->resultadoPartido = $value;
