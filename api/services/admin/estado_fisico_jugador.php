@@ -1,23 +1,23 @@
 <?php
 // Se incluye la clase del modelo.
-require_once('../../models/data/sub_contenidos_data.php');
+require_once('../../models/data/estado_fisico_jugador_data.php');
 // Se comprueba si existe una acción a realizar, de lo contrario se finaliza el script con un mensaje de error.
 if (isset($_GET['action'])) {
     // Se crea una sesión o se reanuda la actual para poder utilizar variables de sesión en el script.
     session_start();
     // Se instancia la clase correspondiente.
-    $subcontenidos = new SubContenidosData;
+    $estadofisico = new EstadoFisicoJugadorData();
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
     $result = array('status' => 0, 'message' => null, 'dataset' => null, 'error' => null, 'exception' => null, 'fileStatus' => null);
     // Se verifica si existe una sesión iniciada como administrador, de lo contrario se finaliza el script con un mensaje de error.
-    if ((isset($_SESSION['idAdministrador'])or true) /*and Validator::validateSessionTime()*/) {
+    if ((isset($_SESSION['idAdministrador']) or true) /*and Validator::validateSessionTime()*/) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
                 // Buscar
             case 'searchRows':
                 if (!Validator::validateSearch($_POST['search'])) {
                     $result['error'] = Validator::getSearchError();
-                } elseif ($result['dataset'] = $subcontenidos->searchRows()) {
+                } elseif ($result['dataset'] = $estadofisico->searchRows()) {
                     $result['status'] = 1;
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' coincidencias';
                 } else {
@@ -28,72 +28,66 @@ if (isset($_GET['action'])) {
             case 'createRow':
                 $_POST = Validator::validateForm($_POST);
                 if (
-                    !$subcontenidos->setSubContenido($_POST['SubContenido']) or
-                    !$subcontenidos->setIdContenido($_POST['idContenido'])  
+                    !$estadofisico->setIdJugador($_POST['idJugador']) or
+                    !$estadofisico->setPeso($_POST['peso']) or
+                    !$estadofisico->setAltura($_POST['altura'])  
                 ) {
-                    $result['error'] = $subcontenidos->getDataError();
-                } elseif ($subcontenidos->createRow()) {
+                    $result['error'] = $estadofisico->getDataError();
+                } elseif ($estadofisico->createRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Subcontenido creado correctamente';
+                    $result['message'] = 'registro del estado fisico creado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al crear el subcontenido';
+                    $result['error'] = 'Ocurrió un problema al crear el estado fisico';
                 }
                 break;
                 // Leer todos
             case 'readAll':
-                if ($result['dataset'] = $subcontenidos->readAll()) {
+                if (!$estadofisico->setIdJugador($_POST['idJugador'])) {
+                    $result['error'] = $estadofisico->getDataError();
+                } elseif ($result['dataset'] = $estadofisico->readAll()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
-                    $result['error'] = 'No existen subcontenidos registrados';
-                }
-                break;
-                // Leer todos
-            case 'readOneContents':
-                if ($result['dataset'] = $subcontenidos->readOneContents()) {
-                    $result['status'] = 1;
-                    $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
-                } else {
-                    $result['error'] = 'No existen contenidos registrados';
+                    $result['error'] = 'Este jugador no tiene registros de estado fisico';
                 }
                 break;
                 // Leer uno
             case 'readOne':
-                if (!$subcontenidos->setId($_POST['idSubContenido'])) {
-                    $result['error'] = $subcontenidos->getDataError();
-                } elseif ($result['dataset'] = $subcontenidos->readOne()) {
+                if (!$estadofisico->setId($_POST['idEstado'])) {
+                    $result['error'] = $estadofisico->getDataError();
+                } elseif ($result['dataset'] = $estadofisico->readOne()) {
                     $result['status'] = 1;
                 } else {
-                    $result['error'] = 'Subcontenido inexistente';
+                    $result['error'] = 'Estado fisico inexistente';
                 }
                 break;
                 // Actualizar
             case 'updateRow':
                 $_POST = Validator::validateForm($_POST);
                 if (
-                    !$subcontenidos->setIdContenido($_POST['idContenido']) or
-                    !$subcontenidos->setSubContenido($_POST['SubContenido']) or
-                    !$subcontenidos->setId($_POST['idSubcontenido'])
+                    !$estadofisico->setIdJugador($_POST['idJugador']) or
+                    !$estadofisico->setPeso($_POST['peso']) or
+                    !$estadofisico->setAltura($_POST['altura']) or
+                    !$estadofisico->setId($_POST['idEstado'])
                 ) {
-                    $result['error'] = $subcontenidos->getDataError();
-                } elseif ($subcontenidos->updateRow()) {
+                    $result['error'] = $estadofisico->getDataError();
+                } elseif ($estadofisico->updateRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Contenido modificado correctamente';
+                    $result['message'] = 'Estado fisico modificado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al modificar el contenido';
+                    $result['error'] = 'Ocurrió un problema al modificar el estado fisico';
                 }
                 break;
                 // Eliminar
             case 'deleteRow':
                 if (
-                    !$subcontenidos->setId($_POST['idSubContenido'])
+                    !$estadofisico->setId($_POST['idEstado'])
                 ) {
-                    $result['error'] = $subcontenidos->getDataError();
-                } elseif ($subcontenidos->deleteRow()) {
+                    $result['error'] = $estadofisico->getDataError();
+                } elseif ($estadofisico->deleteRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Subcontenido eliminado correctamente';
+                    $result['message'] = 'Estado eliminado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar el Subcontenido';
+                    $result['error'] = 'Ocurrió un problema al eliminar el estadofisico';
                 }
                 break;
             default:

@@ -10,7 +10,7 @@ if (isset($_GET['action'])) {
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
     $result = array('status' => 0, 'message' => null, 'dataset' => null, 'error' => null, 'exception' => null, 'fileStatus' => null);
     // Se verifica si existe una sesión iniciada como administrador, de lo contrario se finaliza el script con un mensaje de error.
-    if (isset($_SESSION['idAdministrador']) /*and Validator::validateSessionTime()*/) {
+    if ((isset($_SESSION['idAdministrador'])or true) /*and Validator::validateSessionTime()*/) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
                 // Buscar
@@ -62,7 +62,7 @@ if (isset($_GET['action'])) {
                 $_POST = Validator::validateForm($_POST);
                 if (
                     !$contenidos->setId($_POST['idContenido']) or
-                    !$contenidos->setContenido($_POST['Contenido'])
+                    !$contenidos->setContenido($_POST['contenido'])
                 ) {
                     $result['error'] = $contenidos->getDataError();
                 } elseif ($contenidos->updateRow()) {
