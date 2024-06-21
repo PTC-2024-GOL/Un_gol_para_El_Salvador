@@ -41,6 +41,8 @@ if (isset($_GET['action'])) {
                 } elseif ($partido->createRow()) {
                     $result['status'] = 1;
                     $result['message'] = 'partiddo creado correctamente';
+                    // Se asigna el estado del archivo después de insertar.
+                    $result['fileStatus'] = Validator::saveFile($_FILES['logoRival'], $partido::RUTA_IMAGEN);
                 } else {
                     $result['error'] = 'Ocurrió un problema al crear el partido';
                 }
@@ -100,6 +102,7 @@ if (isset($_GET['action'])) {
                 } elseif ($partido->updateRow()) {
                     $result['status'] = 1;
                     $result['message'] = 'Partido modificado correctamente';
+                    $result['fileStatus'] = Validator::saveFile($_FILES['logoRival'], $partido::RUTA_IMAGEN);
                 } else {
                     $result['error'] = 'Ocurrió un problema al modificar el partido';
                 }

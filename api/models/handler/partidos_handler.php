@@ -19,6 +19,8 @@ class PartidosHandler
     protected $rivalPartido = null;
     protected $idPartido = null;
 
+    // Constante para establecer la ruta de las imágenes.
+    const RUTA_IMAGEN = '../../images/partidos/';
 
     /*
      *  Métodos para realizar las operaciones SCRUD (search, create, read, update, and delete).
