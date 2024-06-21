@@ -32,8 +32,8 @@ async function loadComponent(path) {
 */
 const openCreate = async () => {
     ID_JUGADOR.value = '';
-    await fillSelect(POSICIONES_API, 'readAll', 'posicionPrincipal' )
-    await fillSelect(POSICIONES_API, 'readAll', 'posicionSecundaria' )
+    await fillSelect(POSICIONES_API, 'readAll', 'posicionPrincipal' );
+    await fillSelect(POSICIONES_API, 'readAll', 'posicionSecundaria' );
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
     MODAL_TITLE.textContent = 'Agregar jugador';
@@ -226,7 +226,6 @@ function nextPage(newPage) {
 
 //Funcion que permite filtrar a los jugadores por su genero.
 const FilterByGender = async () => {
-    console.log(SELECT_GENER0.value);
 
     const FORM = new FormData();
     FORM.append('genero', SELECT_GENER0.value);
