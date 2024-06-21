@@ -1,6 +1,6 @@
 <?php
 // Se incluye la clase para trabajar con la base de datos.
-require_once('../../helpers/database.php');
+require_once ('../../helpers/database.php');
 /*
  *  Clase para manejar el comportamiento de los datos de la tabla Detalle Contenido.
  */
@@ -10,7 +10,7 @@ class DetalleContenidoHandler
      *  Declaración de atributos para el manejo de datos.
      */
     protected $idDetalleContenido = null;
-    protected $idEntrenamiento = null;                  
+    protected $idEntrenamiento = null;
     protected $idJugador = null;
     protected $idTarea = null;
     protected $cantidadSubContenido = null;
@@ -39,12 +39,29 @@ class DetalleContenidoHandler
         $params = array($value);
         return Database::getRows($sql, $params);
     }
+    // Función para buscar un detalle contenido. Esta función es para "Detalle Contentido"   
+    public function searchRows()
+    {
+        $value = '%' . Validator::getSearchValue() . '%';
+        $sql = "SELECT 
+                id_equipo,
+                id_entrenamiento,
+                id_detalle_contenido,
+                nombre_subtema,
+                nombre_jugador,
+                nombre_tarea
+                FROM vista_detalle_entrenamiento
+                WHERE nombre_jugador LIKE ?
+                ORDER BY nombre_jugador;";
+        $params = array($value);
+        return Database::getRows($sql, $params);
+    }
 
     //Función para insertar un detalle contenido. Esta función es para "Detalle Contentido"
-    
+
     public function createRow()
-    {   
-        $sql = 'CALL insertarDetalleContenido (?, ?, ?, ?, ?, ?);';    
+    {
+        $sql = 'CALL insertarDetalleContenido (?, ?, ?, ?, ?, ?);';
         $params = array(
             $this->idSubContenido,
             $this->cantidadSubContenido,
@@ -66,6 +83,26 @@ class DetalleContenidoHandler
                 FROM vista_equipos_categorias;";
         return Database::getRows($sql);
     }
+    //Función para rellenar la opcion del combobox con horarios de subcontenidos, 
+    //Función para leer todos los subcontenidos disponibles. Esta función es para "Detalle Contenido" 
+    public function readAllSubContenidos()
+    {
+        $sql = "SELECT 
+                    sub_tema_contenido,
+                    id_sub_tema_contenido
+                    FROM sub_temas_contenidos;";
+        return Database::getRows($sql);
+    }
+    //Función para rellenar la opcion del combobox con horarios de tareas, 
+    //Función para leer todos los tareasdisponibles. Esta función es para "Detalle Contenido" 
+    public function readAllTareas()
+    {
+        $sql = "SELECT 
+                id_tarea,
+                nombre_tarea
+                FROM tareas;";
+        return Database::getRows($sql);
+    }
 
     //Función para rellenar la opcion del combobox con horarios de un equipo, 
     //visualmente se usarán id_entrenamiento como value y horario como text.  Esta función es para "elegir horario"
@@ -77,12 +114,26 @@ class DetalleContenidoHandler
                 horario
                 FROM vista_horarios_equipos WHERE id_equipo = ?;";
         $params = array($this->idEquipo);
+        return Database::getRows($sql, $params);
+    }
+    // Función para leer un detalle contenido. (UPDATE) Esta función es para "Detalle Contenido"
+    public function readOneDetalleContenido()
+    {
+        $sql = "SELECT 
+                id_detalle_contenido,
+                id_jugador,
+                id_sub_tema_contenido,
+                minutos_contenido,
+                minutos_tarea,
+                id_tarea
+                FROM vista_detalle_entrenamiento_especifico WHERE id_detalle_contenido = ?;";
+        $params = array($this->idDetalleContenido);
         return Database::getRow($sql, $params);
     }
 
     //Función para leer todos lops jugadores que tienen contenidos y tareas en base a un entrenamiento.
     // el id entrenamiento se obtendrá con un GETPARAMETER de la url. Esta función es para "elegir horario" 
-    
+
     public function readAllDContenido()
     {
         $sql = "SELECT 
@@ -90,16 +141,28 @@ class DetalleContenidoHandler
                 id_entrenamiento,
                 id_detalle_contenido,
                 nombre_subtema,
+                nombre_jugador,
                 nombre_tarea
                 FROM vista_detalle_entrenamiento WHERE id_entrenamiento = ?;";
         $params = array($this->idEntrenamiento);
-        return Database::getRow($sql, $params);
+        return Database::getRows($sql, $params);
+    }
+    //Función para rellenar la opcion del combobox con jugadores, 
+    //Función para leer todos los jugadores de un equipo. Esta función es para "Detalle Contenido" 
+    public function readAllJugadores()
+    {
+        $sql = "SELECT 
+                nombre_jugador,
+                id_jugador
+                FROM vista_equipos_jugadores WHERE id_equipo = ?;";
+        $params = array($this->idEquipo);
+        return Database::getRows($sql, $params);
     }
 
     //Función para actualizar un detalle contenido. 
-    
+
     public function updateRow()
-    {   
+    {
         $sql = 'CALL actualizarDetalleContenido (?, ?, ?, ?, ?);';
         $params = array(
             $this->idSubContenido,
@@ -112,7 +175,7 @@ class DetalleContenidoHandler
     }
 
     //Función para eliminar un detalle contenido
-    
+
     public function deleteRow()
     {
         $sql = ' DELETE FROM detalles_contenidos WHERE id_detalle_contenido = ?;';

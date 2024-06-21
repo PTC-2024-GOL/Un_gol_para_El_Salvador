@@ -69,29 +69,27 @@
                             <div class="row">
                                 <div class="col-md-6 col-sm-12 align-items-end">
                                     <div class="col-sm-12 col-md-12 text-center py-3">
-                                        <img class="circulo" id="img_admin"
+                                        <img class="circulo" id="logo1"
                                             src="../../../../resources/img/svg/icons_dashboard/logo_gol.svg"
                                             width="95px">
                                     </div>
                                     <div class="col-sm-12 text-center py-2">
-                                        <!-- Botón para cargar imagen -->
-                                        <input type="file" class="form-control" accept=".png .jpg" id="imagenTecnico" hidden>
                                         <!-- Para que tenga el mismo funcionamiento del input file le ponemos el for y le agregamos el id del input file -->
-                                        <label class="btn bg-blue-principal-color text-light" for="imagenTecnico">Cargar
+                                        <label class="text-light bg-blue-principal-color">
                                             logo del equipo</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-sm-12 align-items-start">
                                     <div class="col-sm-12 col-md-12 text-center py-3">
-                                        <img class="circulo" id="img_admin"
+                                        <img class="circulo" id="logo2"
                                             src="../../../../resources/img/svg/icons_dashboard/logo_rival.svg"
                                             width="50px">
                                     </div>
                                     <div class="col-sm-12 text-center py-2">
                                         <!-- Botón para cargar imagen -->
-                                        <input type="file" class="form-control" accept=".png .jpg" id="imagenTecnico" hidden>
+                                        <input type="file" class="form-control" accept=".png .PNG .JPG .jpg" id="logoRival" name="logoRival" hidden>
                                         <!-- Para que tenga el mismo funcionamiento del input file le ponemos el for y le agregamos el id del input file -->
-                                        <label class="btn bg-blue-principal-color text-light" for="imagenTecnico">Cargar
+                                        <label class="btn bg-blue-principal-color text-light" for="logoRival">Cargar
                                             logo del rival</label>
                                     </div>
                                 </div>
@@ -100,17 +98,17 @@
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="equipos" class="form-label fw-semibold">Equipo</label>
-                        <select id="equipos" type="text" name="equipos" class="form-select" required></select>
+                        <select id="equipos" type="text" name="idEquipo" class="form-select" required></select>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="rival" class="form-label fw-semibold">Rival</label>
-                        <input id="rival" type="text" name="rival" class="form-control"
+                        <input id="rival" type="text" name="nombrerival" class="form-control"
                             placeholder="Ingresa el nombre del rival" required>
                     </div>
-                    <div class="col-sm-12 col-md-6">
+                    <div class="col-sm-12 col-md-6" id="fechaPartidos">
                         <label for="fechaPartido" class="form-label fw-semibold">Fecha partido</label>
-                        <input id="fechaPartido" min="1" step="1" type="date" name="fechaPartido" class="form-control"
-                            placeholder="Fecha del partido" required>
+                        <input id="fechaPartido" min="1" step="1" type="text" name="fechaPartido" class="form-control"
+                            placeholder="Fecha del partido">
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="cancha" class="form-label fw-semibold">Cancha</label>
@@ -127,16 +125,25 @@
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="localidad" class="form-label fw-semibold">Localidad</label>
-                        <select id="localidad" type="text" name="localidad" class="form-select" required></select>
+                        <select id="localidad" type="text" name="Localidad" class="form-select" required>
+                            <option value="0">Selecciona una opción</option>
+                            <option value="Local">Local</option>
+                            <option value="Visitante">Visitante</option>
+                        </select>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="tipoResultado" class="form-label fw-semibold">Tipo de resultado</label>
                         <select id="tipoResultado" type="text" name="tipoResultado" class="form-select"
-                            required></select>
+                            required>
+                            <option value="0">Selecciona una opción</option>
+                            <option value="Victoria">Victoria</option>
+                            <option value="Derrota">Derrota</option>
+                            <option value="Empate">Empate</option>
+                        </select>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="jornada" class="form-label fw-semibold">Jornada</label>
-                        <select id="jornada" type="text" name="jornada" class="form-select" required></select>
+                        <select id="jornada" type="text" name="idJornada" class="form-select" required></select>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
@@ -160,7 +167,7 @@
                     aria-label="Close"></button>
             </div>
             <!-- Formulario para visualizar un registro -->
-            <form id="seeModal">
+            <form id="seeForm">
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
                     <input type="hidden" id="idPartido" name="idPartido">
@@ -169,14 +176,14 @@
                             <div class="row">
                                 <div class="col-md-6 col-sm-12 align-items-end">
                                     <div class="col-sm-12 col-md-12 text-center py-3">
-                                        <img class="circulo" id="img_admin"
+                                        <img class="circulo" id="logo_equipo"
                                             src="../../../../resources/img/svg/icons_dashboard/logo_gol.svg"
                                             width="95px">
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-sm-12 align-items-start">
                                     <div class="col-sm-12 col-md-12 text-center py-3">
-                                        <img class="circulo" id="img_admin"
+                                        <img class="circulo" id="logo_rival"
                                             src="../../../../resources/img/svg/icons_dashboard/logo_rival.svg"
                                             width="50px">
                                     </div>
@@ -186,37 +193,37 @@
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="equipos" class="form-label fw-semibold">Equipo</label>
-                        <select id="equipos" type="text" name="equipos" class="form-select" disabled></select>
+                        <input id="equipos_see" type="text" name="equipos" class="form-control">
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="rival" class="form-label fw-semibold">Rival</label>
-                        <input id="rival" type="text" name="rival" class="form-control" disabled>
+                        <input id="rival_see" type="text" name="rival" class="form-control">
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="fechaPartido" class="form-label fw-semibold">Fecha partido</label>
-                        <input id="fechaPartido" min="1" step="1" type="date" name="fechaPartido" class="form-control"
-                            disabled>
+                        <input id="fechaPartido_see" min="1" step="1" type="text" name="fechaPartido" class="form-control"
+                            >
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="cancha" class="form-label fw-semibold">Cancha</label>
-                        <input id="cancha" type="text" name="cancha" class="form-control" disabled>
+                        <input id="cancha_see" type="text" name="cancha" class="form-control" >
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="resultado" class="form-label fw-semibold">Resultado del partido</label>
-                        <input id="resultado" type="text" name="resultado" class="form-control" disabled>
+                        <input id="resultado_see" type="text" name="resultado" class="form-control" >
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="localidad" class="form-label fw-semibold">Localidad</label>
-                        <select id="localidad" type="text" name="localidad" class="form-select" disabled></select>
+                        <input id="localidad_see" type="text" name="localidad" class="form-control" >
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="tipoResultado" class="form-label fw-semibold">Tipo de resultado</label>
-                        <select id="tipoResultado" type="text" name="tipoResultado" class="form-select"
-                            disabled></select>
+                        <input id="tipoResultado_see" type="text" name="tipoResultado" class="form-control"
+                            >
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="jornada" class="form-label fw-semibold">Jornada</label>
-                        <select id="jornada" type="text" name="jornada" class="form-select" disabled></select>
+                        <input id="jornada_see" type="text" name="jornada" class="form-control" >
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">

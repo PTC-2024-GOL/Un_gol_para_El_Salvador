@@ -6,7 +6,7 @@ let SAVE_FORM,
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
-const API = '';
+const API = 'services/admin/sub_contenidos.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -18,12 +18,14 @@ async function loadComponent(path) {
 *   Parámetros: ninguno.
 *   Retorno: ninguno.
 */
-const openCreate = () => {
+const openCreate = async () => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
     MODAL_TITLE.textContent = 'Agregar sub-contenido';
     // Se prepara el formulario.
+    ID_SUBCONTENIDO.value = null;
     SAVE_FORM.reset();
+    await fillSelect(API,'readOneContents', 'contenido');
 }
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
@@ -34,9 +36,9 @@ const openUpdate = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
-        FORM.append('idSubcontenido', id);
+        FORM.append('idSubContenido', id);
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(ADMINISTRADOR_API, 'readOne', FORM);
+        const DATA = await fetchData(API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
@@ -46,9 +48,9 @@ const openUpdate = async (id) => {
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
-            ID_SUBCONTENIDO.value = ROW.ID;
-            NOMBRE_SUBCONTENIDO.value = ROW.SUBCONTENIDO;
-            CONTENIDO.value = ROW.CONTENIDO;
+            ID_SUBCONTENIDO.value = ROW.id_sub_tema_contenido;
+            NOMBRE_SUBCONTENIDO.value = ROW.sub_tema_contenido;
+            await fillSelect(API,'readOneContents', 'contenido', ROW.id_tema_contenido);
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -72,7 +74,7 @@ const openDelete = async (id) => {
         if (RESPONSE) {
             // Se define una constante tipo objeto con los datos del registro seleccionado.
             const FORM = new FormData();
-            FORM.append('idContenido', id);
+            FORM.append('idSubContenido', id);
             console.log(id);
             // Petición para eliminar el registro seleccionado.
             const DATA = await fetchData(API, 'deleteRow', FORM);
@@ -136,17 +138,19 @@ async function fillTable(form = null) {
         if (DATA.status) {
             // Mostrar elementos obtenidos de la API
             DATA.dataset.forEach(row => {
+                console.log(row);
+                console.log(action)
                 const tablaHtml = `
                 <tr>
-                    <td>${row.SUBCONTENIDO}</td>
-                    <td>${row.CONTENIDO}</td>
+                    <td>${row.nombre_tema_contenido}</td>
+                    <td>${row.sub_tema_contenido}</td>
                     <td>
-                        <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
-                        <img src="../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" onclick="openDelete(${row.ID})">
-                            <i class="bi bi-trash-fill"></i>
-                        </button>
+                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id_sub_tema_contenido})">
+                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                    </button>
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_sub_tema_contenido})">
+                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                    </button>
                     </td>
                 </tr>
                 `;
@@ -211,6 +215,8 @@ window.onload = async function () {
         const FORM = new FormData(SAVE_FORM);
         // Petición para guardar los datos del formulario.
         const DATA = await fetchData(API, action, FORM);
+        console.log(DATA);
+        console.log(FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se cierra la caja de diálogo.

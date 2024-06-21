@@ -65,6 +65,13 @@ class SubContenidosHandler
         return Database::getRow($sql, $params);
     }
 
+    //Función para leer un Subcontenido o varios. 
+    
+    public function readOneContents()
+    {
+        $sql = 'SELECT * FROM temas_contenidos;';
+        return Database::getRows($sql);
+    }
 
     //Función para actualizar un Subcontenido o varios. 
     
