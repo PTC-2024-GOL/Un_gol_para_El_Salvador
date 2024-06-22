@@ -51,6 +51,15 @@ class DetalleCuerpoTecnicoHandler
     }
 
     //Función para leer una cuerpo técnico.
+    public function readOneDetail()
+    {
+        $sql = 'SELECT * FROM vw_detalles_cuerpos_tecnicos
+        WHERE ID_CUERPO_TECNICO LIKE ?';
+        $params = array($this->id);
+        return Database::getRows($sql, $params);
+    }
+
+    //Función para leer una cuerpo técnico.
     public function readOne()
     {
         $sql = 'SELECT * FROM vw_detalles_cuerpos_tecnicos

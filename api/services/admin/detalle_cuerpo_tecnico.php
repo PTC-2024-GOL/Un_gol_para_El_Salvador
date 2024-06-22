@@ -62,6 +62,19 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Detalle cuerpo técnico inexistente';
                 }
                 break;
+                // Leer un detalle
+            case 'readOneDetail':
+                if (
+                    !$cuerpotecnico->setId($_POST['idCuerpoTecnico'])
+                ) {
+                    $result['error'] = $cuerpotecnico->getDataError();
+                } elseif ($result['dataset'] = $cuerpotecnico->readOneDetail()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
+                } else {
+                    $result['error'] = 'No hay detalle de cuerpo técnico registrados';
+                }
+                break;
                 // Actualizar
             case 'updateRow':
                 $_POST = Validator::validateForm($_POST);

@@ -394,8 +394,23 @@ class Validator
         }
     }
 
-    
-        /*
+
+    /*
+*   Método para validar un formato de hora (HH:MM).
+*   Parámetros: $value (dato a validar).
+*   Retorno: booleano (true si el valor es correcto o false en caso contrario).
+*/
+    public static function validateTime($value)
+    {
+        // Se verifica que el formato sea HH:MM usando expresiones regulares.
+        if (preg_match('/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/', $value)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /*
      *   Método para validar una fecha (mayor a 18 años).
      *   Parámetros: $value (dato a validar).
      *   Retorno: booleano (true si el valor es correcto o false en caso contrario).
@@ -406,19 +421,18 @@ class Validator
         $datev = strtotime($value);
         $datem = strtotime('-18 years', time());
         $datea = strtotime('-122 years', time());
-        if($datev > $datem){
+        if ($datev > $datem) {
             return false;
-        }elseif($datev < $datea){
+        } elseif ($datev < $datea) {
             return false;
-        }else{
+        } else {
             $date = explode('-', $value);
             if (checkdate($date[1], $date[2], $date[0])) {
                 return true;
             } else {
                 return false;
             }
-        }   
-
+        }
     }
 
     /*

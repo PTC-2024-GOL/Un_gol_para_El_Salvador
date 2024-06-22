@@ -7,6 +7,7 @@ let ROWS_FOUND;
 
 // Constante para completar la rutas de la API
 const CUERPOTECNICO_API = 'services/admin/cuerpo_tecnico.php';
+const API = 'services/admin/detalle_cuerpo_tecnico.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -92,7 +93,6 @@ const openDelete = async (id) => {
     }
 
 }
-
 // Variables y constantes para la paginación
 const cuerpoTecnicoPorPagina = 10;
 let paginaActual = 1;
@@ -129,32 +129,129 @@ async function fillTable(form = null) {
     }
 }
 
-// Función para mostrar tipología en una página específica
-function mostrarCuerpoTecnico(pagina) {
+// Función para mostrar cuerpos técnicos en una página específica
+async function mostrarCuerpoTecnico(pagina) {
     const inicio = (pagina - 1) * cuerpoTecnicoPorPagina;
     const fin = inicio + cuerpoTecnicoPorPagina;
     const cuerpoTecnicoPagina = cuerpoTecnico.slice(inicio, fin);
 
     const cargarTabla = document.getElementById('tabla_cuerpo_tecnico');
     cargarTabla.innerHTML = '';
-    cuerpoTecnicoPagina.forEach(row => {
+    for (const row of cuerpoTecnicoPagina) {
         const tablaHtml = `
-            <tr class="text-center">
-                <td>${row.NOMBRE}</td>
-                <td>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
-                        <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                    </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.ID})">
-                        <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
-                </td>
-            </tr>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading-${row.ID}">
+                    <div class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${row.ID}" aria-expanded="false" aria-controls="collapse-${row.ID}">
+                        <div class="row w-100 align-items-center">
+                            <div class="col text-start">
+                                <p class="mb-0">${row.NOMBRE}</p>
+                            </div>
+                            <div class="col-auto d-flex gap-2">
+                                <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
+                                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                                </button>
+                                <button type="button" class="btn transparente" onclick="openDelete(${row.ID})">
+                                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </h2>
+                <div id="collapse-${row.ID}" class="accordion-collapse collapse" aria-labelledby="heading-${row.ID}" data-bs-parent="#tabla_cuerpo_tecnico">
+                    <div class="accordion-body">
+                        <button class="btn bg-blue-principal-color mb-3 text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3" onclick="openCreateDetail()">
+                          <span class="fs-5 me-2">+</span> Agregar un elemento al cuerpo técnico
+                        </button>
+                        <div id="carousel-container-${row.ID}" class="carousel-container"></div>
+                    </div>
+                </div>
+            </div>
         `;
         cargarTabla.innerHTML += tablaHtml;
-    });
+
+        await cargarCarrouselParaCuerpoTecnico(row.ID);
+    }
 
     actualizarPaginacion();
+}
+
+async function cargarCarrouselParaCuerpoTecnico(id) {
+    try {
+        // Petición para obtener los technicos del cuerpo técnico
+        const form = new FormData();
+        form.append('idCuerpoTecnico', id);
+        const technicsResponse = await fetchData(API, 'readOneDetail', form);
+        const technics = technicsResponse.dataset;
+
+        const carouselContainer = document.getElementById(`carousel-container-${id}`);
+        const carouselId = `carousel-${id}`;
+        carouselContainer.innerHTML = ''; // Clear the container before adding new content
+
+        const carousel = document.createElement('div');
+        carousel.className = 'carousel slide';
+        carousel.id = carouselId;
+        carousel.dataset.bsRide = 'carousel';
+
+        let innerHTML = '';
+
+        if (Array.isArray(technics) && technics.length > 0) {
+            innerHTML = `
+                <div class="carousel-inner">
+            `;
+            // Agrupar technicos en grupos de tres
+            for (let i = 0; i < technics.length; i += 3) {
+                innerHTML += `
+                    <div class="carousel-item ${i === 0 ? 'active' : ''}">
+                        <div class="row">
+                `;
+                // Mostrar hasta tres technicos en cada grupo
+                for (let j = i; j < i + 3 && j < technics.length; j++) {
+                    const technic = technics[j];
+                    innerHTML += `
+                        <div class="col-lg-4 col-md-4 col-sm-12 text-center">
+                            <div class="card">
+                                <img src="${SERVER_URL}images/tecnicos/${technic.IMAGEN}" class="card-img-top correccion" alt="${technic.NOMBRE}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${technic.TECNICO}</h5>
+                                    <p class="card-text">${technic.ROL_TECNICO}</p>
+                                </div>
+                                <div class="card-footer bg-blue-principal-color p-3">  
+                                   <button type="button" class="btn transparente rounded-5 me-3" onclick="openUpdate(${technic.ID})">
+                                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                                   </button>
+                                   <button type="button" class="btn transparente rounded-5" onclick="openDelete(${technic.ID})">
+                                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                                   </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                innerHTML += `
+                        </div>
+                    </div>
+                `;
+            }
+            innerHTML += `
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#${carouselId}" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#${carouselId}" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
+            `;
+        } else {
+            innerHTML = `<p>No hay technicos disponibles para este cuerpo técnico.</p>`;
+        }
+
+        carousel.innerHTML = innerHTML;
+        carouselContainer.appendChild(carousel);
+    } catch (error) {
+        console.error('Error en la api:', error);
+    }
 }
 
 // Función para actualizar los controles de paginación
@@ -182,7 +279,6 @@ function cambiarPagina(nuevaPagina) {
     paginaActual = nuevaPagina;
     mostrarCuerpoTecnico(paginaActual);
 }
-
 
 // window.onload
 window.onload = async function () {
