@@ -37,6 +37,15 @@ class PartidosHandler
         return Database::getRows($sql, $params);
     }
 
+    public function readFilename()
+    {
+        $sql = 'SELECT logo_rival
+                FROM partidos
+                WHERE id_partido = ?';
+        $params = array($this->idPartido);
+        return Database::getRow($sql, $params);
+    }
+
     //Función para insertar un partido. 
     
     public function createRow()

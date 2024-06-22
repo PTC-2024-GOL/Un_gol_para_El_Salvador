@@ -91,6 +91,14 @@ const seeModal = async (id) => {
             SEE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
+            EQUIPO_SEE.disabled = false;
+            RIVAL_SEE.disabled = false;
+            FECHA_PARTIDO_SEE.disabled = false;
+            CANCHA_SEE.disabled = false;
+            RESULTADO_PARTIDO_SEE.disabled = false;
+            LOCALIDAD_SEE.disabled = false;
+            TIPO_RESULTADO_PARTIDO_SEE.disabled = false;
+            JORNADA_SEE.disabled = false;
             EQUIPO_SEE.value = ROW.nombre_equipo;
             RIVAL_SEE.value = ROW.nombre_rival;
             FECHA_PARTIDO_SEE.value = ROW.fecha_partido;
@@ -101,6 +109,14 @@ const seeModal = async (id) => {
             JORNADA_SEE.value = ROW.nombre_jornada;
             LOGO_EQUIPO_SEE.src = `${SERVER_URL}images/equipos/${ROW.logo_equipo}`;
             LOGO_RIVAL_SEE.src = `${SERVER_URL}images/partidos/${ROW.logo_rival}`;
+            EQUIPO_SEE.disabled = true;
+            RIVAL_SEE.disabled = true;
+            FECHA_PARTIDO_SEE.disabled = true;
+            CANCHA_SEE.disabled = true;
+            RESULTADO_PARTIDO_SEE.disabled = true;
+            LOCALIDAD_SEE.disabled = true;
+            TIPO_RESULTADO_PARTIDO_SEE.disabled = true;
+            JORNADA_SEE.disabled = true;
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -150,17 +166,6 @@ const openUpdate = async (id) => {
             await fillSelect(PARTIDO_API, 'readJornadas', 'jornada', ROW.id_jornada);
             LOGO1.src = `${SERVER_URL}images/equipos/${ROW.logo_equipo}`;
             LOGO2.src = `${SERVER_URL}images/partidos/${ROW.logo_rival}`;
-
-            // Aquí se agrega el código para cargar la imagen del servidor en el input de archivo
-            const imageUrl = `${SERVER_URL}images/partidos/${ROW.logo_rival}`;
-            fetch(imageUrl)
-                .then(response => response.blob())
-                .then(blob => {
-                    const file = new File([blob], ROW.logo_rival, { type: blob.type });
-                    const dataTransfer = new DataTransfer();
-                    dataTransfer.items.add(file);
-                    LOGO_RIVAL2.files = dataTransfer.files;
-                });
         } else {
             sweetAlert(2, DATA.error, false);
         }

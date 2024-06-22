@@ -10,6 +10,7 @@ class PartidosData extends PartidosHandler
 {
     // Atributo genérico para manejo de errores.
     private $data_error = null;
+    private $filename = null;
 
     /*
      *  Métodos para validar y asignar valores de los atributos.
@@ -66,6 +67,21 @@ class PartidosData extends PartidosHandler
         }
     }
 
+    public function setFilename()
+    {
+        if ($data = $this->readFilename()) {
+            $this->filename = $data['logo_rival'];
+            return true;
+        } else {
+            $this->data_error = 'Partido inexistente pa la imagen perro';
+            return false;
+        }
+    }
+
+    public function getFilename()
+    {
+        return $this->filename;
+    }
 
     // Validación y asignación del peso
     public function setCancha($value, $min = 3, $max = 100)
