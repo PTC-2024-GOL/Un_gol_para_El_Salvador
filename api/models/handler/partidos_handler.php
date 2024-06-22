@@ -71,6 +71,16 @@ class PartidosHandler
         return Database::getRows($sql);
     }
 
+    //Función para leer los partidos por el idEquipo
+
+    public function readAllByIdEquipo()
+    {
+        $sql = "SELECT * FROM vista_partidos_equipos WHERE id_equipo = ?;";
+        $params = array($this->idEquipo);
+        return Database::getRows($sql, $params);
+    }
+
+
     //Función para leer un partido o varios. 
     
     public function readOne()

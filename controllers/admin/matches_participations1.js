@@ -10,9 +10,6 @@ async function loadComponent(path) {
     return text;
 }
 
-// Declaracion de variables para guardad el id y nombre del equipo
-let idEquipo;
-let nombreEquipo;
 
 // Funcion que muestra todos los equipos registrados
 async function fillCards(form = null) {
@@ -32,13 +29,11 @@ async function fillCards(form = null) {
         if (DATA.status) {
             // Mostrar elementos obtenidos de la API
             DATA.dataset.forEach(row => {
-                idEquipo = row.ID;
-                nombreEquipo = row.NOMBRE;
 
                 const cardsHtml =  `
                 <div class="col-md-3 col-sm-12">
-                  <div class="tarjetas-equipos shadow bg-skyBlue-pastel-color" onclick="goToMatches(idEquipo, nombreEquipo)"> 
-                    <img src="${SERVER_URL}images/equipos/${row.logo_equipo}" id="imagenEquipo" class="rounded-circle col-8 p-4"> 
+                  <div class="tarjetas-equipos shadow bg-skyBlue-pastel-color" onclick="goToMatches(${row.ID})"> 
+                    <img src="${SERVER_URL}images/equipos/${row.logo_equipo}" id="imagenEquipo" width="160px" height="160px" class="rounded-circle p-4"> 
                     <p class="titulo-equipo text-light p-2" id="tituloEquipo">${row.NOMBRE}</p> 
                   </div>
                 </div>
@@ -55,10 +50,10 @@ async function fillCards(form = null) {
 }
 
 // Creamos una funcion que recibe como parametro el id y nombre del equipo que fue seleccionado y se los manda a la siguiente pantalla
-function goToMatches(idEquipo, nombreEquipo) {
+function goToMatches(idEquipo) {
 
     // Redirecciona a la otra pantalla y manda tambien el id del equipo
-    window.location.href = `../pages/matches_participations2.html?idEquipo=${idEquipo}&nombreEquipo=${nombreEquipo}`;
+    window.location.href = `../pages/matches_participations2.html?idEquipo=${idEquipo}`;
 
 }
 
