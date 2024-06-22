@@ -4,10 +4,18 @@ let SAVE_FORM,
     CUERPOTECNICO;
 let SEARCH_FORM;
 let ROWS_FOUND;
+let SAVE_MODAL_DETAIL;
+let SAVE_FORM_DETAIL,
+    ID_CUERPOTECNICO_D,
+    TECNICO,
+    ROL,
+    CUERPO_TECNICO;
 
 // Constante para completar la rutas de la API
 const CUERPOTECNICO_API = 'services/admin/cuerpo_tecnico.php';
 const API = 'services/admin/detalle_cuerpo_tecnico.php';
+const TECNICO_API = 'services/admin/tecnicos.php';
+const ROL_API = 'services/admin/roles_tecnicos.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -93,6 +101,90 @@ const openDelete = async (id) => {
     }
 
 }
+
+
+/*
+*   Función para preparar el formulario al momento de insertar un registro.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
+const openCreateD = () => {
+    // Se muestra la caja de diálogo con su título.
+    SAVE_MODAL_DETAIL.show();
+    MODAL_TITLE_DETAIL.textContent = 'Agregar a un cuerpo técnico';
+    // Se prepara el formulario.
+    SAVE_FORM_DETAIL.reset();
+    fillSelect(CUERPOTECNICO_API, 'readAll', 'cuerposTecnicos');
+    fillSelect(TECNICO_API, 'readAll', 'tecnico');
+    fillSelect(ROL_API, 'readAll', 'rol');
+}
+/*
+*   Función asíncrona para preparar el formulario al momento de actualizar un registro.
+*   Parámetros: id (identificador del registro seleccionado).
+*   Retorno: ninguno.
+*/
+const openUpdateD = async (id) => {
+    try {
+        // Se define un objeto con los datos del registro seleccionado.
+        const FORM = new FormData();
+        FORM.append('idCuerpoTecnico', id);
+        // Petición para obtener los datos del registro solicitado.
+        const DATA = await fetchData(API, 'readOne', FORM);
+        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+        if (DATA.status) {
+            // Se muestra la caja de diálogo con su título.
+            SAVE_MODAL_DETAIL.show();
+            MODAL_TITLE_DETAIL.textContent = 'Actualizar cuerpo técnico';
+            // Se prepara el formulario.
+            SAVE_FORM_DETAIL.reset();
+            // Se inicializan los campos con los datos.
+            const ROW = DATA.dataset;
+            ID_CUERPOTECNICO_D.value = ROW.ID;
+            fillSelect(CUERPOTECNICO_API, 'readAll', 'cuerposTecnicos', ROW.ID_CUERPO_TECNICO);
+            fillSelect(TECNICO_API, 'readAll', 'tecnico', ROW.ID_TECNICO);
+            fillSelect(ROL_API, 'readAll', 'rol', ROW.ID_ROL);
+        } else {
+            sweetAlert(2, DATA.error, false);
+        }
+    } catch (Error) {
+        console.log(Error);
+    }
+}
+/*
+*   Función asíncrona para eliminar un registro.
+*   Parámetros: id (identificador del registro seleccionado).
+*   Retorno: ninguno.
+*/
+const openDeleteD = async (id) => {
+    // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
+    const RESPONSE = await confirmAction('¿Desea eliminar del cuerpo técnico?');
+    try {
+        // Se verifica la respuesta del mensaje.
+        if (RESPONSE) {
+            // Se define una constante tipo objeto con los datos del registro seleccionado.
+            const FORM = new FormData();
+            FORM.append('idCuerpoTecnicoD', id);
+            console.log(id);
+            // Petición para eliminar el registro seleccionado.
+            const DATA = await fetchData(API, 'deleteRow', FORM);
+            console.log(DATA.status);
+            // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+            if (DATA.status) {
+                // Se muestra un mensaje de éxito.
+                await sweetAlert(1, DATA.message, true);
+                // Se carga nuevamente la tabla para visualizar los cambios.
+                fillTable();
+            } else {
+                sweetAlert(2, DATA.error, false);
+            }
+        }
+    }
+    catch (Error) {
+        console.log(Error + ' Error al cargar el mensaje');
+    }
+
+}
+
 // Variables y constantes para la paginación
 const cuerpoTecnicoPorPagina = 10;
 let paginaActual = 1;
@@ -159,7 +251,7 @@ async function mostrarCuerpoTecnico(pagina) {
                 </h2>
                 <div id="collapse-${row.ID}" class="accordion-collapse collapse" aria-labelledby="heading-${row.ID}" data-bs-parent="#tabla_cuerpo_tecnico">
                     <div class="accordion-body">
-                        <button class="btn bg-blue-principal-color mb-3 text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3" onclick="openCreateDetail()">
+                        <button class="btn bg-blue-principal-color mb-5 text-white ms-auto borde-transparente btn-sm rounded-3" onclick="openCreateD()">
                           <span class="fs-5 me-2">+</span> Agregar un elemento al cuerpo técnico
                         </button>
                         <div id="carousel-container-${row.ID}" class="carousel-container"></div>
@@ -216,10 +308,10 @@ async function cargarCarrouselParaCuerpoTecnico(id) {
                                     <p class="card-text">${technic.ROL_TECNICO}</p>
                                 </div>
                                 <div class="card-footer bg-blue-principal-color p-3">  
-                                   <button type="button" class="btn transparente rounded-5 me-3" onclick="openUpdate(${technic.ID})">
+                                   <button type="button" class="btn transparente rounded-5 me-3" onclick="openUpdateD(${technic.ID})">
                                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                                    </button>
-                                   <button type="button" class="btn transparente rounded-5" onclick="openDelete(${technic.ID})">
+                                   <button type="button" class="btn transparente rounded-5" onclick="openDeleteD(${technic.ID})">
                                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                                    </button>
                                 </div>
@@ -340,5 +432,38 @@ window.onload = async function () {
         console.log(FORM);
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
         fillTable(FORM);
+    });
+    // Constantes para establecer los elementos del componente Modal.
+    SAVE_MODAL_DETAIL = new bootstrap.Modal('#saveModalDetail'),
+        MODAL_TITLE_DETAIL = document.getElementById('modalTitleDetail');
+
+    // Constantes para establecer los elementos del formulario de guardar.
+    SAVE_FORM_DETAIL = document.getElementById('saveFormDetail'),
+        ID_CUERPOTECNICO_D = document.getElementById('idCuerpoTecnicoD'),
+        TECNICO = document.getElementById('tecnico'),
+        ROL = document.getElementById('rol'),
+        CUERPO_TECNICO = document.getElementById('cuerposTecnicos');
+    // Método del evento para cuando se envía el formulario de guardar.
+    SAVE_FORM_DETAIL.addEventListener('submit', async (event) => {
+        // Se evita recargar la página web después de enviar el formulario.
+        event.preventDefault();
+        // Se verifica la acción a realizar.
+        (ID_CUERPOTECNICO_D.value) ? action = 'updateRow' : action = 'createRow';
+        // Constante tipo objeto con los datos del formulario.
+        const FORM = new FormData(SAVE_FORM_DETAIL);
+        // Petición para guardar los datos del formulario.
+        const DATA = await fetchData(API, action, FORM);
+        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+        if (DATA.status) {
+            // Se cierra la caja de diálogo.
+            SAVE_MODAL_DETAIL.hide();
+            // Se muestra un mensaje de éxito.
+            sweetAlert(1, DATA.message, true);
+            // Se carga nuevamente la tabla para visualizar los cambios.
+            fillTable();
+        } else {
+            sweetAlert(2, DATA.error, false);
+            console.error(DATA.exception);
+        }
     });
 };

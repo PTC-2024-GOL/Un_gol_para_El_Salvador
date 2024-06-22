@@ -89,3 +89,45 @@
         </div>
     </div>
 </div>
+
+<!-- Componente Modal para guardar un registro -->
+<div class="modal fade" id="saveModalDetail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modalTitleDetail" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-principal-color">
+                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                <h1 class="modal-title fs-5 text-white" id="modalTitleDetail"></h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <!-- Formulario para crear o actualizar un registro -->
+            <form id="saveFormDetail">
+                <div class="modal-body row g-3">
+                    <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                    <input type="number" class="d-none" id="idCuerpoTecnicoD" name="idCuerpoTecnicoD">
+                    <div class="col-sm-12 col-md-6">
+                        <label for="tecnico" class="form-label fw-semibold">Seleccione el técnico</label>
+                        <select id="tecnico" name="tecnico" class="form-select" required>
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="rol" class="form-label fw-semibold">Seleccione el rol del técnico</label>
+                        <select id="rol" name="rol" class="form-select" required>
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="cuerposTecnicos" class="form-label fw-semibold">Seleccione el cuerpo técnico al que
+                            será asignado</label>
+                        <select id="cuerposTecnicos" name="cuerposTecnicos" class="form-select" required>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
+                    <button type="reset" class="btn bg-red-cream-color text-white">Cancelar</button>
+                    <button type="submit" class="btn bg-blue-principal-color text-white ">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
