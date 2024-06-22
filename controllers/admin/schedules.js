@@ -1,14 +1,16 @@
 let SAVE_MODAL;
 let SAVE_FORM,
     ID_HORARIOS,
+    NOMBRE,
     DIA,
     HORA_INICIAL,
     HORA_FINAL,
     CAMPO_ENTRENO;
 let SEARCH_FORM;
+let ROWS_FOUND;
 
 // Constantes para completar las rutas de la API.
-const API = '';
+const API = 'services/admin/horarios.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -26,7 +28,74 @@ const openCreate = () => {
     MODAL_TITLE.textContent = 'Agregar un horario';
     // Se prepara el formulario.
     SAVE_FORM.reset();
+    fillSelected(lista_select, 'readAll', 'diaEntreno');
 }
+
+/*
+*   Función para preparar el formulario al momento de insertar un registro.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
+
+const lista_select = [
+    {
+        dia: "Lunes",
+        id: 1,
+    },
+    {
+        dia: "Martes",
+        id: 2,
+    },
+    {
+        dia: "Miércoles",
+        id: 3,
+    },
+    {
+        dia: "Jueves",
+        id: 4,
+    },
+    {
+        dia: "Viernes",
+        id: 5,
+    },
+    {
+        dia: "Sábado",
+        id: 6,
+    },
+    {
+        dia: "Domingo",
+        id: 7,
+    }
+];
+
+// Función para poblar un combobox (select) con opciones
+const fillSelected = (data, action,selectId, selectedValue = null) => {
+    const selectElement = document.getElementById(selectId);
+
+    // Limpiar opciones previas del combobox
+    selectElement.innerHTML = '';
+
+    // Crear opción por defecto
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Selecciona el día';
+    selectElement.appendChild(defaultOption);
+
+    // Llenar el combobox con los datos proporcionados
+    data.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.id; // Suponiendo que hay una propiedad 'id' en los datos
+        option.textContent = item.dia; // Cambia 'horario' al nombre de la propiedad que deseas mostrar en el combobox
+        selectElement.appendChild(option);
+    });
+
+    // Seleccionar el valor especificado si se proporciona
+    if (selectedValue !== null) {
+        selectElement.value = selectedValue;
+    }
+};
+
+
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
 *   Parámetros: id (identificador del registro seleccionado).
@@ -48,11 +117,12 @@ const openUpdate = async (id) => {
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
-            ID_HORARIOS.value = ROW.ID;
-            DIA.value = ROW.DIA;
-            HORA_INICIAL.value = ROW.INICIAL;
-            HORA_FINAL.value = ROW.FINAL;
-            CAMPO_ENTRENO.value = ROW.CAMPO;
+            ID_HORARIOS.value = ROW.id_horario;
+            NOMBRE.value = ROW.nombre_horario;
+            fillSelected(lista_select, 'readAll', 'diaEntreno');
+            HORA_INICIAL.value = ROW.hora_inicial;
+            HORA_FINAL.value = ROW.hora_final;
+            CAMPO_ENTRENO.value = ROW.campo_de_entrenamiento;
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -98,97 +168,95 @@ const openDelete = async (id) => {
 
 }
 
+// Variables y constantes para la paginación
+const horariosPorPagina = 10;
+let paginaActual = 1;
+let horarios = [];
 
+// Función para cargar tabla de técnicos con paginación
 async function fillTable(form = null) {
-    const lista_datos = [
-        {
-            dia: 'Lunes',
-            hora_inicial: '16:00:00',
-            hora_final: '18:00:00',
-            campo_entrenamiento: 'Cancha Bayer',
-            id: 1,
-        },
-        {
-            dia: 'Martes',
-            hora_inicial: '16:00:00',
-            hora_final: '18:00:00',
-            campo_entrenamiento: 'Cancha Bayer',
-            id: 2,
-        },
-        {
-            dia: 'Jueves',
-            hora_inicial: '16:00:00',
-            hora_final: '18:00:00',
-            campo_entrenamiento: 'Cancha Bayer',
-            id: 3,
-        },
-        {
-            dia: 'Sábado',
-            hora_inicial: '16:00:00',
-            hora_final: '18:00:00',
-            campo_entrenamiento: 'Cancha Bayer',
-            id: 4,
-        }
-    ];
     const cargarTabla = document.getElementById('tabla_horarios');
-
     try {
         cargarTabla.innerHTML = '';
-        // Se verifica la acción a realizar.
-        (form) ? action = 'searchRows' : action = 'readAll';
-        console.log(form);
         // Petición para obtener los registros disponibles.
+        let action;
+        form ? action = 'searchRows' : action = 'readAll';
+        console.log(form);
         const DATA = await fetchData(API, action, form);
         console.log(DATA);
 
         if (DATA.status) {
-            // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-                const tablaHtml = `
-                <tr>
-                    <td>${row.DIA}</td>
-                    <td>${row.INICIAL}</td>
-                    <td>${row.FINAL}</td>
-                    <td>${row.CAMPO}</td>
-                    <td>
-                        <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
-                        <img src="../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" onclick="openDelete(${row.ID})">
-                            <i class="bi bi-trash-fill"></i>
-                        </button>
-                    </td>
-                </tr>
-                `;
-                cargarTabla.innerHTML += tablaHtml;
-            });
+            horarios = DATA.dataset;
+            mostrarHorarios(paginaActual);
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = DATA.message;
         } else {
-            sweetAlert(4, DATA.error, true);
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = "Existen 0 coincidencias";
         }
     } catch (error) {
         console.error('Error al obtener datos de la API:', error);
-        // Mostrar materiales de respaldo
-        lista_datos.forEach(row => {
-            const tablaHtml = `
-            <tr>
-            <td>${row.dia}</td>
-            <td>${row.hora_inicial}</td>
-            <td>${row.hora_final}</td>
-            <td>${row.campo_entrenamiento}</td>
+    }
+}
+
+// Función para mostrar técnicos en una página específica
+function mostrarHorarios(pagina) {
+    const inicio = (pagina - 1) * horariosPorPagina;
+    const fin = inicio + horariosPorPagina;
+    const horariosPagina = horarios.slice(inicio, fin);
+
+    const cargarTabla = document.getElementById('tabla_horarios');
+    cargarTabla.innerHTML = '';
+    horariosPagina.forEach(row => {
+        const tablaHtml = `
+                <tr>
+                    <td>${row.nombre_horario}</td>
+                    <td>${row.dia}</td>
+                    <td>${row.hora_inicial}</td>
+                    <td>${row.hora_final}</td>
+                    <td>${row.campo_de_entrenamiento}</td>
                     <td>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
+                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id_horario})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id})">
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_horario})">
                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
                     </td>
                 </tr>
-            `;
-            cargarTabla.innerHTML += tablaHtml;
-        });
+        `;
+        cargarTabla.innerHTML += tablaHtml;
+    });
+
+    actualizarPaginacion();
+}
+
+// Función para actualizar los controles de paginación
+function actualizarPaginacion() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
+
+    const totalPaginas = Math.ceil(horarios.length / horariosPorPagina);
+
+    if (paginaActual > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
+    }
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
+    }
+
+    if (paginaActual < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
     }
 }
+
+// Función para cambiar de página
+function cambiarPagina(nuevaPagina) {
+    paginaActual = nuevaPagina;
+    mostrarHorarios(paginaActual);
+}
+
 
 // window.onload
 window.onload = async function () {
@@ -200,10 +268,11 @@ window.onload = async function () {
     loadTemplate();
     // Agrega el HTML del encabezado
     appContainer.innerHTML = horarioHtml;
-    fillTable();
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Horarios';
+    ROWS_FOUND = document.getElementById('rowsFound');
+    fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
@@ -211,6 +280,7 @@ window.onload = async function () {
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
         ID_HORARIOS = document.getElementById('idHorario'),
+        NOMBRE = document.getElementById('nombreHora'),
         DIA = document.getElementById('diaEntreno'),
         HORA_INICIAL = document.getElementById('horarioInicial'),
         HORA_FINAL = document.getElementById('horarioFinal'),

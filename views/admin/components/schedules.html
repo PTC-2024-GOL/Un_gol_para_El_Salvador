@@ -36,6 +36,7 @@
                     <td colspan="6" id="rowsFound"></td>
                 </tr>
                 <tr>
+                    <th>Nombre</th>
                     <th>Día</th>
                     <th>Hora inicial</th>
                     <th>Hora final</th>
@@ -63,7 +64,12 @@
             <form id="saveForm">
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input type="hidden" id="idHorario" name="idHorario">
+                    <input type="number" class="d-none" id="idHorario" name="idHorario">
+                    <div class="col-sm-12 col-md-6">
+                        <label for="nombreHora" class="form-label fw-semibold">Nombre del horario</label>
+                        <input id="nombreHora" type="text" name="nombreHora" class="form-control"
+                            placeholder="Escribe el nombre del horario" required>
+                    </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="diaEntreno" class="form-label fw-semibold">Selecciona el día de
                             entrenamiento</label>

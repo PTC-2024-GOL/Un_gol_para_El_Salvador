@@ -105,7 +105,7 @@ class Database
                 self::$error;
                 break;
             case '23000':
-                self::$error = 'Violación de restricción de integridad';
+                self::$error;
                 break;
             default:
                 self::$error;
