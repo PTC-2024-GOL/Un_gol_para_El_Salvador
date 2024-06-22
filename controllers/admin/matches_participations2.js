@@ -13,8 +13,8 @@ let ID_PARTIDO,
     LOCALIDAD,
     RESULTADO;
 
-const API = '';
-const MATCHES_API = '';
+// Constantes para completar las rutas de la API.
+const PARTIDO_API = 'services/admin/partidos.php';
 
 
 async function loadComponent(path) {
@@ -23,67 +23,24 @@ async function loadComponent(path) {
     return text;
 }
 
-async function fillCards(form = null) {
-    const lista_datos = [
-        {
-            fecha: '14 de nov de 2023',
-            logo: '../../../../resources/img/svg/icons_dashboard/logo_gol.svg',
-            nombre_equipo: nombreEquipo,
-            logo_rival: '../../../../resources/img/svg/icons_dashboard/logo_rival.svg',
-            nombre_rival: 'Monaco',
-            localidad: 'Visitante',
-            resultado: '5 : 2',
-            id_equipo: idEquipo,
-            id_partido: 1,
-        },
-        {
-            fecha: '14 de nov de 2023',
-            logo: '../../../../resources/img/svg/icons_dashboard/logo_gol.svg',
-            nombre_equipo: 'Un gol para El Salvador',
-            logo_rival: '../../../../resources/img/svg/icons_dashboard/logo_rival.svg',
-            nombre_rival: 'Monaco',
-            resultado: '5 : 2',
-            localidad: 'Visitante',
-            id_equipo: 1,
-            id_partido: 1,
-        },
-        {
-            fecha: '14 de nov de 2023',
-            logo: '../../../../resources/img/svg/icons_dashboard/logo_gol.svg',
-            nombre_equipo: 'Un gol para El Salvador',
-            logo_rival: '../../../../resources/img/svg/icons_dashboard/logo_rival.svg',
-            nombre_rival: 'Monaco',
-            resultado: '5 : 2',
-            localidad: 'Visitante',
-            id_equipo: 1,
-            id_partido: 1,
-        },
-        {
-            fecha: '14 de nov de 2023',
-            logo: '../../../../resources/img/svg/icons_dashboard/logo_gol.svg',
-            nombre_equipo: 'Un gol para El Salvador',
-            logo_rival: '../../../../resources/img/svg/icons_dashboard/logo_rival.svg',
-            nombre_rival: 'Monaco',
-            resultado: '5 : 2',
-            localidad: 'Visitante',
-            id_equipo: 1,
-            id_partido: 1,
-        }
-    ];
+
+async function fillCards() {
+
     const cargarCartas = document.getElementById('matches_cards');
 
     try {
         cargarCartas.innerHTML = '';
         // Se verifica la acción a realizar.
-        (form) ? action = 'searchRows' : action = 'readAll';
-        console.log(form);
+        const form = new FormData();
+        form.append('idEquipo', idEquipo);
+
         // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(API, action, form);
-        console.log(DATA);
+        const DATA = await fetchData(PARTIDO_API, 'readAllByIdEquipos', form);
 
         if (DATA.status) {
             // Mostrar elementos obtenidos de la API
             DATA.dataset.forEach(row => {
+
                 const cardsHtml =  `<div class="col-md-6 col-sm-12">
                 <div class="tarjetas p-4">
                     <div class="row">
@@ -91,21 +48,21 @@ async function fillCards(form = null) {
                             <img src="../../../resources/img/svg/calendar.svg" alt="">
                         </div>
                         <div class="col">
-                            <p class="fw-semibold mb-0">${row.FECHA}</p>
-                            <p class="small">${row.LOCALIDAD}</p>
+                            <p class="fw-semibold mb-0">${row.fecha_partido}</p>
+                            <p class="small">${row.localidad_partido}</p>
                         </div>
                     </div>
                     <div class="row align-items-center">
                         <div class="col-4">
-                            <img src="${row.LOGO_EQUIPO}" class="img">
-                            <p class="small mt-3">${row.NOMBRE_EQUIPO}</p>
+                            <img src="${SERVER_URL}images/equipos/${row.logo_equipo}" class="img">
+                            <p class="small mt-3">${row.nombre_equipo}</p>
                         </div>
                         <div class="col-4">
-                            <h2 class="fw-semibold">${row.RESULTADO}</h2>
+                            <h2 class="fw-semibold">${row.resultado_partido}</h2>
                         </div>
                         <div class="col-4">
-                            <img src="${row.LOGO_RIVAL}" class="img">
-                            <p class="small mt-3">${row.NOMBRE_RIVAL}</p>
+                            <img src="${SERVER_URL}images/partidos/${row.logo_rival}" class="img">
+                            <p class="small mt-3">${row.nombre_rival}</p>
                         </div>
                     </div>
                     <hr>
@@ -118,47 +75,65 @@ async function fillCards(form = null) {
                 cargarCartas.innerHTML += cardsHtml;
             });
         } else {
-            sweetAlert(4, DATA.error, true);
+            await sweetAlert(3, DATA.error, true, '../../../views/admin/pages/matches_participations1.html');
         }
     } catch (error) {
         console.error('Error al obtener datos de la API:', error);
-        // Mostrar materiales de respaldo
-        lista_datos.forEach(row => {
-            const cardsHtml = `<div class="col-md-6 col-sm-12">
-            <div class="tarjetas shadow p-4">
-                <div class="row">
-                    <div class="col-auto">
-                        <img src="../../../resources/img/svg/calendar.svg" alt="">
-                    </div>
-                    <div class="col">
-                        <p class="fw-semibold mb-0">${row.fecha}</p>
-                        <p class="small">${row.localidad}</p>
-                    </div>
-                </div>
-                <div class="row align-items-center">
-                    <div class="col-4">
-                        <img src="${row.logo}" class="img">
-                        <p class="small mt-3">${row.nombre_equipo}</p>
-                    </div>
-                    <div class="col-4">
-                        <h2 class="fw-semibold">${row.resultado}</h2>
-                    </div>
-                    <div class="col-4">
-                        <img src="${row.logo_rival}" class="img">
-                        <p class="small mt-3">${row.nombre_rival}</p>
-                    </div>
-                </div>
-                <hr>
-                <button class="btn bg-blue-principal-color text-white btn-sm rounded-3"  onclick="goToPlayers(${row.id_partido})">
-                    Agregar participaciones
-                </button>
-            </div>
-            </div>
-          `;
-            cargarCartas.innerHTML += cardsHtml;
-        });
     }
 }
+
+async function searchMatches(form = null) {
+
+    const cargarCartas = document.getElementById('matches_cards');
+
+        cargarCartas.innerHTML = '';
+
+        // Petición para obtener los registros disponibles.
+        const DATA = await fetchData(PARTIDO_API, 'searchRows', form);
+
+        if (DATA.status) {
+            // Mostrar elementos obtenidos de la API
+            DATA.dataset.forEach(row => {
+                idPartido = row.id_partido;
+
+                const cardsHtml =  `<div class="col-md-6 col-sm-12">
+                <div class="tarjetas p-4">
+                    <div class="row">
+                        <div class="col-auto">
+                            <img src="../../../resources/img/svg/calendar.svg" alt="">
+                        </div>
+                        <div class="col">
+                            <p class="fw-semibold mb-0">${row.fecha}</p>
+                            <p class="small">${row.localidad_partido}</p>
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-4">
+                            <img src="${SERVER_URL}images/equipos/${row.logo_equipo}" class="img">
+                            <p class="small mt-3">${row.nombre_equipo}</p>
+                        </div>
+                        <div class="col-4">
+                            <h2 class="fw-semibold">${row.resultado_partido}</h2>
+                        </div>
+                        <div class="col-4">
+                            <img src="${SERVER_URL}images/partidos/${row.logo_rival}" class="img">
+                            <p class="small mt-3">${row.nombre_rival}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <button class="btn bg-blue-principal-color text-white btn-sm rounded-3"  onclick="goToPlayers(idPartido)">
+                        Agregar participaciones
+                    </button>
+                </div>
+                </div>
+              `;
+                cargarCartas.innerHTML += cardsHtml;
+            });
+        } else {
+            await sweetAlert(3, DATA.error, true);
+        }
+}
+
 
 // Creamos una funcion que recibe como parametro el id del equipo que fue seleccionado
 function goToPlayers(idParticipacion) {
@@ -179,5 +154,19 @@ window.onload = async function () {
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Participaciones'; 
-    fillCards();
+    await fillCards();
+
+    // Constante para establecer el formulario de buscar.
+    SEARCH_FORM = document.getElementById('searchForm');
+
+    // Método del evento para cuando se envía el formulario de buscar.
+    SEARCH_FORM.addEventListener('submit', (event) => {
+        // Se evita recargar la página web después de enviar el formulario.
+        event.preventDefault();
+        // Constante tipo objeto con los datos del formulario.
+        const FORM = new FormData(SEARCH_FORM);
+
+        // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
+        searchMatches(FORM);
+    });
 }

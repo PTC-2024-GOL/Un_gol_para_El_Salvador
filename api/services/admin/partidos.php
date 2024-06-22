@@ -56,6 +56,16 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'No existen registros';
                 }
                 break;
+            // Leer uno
+            case 'readAllByIdEquipos':
+                if (!$partido->setIdEquipo($_POST['idEquipo'])) {
+                    $result['error'] = $partido->getDataError();
+                } elseif ($result['dataset'] = $partido->readAllByIdEquipo()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'El equipo seleccionado aún no ha tenido partidos';
+                }
+                break;
                 // Leer uno
             case 'readOne':
                 if (!$partido->setIdPartido($_POST['idPartido'])) {

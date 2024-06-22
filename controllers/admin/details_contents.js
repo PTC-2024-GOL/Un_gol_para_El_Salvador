@@ -9,8 +9,7 @@ let SAVE_FORM,
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
-const DETALLE_CONTENIDO_API = '';
-const HORARIOS_API = '';
+const DETALLE_CONTENIDO_API = 'services/admin/detalle_contenido.php';
 
 // Lista de datos para mostrar en la tabla de horarios
 const lista_datos_horario = [
@@ -36,7 +35,7 @@ async function loadComponent(path) {
     return text;
 }
 
- 
+
 // Función para poblar un combobox (select) con opciones
 const fillSelected = (data, action, selectId, selectedValue = null) => {
     const selectElement = document.getElementById(selectId);
@@ -73,8 +72,8 @@ const fillSelected = (data, action, selectId, selectedValue = null) => {
 */
 //
 // Función para abrir la página de detalles específicos.
-const openPag = () => {
-    window.location.href = '../pages/specific_details_contents.html';
+const openPag = (id_entrenamiento) => {
+    window.location.href = `../pages/specific_details_contents.html?id_entrenamiento=${id_entrenamiento}`;
 }
 
 // Funcion para preparar el formulario al momento de abrirlo
@@ -147,7 +146,7 @@ async function cargarTabla(form = null) {
     try {
         cargarTabla.innerHTML = '';
         // Se verifica la acción a realizar.
-        (form) ? action = 'searchRows' : action = 'readAll';
+        (form) ? action = 'searchRowsHorario' : action = 'readAllHorario';
         console.log(form);
         // Petición para obtener los registros disponibles.
         const DATA = await fetchData(DETALLE_CONTENIDO_API, action, form);
@@ -158,14 +157,15 @@ async function cargarTabla(form = null) {
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
                 <tr>
-                    <td>${row.EQUIPO}</td>
-                    <td>${row.CATEGORIA}</td>
-                    <td>
-                        <button type="button" class="btn btn-warnig" onclick="seeModal(${row.ID})">
-                        <img src="../../../resources/img/svg/icons_forms/reloj.png" width="30" height="30">
-                        </button>
-                    </td>
-                </tr>
+                <td>${row.nombre_equipo}</td>
+                <td>${row.nombre_categoria}</td>
+                
+                <td>
+                    <button type="button" class="btn transparente" onclick="seeModal(${row.id_equipo})">
+                    <img src="../../../resources/img/svg/icons_forms/reloj.png" width="30" height="30">
+                    </button>
+                </td>
+            </tr>
                 `;
                 cargarTabla.innerHTML += tablaHtml;
             });
@@ -178,11 +178,11 @@ async function cargarTabla(form = null) {
         lista_datos.forEach(row => {
             const tablaHtml = `
             <tr>
-                <td>${row.equipo}</td>
-                <td>${row.categoria}</td>
+                <td>${row.nombre_equipo}</td>
+                <td>${row.nombre_categoria}</td>
                 
                 <td>
-                    <button type="button" class="btn transparente" onclick="seeModal(${row.id})">
+                    <button type="button" class="btn transparente" onclick="seeModal(${row.id_equipo})">
                     <img src="../../../resources/img/svg/icons_forms/reloj.png" width="30" height="30">
                     </button>
                 </td>
@@ -230,7 +230,7 @@ window.onload = async function () {
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         //Pondré el metodo para abrir la siguiente pantalla antes del if, luego deberé ponerla
         // Redirige a una nueva página en la misma ventana del navegador
-       
+
 
         if (DATA.status) {
             // Se cierra la caja de diálogo.
@@ -242,7 +242,7 @@ window.onload = async function () {
         } else {
             sweetAlert(2, DATA.error, false);
             console.error(DATA.exception);
-            
+
         }
     });
     // Constante para establecer el formulario de buscar.
