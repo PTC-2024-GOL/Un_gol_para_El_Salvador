@@ -7,6 +7,8 @@ let SAVE_FORM,
     FECHA_INICIO,
     FECHA_FINAL;
 let SEARCH_FORM;
+let ROWS_FOUND;
+
 
 // Constantes para completar las rutas de la API.
 const API = 'services/admin/jornadas.php';
@@ -156,52 +158,47 @@ const openDelete = async (id) => {
 }
 
 
-async function fillTable(form = null) {
-    const lista_datos = [
-        {
-            jornada: 1,
-            temporada: 2024,
-            fecha_inicio: "2024-01-31",
-            fecha_final: "2024-02-06",
-            id: 1,
-        },
-        {
-            jornada: 2,
-            temporada: 2024,
-            fecha_inicio: "2024-02-07",
-            fecha_final: "2024-02-14",
-            id: 2,
-        },
-        {
-            jornada: 3,
-            temporada: 2024,
-            fecha_inicio: "2024-02-15",
-            fecha_final: "2024-02-22",
-            id: 3,
-        },
-        {
-            jornada: 4,
-            temporada: 2024,
-            fecha_inicio: "2024-02-23",
-            fecha_final: "2024-02-30",
-            id: 4,
-        }
-    ];
-    const cargarTabla = document.getElementById('tabla_jornadas');
+// Variables y constantes para la paginación
+const jornadasPorPagina = 10;
+let paginaActual = 1;
+let jornadas = [];
 
+// Función para cargar tabla de técnicos con paginación
+async function fillTable(form = null) {
+    const cargarTabla = document.getElementById('tabla_jornadas');
     try {
         cargarTabla.innerHTML = '';
-        // Se verifica la acción a realizar.
-        (form) ? action = 'searchRows' : action = 'readAll';
-        console.log(form);
         // Petición para obtener los registros disponibles.
+        let action;
+        form ? action = 'searchRows' : action = 'readAll';
+        console.log(form);
         const DATA = await fetchData(API, action, form);
         console.log(DATA);
 
         if (DATA.status) {
-            // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-                const tablaHtml = `
+            jornadas = DATA.dataset;
+            mostrarJornadas(paginaActual);
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = DATA.message;
+        } else {
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = "Existen 0 coincidencias";
+        }
+    } catch (error) {
+        console.error('Error al obtener datos de la API:', error);
+    }
+}
+
+// Función para mostrar técnicos en una página específica
+function mostrarJornadas(pagina) {
+    const inicio = (pagina - 1) * jornadasPorPagina;
+    const fin = inicio + jornadasPorPagina;
+    const jornadasPagina = jornadas.slice(inicio, fin);
+
+    const cargarTabla = document.getElementById('tabla_jornadas');
+    cargarTabla.innerHTML = '';
+    jornadasPagina.forEach(row => {
+        const tablaHtml = `
                 <tr>
                     <td>${row.NUMERO}</td>
                     <td>${row.NOMBRE}</td>
@@ -219,38 +216,37 @@ async function fillTable(form = null) {
                     </button>
                     </td>
                 </tr>
-                `;
-                cargarTabla.innerHTML += tablaHtml;
-            });
-        } else {
-            sweetAlert(4, DATA.error, true);
-        }
-    } catch (error) {
-        console.error('Error al obtener datos de la API:', error);
-        // Mostrar materiales de respaldo
-        lista_datos.forEach(row => {
-            const tablaHtml = `
-            <tr>
-                <td>${row.jornada}</td>
-                <td>${row.temporada}</td>
-                <td>${row.fecha_inicio}</td>
-                <td>${row.fecha_final}</td>
-                <td>
-                    <a href="trainings.html?id=${row.id}" class="btn transparente">
-                    <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18" height="18">
-                    </a>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                    </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
-                </td>
-            </tr>
-            `;
-            cargarTabla.innerHTML += tablaHtml;
-        });
+        `;
+        cargarTabla.innerHTML += tablaHtml;
+    });
+
+    actualizarPaginacion();
+}
+
+// Función para actualizar los controles de paginación
+function actualizarPaginacion() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
+
+    const totalPaginas = Math.ceil(jornadas.length / jornadasPorPagina);
+
+    if (paginaActual > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
     }
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
+    }
+
+    if (paginaActual < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
+    }
+}
+
+// Función para cambiar de página
+function cambiarPagina(nuevaPagina) {
+    paginaActual = nuevaPagina;
+    mostrarJornadas(paginaActual);
 }
 
 // window.onload
@@ -266,6 +262,7 @@ window.onload = async function () {
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Jornadas';
+    ROWS_FOUND = document.getElementById('rowsFound');
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),

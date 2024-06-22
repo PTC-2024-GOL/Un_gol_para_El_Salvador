@@ -19,6 +19,8 @@ class PartidosHandler
     protected $rivalPartido = null;
     protected $idPartido = null;
 
+    // Constante para establecer la ruta de las imágenes.
+    const RUTA_IMAGEN = '../../images/partidos/';
 
     /*
      *  Métodos para realizar las operaciones SCRUD (search, create, read, update, and delete).
@@ -33,6 +35,15 @@ class PartidosHandler
                 WHERE nombre_rival LIKE ? OR nombre_equipo LIKE ?;";
         $params = array($value, $value);
         return Database::getRows($sql, $params);
+    }
+
+    public function readFilename()
+    {
+        $sql = 'SELECT logo_rival
+                FROM partidos
+                WHERE id_partido = ?';
+        $params = array($this->idPartido);
+        return Database::getRow($sql, $params);
     }
 
     //Función para insertar un partido. 

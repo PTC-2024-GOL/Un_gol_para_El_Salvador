@@ -29,6 +29,8 @@ let SAVE_FORM,
     RESULTADO_PARTIDO_SEE,
     LOCALIDAD_SEE,
     TIPO_RESULTADO_PARTIDO_SEE,
+    LOGO_EQUIPO_DIV,
+    LOGO_RIVAL_DIV,
     JORNADA;
 let SEARCH_FORM;
 
@@ -49,6 +51,11 @@ const openCreate = async () => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
     FECHA_PARTIDOS.classList.add('d-none');
+    LOGO_EQUIPO_DIV.classList.add('d-none');
+    LOGO_RIVAL_DIV.classList.remove('align-items-start');
+    LOGO_RIVAL_DIV.classList.add('align-items-center');
+    LOGO_RIVAL_DIV.classList.remove('col-sm-6');
+    LOGO_RIVAL_DIV.classList.add('col-sm-12');
     ID_PARTIDO.value = null;
     MODAL_TITLE2.textContent = 'Agregar partido';
     // Se prepara el formulario.
@@ -84,6 +91,14 @@ const seeModal = async (id) => {
             SEE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
+            EQUIPO_SEE.disabled = false;
+            RIVAL_SEE.disabled = false;
+            FECHA_PARTIDO_SEE.disabled = false;
+            CANCHA_SEE.disabled = false;
+            RESULTADO_PARTIDO_SEE.disabled = false;
+            LOCALIDAD_SEE.disabled = false;
+            TIPO_RESULTADO_PARTIDO_SEE.disabled = false;
+            JORNADA_SEE.disabled = false;
             EQUIPO_SEE.value = ROW.nombre_equipo;
             RIVAL_SEE.value = ROW.nombre_rival;
             FECHA_PARTIDO_SEE.value = ROW.fecha_partido;
@@ -94,6 +109,14 @@ const seeModal = async (id) => {
             JORNADA_SEE.value = ROW.nombre_jornada;
             LOGO_EQUIPO_SEE.src = `${SERVER_URL}images/equipos/${ROW.logo_equipo}`;
             LOGO_RIVAL_SEE.src = `${SERVER_URL}images/partidos/${ROW.logo_rival}`;
+            EQUIPO_SEE.disabled = true;
+            RIVAL_SEE.disabled = true;
+            FECHA_PARTIDO_SEE.disabled = true;
+            CANCHA_SEE.disabled = true;
+            RESULTADO_PARTIDO_SEE.disabled = true;
+            LOCALIDAD_SEE.disabled = true;
+            TIPO_RESULTADO_PARTIDO_SEE.disabled = true;
+            JORNADA_SEE.disabled = true;
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -122,8 +145,13 @@ const openUpdate = async (id) => {
             MODAL_TITLE.textContent = 'Actualizar partido';
             // Se prepara el formulario.
             SAVE_FORM.reset();
-            
+
             FECHA_PARTIDOS.classList.remove('d-none');
+            LOGO_EQUIPO_DIV.classList.remove('d-none');
+            LOGO_RIVAL_DIV.classList.add('align-items-start');
+            LOGO_RIVAL_DIV.classList.remove('align-items-center');
+            LOGO_RIVAL_DIV.classList.add('col-sm-6');
+            LOGO_RIVAL_DIV.classList.remove('col-sm-12');
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
             ID_PARTIDO.value = ROW.id_partido;
@@ -146,8 +174,8 @@ const openUpdate = async (id) => {
         SAVE_MODAL.show();
         MODAL_TITLE2.textContent = 'Actualizar partido';
     }
-
 }
+
 /*
 * Función asíncrona para eliminar un registro.
 * Parámetros: id (identificador del registro seleccionado).
@@ -393,22 +421,24 @@ window.onload = async function () {
         LOGO1 = document.getElementById('logo1'),
         LOGO2 = document.getElementById('logo2'),
         LOGO_RIVAL2 = document.getElementById('logoRival'),
+        LOGO_EQUIPO_DIV = document.getElementById('logo_equipo_div'),
+        LOGO_RIVAL_DIV = document.getElementById('logo_rival_div'),
         TIPO_RESULTADO_PARTIDO = document.getElementById('tipoResultado');
 
-        LOGO_RIVAL2.addEventListener('change', function (event) {
-            // Verifica si hay una imagen seleccionada
-            if (event.target.files && event.target.files[0]) {
-                // con el objeto FileReader lee de forma asincrona el archivo seleccionado
-                const reader = new FileReader();
-                // Luego de haber leido la imagen seleccionada se nos devuele un objeto de tipo blob
-                // Con el metodo createObjectUrl de fileReader crea una url temporal para la imagen
-                reader.onload = function (event) {
-                    // finalmente la url creada se le asigna al atributo src de la etiqueta img
-                    LOGO2.src = event.target.result;
-                };
-                reader.readAsDataURL(event.target.files[0]);
-            }
-        });
+    LOGO_RIVAL2.addEventListener('change', function (event) {
+        // Verifica si hay una imagen seleccionada
+        if (event.target.files && event.target.files[0]) {
+            // con el objeto FileReader lee de forma asincrona el archivo seleccionado
+            const reader = new FileReader();
+            // Luego de haber leido la imagen seleccionada se nos devuele un objeto de tipo blob
+            // Con el metodo createObjectUrl de fileReader crea una url temporal para la imagen
+            reader.onload = function (event) {
+                // finalmente la url creada se le asigna al atributo src de la etiqueta img
+                LOGO2.src = event.target.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    });
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
@@ -417,11 +447,11 @@ window.onload = async function () {
         (ID_PARTIDO.value) ? action = 'updateRow' : action = 'createRow';
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SAVE_FORM);
-        console.log('antes de saltar a la api'+ FORM);
-        console.log('antes de saltar a la api'+ action);
+        console.log('antes de saltar a la api' + FORM);
+        console.log('antes de saltar a la api' + action);
         // Petición para guardar los datos del formulario.
         const DATA = await fetchData(PARTIDO_API, action, FORM);
-        console.log('despues de saltar a la api'+ DATA);
+        console.log('despues de saltar a la api' + DATA.status + ' ' + DATA.message);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se cierra la caja de diálogo.
