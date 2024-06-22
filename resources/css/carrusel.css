@@ -44,6 +44,11 @@
     padding: 10px 15px;
 }
 
+.carousel-control-prev,
+.carousel-control-next {
+    width: 3rem; /* Ajusta el ancho del botón según sea necesario */
+    font-size: 1rem; /* Ajusta el tamaño del texto si es necesario */
+}
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
     filter: invert(1);

@@ -29,7 +29,7 @@ if (isset($_GET['action'])) {
             case 'createRow':
                 $_POST = Validator::validateForm($_POST);
                 if (
-                    !$cuerpotecnico->setCuerpo($_POST['cuerpoTecnico']) or
+                    !$cuerpotecnico->setCuerpo($_POST['cuerposTecnicos']) or
                     !$cuerpotecnico->setTecnico($_POST['tecnico']) or
                     !$cuerpotecnico->setRol($_POST['rol'])
                 ) {
@@ -79,8 +79,8 @@ if (isset($_GET['action'])) {
             case 'updateRow':
                 $_POST = Validator::validateForm($_POST);
                 if (
-                    !$cuerpotecnico->setId($_POST['idCuerpoTecnico']) or
-                    !$cuerpotecnico->setCuerpo($_POST['cuerpoTecnico']) or
+                    !$cuerpotecnico->setId($_POST['idCuerpoTecnicoD']) or
+                    !$cuerpotecnico->setCuerpo($_POST['cuerposTecnicos']) or
                     !$cuerpotecnico->setTecnico($_POST['tecnico']) or
                     !$cuerpotecnico->setRol($_POST['rol'])
                 ) {
@@ -95,7 +95,7 @@ if (isset($_GET['action'])) {
                 // Eliminar
             case 'deleteRow':
                 if (
-                    !$cuerpotecnico->setId($_POST['idCuerpoTecnico'])
+                    !$cuerpotecnico->setId($_POST['idCuerpoTecnicoD'])
                 ) {
                     $result['error'] = $cuerpotecnico->getDataError();
                 } elseif ($cuerpotecnico->deleteRow()) {
