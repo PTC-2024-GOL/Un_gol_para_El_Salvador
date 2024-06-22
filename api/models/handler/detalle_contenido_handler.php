@@ -109,10 +109,12 @@ class DetalleContenidoHandler
     public function readOneHorario()
     {
         $sql = "SELECT 
-                id_equipo,
                 id_entrenamiento,
-                horario
-                FROM vista_horarios_equipos WHERE id_equipo = ?;";
+                horario,
+                fecha_entrenamiento,
+                id_equipo
+                FROM vista_horarios_equipos WHERE id_equipo = ?
+                ORDER BY fecha_entrenamiento DESC;";
         $params = array($this->idEquipo);
         return Database::getRows($sql, $params);
     }
