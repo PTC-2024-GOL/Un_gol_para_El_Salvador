@@ -306,7 +306,9 @@ async function cargarCarrouselParaCuerpoTecnico(id) {
                     innerHTML += `
                         <div class="col-lg-4 col-md-4 col-sm-12 text-center">
                             <div class="card">
-                                <img src="${SERVER_URL}images/tecnicos/${technic.IMAGEN}" class="card-img-top correccion" alt="${technic.NOMBRE}">
+                                <div class="justify-content-center">
+                                <img src="${SERVER_URL}images/tecnicos/${technic.IMAGEN}" class="card-img-top correccion" alt="${technic.TECNICO}">
+                                </div>
                                 <div class="card-body">
                                     <h5 class="card-title">${technic.TECNICO}</h5>
                                     <p class="card-text">${technic.ROL_TECNICO}</p>
@@ -340,7 +342,7 @@ async function cargarCarrouselParaCuerpoTecnico(id) {
                 </button>
             `;
         } else {
-            innerHTML = `<p>No hay technicos disponibles para este cuerpo técnico.</p>`;
+            innerHTML = `<p>No hay tecnicos disponibles para este cuerpo técnico.</p>`;
         }
 
         carousel.innerHTML = innerHTML;
