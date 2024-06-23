@@ -55,7 +55,7 @@
             <form id="seeForm">
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input type="hidden" id="idCategoria" name="idCategoria">
+                    <input type="hidden" id="idCategoria" name="idEquipo">
                     <div class="col-sm-12 col-md-12">
                         <label for="horario" class="form-label fw-semibold">Selecciona el horario al que quieres asignar
                             un
@@ -64,9 +64,8 @@
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
-                    <button type="reset" class="btn bg-red-cream-color text-white">Cancelar</button>
-                    <button type="submit" class="btn bg-blue-principal-color text-white"
-                        onclick="openPag()">Guardar</button>
+                    <button type="button" aria-label="Close" data-bs-dismiss="modal" class="btn bg-red-cream-color text-white">Cancelar</button>
+                    <button type="button" class="btn bg-blue-principal-color text-white" onclick="openPag()">Ver entrenamiento</button>
                 </div>
             </form>
         </div>

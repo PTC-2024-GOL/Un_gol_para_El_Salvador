@@ -35,36 +35,6 @@ async function loadComponent(path) {
     return text;
 }
 
-
-// Función para poblar un combobox (select) con opciones
-const fillSelected = (data, action, selectId, selectedValue = null) => {
-    const selectElement = document.getElementById(selectId);
-
-    // Limpiar opciones previas del combobox
-    selectElement.innerHTML = '';
-
-    // Crear opción por defecto
-    const defaultOption = document.createElement('option');
-    defaultOption.value = '';
-    defaultOption.textContent = 'Selecciona a el horario';
-    selectElement.appendChild(defaultOption);
-
-    // Llenar el combobox con los datos proporcionados
-    data.forEach(item => {
-        const option = document.createElement('option');
-        option.value = item.id; // Suponiendo que hay una propiedad 'id' en los datos
-        option.textContent = item.horario; // Cambia 'horario' al nombre de la propiedad que deseas mostrar en el combobox
-        selectElement.appendChild(option);
-    });
-
-    // Seleccionar el valor especificado si se proporciona
-    if (selectedValue !== null) {
-        selectElement.value = selectedValue;
-    }
-};
-
-
-
 /*
 *   Función para abrir la página de detalles específicos.
 *   Parámetros: ninguno.
@@ -72,8 +42,14 @@ const fillSelected = (data, action, selectId, selectedValue = null) => {
 */
 //
 // Función para abrir la página de detalles específicos.
-const openPag = (id_entrenamiento) => {
-    window.location.href = `../pages/specific_details_contents.html?id_entrenamiento=${id_entrenamiento}`;
+const openPag = () => {
+    const id_entrenamiento = HORARIO.value;
+    if (!(id_entrenamiento == '0' || id_entrenamiento == '')) {
+        console.log('Entrenamiento seleccionado:', id_entrenamiento, ' ', HORARIO.value);
+        window.location.href = `../pages/specific_details_contents.html?id_entrenamiento=${id_entrenamiento}`;
+        return;
+    }   
+    sweetAlert(3, 'Seleccione un horario para continuar', false);
 }
 
 // Funcion para preparar el formulario al momento de abrirlo
@@ -86,19 +62,17 @@ const seeModal = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
-        FORM.append('idCategoria', id);
+        FORM.append('idEquipo', id);
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(DETALLE_CONTENIDO_API, 'readOne', FORM);
+        await fillSelectPost(DETALLE_CONTENIDO_API, 'readOneHorario', 'horario', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SEE_MODAL.show();
-            MODAL_TITLE.textContent = 'Elegir horario';
+            MODAL_TITLE.textContent = 'Elegir entrenamiento';
             // Se prepara el formulario.
             SEE_FORM.reset();
             // Se inicializan los campos con los datos.
-            const ROW = DATA.dataset;
-            ID_CATEGORIA.value = ROW.ID;
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -107,7 +81,6 @@ const seeModal = async (id) => {
         SEE_MODAL.show();
         MODAL_TITLE.textContent = 'Elegir horario';
         SEE_FORM.reset();
-        fillSelected(lista_datos_horario, 'readAll', 'horario');
     }
 }
 
@@ -203,7 +176,6 @@ window.onload = async function () {
     loadTemplate();
     // Agrega el HTML del encabezado
     appContainer.innerHTML = adminHtml;
-    fillSelected(lista_datos_horario, 'readAll', 'horario');
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Detalles de contenidos';
     cargarTabla();
@@ -216,35 +188,6 @@ window.onload = async function () {
     SAVE_FORM = document.getElementById('seeForm'),
         ID_CATEGORIA = document.getElementById('idCategoria'),
         HORARIO = document.getElementById('horario');
-    // Método del evento para cuando se envía el formulario de guardar.
-    SAVE_FORM.addEventListener('submit', async (event) => {
-        // Se evita recargar la página web después de enviar el formulario.
-        event.preventDefault();
-        // Se verifica la acción a realizar.
-        (ID_CATEGORIA.value) ? action = 'select' : action = 'createRow';
-        // Constante tipo objeto con los datos del formulario.
-        const FORM = new FormData(SAVE_FORM);
-        // Petición para guardar los datos del formulario.
-        const DATA = await fetchData(DETALLE_CONTENIDO_API, action, FORM);
-        //Aqui debo hacer la lógica de lo que sucederá cuando se le dé click a seleccionar horario.
-        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-        //Pondré el metodo para abrir la siguiente pantalla antes del if, luego deberé ponerla
-        // Redirige a una nueva página en la misma ventana del navegador
-
-
-        if (DATA.status) {
-            // Se cierra la caja de diálogo.
-            SAVE_MODAL.hide();
-            // Se muestra un mensaje de éxito.
-            sweetAlert(1, DATA.message, true);
-            // Se carga nuevamente la tabla para visualizar los cambios.
-            cargarTabla();
-        } else {
-            sweetAlert(2, DATA.error, false);
-            console.error(DATA.exception);
-
-        }
-    });
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');
     // Verificar si SEARCH_FORM está seleccionado correctamente

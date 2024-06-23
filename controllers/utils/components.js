@@ -128,6 +128,39 @@ const fillSelect = async (filename, action, select, selected = null) => {
     document.getElementById(select).innerHTML = content;
 }
 
+/*
+*   Función asíncrona para cargar las opciones en un select de formulario con post, en su mayroía
+*   se usa para funciones en el que el select depende de algun id, es decir, selec especificos.
+*   Parámetros: filename (nombre del archivo), action (acción a realizar), select (identificador del select en el formulario) y selected (dato opcional con el valor seleccionado).
+*   Retorno: ninguno.
+*/
+const fillSelectPost = async (filename, action, select, form, selected = null) => {
+    // Petición para obtener los datos.
+    const DATA = await fetchData(filename, action, form);
+    let content = '';
+    // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje.
+    if (DATA.status) {
+        content += '<option value="" selected>Seleccione una opción</option>';
+        // Se recorre el conjunto de registros fila por fila a través del objeto row.
+        DATA.dataset.forEach(row => {
+            // Se obtiene el dato del primer campo.
+            value = Object.values(row)[0];
+            // Se obtiene el dato del segundo campo.
+            text = Object.values(row)[1];
+            // Se verifica cada valor para enlistar las opciones.
+            if (value != selected) {
+                content += `<option value="${value}">${text}</option>`;
+            } else {
+                content += `<option value="${value}" selected>${text}</option>`;
+            }
+        });
+    } else {
+        content += '<option value="0">No hay opciones disponibles</option>';
+    }
+    // Se agregan las opciones a la etiqueta select mediante el id.
+    document.getElementById(select).innerHTML = content;
+}
+
 // /*
 // *   Función para mostrar la opcion seleccionada de un formulario en base a opciones ya predefinidas.
 // *   Parámetros: selectedElement (identificar el id del select en el forms), valueToSelect (Opcion que queremos mostrar en el select, comparara si esta opcion se encuentra en el select).
