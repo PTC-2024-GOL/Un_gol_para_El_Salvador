@@ -5,7 +5,7 @@
 
 .card {
     color: black;
-    border: none;
+    border: 2px solid rgb(2, 8, 135); /* Azul oscuro */
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -20,7 +20,24 @@
 .correccion{
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    height: 350px;
+    height: 400px;
+}
+
+.botones {
+    border-radius: 50%;
+    /* Bordes redondeados */
+    box-shadow: 0px 0px 10px rgb(255, 255, 255);
+    /* Sombra */
+    transition: all 0.3s ease;
+    /* Animación de transición */
+}
+
+.botones:hover {
+    border-radius: 100%;
+    transform: scale(1.05);
+    /* Escala al 105% en hover */
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.8);
+    /* Sombra más pronunciada en hover */
 }
 
 .card-body {
@@ -42,6 +59,7 @@
     display: flex;
     justify-content: center;
     padding: 10px 15px;
+    background: linear-gradient(180deg, rgb(2, 8, 135), rgb(1, 2, 37)); /* Degradado del borde */
 }
 
 .carousel-control-prev,

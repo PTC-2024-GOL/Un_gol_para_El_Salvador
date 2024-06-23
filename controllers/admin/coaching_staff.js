@@ -108,13 +108,13 @@ const openDelete = async (id) => {
 *   Parámetros: ninguno.
 *   Retorno: ninguno.
 */
-const openCreateD = () => {
+const openCreateD = (id) => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL_DETAIL.show();
     MODAL_TITLE_DETAIL.textContent = 'Agregar a un cuerpo técnico';
     // Se prepara el formulario.
     SAVE_FORM_DETAIL.reset();
-    fillSelect(CUERPOTECNICO_API, 'readAll', 'cuerposTecnicos');
+    fillSelect(CUERPOTECNICO_API, 'readAll', 'cuerposTecnicos', id);
     fillSelect(TECNICO_API, 'readAll', 'tecnico');
     fillSelect(ROL_API, 'readAll', 'rol');
 }
@@ -231,6 +231,8 @@ async function mostrarCuerpoTecnico(pagina) {
     cargarTabla.innerHTML = '';
     for (const row of cuerpoTecnicoPagina) {
         const tablaHtml = `
+            <tr>
+            <td>
             <div class="accordion-item">
                 <h2 class="accordion-header" id="heading-${row.ID}">
                     <div class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${row.ID}" aria-expanded="false" aria-controls="collapse-${row.ID}">
@@ -251,13 +253,15 @@ async function mostrarCuerpoTecnico(pagina) {
                 </h2>
                 <div id="collapse-${row.ID}" class="accordion-collapse collapse" aria-labelledby="heading-${row.ID}" data-bs-parent="#tabla_cuerpo_tecnico">
                     <div class="accordion-body">
-                        <button class="btn bg-blue-principal-color mb-5 text-white ms-auto borde-transparente btn-sm rounded-3" onclick="openCreateD()">
+                        <button class="btn bg-blue-principal-color mb-5 text-white ms-auto borde-transparente btn-sm rounded-3" onclick="openCreateD(${row.ID})">
                           <span class="fs-5 me-2">+</span> Agregar un elemento al cuerpo técnico
                         </button>
                         <div id="carousel-container-${row.ID}" class="carousel-container"></div>
                     </div>
                 </div>
             </div>
+            </td>
+            </tr>
         `;
         cargarTabla.innerHTML += tablaHtml;
 
@@ -307,11 +311,11 @@ async function cargarCarrouselParaCuerpoTecnico(id) {
                                     <h5 class="card-title">${technic.TECNICO}</h5>
                                     <p class="card-text">${technic.ROL_TECNICO}</p>
                                 </div>
-                                <div class="card-footer bg-blue-principal-color p-3">  
-                                   <button type="button" class="btn transparente rounded-5 me-3" onclick="openUpdateD(${technic.ID})">
+                                <div class="card-footer p-3">  
+                                   <button type="button" class="btn botones me-3" onclick="openUpdateD(${technic.ID})">
                                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                                    </button>
-                                   <button type="button" class="btn transparente rounded-5" onclick="openDeleteD(${technic.ID})">
+                                   <button type="button" class="btn botones" onclick="openDeleteD(${technic.ID})">
                                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                                    </button>
                                 </div>
