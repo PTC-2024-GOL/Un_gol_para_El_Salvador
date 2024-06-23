@@ -29,6 +29,27 @@ class PosicionesData extends PosicionesHandler
         }
     }
 
+    // Validación y asignación del nombre del horario.
+    public function setPosicion($value, $min = 2, $max = 60)
+    {
+        if (!Validator::validateAlphanumeric($value)) {
+            $this->data_error = 'El nombre de la posición debe ser un valor alfanumerico';
+            return false;
+        } elseif (Validator::validateLength($value, $min, $max)) {
+            $this->posicion = $value;
+            return true;
+        } else {
+            $this->data_error = 'El nombre de la posición debe tener una longitud entre ' . $min . ' y ' . $max;
+            return false;
+        }
+    }
+
+    public function setAreaJuego($value)
+    {
+        $this->area_de_juego = $value;
+        return true;
+    }
+
     // Método para obtener el error de los datos.
     public function getDataError()
     {
