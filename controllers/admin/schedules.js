@@ -84,7 +84,7 @@ const fillSelected = (data, action,selectId, selectedValue = null) => {
     // Llenar el combobox con los datos proporcionados
     data.forEach(item => {
         const option = document.createElement('option');
-        option.value = item.id; // Suponiendo que hay una propiedad 'id' en los datos
+        option.value = item.dia; // Suponiendo que hay una propiedad 'id' en los datos
         option.textContent = item.dia; // Cambia 'horario' al nombre de la propiedad que deseas mostrar en el combobox
         selectElement.appendChild(option);
     });
@@ -119,7 +119,7 @@ const openUpdate = async (id) => {
             const ROW = DATA.dataset;
             ID_HORARIOS.value = ROW.id_horario;
             NOMBRE.value = ROW.nombre_horario;
-            fillSelected(lista_select, 'readAll', 'diaEntreno');
+            fillSelected(lista_select, 'readAll', 'diaEntreno',ROW.dia);
             HORA_INICIAL.value = ROW.hora_inicial;
             HORA_FINAL.value = ROW.hora_final;
             CAMPO_ENTRENO.value = ROW.campo_de_entrenamiento;
