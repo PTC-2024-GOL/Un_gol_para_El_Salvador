@@ -50,25 +50,15 @@ class HorariosData extends HorariosHandler
     // Validación y asignación de la hora de inicio del horario.
     public function setHoraInicio($value)
     {
-        if (Validator::validateTime($value)) {
-            $this->hora_inicial = $value;
-            return true;
-        } else {
-            $this->data_error = 'La hora de inicio no es válida';
-            return false;
-        }
+        $this->hora_inicial = $value;
+        return true;
     }
 
     // Validación y asignación de la hora de inicio del horario.
     public function setHoraFinal($value)
     {
-        if (Validator::validateTime($value)) {
-            $this->hora_final = $value;
-            return true;
-        } else {
-            $this->data_error = 'La hora del final no es válida';
-            return false;
-        }
+        $this->hora_final = $value;
+        return true;
     }
 
     // Validación y asignación del nombre del campo de entrenamiento.

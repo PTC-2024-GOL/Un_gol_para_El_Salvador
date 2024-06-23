@@ -21,7 +21,7 @@ class HorariosHandler
      *  Métodos para realizar las operaciones SCRUD (search, create, read, update, and delete).
      */
 
-    //Función para buscar un cuerpo técnico o varias.
+    //Función para buscar un horario.
     public function searchRows()
     {
         $value = '%' . Validator::getSearchValue() . '%';
@@ -32,7 +32,7 @@ class HorariosHandler
         return Database::getRows($sql, $params);
     }
 
-    //Función para insertar una cuerpo técnico.
+    //Función para insertar un horario.
     public function createRow()
     {
         $sql = 'CALL sp_insertar_horario(?,?,?,?,?);';
@@ -46,7 +46,7 @@ class HorariosHandler
         return Database::executeRow($sql, $params);
     }
 
-    //Función para leer todas las cuerpo técnico.
+    //Función para leer todos los horarios.
     public function readAll()
     {
         $sql = 'SELECT * FROM horarios
@@ -54,7 +54,7 @@ class HorariosHandler
         return Database::getRows($sql);
     }
 
-    //Función para leer una cuerpo técnico.
+    //Función para leer un horario.
     public function readOne()
     {
         $sql = 'SELECT * FROM horarios
@@ -64,7 +64,7 @@ class HorariosHandler
     }
 
 
-    //Función para actualizar una cuerpo técnico.
+    //Función para actualizar un horario.
     public function updateRow()
     {
         $sql = 'CALL sp_actualizar_horario(?,?,?,?,?,?);';
@@ -79,7 +79,7 @@ class HorariosHandler
         return Database::executeRow($sql, $params);
     }
 
-    //Función para eliminar una cuerpo técnico.
+    //Función para eliminar un horario.
     public function deleteRow()
     {
         $sql = 'CALL sp_eliminar_horario(?);';
