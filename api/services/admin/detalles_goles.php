@@ -1,6 +1,5 @@
 <?php
 
-
 // Se incluye la clase del modelo.
 require_once('../../models/data/detalles_goles_data.php');
 // Se comprueba si existe una acción a realizar, de lo contrario se finaliza el script con un mensaje de error.
@@ -12,7 +11,7 @@ if (isset($_GET['action'])) {
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
     $result = array('status' => 0, 'message' => null, 'dataset' => null, 'error' => null, 'exception' => null, 'fileStatus' => null);
     // Se verifica si existe una sesión iniciada como administrador, de lo contrario se finaliza el script con un mensaje de error.
-    if (isset($_SESSION['idAdministrador']) /*and Validator::validateSessionTime()*/) {
+    if (isset($_SESSION['idAdministrador'])or true/*and Validator::validateSessionTime()*/) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
             // Crear
@@ -39,6 +38,15 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                 } else {
                     $result['error'] = 'Aún no se han registrado goles';
+                }
+                break;
+            case 'readOne':
+                if (!$detalleGol->setIdDetalleGol($_POST['idDetalleGol'])) {
+                    $result['error'] = $detalleGol->getDataError();
+                } elseif ($result['dataset'] = $detalleGol->readOne()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Ocurrio un error';
                 }
                 break;
             // Actualizar

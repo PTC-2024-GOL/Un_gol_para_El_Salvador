@@ -1,60 +1,64 @@
+// Recibimos los parametros
+const params = new URLSearchParams(window.location.search);
+const idEquipo = params.get("idEquipo");
+const idPartido = params.get("idPartido");
+
+// ---------------------------- Variables para el modal y form para guardar la participacion ------------
 let SAVE_MODAL,
     MODAL_TITLE;
 
-let SEE_MODAL,
-    MODAL_TITLE1;
-
-let SEE_GOLES_MODAL,
-    MODAL_TITLE2;
-
-let SAVE_GOLES_MODAL,
-    MODAL_TITLE3;
-
-let SAVE_AMONESTACION_MODAL,
-    MODAL_TITLE4;
-
-let SEE_AMONESTACION_MODAL,
-    MODAL_TITLE5;
-
-let SEE_FORM_PARTICIPACION,
-    ID_PARTICIPACION1,
-    ID_JUGADOR1,
-    TITULAR1,
-    SUSTITUCION1,
-    MINUTOS_JUGADOS1,
-    GOLES1,
-    ASISTENCIAS1,
-    ESTADO_ANIMO1,
-    PUNTUACION1;
-
-let SAVE_FORM_PARTICIPACION,
-    ID_PARTICIPACION,
-    ID_JUGADOR,
+let SAVE_FORM,
     TITULAR,
     SUSTITUCION,
-    MINUTOS_JUGADOS,
-    GOLES,
+    ID_JUGADOR,
+    MINUTOS,
     ASISTENCIAS,
-    ESTADO_ANIMO,
-    PUNTUACION;
-    
-let SAVE_FORM_GOLES,
-    ID_GOLES,
-    ID_PARTICIPACION_GOL,
-    CANTIDAD,
-    ID_TIPO_GOL;
+    PUNTUACION,
+    // ESTADO DE ANIMO
+    ENERGETICO,
+    SATISFECHO,
+    NORMAL,
+    AGOTADO,
+    DESANIMADO;
 
+//-- GOLES
+// --------------- Variables para el modal y form para guardar los goles ---------------------------
+let SAVE_MODAL_GOLES,
+    MODAL_TITLE_GOLES1;
 
-let SAVE_FORM_AMONESTACION,
-    ID_AMONESTACION
-    ID_PARTICIPACION,
-    CANTIDAD,
-    ID_AMONESTACION;
+let SAVE_GOL_FORM,
+    ID_GOL,
+    CANTIDAD_GOLES,
+    TIPOS_GOLES;
+
+// --------------- Variables para ver el modal de goles
+let SEE_GOLES_MODAL,
+    MODAL_TITLE_GOLES2;
+
+// -- AMONESTACIONES
+// -------------- Variables para el modal Y form para guardar amonestaciones
+
+let SAVE_AMONESTACION_MODAL,
+    MODAL_TITLE_AMONESTACION1;
+
+let SAVE_AMONESTACION_FORM,
+    ID_AMONESTACION,
+    CANTIDAD_AMONESTACION,
+    TIPO_AMONESTACION;
+
+// -------------- Variables para ver el modal de amonestaciones
+let SEE_AMONESTACION_MODAL,
+    MODAL_TITLE_AMONESTACION2;
 
 let SEARCH_FORM;
 
+let idParticipation;
+
 // Constantes para completar las rutas de la API.
-const PARTICIPACION_API = '';
+const PARTICIPACION_API = 'services/admin/participaciones_partidos.php';
+const GOLES_API = 'services/admin/detalles_goles.php';
+const AMONESTACIONES_API = 'services/admin/detalles_amonestaciones.php';
+const TIPO_GOL_API = 'services/admin/tipos_goles.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -75,20 +79,21 @@ const openCreate = () => {
 }
 
 
-const openCreateGol = () => {
+const openCreateGol = async () => {
     // Cerramos el modal que estaba anteriormete
+    await fillSelectOptions(TIPO_GOL_API, 'readAll', 'tipoGol' );
     SEE_GOLES_MODAL.hide();
-    SAVE_GOLES_MODAL.show();
-    MODAL_TITLE3.textContent = 'Agregar tipo de gol';
-    SAVE_FORM_GOLES.reset();
+    SAVE_MODAL_GOLES.show();
+    MODAL_TITLE_GOLES1.textContent = 'Agregar tipo de gol';
+    SAVE_GOL_FORM.reset();
 }
 
 const openCreateAmonestacion = () => {
     // Cerramos el modal que estaba anteriormete
     SEE_AMONESTACION_MODAL.hide();
     SAVE_AMONESTACION_MODAL.show();
-    MODAL_TITLE4.textContent = 'Agregar amonestación';
-    SAVE_FORM_AMONESTACION.reset();
+    MODAL_TITLE_AMONESTACION2.textContent = 'Agregar amonestación';
+    SAVE_AMONESTACION_FORM.reset();
 }
 
 
@@ -97,12 +102,15 @@ const openCreateAmonestacion = () => {
 *   Parámetros: ninguno.
 *   Retorno: ninguno.
 */
-const openGoles = () => {
+const openGoles = async (idParticipacion) => {
+    ID_GOL = '';
     // Se muestra la caja de diálogo con su título.
     SEE_GOLES_MODAL.show();
-    MODAL_TITLE2.textContent = 'Agregar tipo de gol';
+    await cargarGolTarjetas(idParticipacion);
+    idParticipation = idParticipacion;
+    MODAL_TITLE_GOLES2.textContent = 'Agregar tipo de gol';
     // Se prepara el formulario.
-    SAVE_FORM.reset();
+    SAVE_GOL_FORM.reset();
 }
 
 /*
@@ -110,49 +118,15 @@ const openGoles = () => {
 *   Parámetros: ninguno.
 *   Retorno: ninguno.
 */
-const openAmonestaciones = () => {
+const openAmonestaciones = async (idParticipacion) => {
+    ID_AMONESTACION = '';
     // Se muestra la caja de diálogo con su título.
     SEE_AMONESTACION_MODAL.show();
-    MODAL_TITLE5.textContent = 'Agregar amonestación';
+    await cargarAmonestacionTarjetas(idParticipacion);
+    idParticipation = idParticipacion;
+    MODAL_TITLE_AMONESTACION2.textContent = 'Agregar amonestación';
     // Se prepara el formulario.
-    SAVE_FORM.reset();
-}
-
-// Funcion para preparar el formulario al momento de abrirlo
-
-const seeModal = async (id) => {
-    try {
-        // Se define un objeto con los datos del registro seleccionado.
-        const FORM = new FormData();
-        FORM.append('idParticipacion', id);
-        // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(PARTICIPACION_API, 'readOne', FORM);
-        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-        if (DATA.status) {
-            // Se muestra la caja de diálogo con su título.
-            SEE_MODAL.show();
-            MODAL_TITLE1.textContent = 'Participación del jugador';
-            // Se prepara el formulario.
-            SAVE_FORM.reset();
-            // Se inicializan los campos con los datos.
-            const ROW = DATA.dataset;
-            ID_PARTICIPACION1.value = ROW.ID;
-            ID_JUGADOR1.value = ROW.JUGADOR;
-            TITULAR1.value = ROW.TITULAR;
-            SUSTITUCION1.value = ROW.SUSTITUCION;
-            MINUTOS_JUGADOS1.value = ROW.MINUTOS_JUGADOS;
-            GOLES1.value = ROW.GOLES;
-            ASISTENCIAS1.value = ROW.ASISTENCIAS;
-            ESTADO_ANIMO1.value = ROW.ESTADO_ANIMO;
-            PUNTUACION1.value = ROW.PUNTUACION;
-        } else {
-            sweetAlert(2, DATA.error, false);
-        }
-    } catch (Error) {
-        SEE_MODAL.show();
-        MODAL_TITLE1.textContent = 'Participación del jugador';
-        SEE_FORM.reset();
-    }
+    SAVE_AMONESTACION_FORM.reset();
 }
 
 
@@ -187,7 +161,7 @@ const openUpdate = async (id) => {
             ESTADO_ANIMO1.value = ROW.ESTADO_ANIMO;
             PUNTUACION1.value = ROW.PUNTUACION;
         } else {
-            sweetAlert(2, DATA.error, false);
+            sweetAlert(4, DATA.error, false);
         }
     } catch (Error) {
         console.log(Error);
@@ -235,30 +209,27 @@ const openUpdateGoles = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
-        FORM.append('idGol', id);
+        FORM.append('idDetalleGol', id);
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(PARTICIPACION_API, 'readOne', FORM);
+        const DATA = await fetchData(GOLES_API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
+            SEE_GOLES_MODAL.hide();
             // Se muestra la caja de diálogo con su título.
-            SAVE_GOLES_MODAL.show();
-            MODAL_TITLE3.textContent = 'Actualizar tipo de gol';
+            SAVE_MODAL_GOLES.show();
+            MODAL_TITLE_GOLES1.textContent = 'Actualizar tipo de gol';
             // Se prepara el formulario.
-            SAVE_FORM_GOLES.reset();
+            SAVE_GOL_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
-            ID_GOLES.value = ROW.ID;
-            ID_PARTICIPACION_GOL.value = ROW.PARTICIPACION;
-            CANTIDAD.value = ROW.CANTIDAD;
-            ID_TIPO_GOL.value = ROW.TIPO_GOL;
+            ID_GOL.value = ROW.id_detalle_gol;
+            CANTIDAD_GOLES.value = ROW.cantidad_tipo_gol;
+            await fillSelectOptions(TIPO_GOL_API, 'readAll', 'tipoGol', ROW.id_tipo_gol)
         } else {
-            sweetAlert(2, DATA.error, false);
+            await sweetAlert(2, DATA.error, false);
         }
     } catch (Error) {
         console.log(Error);
-        SAVE_GOLES_MODAL.show();
-        MODAL_TITLE3.textContent = 'Actualizar tipo de gol';
-        SEE_GOLES_MODAL.hide();
     }
 
 }
@@ -275,19 +246,20 @@ const openDeleteGoles = async (id) => {
         if (RESPONSE) {
             // Se define una constante tipo objeto con los datos del registro seleccionado.
             const FORM = new FormData();
-            FORM.append('idParticipacion', id);
-            console.log(id);
+            FORM.append('idDetalleGol', id);
+
             // Petición para eliminar el registro seleccionado.
-            const DATA = await fetchData(PARTICIPACION_API, 'deleteRow', FORM);
-            console.log(DATA.status);
+            const DATA = await fetchData(GOLES_API, 'deleteRow', FORM);
+
             // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
             if (DATA.status) {
                 // Se muestra un mensaje de éxito.
                 await sweetAlert(1, DATA.message, true);
                 // Se carga nuevamente la tabla para visualizar los cambios.
-                cargarGolTarjetas();
+                await cargarGolTarjetas(idParticipation);
+                SEE_GOLES_MODAL.show();
             } else {
-                sweetAlert(2, DATA.error, false);
+                await sweetAlert(2, DATA.error, false);
             }
         }
     }
@@ -302,30 +274,27 @@ const openUpdateAmonestacion = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
-        FORM.append('idAmonestacion', id);
+        FORM.append('idDetalleAmonestacion', id);
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(PARTICIPACION_API, 'readOne', FORM);
+        const DATA = await fetchData(AMONESTACIONES_API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
+            SEE_AMONESTACION_MODAL.hide();
             // Se muestra la caja de diálogo con su título.
             SAVE_AMONESTACION_MODAL.show();
-            MODAL_TITLE4.textContent = 'Actualizar amonestación';
+            MODAL_TITLE_AMONESTACION1.textContent = 'Actualizar amonestación';
             // Se prepara el formulario.
-            SAVE_FORM_AMONESTACION.reset();
+            SAVE_AMONESTACION_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
-            ID_AMONESTACION.value = ROW.ID;
-            ID_PARTICIPACION_GOL.value = ROW.PARTICIPACION;
-            CANTIDAD.value = ROW.CANTIDAD;
-            ID_AMONESTACION.value = ROW.AMONESTACION;
+            ID_AMONESTACION.value = ROW.id_detalle_amonestacion;
+            CANTIDAD_AMONESTACION.value = ROW.numero_amonestacion;
+            TIPO_AMONESTACION.value = ROW.amonestacion;
         } else {
-            sweetAlert(2, DATA.error, false);
+            await sweetAlert(2, DATA.error, false);
         }
     } catch (Error) {
         console.log(Error);
-        SAVE_AMONESTACION_MODAL.show();
-        MODAL_TITLE4.textContent = 'Actualizar amonestación';
-        SEE_AMONESTACION_MODAL.hide();
     }
 
 }
@@ -342,19 +311,19 @@ const openDeleteAmonestacion = async (id) => {
         if (RESPONSE) {
             // Se define una constante tipo objeto con los datos del registro seleccionado.
             const FORM = new FormData();
-            FORM.append('idAmonestacion', id);
-            console.log(id);
+            FORM.append('idDetalleAmonestacion', id);
+
             // Petición para eliminar el registro seleccionado.
-            const DATA = await fetchData(PARTICIPACION_API, 'deleteRow', FORM);
-            console.log(DATA.status);
+            const DATA = await fetchData(AMONESTACIONES_API, 'deleteRow', FORM);
+
             // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
             if (DATA.status) {
                 // Se muestra un mensaje de éxito.
                 await sweetAlert(1, DATA.message, true);
                 // Se carga nuevamente la tabla para visualizar los cambios.
-                cargarAmonestacionTarjetas();
+                await cargarAmonestacionTarjetas(idParticipation);
             } else {
-                sweetAlert(2, DATA.error, false);
+                await sweetAlert(2, DATA.error, false);
             }
         }
     }
@@ -365,146 +334,85 @@ const openDeleteAmonestacion = async (id) => {
 }
 
 
-async function cargarTabla(form = null) {
-    const lista_datos = [
-        {
-            imagen: '../../../../resources/img/svg/avatar.svg',
-            nombre: 'Mateo',
-            apellido: 'Ramírez',
-            minutosJugados: 30,
-            id: 1,
-        },
-        {
-            imagen:  '../../../../resources/img/svg/avatar.svg',
-            nombre: 'Mateo',
-            apellido: 'Ramírez',
-            minutosJugados: 30,
-            id: 2,
-        },
-        {
-            imagen:  '../../../../resources/img/svg/avatar.svg',
-            nombre: 'Mateo',
-            apellido: 'Ramírez',
-            minutosJugados: 30,
-            id: 3,
-        },
-        {
-            imagen:  '../../../../resources/img/svg/avatar.svg',
-            nombre: 'Mateo',
-            apellido: 'Ramírez',
-            minutosJugados: 30,
-            id: 4,
-        }
-    ];
-    const cargarTabla = document.getElementById('tabla_participacion');
+async function cargarTabla() {
+
+    const cargarTabla = document.getElementById('participationCards');
 
     try {
         cargarTabla.innerHTML = '';
-        // Se verifica la acción a realizar.
-        (form) ? action = 'searchRows' : action = 'readAll';
-        console.log(form);
+        const form = new FormData();
+        form.append('idEquipo', idEquipo)
         // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(PARTICIPACION_API, action, form);
-        console.log(DATA);
+        const DATA = await fetchData(PARTICIPACION_API, 'readAllByIdEquipo', form);
+        const DATA2 = await fetchData(PARTICIPACION_API, 'readAll');
+
+        // Mapa de id_jugador a id_participacion
+        const participacionMap = new Map();
+
+        if(DATA2.status){
+            DATA2.dataset.forEach(row => {
+                participacionMap.set(row.id_jugador, row.id_participacion);
+            });
+        }
 
         if (DATA.status) {
             // Mostrar elementos obtenidos de la API
             DATA.dataset.forEach(row => {
+                const idParticipacion = participacionMap.get(row.id_jugador) || 0;
+
                 const tablaHtml = `
-                <tr>
-                    <img src="${SERVER_URL}images/admin/${row.imagen}" height="50" width="50" class="circulo"></td>
-                    <td>${row.NOMBRE}</td>
-                    <td>${row.APELLIDO}</td>
-                    <td>${row.MINUTOS_JUGADOS}</td>
-                    <td>
-                        <button type="button" class="btn btn-warnig" onclick="openGoles()">
-                        <img src="../../../resources/img/svg/icons_forms/ball.svg" width="30" height="30">
-                        </button>
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-warnig" onclick="openAmonestacion()">
-                        <img src="../../../resources/img/svg/icons_forms/amonestacion.svg" width="30" height="30">
-                        </button>
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
-                        <img src="../../../recursos/img/svg/icons_forms/Frame.svg" width="30" height="30">
-                        </button>
-                        <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
-                        <img src="../../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" onclick="openDelete(${row.ID})">
-                            <i class="bi bi-trash-fill"></i>
-                        </button>
-                    </td>
-                </tr>
+                    <div class="col-sm-6 col-md-2 text-center shadow rounded-3 bg-blue-light-color p-3 me-4 mb-5">
+                        <div class="bg-blue-color p-3" id="containerPicture">
+                            <img src="${SERVER_URL}images/jugadores/${row.foto_jugador}" class="shadow rounded-circle" height="120px" width="120px" id="imgJugador">
+                        </div>
+                        <div class="bg-white p-3 mt-2 rounded-3" id="info1">
+                            <p class="fw-semibold mb-0">${row.nombre_jugador} ${row.apellido_jugador}</p>
+                            <small class="mt-0">${row.posicion}</small>
+                            <div class="bg-blue-principal-color text-light rounded-circle" id="dorsal">
+                                <div class="fs-5">${row.dorsal_jugador}</div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-evenly mt-3">
+                            <button type="button" class="btn transparente" onclick="openCreate(${row.ID})">
+                                <img src="../../../resources/img/svg/plus.svg" width="20" height="20">
+                            </button>
+                            <button type="button" class="btn transparente d-none" onclick="openUpdate(${idParticipacion})">
+                                <img src="../../../resources/img/svg/pen 2.svg" width="20" height="20">
+                            </button>
+                            <button type="button" class="btn transparente" onclick="openGoles(${idParticipacion})">
+                                <img src="../../../resources/img/svg/icons_forms/ball.svg" width="16" height="16">
+                            </button>
+                            <button type="button" class="btn transparente" onclick="openAmonestaciones(${idParticipacion})">
+                                <img src="../../../resources/img/svg/icons_forms/amonestacion.svg" width="20" height="20">
+                            </button>
+                            <button type="button" class="btn transparente" onclick="openDelete(${idParticipacion})">
+                                <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="15" height="15">
+                            </button>
+                        </div>
+                        <div class="d-none">${idParticipacion}</div>
+                    </div>
                 `;
                 cargarTabla.innerHTML += tablaHtml;
             });
         } else {
-            sweetAlert(4, DATA.error, true);
+            await sweetAlert(4, DATA.error, true);
         }
     } catch (error) {
         console.error('Error al obtener datos de la API:', error);
-        // Mostrar materiales de respaldo
-        lista_datos.forEach(row => {
-            const tablaHtml = `
-            <tr>
-                <td><img src="${row.imagen}" height="50" width="50" class="circulo"></td>
-                <td>${row.nombre}</td>
-                <td>${row.apellido}</td>
-                <td>${row.minutosJugados}</td>
-                <td>
-                    <button type="button" class="btn transparente" onclick="openGoles()">
-                    <img src="../../../resources/img/svg/icons_forms/ball.svg" width="30" height="30">
-                    </button>
-                </td>
-                <td>
-                    <button type="button" class="btn transparente" onclick="openAmonestaciones()">
-                    <img src="../../../resources/img/svg/icons_forms/amonestacion.svg" width="30" height="30">
-                    </button>
-                </td>
-                <td>
-                    <button type="button" class="btn transparente" onclick="seeModal(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18px" height="18px">
-                    </button>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.cuerpo_técnico})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18px" height="18px">
-                    </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.cuerpo_técnico})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
-                </td>
-            </tr>
-            `;
-            cargarTabla.innerHTML += tablaHtml;
-        });
     }
 }
 
-async function cargarGolTarjetas (form = null) {
-    const lista_datos_goles = [
-        {
-            cantidadGoles: 1,
-            nombreGol: 'Fuera del área',
-            idGol: 1,
-        },
-        {
-            cantidadGoles: 4,
-            nombreGol: 'Penalti',
-            idGol: 2,
-        }
-    ];
+async function cargarGolTarjetas (idParticipacion) {
+
     const cargarGoles = document.getElementById('gol_card');
 
     try {
         cargarGoles.innerHTML = '';
-        // Se verifica la acción a realizar.
-        (form) ? action = 'searchRows' : action = 'readAll';
-        console.log(form);
+        const form = new FormData();
+        form.append('idParticipacion', idParticipacion);
+
         // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(PARTICIPACION_API, action, form);
-        console.log(DATA);
+        const DATA = await fetchData(GOLES_API, 'readAllByIdParticipacion', form);
 
         if (DATA.status) {
             // Mostrar elementos obtenidos de la API
@@ -513,16 +421,16 @@ async function cargarGolTarjetas (form = null) {
                 <div class="content shadow rounded-4 p-3 mb-4">
                 <div class="row">
                     <div class="col-sm-12 col-md-10">
-                        <p>${row.CANTIDAD}  ${row.ID_GOLES}</p>
+                        <p>${row.cantidad_tipo_gol}  ${row.nombre_tipo_gol}</p>
                     </div>
                     <div class="col-sm-12 col-md-2">
                         <div class="container d-flex justify-content-between">
                             <button class="btn transparente me-md-2"><img
                                     src="../../../resources/img/svg/icons_forms/pen 1.svg" alt=""
-                                    onclick="seeModal(${row.ID})"></button>
+                                    onclick="openUpdateGoles(${row.id_detalle_gol})"></button>
                             <button class="btn transparente"><img
                                     src="../../../resources/img/svg/icons_forms/trash 1.svg" alt=""
-                                    onclick="seeModal(${row.ID})"></button>
+                                    onclick="openDeleteGoles(${row.id_detalle_gol})"></button>
                         </div>
                     </div>
                 </div>
@@ -531,60 +439,26 @@ async function cargarGolTarjetas (form = null) {
                 cargarGoles.innerHTML += tarjetasGoles;
             });
         } else {
-            sweetAlert(4, DATA.error, true);
+            await sweetAlert(4, DATA.error, true);
         }
     } catch (error) {
         console.error('Error al obtener datos de la API:', error);
-        // Mostrar materiales de respaldo
-        lista_datos_goles.forEach(row => {
-            const tarjetasGoles = `
-            <div class="content shadow rounded-4 p-3 mb-4">
-            <div class="row">
-                <div class="col-sm-12 col-md-10">
-                    <p>${row.cantidadGoles}  ${row.nombreGol}</p>
-                </div>
-                <div class="col-sm-12 col-md-2">
-                    <div class="container d-flex justify-content-between">
-                        <button class="btn transparente me-md-2"><img
-                                src="../../../resources/img/svg/icons_forms/pen 1.svg" alt=""
-                                onclick="openUpdateGoles(${row.id})"></button>
-                        <button class="btn transparente"><img
-                                src="../../../resources/img/svg/icons_forms/trash 1.svg" alt=""
-                                onclick="openDeleteGoles(${row.id})"></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-            `;
-            cargarGoles.innerHTML += tarjetasGoles;
-        });
     }
 }
 
 
-async function cargarAmonestacionTarjetas (form = null) {
-    const lista_datos_amonestacion = [
-        {
-            cantidadAmonestacion: 2,
-            nombreAmonestacion: 'Tarjeta amarilla',
-            idAmonestacion: 1,
-        },
-        {
-            cantidadAmonestacion: 1,
-            nombreAmonestacion: 'Tarjeta roja',
-            idAmonestacion: 1,
-        }
-    ];
+async function cargarAmonestacionTarjetas (idParticipacion) {
+
     const cargarAmonestacion = document.getElementById('amonestacion_card');
 
     try {
         cargarAmonestacion.innerHTML = '';
-        // Se verifica la acción a realizar.
-        (form) ? action = 'searchRows' : action = 'readAll';
-        console.log(form);
+
+        const form = new FormData();
+        form.append('idParticipacion', idParticipacion);
+
         // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(PARTICIPACION_API, action, form);
-        console.log(DATA);
+        const DATA = await fetchData(AMONESTACIONES_API, 'readAllByIdParticipacion', form);
 
         if (DATA.status) {
             // Mostrar elementos obtenidos de la API
@@ -593,16 +467,16 @@ async function cargarAmonestacionTarjetas (form = null) {
                 <div class="content shadow rounded-4 p-3 mb-4">
                 <div class="row">
                     <div class="col-sm-12 col-md-10">
-                        <p>${row.CANTIDAD}  ${row.ID_AMONESTACION}</p>
+                        <p>${row.numero_amonestacion}  ${row.amonestacion}</p>
                     </div>
                     <div class="col-sm-12 col-md-2">
                         <div class="container d-flex justify-content-between">
                             <button class="btn transparente me-md-2"><img
                                     src="../../../resources/img/svg/icons_forms/pen 1.svg" alt=""
-                                    onclick="seeModal(${row.ID})"></button>
+                                    onclick="openUpdateAmonestacion(${row.id_detalle_amonestacion})"></button>
                             <button class="btn transparente"><img
                                     src="../../../resources/img/svg/icons_forms/trash 1.svg" alt=""
-                                    onclick="seeModal(${row.ID})"></button>
+                                    onclick="openDeleteAmonestacion(${row.id_detalle_amonestacion})"></button>
                         </div>
                     </div>
                 </div>
@@ -654,31 +528,47 @@ window.onload = async function () {
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Participaciones';
-    cargarTabla();
-    cargarGolTarjetas();
-    cargarAmonestacionTarjetas();
-    // Constantes para establecer los elementos del componente Modal.
+    await cargarTabla();
+
+    // Constantes para establecer los elementos del componente para los modals.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
 
-    SEE_MODAL = new bootstrap.Modal('#seeModal'),
-        MODAL_TITLE1 = document.getElementById('modalTitle1');
+    SAVE_FORM = document.getElementById('saveForm'),
+        TITULAR = document.getElementById('switchTitular'),
+        SUSTITUCION = document.getElementById('switchSustitucion'),
+        ID_JUGADOR = document.getElementById('jugador'),
+        MINUTOS = document.getElementById('minutos'),
+        ASISTENCIAS = document.getElementById('asistencias'),
+        PUNTUACION = document.getElementById('puntuacion');
 
-    SEE_GOLES_MODAL= new bootstrap.Modal('#golesModal'),
-        MODAL_TITLE2 = document.getElementById('modalTitle3');
-    
-    SAVE_GOLES_MODAL = new bootstrap.Modal('#saveGolModal'),
-        MODAL_TITLE3 = document.getElementById('modalTitle4');
+    // --------------------------------- GOLES ------------------------------
 
-    SEE_AMONESTACION_MODAL= new bootstrap.Modal('#amonestacionModal'),
-        MODAL_TITLE5 = document.getElementById('modalTitle5');
+    SAVE_MODAL_GOLES = new bootstrap.Modal('#saveGolModal'),
+        MODAL_TITLE_GOLES1 = document.getElementById('modalTitle4');
+
+    SAVE_GOL_FORM = document.getElementById('saveGolForm'),
+        ID_GOL = document.getElementById('idGol'),
+        CANTIDAD_GOLES = document.getElementById('cantidadGol'),
+        TIPOS_GOLES = document.getElementById('tipoGol');
+
+    SEE_GOLES_MODAL = new bootstrap.Modal('#SeeGolesModal'),
+        MODAL_TITLE_GOLES2 = document.getElementById('modalTitle3');
+
+    // -------------------------------- AMONESTACIONES ------------------------
 
     SAVE_AMONESTACION_MODAL = new bootstrap.Modal('#saveAmonestacionModal'),
-        MODAL_TITLE4 = document.getElementById('modalTitle6');
+        MODAL_TITLE_AMONESTACION1 =  document.getElementById('modalTitle6');
 
-    // Constantes para establecer los elementos del formulario de guardar.
-    SAVE_FORM = document.getElementById('saveForm'),
-        ID_ANALISIS = document.getElementById('idAnalisis'),
+    SAVE_AMONESTACION_FORM = document.getElementById('saveAmonestacionForm'),
+        ID_AMONESTACION = document.getElementById('idAmonestacion'),
+        CANTIDAD_AMONESTACION = document.getElementById('cantidadAmonestacion'),
+        TIPO_AMONESTACION = document.getElementById('tipoAmonestacion');
+
+    SEE_AMONESTACION_MODAL =new bootstrap.Modal('#SeeAmonestacionModal'),
+        MODAL_TITLE_AMONESTACION2 = document.getElementById('modalTitle5');
+
+
         // Método del evento para cuando se envía el formulario de guardar.
         SAVE_FORM.addEventListener('submit', async (event) => {
             // Se evita recargar la página web después de enviar el formulario.
@@ -703,42 +593,66 @@ window.onload = async function () {
             }
         });
 
-        SAVE_FORM_GOLES = document.getElementById('saveGolForm'),
-        ID_GOLES = document.getElementById('idGol'),
-        // Método del evento para cuando se envía el formulario de guardar.
-        SAVE_FORM_GOLES.addEventListener('submit', async (event) => {
+
+    // Método del evento para cuando se envía el formulario de guardar.
+        SAVE_GOL_FORM.addEventListener('submit', async (event) => {
             // Se evita recargar la página web después de enviar el formulario.
+
             event.preventDefault();
             // Se verifica la acción a realizar.
-            (ID_GOLES.value) ? action = 'updateRow' : action = 'createRow';
+            (ID_GOL.value) ? action = 'updateRow' : action = 'createRow';
             // Constante tipo objeto con los datos del formulario.
-            const FORM = new FormData(SAVE_FORM_GOLES);
+            const FORM = new FormData(SAVE_GOL_FORM);
+
+
+            FORM.append('idParticipacion', idParticipation);
+
             // Petición para guardar los datos del formulario.
-            const DATA = await fetchData(PARTICIPACION_API, action, FORM);
+            const DATA = await fetchData(GOLES_API, action, FORM);
             // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
             if (DATA.status) {
                 // Se cierra la caja de diálogo.
-                SAVE_GOLES_MODAL.hide();
+                SAVE_MODAL_GOLES.hide();
+                SEE_GOLES_MODAL.show();
                 // Se muestra un mensaje de éxito.
-                sweetAlert(1, DATA.message, true);
+                await sweetAlert(1, DATA.message, true);
                 // Se carga nuevamente la tabla para visualizar los cambios.
-                cargarGolTarjetas();
+                await cargarGolTarjetas(idParticipation)
             } else {
-                sweetAlert(2, DATA.error, false);
+                await sweetAlert(2, DATA.error, false);
                 console.error(DATA.exception);
             }
         });
 
-    // Constantes para establecer los elementos del formulario de guardar.
-    SEE_FORM = document.getElementById('viewForm'),
-        ID_ANALISISV = document.getElementById('idAnalisisV'),
-     
-    
     // Método del evento para cuando se envía el formulario de guardar.
-    SEE_FORM.addEventListener('submit', async (event) => {
+    SAVE_AMONESTACION_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
         event.preventDefault();
+        // Se verifica la acción a realizar.
+        (ID_AMONESTACION.value) ? action = 'updateRow' : action = 'createRow';
+        // Constante tipo objeto con los datos del formulario.
+        const FORM = new FormData(SAVE_AMONESTACION_FORM);
+
+        FORM.append('idParticipacion', idParticipation);
+
+        // Petición para guardar los datos del formulario.
+        const DATA = await fetchData(AMONESTACIONES_API, action, FORM);
+        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+        if (DATA.status) {
+            // Se cierra la caja de diálogo.
+            SAVE_AMONESTACION_MODAL.hide();
+            SEE_AMONESTACION_MODAL.show();
+            // Se muestra un mensaje de éxito.
+            await sweetAlert(1, DATA.message, true);
+            // Se carga nuevamente la tabla para visualizar los cambios.
+            await cargarAmonestacionTarjetas(idParticipation);
+        } else {
+            await  sweetAlert(2, DATA.error, false);
+            console.error(DATA.exception);
+        }
     });
+
+
 
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');

@@ -24,7 +24,7 @@ class ParticipacionesPartidosData extends ParticipacionesPartidosHandler
             $this->idParticipacion = $value;
             return true;
         } else {
-            $this->data_error = 'El identificador de la participación es incorrecto';
+            $this->data_error = 'Aún no has ingresado la participación del jugador. Ingresa antes su participación';
             return false;
         }
     }

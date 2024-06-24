@@ -1,5 +1,12 @@
 <?php
 
+// Se incluye la clase para trabajar con la base de datos.
+require_once('../../helpers/database.php');
+
+/*
+ *  Clase para manejar el comportamiento de los datos de la tabla participaciones partidos.
+ */
+
 class detallesGolesHandler
 {
     protected $idDetalleGol = null;
@@ -29,8 +36,16 @@ class detallesGolesHandler
     {
         $sql = 'SELECT * FROM vista_detalles_goles
                 WHERE id_participacion= ?';
-        $params = array($this->idTipoGol);
+        $params = array($this->idParticipacion);
         return Database::getRows($sql, $params);
+    }
+
+    public function readOne()
+    {
+        $sql = 'SELECT * FROM vista_detalles_goles
+                WHERE id_detalle_gol= ?';
+        $params = array($this->idDetalleGol);
+        return Database::getRow($sql, $params);
     }
 
     //Función para actualizar los goles de una participacion.
@@ -42,6 +57,7 @@ class detallesGolesHandler
         $params = array(
             $this->cantidadTipoGol,
             $this->idTipoGol,
+            $this->idDetalleGol
         );
         return Database::executeRow($sql, $params);
     }

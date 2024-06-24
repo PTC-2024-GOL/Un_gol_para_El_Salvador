@@ -57,8 +57,7 @@ class ParticipacionesPartidosHandler
     //Función para leer todos las participaciones.
     public function readAll()
     {
-        $sql = 'SELECT * FROM participaciones_partidos
-        ORDER BY minutos_jugados ASC ;';
+        $sql = 'SELECT * FROM participaciones_partidos;';
         return Database::getRows($sql);
     }
 
