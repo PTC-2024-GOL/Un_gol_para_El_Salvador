@@ -40,6 +40,17 @@ class ParticipacionesPartidosData extends ParticipacionesPartidosHandler
         }
     }
 
+    public function setIdEquipo($value)
+    {
+        if (Validator::validateNaturalNumber($value)) {
+            $this->idEquipo = $value;
+            return true;
+        } else {
+            $this->data_error = 'El identificador del equipo es incorrecto';
+            return false;
+        }
+    }
+
     public function setIdJugador($value)
     {
         if (Validator::validateNaturalNumber($value)) {

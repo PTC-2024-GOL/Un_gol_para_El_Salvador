@@ -21,6 +21,7 @@ class ParticipacionesPartidosHandler
     protected $asistencias = null;
     protected $estadoAnimo = null;
     protected $puntuacion = null;
+    protected $idEquipo = null;
 
 
     /*
@@ -42,6 +43,15 @@ class ParticipacionesPartidosHandler
             $this->puntuacion,
         );
         return Database::executeRow($sql, $params);
+    }
+
+    //Función para mostrar todos los jugadores de un equipo
+    public function readAllByIdEquipo()
+    {
+        $sql = 'SELECT * FROM vista_jugadores_por_equipo
+                WHERE id_equipo= ? ORDER BY dorsal_jugador ASC ';
+        $params = array($this->idEquipo);
+        return Database::getRows($sql, $params);
     }
 
     //Función para leer todos las participaciones.

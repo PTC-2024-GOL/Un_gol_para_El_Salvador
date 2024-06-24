@@ -4,13 +4,13 @@
 // Se incluye la clase para validar los datos de entrada.
 require_once('../../helpers/validator.php');
 // Se incluye la clase padre.
-require_once('../../models/handler/tipos_goles_handler.php');
+require_once('../../models/handler/detalles_amonestaciones_handler.php');
 
 /*
- *  Clase para manejar el encapsulamiento de los datos de la tabla USUARIO.
+ *  Clase para manejar el encapsulamiento de los datos de la tabla detalles_goles.
  */
 
-class TiposGolesData extends TiposGolesHandler
+class detallesAmonestacionesData extends detallesAmonestacionesHandler
 {
     // Atributo genérico para manejo de errores.
     private $data_error = null;
@@ -18,40 +18,50 @@ class TiposGolesData extends TiposGolesHandler
     /*
      *  Métodos para validar y asignar valores de los atributos.
      */
-    // Validación y asignación del ID del tipo de gol
-    public function setIdTipoGol($value)
+
+    public function setIdDetalleAmonestacion($value)
     {
         if (Validator::validateNaturalNumber($value)) {
-            $this->idTipoGol = $value;
+            $this->idDetalleAmonestacion = $value;
             return true;
         } else {
-            $this->data_error = 'El identificador del tipo de gol es incorrecto';
+            $this->data_error = 'El identificador del tipo de amonestación es incorrecto';
             return false;
         }
     }
 
-    public function setIdTipoJugada($value)
+    public function setIdParticipacion($value)
     {
         if (Validator::validateNaturalNumber($value)) {
-            $this->idTipoJugada = $value;
+            $this->idParticipacion = $value;
             return true;
         } else {
-            $this->data_error = 'El identificador de la tipo de jugada es incorrecto';
+            $this->data_error = 'El identificador de la participación es incorrecta';
             return false;
         }
     }
 
-    // Validación y asignación del nombre de la jugada.
-    public function setNombreGol($value, $min = 2, $max = 50)
+    public function setAmonestacion($value, $min = 2, $max = 50)
     {
         if (!Validator::validateAlphanumeric($value)) {
             $this->data_error = 'El nombre debe ser un valor alfanumerico';
             return false;
         } elseif (Validator::validateLength($value, $min, $max)) {
-            $this->nombreGol = $value;
+            $this->amonestacion = $value;
             return true;
         } else {
             $this->data_error = 'El nombre debe tener una longitud entre ' . $min . ' y ' . $max;
+            return false;
+        }
+    }
+
+    public function setNumeroAmonestacion($value)
+    {
+        if (Validator::validateNaturalNumber($value)) {
+            $this->numeroAmonestaciones = $value;
+            return true;
+        } else {
+            $this->data_error = 'Ingresa un número entero';
             return false;
         }
     }
@@ -61,5 +71,4 @@ class TiposGolesData extends TiposGolesHandler
     {
         return $this->data_error;
     }
-
 }
