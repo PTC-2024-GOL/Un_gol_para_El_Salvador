@@ -84,10 +84,8 @@
                                             src="../../../resources/img/png/logo_default.png">
                                     </div>
                                     <div class="col-sm-12 text-center py-2">
-                                        <!-- Botón para cargar imagen -->
-                                        <input type="file" class="form-control" id="logoRival" name="logoRival" hidden>
                                         <!-- Para que tenga el mismo funcionamiento del input file le ponemos el for y le agregamos el id del input file -->
-                                        <label class="btn bg-blue-principal-color text-light" for="logoRival">Cargar
+                                        <label class="btn bg-blue-principal-color text-light">
                                             logo del rival</label>
                                     </div>
                                 </div>
@@ -100,8 +98,7 @@
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="rival" class="form-label fw-semibold">Rival</label>
-                        <input id="rival" type="text" name="nombrerival" class="form-control"
-                            placeholder="Ingresa el nombre del rival" required>
+                        <select id="rival" type="text" name="idRival" class="form-select" required></select>
                     </div>
                     <div class="col-sm-12 col-md-6" id="fechaPartidos">
                         <label for="fechaPartido" class="form-label fw-semibold">Fecha partido</label>
@@ -223,7 +220,8 @@
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
-                    <button type="reset" class="btn bg-red-cream-color text-white">Cancelar</button>
+                    <button type="button" class="btn bg-red-cream-color text-white" ata-bs-dismiss="modal"
+                    aria-label="Close">Cancelar</button>
                 </div>
             </form>
         </div>

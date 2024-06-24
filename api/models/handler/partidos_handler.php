@@ -18,6 +18,7 @@ class PartidosHandler
     protected $idJornada = null;
     protected $rivalPartido = null;
     protected $idPartido = null;
+    protected $idRival = null;
 
     // Constante para establecer la ruta de las imágenes.
     const RUTA_IMAGEN = '../../images/partidos/';
@@ -37,24 +38,14 @@ class PartidosHandler
         return Database::getRows($sql, $params);
     }
 
-    public function readFilename()
-    {
-        $sql = 'SELECT logo_rival
-                FROM partidos
-                WHERE id_partido = ?';
-        $params = array($this->idPartido);
-        return Database::getRow($sql, $params);
-    }
-
     //Función para insertar un partido. 
     
     public function createRow()
     {   
-        $sql = 'CALL insertarPartido(?, ?, ?, ?, ?, ?, ?, ?);';    
+        $sql = 'CALL insertarPartido(?, ?, ?, ?, ?, ?, ?);';    
         $params = array(
             $this->idEquipo,
-            $this->logoRival,
-            $this->rivalPartido,
+            $this->idRival,
             $this->canchaPartido,
             $this->resultadoPartido,
             $this->localidadPartido,
@@ -98,11 +89,19 @@ class PartidosHandler
         return Database::getRows($sql);
     }
 
+    //Función para leer un rival  o varios. 
+    
+    public function readOneRivales()
+    {
+        $sql = "SELECT id_rival, nombre_rival, logo_rival FROM rivales;";
+        return Database::getRows($sql);
+    }
+
     //Función para leer una equipo o varios. 
     
     public function readOneEquipos()
     {
-        $sql = "SELECT id_equipo,  nombre_equipo FROM equipos;";
+        $sql = "SELECT id_equipo,  nombre_equipo, logo_equipo FROM equipos;";
         return Database::getRows($sql);
     }
 
@@ -110,13 +109,12 @@ class PartidosHandler
     
     public function updateRow()
     {   
-        $sql = 'UPDATE partidos SET id_jornada = ?, id_equipo = ?, logo_rival = ?, rival_partido = ?, cancha_partido = ?,
+        $sql = 'UPDATE partidos SET id_jornada = ?, id_equipo = ?, id_rival = ?, cancha_partido = ?,
         resultado_partido = ?, localidad_partido = ?, tipo_resultado_partido = ? WHERE id_partido = ?;';
         $params = array(
             $this->idJornada,
             $this->idEquipo,
-            $this->logoRival,
-            $this->rivalPartido,
+            $this->idRival,
             $this->canchaPartido,
             $this->resultadoPartido,
             $this->localidadPartido,

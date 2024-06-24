@@ -30,8 +30,7 @@ if (isset($_GET['action'])) {
                 if (
                     !$partido->setIdEquipo($_POST['idEquipo']) or
                     !$partido->setIdJornada($_POST['idJornada']) or
-                    !$partido->setlogoRival($_FILES['logoRival']) or
-                    !$partido->setRivalEquipo($_POST['nombrerival']) or
+                    !$partido->setIdRival($_POST['idRival']) or
                     !$partido->setCancha($_POST['cancha']) or
                     !$partido->setResultadoPartido($_POST['resultado']) or
                     !$partido->setLocalidad($_POST['Localidad']) or
@@ -42,7 +41,6 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'partiddo creado correctamente';
                     // Se asigna el estado del archivo después de insertar.
-                    $result['fileStatus'] = Validator::saveFile($_FILES['logoRival'], $partido::RUTA_IMAGEN);
                 } else {
                     $result['error'] = 'Ocurrió un problema al crear el partido';
                 }
@@ -85,6 +83,15 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'No existen registros';
                 }
                 break;
+                // Leer rivales
+                case 'readRivales':
+                    if ($result['dataset'] = $partido->readOneRivales()) {
+                        $result['status'] = 1;
+                        $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
+                    } else {
+                        $result['error'] = 'No existen registros';
+                    }
+                    break;
                 // Leer equipos
             case 'readEquipos':
                 if ($result['dataset'] = $partido->readOneEquipos()) {
@@ -100,20 +107,17 @@ if (isset($_GET['action'])) {
                 if (
                     !$partido->setIdEquipo($_POST['idEquipo']) or
                     !$partido->setIdJornada($_POST['idJornada']) or
-                    !$partido->setRivalEquipo($_POST['nombrerival']) or
                     !$partido->setCancha($_POST['cancha']) or
                     !$partido->setResultadoPartido($_POST['resultado']) or
                     !$partido->setLocalidad($_POST['Localidad']) or
                     !$partido->setTipoResultadoPartido($_POST['tipoResultado']) or
-                    !$partido->setIdPartido($_POST['idPartido']) or
-                    !$partido->setFilename() or
-                    !$partido->setlogoRival($_FILES['logoRival'], $partido->getFilename())
+                    !$partido->setIdPartido($_POST['idPartido']) or 
+                    !$partido->setIdRival($_POST['idRival'])
                 ) {
                     $result['error'] = $partido->getDataError();
                 } elseif ($partido->updateRow()) {
                     $result['status'] = 1;
                     $result['message'] = 'Partido modificado correctamente';
-                    $result['fileStatus'] = Validator::changeFile($_FILES['logoRival'], $partido::RUTA_IMAGEN, $partido->getFilename());
                 } else {
                     $result['error'] = 'Ocurrió un problema al modificar el partido';
                 }

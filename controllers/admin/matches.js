@@ -19,6 +19,7 @@ let SAVE_FORM,
     LOCALIDAD,
     TIPO_RESULTADO_PARTIDO,
     ID_EQUIPO,
+    ID_RIVAL,
     LOGO_RIVAL_SEE,
     LOGO_EQUIPO_SEE,
     JORNADA_SEE,
@@ -31,7 +32,9 @@ let SAVE_FORM,
     TIPO_RESULTADO_PARTIDO_SEE,
     LOGO_EQUIPO_DIV,
     LOGO_RIVAL_DIV,
-    JORNADA;
+    JORNADA,
+    IMAGENES_EQUIPOS,
+    IMAGENES_RIVALES;
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
@@ -42,6 +45,8 @@ async function loadComponent(path) {
     const text = await response.text();
     return text;
 }
+
+
 /*
 * Función para preparar el formulario al momento de insertar un registro.
 * Parámetros: ninguno.
@@ -51,16 +56,12 @@ const openCreate = async () => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
     FECHA_PARTIDOS.classList.add('d-none');
-    LOGO_EQUIPO_DIV.classList.add('d-none');
-    LOGO_RIVAL_DIV.classList.remove('align-items-start');
-    LOGO_RIVAL_DIV.classList.add('align-items-center');
-    LOGO_RIVAL_DIV.classList.remove('col-sm-6');
-    LOGO_RIVAL_DIV.classList.add('col-sm-12');
     ID_PARTIDO.value = null;
     MODAL_TITLE2.textContent = 'Agregar partido';
     // Se prepara el formulario.
     SAVE_FORM.reset();
-    await fillSelect(PARTIDO_API, 'readEquipos', 'equipos');
+    IMAGENES_EQUIPOS = await fillSelectImage(PARTIDO_API, 'readEquipos', 'equipos');
+    IMAGENES_RIVALES = await fillSelectImage(PARTIDO_API, 'readRivales', 'rival');
     await fillSelect(PARTIDO_API, 'readJornadas', 'jornada');
 }
 
@@ -108,7 +109,7 @@ const seeModal = async (id) => {
             TIPO_RESULTADO_PARTIDO_SEE.value = ROW.tipo_resultado_partido;
             JORNADA_SEE.value = ROW.nombre_jornada;
             LOGO_EQUIPO_SEE.src = `${SERVER_URL}images/equipos/${ROW.logo_equipo}`;
-            LOGO_RIVAL_SEE.src = `${SERVER_URL}images/partidos/${ROW.logo_rival}`;
+            LOGO_RIVAL_SEE.src = `${SERVER_URL}images/rivales/${ROW.logo_rival}`;
             EQUIPO_SEE.disabled = true;
             RIVAL_SEE.disabled = true;
             FECHA_PARTIDO_SEE.disabled = true;
@@ -147,25 +148,20 @@ const openUpdate = async (id) => {
             SAVE_FORM.reset();
 
             FECHA_PARTIDOS.classList.remove('d-none');
-            LOGO_EQUIPO_DIV.classList.remove('d-none');
-            LOGO_RIVAL_DIV.classList.add('align-items-start');
-            LOGO_RIVAL_DIV.classList.remove('align-items-center');
-            LOGO_RIVAL_DIV.classList.add('col-sm-6');
-            LOGO_RIVAL_DIV.classList.remove('col-sm-12');
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
             ID_PARTIDO.value = ROW.id_partido;
-            RIVAL.value = ROW.nombre_rival;
             FECHA_PARTIDO.value = ROW.fecha_partido;
             CANCHA.value = ROW.cancha_partido;
             RESULTADO_PARTIDO.value = ROW.resultado_partido;
             LOCALIDAD.value = ROW.localidad_partido;
             FECHA_PARTIDO.disabled = true; // Se deshabilita el campo de fecha.
             TIPO_RESULTADO_PARTIDO.value = ROW.tipo_resultado_partido;
-            await fillSelect(PARTIDO_API, 'readEquipos', 'equipos', ROW.id_equipo);
+            IMAGENES_EQUIPOS = await fillSelectImage(PARTIDO_API, 'readEquipos', 'equipos', ROW.id_equipo);
+            IMAGENES_RIVALES = await fillSelectImage(PARTIDO_API, 'readRivales', 'rival', ROW.id_rival);
             await fillSelect(PARTIDO_API, 'readJornadas', 'jornada', ROW.id_jornada);
             LOGO1.src = `${SERVER_URL}images/equipos/${ROW.logo_equipo}`;
-            LOGO2.src = `${SERVER_URL}images/partidos/${ROW.logo_rival}`;
+            LOGO2.src = `${SERVER_URL}images/rivales/${ROW.logo_rival}`;
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -302,7 +298,7 @@ async function fillCards(form = null) {
                 <h2 class="fw-semibold">${row.resultado_partido}</h2>
             </div>
             <div class="col-4">
-                 <img src="${SERVER_URL}images/partidos/${row.logo_rival}" class="img">
+                 <img src="${SERVER_URL}images/rivales/${row.logo_rival}" class="img">
                 <p class="small mt-3">${row.nombre_rival}</p>
             </div>
         </div>
@@ -420,25 +416,8 @@ window.onload = async function () {
         LOCALIDAD = document.getElementById('localidad'),
         LOGO1 = document.getElementById('logo1'),
         LOGO2 = document.getElementById('logo2'),
-        LOGO_RIVAL2 = document.getElementById('logoRival'),
-        LOGO_EQUIPO_DIV = document.getElementById('logo_equipo_div'),
-        LOGO_RIVAL_DIV = document.getElementById('logo_rival_div'),
         TIPO_RESULTADO_PARTIDO = document.getElementById('tipoResultado');
 
-    LOGO_RIVAL2.addEventListener('change', function (event) {
-        // Verifica si hay una imagen seleccionada
-        if (event.target.files && event.target.files[0]) {
-            // con el objeto FileReader lee de forma asincrona el archivo seleccionado
-            const reader = new FileReader();
-            // Luego de haber leido la imagen seleccionada se nos devuele un objeto de tipo blob
-            // Con el metodo createObjectUrl de fileReader crea una url temporal para la imagen
-            reader.onload = function (event) {
-                // finalmente la url creada se le asigna al atributo src de la etiqueta img
-                LOGO2.src = event.target.result;
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
-    });
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
@@ -466,6 +445,35 @@ window.onload = async function () {
             console.error(DATA.exception);
         }
     });
+
+    // Método para el evento change del campo select equipos
+    EQUIPO.addEventListener('change', (event) => {
+        // Obtiene el valor seleccionado del elemento select
+        const selectedValue = event.target.value;
+    
+        // Busca la imagen correspondiente en el arreglo de IMAGENES_EQUIPOS
+        const selectedImage = IMAGENES_EQUIPOS.find(image => image.id == selectedValue);
+    
+        // Si se encuentra la imagen, actualiza el atributo src del elemento img
+        if (selectedImage) {
+            LOGO1.src = `${SERVER_URL}images/equipos/${selectedImage.imagen}`;
+        } 
+    });
+    
+    // Método para el evento change del campo select rivales
+    RIVAL.addEventListener('change', (event) => {
+        // Obtiene el valor seleccionado del elemento select
+        const selectedValue = event.target.value;
+    
+        // Busca la imagen correspondiente en el arreglo de IMAGENES_EQUIPOS
+        const selectedImage = IMAGENES_RIVALES.find(image => image.id == selectedValue);
+    
+        // Si se encuentra la imagen, actualiza el atributo src del elemento img
+        if (selectedImage) {
+            LOGO2.src = `${SERVER_URL}images/rivales/${selectedImage.imagen}`;
+        } 
+    });
+
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');
     // Verificar si SEARCH_FORM está seleccionado correctamente

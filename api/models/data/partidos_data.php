@@ -50,33 +50,17 @@ class PartidosData extends PartidosHandler
     }
 
     // Validación y asignación del ID del Subcontenido.
-    public function setlogoRival($file, $filename = null)
+    public function setIdRival($value)
     {
-        if (Validator::validateImageFile($file, 1000)) {
-            $this->logoRival = Validator::getFilename();
-            return true;
-        } elseif (Validator::getFileError()) {
-            $this->data_error = Validator::getFileError();
-            return false;
-        } elseif ($filename) {
-            $this->logoRival = $filename;
+        if (Validator::validateNaturalNumber($value)) {
+            $this->idRival = $value;
             return true;
         } else {
-            $this->logoRival = 'default.png';
-            return true;
+            $this->data_error = 'El identificador del rival es incorrecto o esta nulo';
+            return false;
         }
     }
 
-    public function setFilename()
-    {
-        if ($data = $this->readFilename()) {
-            $this->filename = $data['logo_rival'];
-            return true;
-        } else {
-            $this->data_error = 'Partido inexistente pa la imagen perro';
-            return false;
-        }
-    }
 
     public function getFilename()
     {
