@@ -29,7 +29,7 @@
     <hr>
     <!-- Tabla para mostrar los registros existentes -->
     <div class="table-responsive">
-        <table class="table table align-middle table-striped table-borderless">
+        <table class="table table align-middle table-striped table-borderless text-center">
             <!-- Cabeza de la tabla para mostrar la cantidad de registros y los títulos de las columnas -->
             <thead>
                 <tr>
@@ -49,6 +49,11 @@
             <tbody id="tabla_registro_medico"></tbody>
         </table>
     </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <!-- Aquí se insertarán los elementos de la paginación -->
+        </ul>
+    </nav>
 </div>
 
 <!-- Componente Modal para guardar un registro -->
@@ -66,7 +71,7 @@
             <form id="saveForm">
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input type="hidden" id="idMedico" name="idMedico">
+                    <input type="number" class="d-none" id="idMedico" name="idMedico">
                     <div class="col-sm-12 col-md-6">
                         <label for="jugador" class="form-label fw-semibold">Selecciona al jugador</label>
                         <select id="jugador" type="text" name="jugador" class="form-select" required></select>
@@ -98,12 +103,12 @@
                     <div class="col-sm-12 col-md-6">
                         <label for="retornoPartido" class="form-label fw-semibold">Fecha de retorno a
                             partidos</label>
-                        <select id="retornoPartido" type="date" name="retornoPartido" class="form-select" required>
+                        <select id="retornoPartido" type="text" name="retornoPartido" class="form-select" required></select>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
                     <button type="reset" class="btn bg-red-cream-color text-white">Cancelar</button>
-                    <button type="submit" class="btn bg-blue-principal-color text-white ">Guardar</button>
+                    <button type="submit" class="btn bg-blue-principal-color text-white">Guardar</button>
                 </div>
             </form>
         </div>
