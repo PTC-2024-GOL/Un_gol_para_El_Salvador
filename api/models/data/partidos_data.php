@@ -124,6 +124,19 @@ class PartidosData extends PartidosHandler
         }
     }
 
+    public function setFechaPartido($value)
+    {
+        $validatedDateTime = Validator::validateDateTime($value);
+        if ($validatedDateTime) {
+            $this->fechaPartido = $validatedDateTime; 
+            return true;
+        } else {
+            $this->data_error = 'Tipo de dato incorrecto o formato de fecha incorrecto';
+            return false;
+        }
+    }
+    
+
     // Método para obtener el error de los datos.
     public function getDataError()
     {

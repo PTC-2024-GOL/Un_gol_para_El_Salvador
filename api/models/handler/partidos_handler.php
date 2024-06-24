@@ -19,6 +19,7 @@ class PartidosHandler
     protected $rivalPartido = null;
     protected $idPartido = null;
     protected $idRival = null;
+    protected $fechaPartido = null;
 
     // Constante para establecer la ruta de las imágenes.
     const RUTA_IMAGEN = '../../images/partidos/';
@@ -42,7 +43,7 @@ class PartidosHandler
     
     public function createRow()
     {   
-        $sql = 'CALL insertarPartido(?, ?, ?, ?, ?, ?, ?);';    
+        $sql = 'CALL insertarPartido(?, ?, ?, ?, ?, ?, ?, ?);';    
         $params = array(
             $this->idEquipo,
             $this->idRival,
@@ -50,7 +51,8 @@ class PartidosHandler
             $this->resultadoPartido,
             $this->localidadPartido,
             $this->tipoResultadoPartido,
-            $this->idJornada
+            $this->idJornada,
+            $this->fechaPartido
         );
         return Database::executeRow($sql, $params);
     }
@@ -110,7 +112,7 @@ class PartidosHandler
     public function updateRow()
     {   
         $sql = 'UPDATE partidos SET id_jornada = ?, id_equipo = ?, id_rival = ?, cancha_partido = ?,
-        resultado_partido = ?, localidad_partido = ?, tipo_resultado_partido = ? WHERE id_partido = ?;';
+        resultado_partido = ?, localidad_partido = ?, tipo_resultado_partido = ?, fecha_partido = ? WHERE id_partido = ?;';
         $params = array(
             $this->idJornada,
             $this->idEquipo,
@@ -119,6 +121,7 @@ class PartidosHandler
             $this->resultadoPartido,
             $this->localidadPartido,
             $this->tipoResultadoPartido,
+            $this->fechaPartido,
             $this->idPartido
         );
         return Database::executeRow($sql, $params);

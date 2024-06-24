@@ -55,7 +55,6 @@ async function loadComponent(path) {
 const openCreate = async () => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
-    FECHA_PARTIDOS.classList.add('d-none');
     ID_PARTIDO.value = null;
     MODAL_TITLE2.textContent = 'Agregar partido';
     // Se prepara el formulario.
@@ -147,7 +146,6 @@ const openUpdate = async (id) => {
             // Se prepara el formulario.
             SAVE_FORM.reset();
 
-            FECHA_PARTIDOS.classList.remove('d-none');
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
             ID_PARTIDO.value = ROW.id_partido;
@@ -155,7 +153,6 @@ const openUpdate = async (id) => {
             CANCHA.value = ROW.cancha_partido;
             RESULTADO_PARTIDO.value = ROW.resultado_partido;
             LOCALIDAD.value = ROW.localidad_partido;
-            FECHA_PARTIDO.disabled = true; // Se deshabilita el campo de fecha.
             TIPO_RESULTADO_PARTIDO.value = ROW.tipo_resultado_partido;
             IMAGENES_EQUIPOS = await fillSelectImage(PARTIDO_API, 'readEquipos', 'equipos', ROW.id_equipo);
             IMAGENES_RIVALES = await fillSelectImage(PARTIDO_API, 'readRivales', 'rival', ROW.id_rival);
@@ -278,50 +275,49 @@ async function fillCards(form = null) {
         if (DATA.status) {
             // Mostrar elementos obtenidos de la API
             DATA.dataset.forEach(row => {
+                let resultado = row.tipo_resultado_partido;
+                const pendienteHtml = resultado === 'Pendiente' ? '<p class="text-warning fw-semibold mb-0">Pendiente</p>' : '';
                 const cardsHtml = `<div class="col-md-6 col-sm-12">
-    <div class="tarjetas shadow p-4">
-        <div class="row">
-            <div class="col-auto">
-                <img src="../../../resources/img/svg/calendar.svg" alt="">
-            </div>
-            <div class="col">
-                <p class="fw-semibold mb-0">${row.fecha}</p>
-                <p class="small">${row.localidad_partido}</p>
-            </div>
-        </div>
-        <div class="row align-items-center">
-            <div class="col-4">
-                 <img src="${SERVER_URL}images/equipos/${row.logo_equipo}" class="img">
-                <p class="small mt-3">${row.nombre_equipo}</p>
-            </div>
-            <div class="col-4">
-                <h2 class="fw-semibold">${row.resultado_partido}</h2>
-            </div>
-            <div class="col-4">
-                 <img src="${SERVER_URL}images/rivales/${row.logo_rival}" class="img">
-                <p class="small mt-3">${row.nombre_rival}</p>
-            </div>
-        </div>
-        <hr>
-        <button class="btn bg-yellow-principal-color text-white btn-sm rounded-3 mb-3"
-            onclick="openUpdate(${row.id_partido})">
-            Editar partido
-        </button>
-        <button class="btn bg-blue-principal-color text-white btn-sm rounded-3 mb-3"
-            onclick="seeModal(${row.id_partido})">
-            Más información
-        </button>
-
-        <button class="btn bg-red-cream-color text-white btn-sm rounded-3 mb-3"
-            onclick="openDelete(${row.id_partido})">
-            Eliminar
-        </button>
-    </div>
-</div>
-`;
+                    <div class="tarjetas shadow p-4">
+                        <div class="row">
+                            <div class="col-auto">
+                                <img src="../../../resources/img/svg/calendar.svg" alt="">
+                            </div>
+                            <div class="col">
+                                <p class="fw-semibold mb-0">${row.fecha}</p>
+                                <p class="small">${row.localidad_partido}</p>
+                                ${pendienteHtml}
+                            </div>
+                        </div>
+                        <div class="row align-items-center">
+                            <div class="col-4">
+                                <img src="${SERVER_URL}images/equipos/${row.logo_equipo}" class="img">
+                                <p class="small mt-3">${row.nombre_equipo}</p>
+                            </div>
+                            <div class="col-4">
+                                <h2 class="fw-semibold">${row.resultado_partido}</h2>
+                            </div>
+                            <div class="col-4">
+                                <img src="${SERVER_URL}images/rivales/${row.logo_rival}" class="img">
+                                <p class="small mt-3">${row.nombre_rival}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <button class="btn bg-yellow-principal-color text-white btn-sm rounded-3 mb-3" onclick="openUpdate(${row.id_partido})">
+                            Editar partido
+                        </button>
+                        <button class="btn bg-blue-principal-color text-white btn-sm rounded-3 mb-3" onclick="seeModal(${row.id_partido})">
+                            Más información
+                        </button>
+                        <button class="btn bg-red-cream-color text-white btn-sm rounded-3 mb-3" onclick="openDelete(${row.id_partido})">
+                            Eliminar
+                        </button>
+                    </div>
+                </div>`;
                 cargarCartas.innerHTML += cardsHtml;
             });
-        } else {
+        }
+         else {
             sweetAlert(4, DATA.error, true);
         }
     } catch (error) {
@@ -427,6 +423,7 @@ window.onload = async function () {
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SAVE_FORM);
         console.log('antes de saltar a la api' + FORM);
+        console.log('antes de saltar a la api' + FECHA_PARTIDO.value);
         console.log('antes de saltar a la api' + action);
         // Petición para guardar los datos del formulario.
         const DATA = await fetchData(PARTIDO_API, action, FORM);
@@ -472,6 +469,20 @@ window.onload = async function () {
         if (selectedImage) {
             LOGO2.src = `${SERVER_URL}images/rivales/${selectedImage.imagen}`;
         } 
+    });
+
+    // Método para el evento change del campo select Tipo de resultado
+    TIPO_RESULTADO_PARTIDO.addEventListener('change', (event) => {
+        // Obtiene el valor seleccionado del elemento select
+        const selectedValue = event.target.value;
+    
+        if(selectedValue == 'Pendiente'){
+            RESULTADO_PARTIDO.value = '0-0';
+        }
+        else{
+            RESULTADO_PARTIDO.value = '';
+        }
+     
     });
 
     // Constante para establecer el formulario de buscar.

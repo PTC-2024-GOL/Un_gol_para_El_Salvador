@@ -34,7 +34,8 @@ if (isset($_GET['action'])) {
                     !$partido->setCancha($_POST['cancha']) or
                     !$partido->setResultadoPartido($_POST['resultado']) or
                     !$partido->setLocalidad($_POST['Localidad']) or
-                    !$partido->setTipoResultadoPartido($_POST['tipoResultado'])  
+                    !$partido->setTipoResultadoPartido($_POST['tipoResultado']) or
+                    !$partido->setFechaPartido($_POST['fechaPartido'])
                 ) {
                     $result['error'] = $partido->getDataError();
                 } elseif ($partido->createRow()) {
@@ -112,7 +113,8 @@ if (isset($_GET['action'])) {
                     !$partido->setLocalidad($_POST['Localidad']) or
                     !$partido->setTipoResultadoPartido($_POST['tipoResultado']) or
                     !$partido->setIdPartido($_POST['idPartido']) or 
-                    !$partido->setIdRival($_POST['idRival'])
+                    !$partido->setIdRival($_POST['idRival']) or
+                    !$partido->setFechaPartido($_POST['fechaPartido'])
                 ) {
                     $result['error'] = $partido->getDataError();
                 } elseif ($partido->updateRow()) {
