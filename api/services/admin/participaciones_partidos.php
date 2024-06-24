@@ -45,6 +45,15 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'No existen lesiones registradas';
                 }
                 break;
+            // Leer todos los jugadores de un equipo
+            case 'readAllByIdEquipo':
+                if ($result['dataset'] = $participacion->readAllByIdEquipo()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
+                } else {
+                    $result['error'] = 'No existen jugadores registrados en este equipo';
+                }
+                break;
             // Leer uno
             case 'readOne':
                 if (!$participacion->setIdParticipacion($_POST['idParticipacion'])) {
