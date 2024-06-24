@@ -50,8 +50,8 @@ const openUpdate = async (id) => {
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
             ID_RIVAL.value = ROW.ID;
-            NOMBRE_RIVAL.value = ROW.NOMBRE;
-            FOTO_RIVAL.src = SERVER_URL.concat('images/rivales/', ROW.IMAGEN);
+            NOMBRE_RIVAL.value = ROW.Nombre;
+            FOTO_RIVAL.src = SERVER_URL.concat('images/rivales/', ROW.Logo);
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -140,8 +140,8 @@ function mostrarRivales(pagina) {
     RivalesPagina.forEach(row => {
         const tablaHtml = `
             <tr>
-                <td><img src="${SERVER_URL}images/rivales/${row.IMAGEN}" height="50" width="50" class="circulo"></td>
-                <td>${row.NOMBRE}</td>
+                <td><img src="${SERVER_URL}images/rivales/${row.Logo}" height="50" width="50" class="circulo"></td>
+                <td>${row.Nombre}</td>
                 <td>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
                         <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
