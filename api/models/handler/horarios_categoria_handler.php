@@ -57,6 +57,15 @@ class HorariosCateHandler{
         return Database::getRow($sql, $params);
     }
 
+    //Función para leer un horario_categoria.
+    public function onlyDetail()
+    {
+        $sql = 'SELECT * FROM vista_horarios_categorias
+        WHERE id_categoria LIKE ?';
+        $params = array($this->categoria);
+        return Database::getRows($sql, $params);
+    }
+
     //Función para actualizar un registro médico.
     public function updateRow()
     {

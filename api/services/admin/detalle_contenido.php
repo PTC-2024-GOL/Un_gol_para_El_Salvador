@@ -39,7 +39,7 @@ if (isset($_GET['action'])) {
             case 'createRow':
                 $_POST = Validator::validateForm($_POST);
                 if (
-                    !$detalle->setIdSubContenido($_POST['idSubContenio']) or
+                    !$detalle->setIdSubContenido($_POST['idSubContenido']) or
                     !$detalle->setCantidadSubContenido($_POST['CantidadSubContenido']) or
                     !$detalle->setIdTarea($_POST['IdTarea']) or
                     !$detalle->setCantidadTarea($_POST['CantidadTarea']) or
@@ -125,35 +125,31 @@ if (isset($_GET['action'])) {
             case 'updateRow':
                 $_POST = Validator::validateForm($_POST);
                 if (
-                    !$partido->setIdEquipo($_POST['idEquipo']) or
-                    !$partidos->setIdJornada($_POST['idJornada']) or
-                    !$partido->setlogoRival($_POST['logoRival']) or
-                    !$partido->setRivalEquipo($_POST['nombrerival']) or
-                    !$partido->setCancha($_POST['cancha']) or
-                    !$partido->setResultadoPartido($_POST['resultado']) or
-                    !$partido->setLocalidad($_POST['Localidad']) or
-                    !$partido->setTipoResultadoPartido($_POST['tipoResultado']) or
-                    !$partido->setIdPartido($_POST['idPartido'])
+                    !$detalle->setIdSubContenido($_POST['idSubContenido']) or
+                    !$detalle->setCantidadSubContenido($_POST['CantidadSubContenido']) or
+                    !$detalle->setIdTarea($_POST['IdTarea']) or
+                    !$detalle->setCantidadTarea($_POST['CantidadTarea']) or
+                    !$detalle->setIdDetalleContenido($_POST['idDetalle']) 
                 ) {
-                    $result['error'] = $partido->getDataError();
-                } elseif ($partido->updateRow()) {
+                    $result['error'] = $detalle->getDataError();
+                } elseif ($detalle->updateRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Partido modificado correctamente';
+                    $result['message'] = 'Detalle modificado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al modificar el partido';
+                    $result['error'] = 'Ocurrió un problema al modificar el detalle';
                 }
                 break;
             // Eliminar un detalle contenido
             case 'deleteRow':
                 if (
-                    !$partido->setIdPartido($_POST['idPartido'])
+                    !$detalle->setIdDetalleContenido($_POST['IdDetalle'])
                 ) {
-                    $result['error'] = $partido->getDataError();
-                } elseif ($partido->deleteRow()) {
+                    $result['error'] = $detalle->getDataError();
+                } elseif ($detalle->deleteRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Partido eliminado correctamente';
+                    $result['message'] = 'Detalle eliminado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar el partido';
+                    $result['error'] = 'Ocurrió un problema al eliminar el detalle';
                 }
                 break;
             default:
