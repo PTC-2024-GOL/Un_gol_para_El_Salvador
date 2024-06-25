@@ -160,7 +160,7 @@ function mostrarRegistros(pagina) {
         if(row.retorno_partido == null){
             retornoPartido = 'En espera';
         } else{
-            retornoPartido = row.retorno_partido;
+            retornoPartido = row.fecha_partido;
         }
 
         const tablaHtml = `
