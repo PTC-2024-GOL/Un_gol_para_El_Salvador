@@ -270,7 +270,7 @@ window.onload = async function () {
         APELLIDO_JUGADOR = document.getElementById('apellidoJugador'),
         NACIMIENTO_JUGADOR = document.getElementById('fechaNacimientoJugador'),
         PERFIL_JUGADOR = document.getElementById('perfilJugador'),
-        DORSAL_JUGADOR = document.getElementById('dorsal'),
+        DORSAL_JUGADOR = document.getElementById('Dorsal'),
         ESTATUS_JUGADOR = document.getElementById('estadoJugador'),
         BECADO = document.getElementById('beca'),
         GENERO_JUGADOR = document.getElementById('generoJugador'),
@@ -307,6 +307,14 @@ window.onload = async function () {
         const FORM = new FormData(SAVE_FORM);
         // Petición para guardar los datos del formulario.
         const DATA = await fetchData(JUGADOR_API, action, FORM);
+
+        const POSICION_SECUNDARIA = document.getElementById('posicionSecundaria');
+        const POSICION_PRIMARIA = document.getElementById('posicionPrincipal');
+
+        if(POSICION_SECUNDARIA.value === ' '){
+            let posicion2 = POSICION_PRIMARIA.value;
+            FORM.set('posicion2', posicion2);
+        }
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se cierra la caja de diálogo.

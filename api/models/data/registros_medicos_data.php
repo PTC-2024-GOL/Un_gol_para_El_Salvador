@@ -104,13 +104,8 @@ class RegistrosData extends RegistrosHandler
     // Validación y asignación del retorno a partido.
     public function setRetornoPartido($value)
     {
-        if (Validator::validateNaturalNumber($value)) {
             $this->retornoPartido = $value;
             return true;
-        } else {
-            $this->data_error = 'El identificador del ratorno a partido es incorrecto';
-            return false;
-        }
     }
 
     // Método para obtener el error de los datos.
