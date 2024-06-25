@@ -35,10 +35,19 @@ if (isset($_GET['action'])) {
             case 'readAllByIdParticipacion':
                 if (!$detalleAmonestacion->setIdParticipacion($_POST['idParticipacion'])) {
                     $result['error'] = $detalleAmonestacion->getDataError();
-                } elseif ($result['dataset'] = $detalleAmonestacion->readAllGoles()) {
+                } elseif ($result['dataset'] = $detalleAmonestacion->readAllAmonestaciones()) {
                     $result['status'] = 1;
                 } else {
                     $result['error'] = 'Aún no se han registrado amonestaciones';
+                }
+                break;
+            case 'readOne':
+                if (!$detalleAmonestacion->setIdDetalleAmonestacion($_POST['idDetalleAmonestacion'])) {
+                    $result['error'] = $detalleAmonestacion->getDataError();
+                } elseif ($result['dataset'] = $detalleAmonestacion->readOne()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Ocurrio un error';
                 }
                 break;
             // Actualizar

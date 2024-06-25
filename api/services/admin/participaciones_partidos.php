@@ -42,16 +42,17 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
-                    $result['error'] = 'No existen lesiones registradas';
+                    $result['error'] = 'No existen participaciones registradas';
                 }
                 break;
             // Leer todos los jugadores de un equipo
             case 'readAllByIdEquipo':
-                if ($result['dataset'] = $participacion->readAllByIdEquipo()) {
+                if (!$participacion->setIdEquipo($_POST['idEquipo'])) {
+                    $result['error'] = $participacion->getDataError();
+                } elseif ($result['dataset'] = $participacion->readAllByIdEquipo()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
-                    $result['error'] = 'No existen jugadores registrados en este equipo';
+                    $result['error'] = 'Aún no hay jugadores agregados a este equipo';
                 }
                 break;
             // Leer uno
@@ -83,7 +84,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Participación modificada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al modificar la participación';
+                    $result['error'] = 'Aún no has ingresado la participación del jugador. Ingresa su participación de este partido';
                 }
                 break;
             // Eliminar

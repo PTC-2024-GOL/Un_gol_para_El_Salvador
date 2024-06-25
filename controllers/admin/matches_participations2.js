@@ -1,7 +1,8 @@
 // Recibimos los parametros
 const params = new URLSearchParams(window.location.search);
 const idEquipo = params.get("idEquipo");
-const nombreEquipo = params.get("nombreEquipo");
+let idPartido;
+
 
 
 let ID_PARTIDO,
@@ -61,12 +62,12 @@ async function fillCards() {
                             <h2 class="fw-semibold">${row.resultado_partido}</h2>
                         </div>
                         <div class="col-4">
-                            <img src="${SERVER_URL}images/partidos/${row.logo_rival}" class="img">
+                            <img src="${SERVER_URL}images/rivales/${row.logo_rival}" class="img">
                             <p class="small mt-3">${row.nombre_rival}</p>
                         </div>
                     </div>
                     <hr>
-                    <button class="btn bg-blue-principal-color text-white btn-sm rounded-3"  onclick="goToPlayers(${row.id_partido})">
+                    <button class="btn bg-blue-principal-color text-white btn-sm rounded-3"  onclick="goToPlayers(${row.id_partido}, ${idEquipo})">
                         Agregar participaciones
                     </button>
                 </div>
@@ -121,7 +122,7 @@ async function searchMatches(form = null) {
                         </div>
                     </div>
                     <hr>
-                    <button class="btn bg-blue-principal-color text-white btn-sm rounded-3"  onclick="goToPlayers(idPartido)">
+                    <button class="btn bg-blue-principal-color text-white btn-sm rounded-3"  onclick="goToPlayers(${idEquipo}, ${idPartido})">
                         Agregar participaciones
                     </button>
                 </div>
@@ -136,10 +137,10 @@ async function searchMatches(form = null) {
 
 
 // Creamos una funcion que recibe como parametro el id del equipo que fue seleccionado
-function goToPlayers(idParticipacion) {
+function goToPlayers(idEquipo, idPartido) {
   
     // Redirecciona a la otra pantalla y manda tambien el id del equipo
-    window.location.href = "../pages/matches_participations3.html?idParticipacion=" + idParticipacion;
+    window.location.href = `../pages/matches_participations3.html?idEquipo=${idEquipo}&idPartido=${idPartido}`;
 }
 
 window.onload = async function () {
