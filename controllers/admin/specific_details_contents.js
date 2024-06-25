@@ -7,12 +7,16 @@ let SAVE_FORM,
     CANTIDAD_CONTENIDO,
     MINUTOS_TAREA,
     IDDETALLE_CONTENIDO,
-    JUGADORES;
+    JUGADORES,
+    ID_URL,
+    ID_ENTRENAMIENTO
+    ;
 
 let SEARCH_FORM;
 
+
 // Constantes para completar las rutas de la API.
-const SD_CONTENTS_API = '';
+const SD_CONTENTS_API = 'services/admin/detalle_contenido.php';
 const JUGADORES_API = '';
 
 const lista_datos = [
@@ -128,9 +132,9 @@ const openUpdate = async (id) => {
         eliminardata('delete full');
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
-        FORM.append('iddetallecontenido', id);
+        FORM.append('idDetalle', id);
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(SD_CONTENTS_API, 'readOne', FORM);
+        const DATA = await fetchData(SD_CONTENTS_API, 'readOneDetalleContenido', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
@@ -201,7 +205,8 @@ const openDelete = async (id) => {
 *   Parámetros: form (formulario de búsqueda).
 *   Retorno: ninguno.
 */
-async function fillTable(form = null) {
+async function fillTable(form = null, actions = 0) {
+    let action;
     const lista_datos = [
         {
             subcontenido: "Juegos lúdicos",
@@ -233,8 +238,12 @@ async function fillTable(form = null) {
     try {
         cargarTabla.innerHTML = '';
         // Se verifica la acción a realizar.
-        (form) ? action = 'searchRows' : action = 'readAll';
+        (actions) ? action = 'searchRows' : action = 'readAllDContenido';
         console.log(form);
+        if (actions == 0) {
+            form = new FormData();
+            form.append('idEntrenamiento', ID_ENTRENAMIENTO);
+        }
         // Petición para obtener los registros disponibles.
         const DATA = await fetchData(SD_CONTENTS_API, action, form);
         console.log(DATA);
@@ -244,18 +253,18 @@ async function fillTable(form = null) {
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
                 <tr>
-                    <td>${row.JUGADOR}</td>
-                    <td>${row.SUBCONTENIDO}</td>
-                    <td>${row.TAREA}<td>
+                    <td>${row.nombre_jugador}</td>
+                    <td>${row.nombre_subtema}</td>
+                    <td>${row.nombre_tarea}<td>
                     <td>
-                        <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
-                        <img src="../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" onclick="openDelete(${row.ID})">
-                            <i class="bi bi-trash-fill"></i>
-                        </button>
+                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id_detalle_contenido})">
+                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                    </button>
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_detalle_contenido})">
+                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                    </button>
                     </td>
-                </tr>
+            </tr>
                 `;
                 cargarTabla.innerHTML += tablaHtml;
             });
@@ -300,6 +309,8 @@ window.onload = async function () {
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Detalles contenido especifico';
     fillSelected(lista_datos, 'readAll', 'generador');
+    ID_URL = new URLSearchParams(window.location.search);
+    ID_ENTRENAMIENTO = ID_URL.get('id_entrenamiento');
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
@@ -348,7 +359,7 @@ window.onload = async function () {
         console.log(SEARCH_FORM);
         console.log(FORM);
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
-        fillTable(FORM);
+        fillTable(FORM, 1);
     });
 
     // Listener para el cambio en el select de jugadores
