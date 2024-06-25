@@ -4,9 +4,12 @@ let SAVE_FORM,
     HORARIO,
     CATEGORIA;
 let SEARCH_FORM;
+let ROWS_FOUND;
 
 // Constantes para completar las rutas de la API.
-const API = '';
+const API = 'services/admin/horarios_categoria.php';
+const CATEGORIA_API = 'services/admin/categorias.php';
+const HORARIO_API = 'services/admin/horarios.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -24,6 +27,8 @@ const openCreate = () => {
     MODAL_TITLE.textContent = 'Agregar horario a la categoría';
     // Se prepara el formulario.
     SAVE_FORM.reset();
+    fillSelect(CATEGORIA_API, 'readAll', 'categoriaHora');
+    fillSelect(HORARIO_API, 'readAll', 'horarioCat');
 }
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
@@ -36,7 +41,7 @@ const openUpdate = async (id) => {
         const FORM = new FormData();
         FORM.append('idHorarioCate', id);
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(ADMINISTRADOR_API, 'readOne', FORM);
+        const DATA = await fetchData(API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
@@ -46,9 +51,9 @@ const openUpdate = async (id) => {
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
-            ID_HORARIO_CAT.value = ROW.ID;
-            HORARIO.value = ROW.HORARIO;
-            CATEGORIA.value = ROW.CATEGORIA;
+            ID_HORARIO_CAT.value = ROW.id_horario_categoria;
+            fillSelect(CATEGORIA_API, 'readAll', 'categoriaHora', ROW.id_categoria);
+            fillSelect(HORARIO_API, 'readAll', 'horarioCat', ROW.id_horario);
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -56,6 +61,8 @@ const openUpdate = async (id) => {
         console.log(Error);
         SAVE_MODAL.show();
         MODAL_TITLE.textContent = 'Actualizar el horario a la categoría';
+        fillSelect(CATEGORIA_API, 'readAll', 'categoriaHora');
+        fillSelect(HORARIO_API, 'readAll', 'horarioCat');
     }
 
 }
@@ -95,83 +102,90 @@ const openDelete = async (id) => {
 }
 
 
-async function fillTable(form = null) {
-    const lista_datos = [
-        {
-            horario: 'Horario lunes 1',
-            categoria: 'Nivel 1',
-            id: 1,
-        },
-        {
-            horario: 'Horario martes 1',
-            categoria: 'Nivel 1',
-            id: 2,
-        },
-        {
-            horario: 'Horario miércoles 1',
-            categoria: 'Nivel 1',
-            id: 3,
-        },
-        {
-            horario: 'Horario jueves 1',
-            categoria: 'Nivel 1',
-            id: 4,
-        }
-    ];
-    const cargarTabla = document.getElementById('tabla_horarios_cat');
+// Variables y constantes para la paginación
+const horariosCatPorPagina = 10;
+let paginaActual = 1;
+let horariosCate = [];
 
+// Función para cargar tabla de técnicos con paginación
+async function fillTable(form = null) {
+    const cargarTabla = document.getElementById('tabla_horarios_cat');
     try {
         cargarTabla.innerHTML = '';
-        // Se verifica la acción a realizar.
-        (form) ? action = 'searchRows' : action = 'readAll';
-        console.log(form);
         // Petición para obtener los registros disponibles.
+        let action;
+        form ? action = 'searchRows' : action = 'readAll';
+        console.log(form);
         const DATA = await fetchData(API, action, form);
         console.log(DATA);
 
         if (DATA.status) {
-            // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-                const tablaHtml = `
-                <tr>
-                    <td>${row.HORARIO}</td>
-                    <td>${row.CATEGORIA}</td>
-                    <td>
-                        <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
-                        <img src="../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" onclick="openDelete(${row.ID})">
-                            <i class="bi bi-trash-fill"></i>
-                        </button>
-                    </td>
-                </tr>
-                `;
-                cargarTabla.innerHTML += tablaHtml;
-            });
+            horariosCate = DATA.dataset;
+            mostrarHorariosCate(paginaActual);
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = DATA.message;
         } else {
-            sweetAlert(4, DATA.error, true);
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = "Existen 0 coincidencias";
         }
     } catch (error) {
         console.error('Error al obtener datos de la API:', error);
-        // Mostrar materiales de respaldo
-        lista_datos.forEach(row => {
-            const tablaHtml = `
-            <tr>
-                    <td>${row.horario}</td>
-                    <td>${row.categoria}</td>
+    }
+}
+
+// Función para mostrar técnicos en una página específica
+function mostrarHorariosCate(pagina) {
+    const inicio = (pagina - 1) * horariosCatPorPagina;
+    const fin = inicio + horariosCatPorPagina;
+    const horariosCatPagina = horariosCate.slice(inicio, fin);
+
+    const cargarTabla = document.getElementById('tabla_horarios_cat');
+    cargarTabla.innerHTML = '';
+    horariosCatPagina.forEach(row => {
+        const tablaHtml = `
+                <tr>
+                    <td>${row.nombre_categoria}</td>
+                    <td>${row.nombre_horario}</td>
                     <td>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
+                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id_horario_categoria})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id})">
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_horario_categoria})">
                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
                     </td>
                 </tr>
-            `;
-            cargarTabla.innerHTML += tablaHtml;
-        });
+        `;
+        cargarTabla.innerHTML += tablaHtml;
+    });
+
+    actualizarPaginacion();
+}
+
+// Función para actualizar los controles de paginación
+function actualizarPaginacion() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
+
+    const totalPaginas = Math.ceil(horariosCate.length / horariosCatPorPagina);
+
+    if (paginaActual > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
     }
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
+    }
+
+    if (paginaActual < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
+    }
+}
+
+// Función para cambiar de página
+function cambiarPagina(nuevaPagina) {
+    paginaActual = nuevaPagina;
+    mostrarHorariosCate(paginaActual);
 }
 
 // window.onload
@@ -187,6 +201,7 @@ window.onload = async function () {
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Horarios de las categorías';
+    ROWS_FOUND = document.getElementById('rowsFound');
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
@@ -195,14 +210,14 @@ window.onload = async function () {
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
         ID_HORARIO_CAT = document.getElementById('idHorarioCate'),
-        HORARIO = document.getElementById('horarioCat'),
-        CATEGORIA = document.getElementById('categoriaHora');
+        CATEGORIA = document.getElementById('categoriaHora'),
+        HORARIO = document.getElementById('horarioCat');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
         event.preventDefault();
         // Se verifica la acción a realizar.
-        (ID.value) ? action = 'updateRow' : action = 'createRow';
+        (ID_HORARIO_CAT.value) ? action = 'updateRow' : action = 'createRow';
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SAVE_FORM);
         // Petición para guardar los datos del formulario.
