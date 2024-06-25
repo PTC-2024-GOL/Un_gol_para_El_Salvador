@@ -8,18 +8,14 @@ let SAVE_MODAL,
     MODAL_TITLE;
 
 let SAVE_FORM,
+    ID_PARTICIPACION,
     TITULAR,
     SUSTITUCION,
     ID_JUGADOR,
+    GOLES,
     MINUTOS,
     ASISTENCIAS,
-    PUNTUACION,
-    // ESTADO DE ANIMO
-    ENERGETICO,
-    SATISFECHO,
-    NORMAL,
-    AGOTADO,
-    DESANIMADO;
+    PUNTUACION;
 
 //-- GOLES
 // --------------- Variables para el modal y form para guardar los goles ---------------------------
@@ -53,6 +49,8 @@ let SEE_AMONESTACION_MODAL,
 let SEARCH_FORM;
 
 let idParticipation;
+let idPlayer;
+let golesDiv;
 
 // Constantes para completar las rutas de la API.
 const PARTICIPACION_API = 'services/admin/participaciones_partidos.php';
@@ -70,10 +68,13 @@ async function loadComponent(path) {
 *   Parámetros: ninguno.
 *   Retorno: ninguno.
 */
-const openCreate = () => {
+const openCreate = (idJugador) => {
+    resetEstadoAnimo();
+    golesDiv.classList.add('d-none');
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
     MODAL_TITLE.textContent = 'Agregar participación del jugador';
+    idPlayer = idJugador;
     // Se prepara el formulario.
     SAVE_FORM.reset();
 }
@@ -135,8 +136,10 @@ const openAmonestaciones = async (idParticipacion) => {
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const openUpdate = async (id) => {
+const openUpdate = async (id, idJugador) => {
     try {
+        idPlayer = idJugador;
+        resetEstadoAnimo();
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
         FORM.append('idParticipacion', id);
@@ -151,15 +154,23 @@ const openUpdate = async (id) => {
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
-            ID_PARTICIPACION1.value = ROW.ID;
-            ID_JUGADOR1.value = ROW.JUGADOR;
-            TITULAR1.value = ROW.TITULAR;
-            SUSTITUCION1.value = ROW.SUSTITUCION;
-            MINUTOS_JUGADOS1.value = ROW.MINUTOS_JUGADOS;
-            GOLES1.value = ROW.GOLES;
-            ASISTENCIAS1.value = ROW.ASISTENCIAS;
-            ESTADO_ANIMO1.value = ROW.ESTADO_ANIMO;
-            PUNTUACION1.value = ROW.PUNTUACION;
+            const switchtTitularChecked = (ROW.titular === 1) ? 'checked' : '';
+            const switchtSustitucionChecked = (ROW.sustitucion === 1) ? 'checked' : '';
+            ID_PARTICIPACION.value = ROW.id_participacion;
+            TITULAR.checked = switchtTitularChecked;
+            SUSTITUCION.checked = switchtSustitucionChecked;
+            MINUTOS.value = ROW.minutos_jugados;
+            golesDiv.classList.remove('d-none');
+            GOLES.value = ROW.goles;
+            ASISTENCIAS.value = ROW.asistencias;
+            PUNTUACION.value = ROW.puntuacion;
+
+            //Obtenemos el elemento p de acuerdo al estado de animo que trae la api.
+            const estadoAnimoElement = document.querySelector(`#${ROW.estado_animo.toLowerCase()}`);
+            // Si trae un elemento p, entonces le va agregar estilo para que aparezca seleccionado.
+            if (estadoAnimoElement) {
+                estadoAnimoElement.parentElement.classList.add('selected');
+            }
         } else {
             sweetAlert(4, DATA.error, false);
         }
@@ -184,7 +195,7 @@ const openDelete = async (id) => {
             // Se define una constante tipo objeto con los datos del registro seleccionado.
             const FORM = new FormData();
             FORM.append('idParticipacion', id);
-            console.log(id);
+
             // Petición para eliminar el registro seleccionado.
             const DATA = await fetchData(PARTICIPACION_API, 'deleteRow', FORM);
             console.log(DATA.status);
@@ -193,9 +204,9 @@ const openDelete = async (id) => {
                 // Se muestra un mensaje de éxito.
                 await sweetAlert(1, DATA.message, true);
                 // Se carga nuevamente la tabla para visualizar los cambios.
-                cargarTabla();
+                await cargarTabla();
             } else {
-                sweetAlert(2, DATA.error, false);
+                await sweetAlert(4, DATA.error, false);
             }
         }
     }
@@ -351,7 +362,9 @@ async function cargarTabla() {
 
         if(DATA2.status){
             DATA2.dataset.forEach(row => {
-                participacionMap.set(row.id_jugador, row.id_participacion);
+                if(row.id_partido ===  parseInt(idPartido)){
+                    participacionMap.set(row.id_jugador, row.id_participacion);
+                }
             });
         }
 
@@ -373,19 +386,19 @@ async function cargarTabla() {
                             </div>
                         </div>
                         <div class="d-flex justify-content-evenly mt-3">
-                            <button type="button" class="btn transparente" onclick="openCreate(${row.ID})">
+                            <button type="button" class="btn transparente d-none" id="btnOpenCreate_${row.id_jugador}" onclick="openCreate(${row.id_jugador})">
                                 <img src="../../../resources/img/svg/plus.svg" width="20" height="20">
                             </button>
-                            <button type="button" class="btn transparente d-none" onclick="openUpdate(${idParticipacion})">
+                            <button type="button" class="btn transparente d-none" id="btnUpdate_${row.id_jugador}" onclick="openUpdate(${idParticipacion}, ${row.id_jugador})">
                                 <img src="../../../resources/img/svg/pen 2.svg" width="20" height="20">
                             </button>
-                            <button type="button" class="btn transparente" onclick="openGoles(${idParticipacion})">
+                            <button type="button" class="btn transparente d-none" id="btnOpenGol_${row.id_jugador}" onclick="openGoles(${idParticipacion})">
                                 <img src="../../../resources/img/svg/icons_forms/ball.svg" width="16" height="16">
                             </button>
-                            <button type="button" class="btn transparente" onclick="openAmonestaciones(${idParticipacion})">
+                            <button type="button" class="btn transparente d-none" id="btnOpenAmonestacion_${row.id_jugador}" onclick="openAmonestaciones(${idParticipacion})">
                                 <img src="../../../resources/img/svg/icons_forms/amonestacion.svg" width="20" height="20">
                             </button>
-                            <button type="button" class="btn transparente" onclick="openDelete(${idParticipacion})">
+                            <button type="button" class="btn transparente d-none" id="btnOpenDelete_${row.id_jugador}" onclick="openDelete(${idParticipacion})">
                                 <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="15" height="15">
                             </button>
                         </div>
@@ -393,6 +406,23 @@ async function cargarTabla() {
                     </div>
                 `;
                 cargarTabla.innerHTML += tablaHtml;
+
+                // Actualizar la visibilidad de los botones después de añadir el HTML
+                const btnOpenCreate = document.getElementById(`btnOpenCreate_${row.id_jugador}`);
+                const btnUpdate = document.getElementById(`btnUpdate_${row.id_jugador}`);
+                const btnOpenGol = document.getElementById(`btnOpenGol_${row.id_jugador}`);
+                const btnOpenAmonestacion = document.getElementById(`btnOpenAmonestacion_${row.id_jugador}`);
+                const btnOpenDelete = document.getElementById(`btnOpenDelete_${row.id_jugador}`);
+
+                if(idParticipacion > 0){
+                    btnUpdate.classList.remove('d-none');
+                    btnOpenGol.classList.remove('d-none');
+                    btnOpenAmonestacion.classList.remove('d-none');
+                    btnOpenDelete.classList.remove('d-none')
+                } else{
+                    btnOpenCreate.classList.remove('d-none');
+                }
+
             });
         } else {
             await sweetAlert(4, DATA.error, true);
@@ -515,6 +545,38 @@ async function cargarAmonestacionTarjetas (idParticipacion) {
     }
 }
 
+let animo;
+
+// Lo que hace esta funcion es que a todos los elementos que tenga como clase estado-btn les quite la clase select,
+// esto para quitarle el estilo de seleccionado al estado de animo.
+function resetEstadoAnimo() {
+    const allButtons = document.querySelectorAll('.estado-btn');
+    allButtons.forEach(button => {
+        button.classList.remove('selected');
+    });
+}
+
+const estadoAnimo = (event) => {
+    // Obtener el elemento clicado
+    const clickedElement = event.currentTarget;
+
+    // Busca el elemento p clickeado
+    const pElement = clickedElement.querySelector('p');
+
+    // Obtiene el texto del elemento <p>
+    animo = pElement.textContent;
+
+    // Obtienes todos los elementos que tengan la clase estado-btn
+    const allButtons = document.querySelectorAll('.estado-btn');
+    // Remueve la clase selected que pueda tener los elementos de la clase estado-btn
+    allButtons.forEach(button => {
+        button.classList.remove('selected');
+    });
+
+    // Agrega la clase 'selected' al botón clicado
+    clickedElement.classList.add('selected');
+};
+
 // window.onload
 window.onload = async function () {
     // Obtiene el contenedor principal
@@ -530,17 +592,22 @@ window.onload = async function () {
     titleElement.textContent = 'Participaciones';
     await cargarTabla();
 
+    // DIV GOLES
+    golesDiv = document.getElementById('golesDiv');
+
     // Constantes para establecer los elementos del componente para los modals.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
 
     SAVE_FORM = document.getElementById('saveForm'),
+        ID_PARTICIPACION = document.getElementById('idParticipacion'),
         TITULAR = document.getElementById('switchTitular'),
         SUSTITUCION = document.getElementById('switchSustitucion'),
         ID_JUGADOR = document.getElementById('jugador'),
         MINUTOS = document.getElementById('minutos'),
         ASISTENCIAS = document.getElementById('asistencias'),
-        PUNTUACION = document.getElementById('puntuacion');
+        PUNTUACION = document.getElementById('puntuacion'),
+        GOLES = document.getElementById('goles');
 
     // --------------------------------- GOLES ------------------------------
 
@@ -568,27 +635,36 @@ window.onload = async function () {
     SEE_AMONESTACION_MODAL =new bootstrap.Modal('#SeeAmonestacionModal'),
         MODAL_TITLE_AMONESTACION2 = document.getElementById('modalTitle5');
 
-
         // Método del evento para cuando se envía el formulario de guardar.
         SAVE_FORM.addEventListener('submit', async (event) => {
             // Se evita recargar la página web después de enviar el formulario.
             event.preventDefault();
             // Se verifica la acción a realizar.
-            (ID_ANALISIS.value) ? action = 'updateRow' : action = 'createRow';
+            (ID_PARTICIPACION.value) ? action = 'updateRow' : action = 'createRow';
             // Constante tipo objeto con los datos del formulario.
             const FORM = new FormData(SAVE_FORM);
+
+            const titular = TITULAR.checked ? 1: 0;
+            const sustitucion = SUSTITUCION.checked ? 1 :0;
+
+            FORM.set('titular', titular);
+            FORM.set('sustitucion', sustitucion);
+            FORM.append('animo', animo);
+            FORM.append('idJugador', idPlayer);
+            FORM.append('idPartido', idPartido);
+
             // Petición para guardar los datos del formulario.
-            const DATA = await fetchData(EQUIPO_API, action, FORM);
+            const DATA = await fetchData(PARTICIPACION_API, action, FORM);
             // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
             if (DATA.status) {
                 // Se cierra la caja de diálogo.
                 SAVE_MODAL.hide();
                 // Se muestra un mensaje de éxito.
-                sweetAlert(1, DATA.message, true);
+                await sweetAlert(1, DATA.message, true);
                 // Se carga nuevamente la tabla para visualizar los cambios.
-                cargarTabla();
+                await cargarTabla();
             } else {
-                sweetAlert(2, DATA.error, false);
+                await sweetAlert(2, DATA.error, false);
                 console.error(DATA.exception);
             }
         });

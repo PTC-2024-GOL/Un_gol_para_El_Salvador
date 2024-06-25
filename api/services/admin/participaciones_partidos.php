@@ -69,8 +69,6 @@ if (isset($_GET['action'])) {
             case 'updateRow':
                 $_POST = Validator::validateForm($_POST);
                 if (
-                    !$participacion->setIdPartido($_POST['idPartido']) or
-                    !$participacion->setIdJugador($_POST['idJugador']) or
                     !$participacion->setTitularidad($_POST['titular']) or
                     !$participacion->setSustitucion($_POST['sustitucion']) or
                     !$participacion->setMinutosJugados($_POST['minutos']) or
@@ -97,7 +95,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Participación eliminada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar la participación';
+                    $result['error'] = 'Ocurrió un problema al eliminar la participación. Si ya tienes goles o amonestaciones creadas, tienes que eliminarlas antes.';
                 }
                 break;
             default:

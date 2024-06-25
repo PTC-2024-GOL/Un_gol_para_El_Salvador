@@ -41,6 +41,7 @@
             </div>
             <!-- Formulario para crear o actualizar un registro -->
             <form class="form px-4" id="saveForm">
+                <input type="hidden" id="idParticipacion" name="idParticipacion">
                 <div class="row py-4">
                     <div class="col-sm-12 col-md-6 mb-3">
                         <div class="row">
@@ -70,19 +71,23 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-12 col-md-6 mb-3">
-                        <label for="jugador" class="form-label fw-semibold">Jugador</label>
-                        <select id="jugador" name="idJugador" class="form-select"></select>
-                    </div>
+<!--                    <div class="col-sm-12 col-md-6 mb-3">-->
+<!--                        <label for="jugador" class="form-label fw-semibold">Jugador</label>-->
+<!--                        <input type="number" id="jugador" name="idJugador" class="form-control"></input>-->
+<!--                    </div>-->
 
                     <div class="col-sm-12 col-md-6 mb-3">
                         <label for="minutos" class="form-label fw-semibold">Minutos jugados</label>
                         <input id="minutos" type="number" min="0" step="1" name="minutos" class="form-control"
                             placeholder="Escriba la cantidad de minutos jugados" required>
                     </div>
+                    <div class="col-sm-12 col-md-6 mb-3 d-none" id="golesDiv">
+                        <label for="goles" class="form-label fw-semibold">Total de goles</label>
+                        <input id="goles" name="goles" class="form-control" disabled>
+                    </div>
                     <div class="col-sm-12 col-md-6 mb-3">
                         <label for="asistencias" class="form-label fw-semibold">Asistencias</label>
-                        <input id="asistencias" type="number" min="0" step="1" name="asistencias" class="form-control"
+                        <input id="asistencias" type="number" min="0" step="1" name="asistencia" class="form-control"
                             placeholder="Escriba la cantidad de asistencias del jugador" required>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-3">
@@ -100,24 +105,24 @@
                         <p class="fw-light small">Selecciona el estado de ánimo del jugador</p>
                     </div>
 
-                    <div class="row d-flex align-items-center justify-content-center text-center">
-                        <div class="col-sm-12 col-md-2" onclick="estadoAnimo()">
+                    <div class="row d-flex align-items-center justify-content-evenly text-center">
+                        <div class="col-sm-12 col-md-2 estado-btn" onclick="estadoAnimo(event)">
                             <img src="../../../resources/img/svg/status_icon/energetico.svg" alt="">
                             <p id="energetico">Energético</p>
                         </div>
-                        <div class="col-sm-12 col-md-2" onclick="estadoAnimo()" >
+                        <div class="col-sm-12 col-md-2 estado-btn" onclick="estadoAnimo(event)" >
                             <img src="../../../resources/img/svg/status_icon/satisfecho.svg" alt="">
                             <p id="satisfecho">satisfecho</p>
                         </div>
-                        <div class="col-sm-12 col-md-2" onclick="estadoAnimo()">
+                        <div class="col-sm-12 col-md-2 estado-btn" onclick="estadoAnimo(event)">
                             <img src="../../../resources/img/svg/status_icon/normal.svg" alt="">
                             <p id="normal">Normal</p>
                         </div>
-                        <div class="col-sm-12 col-md-2" onclick="estadoAnimo()">
+                        <div class="col-sm-12 col-md-2 estado-btn" onclick="estadoAnimo(event)">
                             <img src="../../../resources/img/svg/status_icon/agotado.svg" alt="">
                             <p id="agotado">Agotado</p>
                         </div>
-                        <div class="col-sm-12 col-md-2" onclick="estadoAnimo()">
+                        <div class="col-sm-12 col-md-2 estado-btn" onclick="estadoAnimo(event)">
                             <img src="../../../resources/img/svg/status_icon/desanimado.svg" alt="">
                             <p id="desanimado">Desanimado</p>
                         </div>
