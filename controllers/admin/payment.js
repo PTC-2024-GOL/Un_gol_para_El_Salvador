@@ -329,19 +329,16 @@ function cambiarPagina(nuevaPagina) {
 }
 
 
-
+// Función para ocultar el input mora
 function updateMoraPago() {
     if (PAGOTARDIO_PAGO.value == 0) {
         CONTENEDOR_PAGO.classList.add('d-none');
-       
     } 
     else if (PAGOTARDIO_PAGO.value == 1){
         CONTENEDOR_PAGO.classList.remove('d-none');
         MORA_PAGO.value = 1;
-
     }
     else{
-
     }
 
     
