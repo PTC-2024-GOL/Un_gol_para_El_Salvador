@@ -61,7 +61,7 @@ class PagoData extends PagoHandler
     // Validación y asignación del ID de la pago.
     public function setTardio($value)
     {
-        if (Validator::validateNaturalNumber($value)) {
+        if (Validator::validateBoolean($value)) {
             $this->tardio = $value;
             return true;
         } else {
