@@ -37,7 +37,7 @@
     <hr>
     <!-- Tabla para mostrar los registros existentes -->
     <div class="table-responsive">
-        <table class="table table align-middle table-striped table-borderless text-center">
+        <table class="table table align-middle table-striped table-borderless text-start">
             <!-- Cabeza de la tabla para mostrar la cantidad de registros y los títulos de las columnas -->
             <thead>
                 <tr>
@@ -45,10 +45,9 @@
                 </tr>
                 <tr>
                     <th>Nombre de la categoría</th>
-                    <th>Edad mínima</th>
-                    <th>Edad máxima</th>
-                    <th>Temporada</th>
-                    <th>Horario</th>
+                    <th>Edad mínima permitida</th>
+                    <th>Edad máxima permitida</th>
+                    <th>Temporada de la categoría</th>
                 </tr>
             </thead>
             <!-- Cuerpo de la tabla para mostrar un registro por fila -->
@@ -121,26 +120,20 @@
             <form id="seeForm">
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input type="hidden" id="idHorario" name="idHorario">
-                    <div class="table-responsive">
-                        <table class="table table align-middle table-striped table-borderless">
-                            <!-- Cabeza de la tabla para mostrar la cantidad de registros y los títulos de las columnas -->
-                            <thead>
-                                <tr>
-                                    <td colspan="6" id="rowsFound"></td>
-                                </tr>
-                                <tr>
-                                    <th>Nombre del Horario</th>
-                                    <th>Día</th>
-                                    <th>Campo de entrenamiento</th>
-                                    <th>Hora inicial</th>
-                                    <th>Hora final</th>
-                                </tr>
-                            </thead>
-                            <!-- Cuerpo de la tabla para mostrar un registro por fila -->
-                            <tbody id="tabla_horarios"></tbody>
-                        </table>
+                    <input type="number" class="d-none" id="idHorarioCate" name="idHorarioCate">
+                    <div class="col-sm-12 col-md-12">
+                        <label for="horarioCat" class="form-label fw-semibold">Seleccione el horario</label>
+                        <select id="horarioCat" type="text" name="horarioCat" class="form-select" required></select>
                     </div>
+                    <div class="col-sm-12 col-md-6 d-none">
+                        <label for="categoriaHora" class="form-label fw-semibold">Selecciona la categoría</label>
+                        <select id="categoriaHora" type="text" name="categoriaHora" class="form-select"
+                            required></select>
+                    </div>
+                </div>
+                <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
+                    <button type="reset" class="btn bg-red-cream-color text-white">Cancelar</button>
+                    <button type="submit" class="btn bg-blue-principal-color text-white ">Guardar</button>
                 </div>
             </form>
         </div>

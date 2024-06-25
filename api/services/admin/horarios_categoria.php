@@ -58,6 +58,16 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Horario de categoría inexistente';
                 }
                 break;
+            // Leer uno
+            case 'onlyDetail':
+                if (!$horacat->setCategoria($_POST['idCategoria'])) {
+                    $result['error'] = $horacat->getDataError();
+                } elseif ($result['dataset'] = $horacat->onlyDetail()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Detalle de horario de la categoría inexistente';
+                }
+                break;
             // Actualizar
             case 'updateRow':
                 $_POST = Validator::validateForm($_POST);
