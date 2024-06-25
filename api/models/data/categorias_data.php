@@ -3,7 +3,7 @@
 // Se incluye la clase para validar los datos de entrada.
 require_once('../../helpers/validator.php');
 // Se incluye la clase padre.
-require_once('../../models/handler/categorias_hanlder.php');
+require_once('../../models/handler/categorias_handler.php');
 
 class CategoriasData extends CategoriasHandler
 {
@@ -24,6 +24,58 @@ class CategoriasData extends CategoriasHandler
             return false;
         }
     }
+
+    // Validación y asignación del nombre de la categoría.
+    public function setNombreCategoria($value, $min = 2, $max = 80)
+    {
+        if (!Validator::validateAlphanumeric($value)) {
+            $this->data_error = 'El nombre de la categoría debe ser un valor alfanumerico';
+            return false;
+        } elseif (Validator::validateLength($value, $min, $max)) {
+            $this->nombreCategoria = $value;
+            return true;
+        } else {
+            $this->data_error = 'El nombre de la categoría debe tener una longitud entre ' . $min . ' y ' . $max;
+            return false;
+        }
+    }
+
+    // Validación y asignación de la edad minima permitida.
+    public function setEdadMinima($value)
+    {
+        if (Validator::validateNaturalNumber($value)) {
+            $this->edadMinima = $value;
+            return true;
+        } else {
+            $this->data_error = 'La edad mínima permitida de la categoría es incorrecta';
+            return false;
+        }
+    }
+
+    // Validación y asignación de la edad minima permitida.
+    public function setEdadMaxima($value)
+    {
+        if (Validator::validateNaturalNumber($value)) {
+            $this->edadMaxima = $value;
+            return true;
+        } else {
+            $this->data_error = 'La edad máxima permitida de la categoría es incorrecta';
+            return false;
+        }
+    }
+
+    // Validación y asignación del ID de lesion
+    public function setTemporada($value)
+    {
+        if (Validator::validateNaturalNumber($value)) {
+            $this->temporada = $value;
+            return true;
+        } else {
+            $this->data_error = 'El identificador de la temporada es incorrecto';
+            return false;
+        }
+    }
+
 
     // Método para obtener el error de los datos.
     public function getDataError()

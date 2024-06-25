@@ -11,10 +11,12 @@ let SAVE_FORM,
     HORARIO,
     SEE_FORM;
 let SEARCH_FORM;
+let ROWS_FOUND;
 
 // Constantes para completar las rutas de la API.
-const API = '';
+const API = 'services/admin/categorias.php';
 const HORARIOS_API = '';
+const TEMPORADAS_API = 'services/admin/temporadas.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -32,6 +34,7 @@ const openCreate = () => {
     MODAL_TITLE.textContent = 'Agregar una categoría';
     // Se prepara el formulario.
     SAVE_FORM.reset();
+    fillSelect(TEMPORADAS_API, 'readAll', 'temporada');
 }
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
@@ -54,12 +57,11 @@ const openUpdate = async (id) => {
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
-            ID_CATEGORIAS.value = ROW.ID;
-            NOMBRE_CATEGORIA.value = ROW.NOMBRE;
-            EDAD_MIN.value = ROW.MINIMA;
-            EDAD_MAX.value = ROW.MAXIMA;
-            TEMPORADA.value = ROW.TEMPORADA;
-            HORARIO.value = ROW.HORARIO;
+            ID_CATEGORIAS.value = ROW.id_categoria;
+            NOMBRE_CATEGORIA.value = ROW.nombre_categoria;
+            EDAD_MIN.value = ROW.edad_minima_permitida;
+            EDAD_MAX.value = ROW.edad_maxima_permitida;
+            fillSelect(TEMPORADAS_API, 'readAll', 'temporada', ROW.id_temporada);
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -67,6 +69,7 @@ const openUpdate = async (id) => {
         console.log(Error);
         SAVE_MODAL.show();
         MODAL_TITLE.textContent = 'Actualizar una categoría';
+        fillSelect(TEMPORADAS_API, 'readAll', 'temporada');
     }
 
 }
@@ -217,104 +220,92 @@ async function cargarTabla(form = null) {
     }
 }
 
+// Variables y constantes para la paginación
+const categoriasPorPagina = 10;
+let paginaActual = 1;
+let categorias = [];
 
+// Función para cargar tabla de técnicos con paginación
 async function fillTable(form = null) {
-    const lista_datos = [
-        {
-            nombre: 'Nivel 1',
-            minima: '4',
-            maxima: '7',
-            temporada: '2021',
-            id: 1,
-        },
-        {
-            nombre: 'Nivel 2',
-            minima: '8',
-            maxima: '13',
-            temporada: '2022',
-            id: 2,
-        },
-        {
-            nombre: 'Nivel 3',
-            minima: '14',
-            maxima: '15',
-            temporada: '2023',
-            id: 3,
-        },
-        {
-            nombre: 'Nivel 4',
-            minima: '16',
-            maxima: '18',
-            temporada: '2024',
-            id: 4,
-        }
-    ];
     const cargarTabla = document.getElementById('tabla_categorias');
-
     try {
         cargarTabla.innerHTML = '';
-        // Se verifica la acción a realizar.
-        (form) ? action = 'searchRows' : action = 'readAll';
-        console.log(form);
         // Petición para obtener los registros disponibles.
+        let action;
+        form ? action = 'searchRows' : action = 'readAll';
+        console.log(form);
         const DATA = await fetchData(API, action, form);
         console.log(DATA);
 
         if (DATA.status) {
-            // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-                const tablaHtml = `
-                <tr>
-                    <td>${row.NOMBRE}</td>
-                    <td>${row.MINIMA}</td>
-                    <td>${row.MAXIMA}</td>
-                    <td>${row.TEMPORADA}</td>
-                    <td>
-                    <button type="button" class="btn transparente" onclick="seeModal()">
-                    <img src="../../../resources/img/svg/icons_forms/reloj.png" width="30" height="30">
-                    </button>
-                        <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
-                        <img src="../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" onclick="openDelete(${row.ID})">
-                            <i class="bi bi-trash-fill"></i>
-                        </button>
-                    </td>
-                </tr>
-                `;
-                cargarTabla.innerHTML += tablaHtml;
-            });
+            categorias = DATA.dataset;
+            mostrarCategorias(paginaActual);
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = DATA.message;
         } else {
-            sweetAlert(4, DATA.error, true);
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = "Existen 0 coincidencias";
         }
     } catch (error) {
         console.error('Error al obtener datos de la API:', error);
-        // Mostrar materiales de respaldo
-        lista_datos.forEach(row => {
-            const tablaHtml = `
-            <tr>
-            <td>${row.nombre}</td>
-            <td>${row.minima}</td>
-            <td>${row.maxima}</td>
-            <td>${row.temporada}</td>
-                <td>
-                    <button type="button" class="btn transparente" onclick="seeModal(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/reloj.png" width="30" height="30">
-                    </button>
-                </td>
+    }
+}
+
+// Función para mostrar técnicos en una página específica
+function mostrarCategorias(pagina) {
+    const inicio = (pagina - 1) * categoriasPorPagina;
+    const fin = inicio + categoriasPorPagina;
+    const categoriasPagina = categorias.slice(inicio, fin);
+
+    const cargarTabla = document.getElementById('tabla_categorias');
+    cargarTabla.innerHTML = '';
+    categoriasPagina.forEach(row => {
+        const tablaHtml = `
+                <tr>
+                    <td>${row.nombre_categoria}</td>
+                    <td>${row.edad_minima_permitida}</td>
+                    <td>${row.edad_maxima_permitida}</td>
+                    <td>${row.nombre_temporada}</td>
                     <td>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
+                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id_categoria})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id})">
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_categoria})">
                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
                     </td>
                 </tr>
-            `;
-            cargarTabla.innerHTML += tablaHtml;
-        });
+        `;
+        cargarTabla.innerHTML += tablaHtml;
+    });
+
+    actualizarPaginacion();
+}
+
+// Función para actualizar los controles de paginación
+function actualizarPaginacion() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
+
+    const totalPaginas = Math.ceil(categorias.length / categoriasPorPagina);
+
+    if (paginaActual > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
     }
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
+    }
+
+    if (paginaActual < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
+    }
+}
+
+// Función para cambiar de página
+function cambiarPagina(nuevaPagina) {
+    paginaActual = nuevaPagina;
+    mostrarCategorias(paginaActual);
 }
 
 // window.onload
@@ -330,6 +321,7 @@ window.onload = async function () {
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Categorías';
+    ROWS_FOUND = document.getElementById('rowsFound');
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SEE_MODAL = new bootstrap.Modal('#seeModal'),

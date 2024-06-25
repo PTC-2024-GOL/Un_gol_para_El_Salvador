@@ -14,6 +14,34 @@ if (isset($_GET['action'])) {
     if (isset($_SESSION['idAdministrador']) /*and Validator::validateSessionTime()*/) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
+            // Buscar
+            case 'searchRows':
+                if (!Validator::validateSearch($_POST['search'])) {
+                    $result['error'] = Validator::getSearchError();
+                } elseif ($result['dataset'] = $categorias->searchRows()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Existen ' . count($result['dataset']) . ' coincidencias';
+                } else {
+                    $result['error'] = 'No hay coincidencias';
+                }
+                break;
+             // Crear
+             case 'createRow':
+                $_POST = Validator::validateForm($_POST);
+                if (
+                    !$categorias->setNombreCategoria($_POST['nombreCategoria']) or
+                    !$categorias->setEdadMinima($_POST['edadMin']) or
+                    !$categorias->setEdadMaxima($_POST['edadMax']) or
+                    !$categorias->setTemporada($_POST['temporada'])
+                ) {
+                    $result['error'] = $categorias->getDataError();
+                } elseif ($categorias->createRow()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Categoría creada correctamente';
+                } else {
+                    $result['error'] = 'Ocurrió un problema al crear la categoría';
+                }
+                break;
             // Leer todos
             case 'readAll':
                 if ($result['dataset'] = $categorias->readAll()) {
@@ -21,6 +49,47 @@ if (isset($_GET['action'])) {
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
                     $result['error'] = 'No existen categorías registradas';
+                }
+                break;
+            // Leer uno
+            case 'readOne':
+                if (!$categorias->setIdCategoria($_POST['idCategoria'])) {
+                    $result['error'] = $categorias->getDataError();
+                } elseif ($result['dataset'] = $categorias->readOne()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Categoría inexistente';
+                }
+                break;
+            // Actualizar
+            case 'updateRow':
+                $_POST = Validator::validateForm($_POST);
+                if (
+                    !$categorias->setIdCategoria($_POST['idCategoria']) or
+                    !$categorias->setNombreCategoria($_POST['nombreCategoria']) or
+                    !$categorias->setEdadMinima($_POST['edadMin']) or
+                    !$categorias->setEdadMaxima($_POST['edadMax']) or
+                    !$categorias->setTemporada($_POST['temporada'])
+                ) {
+                    $result['error'] = $categorias->getDataError();
+                } elseif ($categorias->updateRow()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Categoría modificada correctamente';
+                } else {
+                    $result['error'] = 'Ocurrió un problema al modificar la categoría';
+                }
+                break;
+            // Eliminar
+            case 'deleteRow':
+                if (
+                    !$categorias->setIdCategoria($_POST['idCategoria'])
+                ) {
+                    $result['error'] = $categorias->getDataError();
+                } elseif ($categorias->deleteRow()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Categoría eliminada correctamente';
+                } else {
+                    $result['error'] = 'Ocurrió un problema al eliminar la categoría';
                 }
                 break;
             default:
