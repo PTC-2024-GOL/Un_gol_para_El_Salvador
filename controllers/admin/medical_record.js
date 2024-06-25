@@ -155,6 +155,14 @@ function mostrarRegistros(pagina) {
     const cargarTabla = document.getElementById('tabla_registro_medico');
     cargarTabla.innerHTML = '';
     registrosPagina.forEach(row => {
+        let retornoPartido;
+
+        if(row.retorno_partido == null){
+            retornoPartido = 'En espera';
+        } else{
+            retornoPartido = row.retorno_partido;
+        }
+
         const tablaHtml = `
                 <tr>
                     <td>${row.nombre_completo_jugador}</td>
@@ -163,7 +171,7 @@ function mostrarRegistros(pagina) {
                     <td>${row.dias_lesionado}</td>
                     <td>${row.nombre_sub_tipologia}</td>
                     <td>${row.retorno_entreno}</td>
-                    <td>${row.fecha_partido}</td>
+                    <td>${retornoPartido}</td>
                     <td>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id_registro_medico})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">

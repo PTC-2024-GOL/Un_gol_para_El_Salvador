@@ -37,6 +37,10 @@ class RegistrosHandler{
     //Función para insertar un registro médico.
     public function createRow()
     {
+        if ($this->retornoPartido == ''){
+            $this->retornoPartido = NULL;
+        }
+
         $sql = 'CALL sp_insertar_registro_medico(?,?,?,?,?,?,?);';
         $params = array(
             $this->jugador,

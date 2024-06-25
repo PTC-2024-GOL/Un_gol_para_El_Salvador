@@ -344,36 +344,35 @@ const openDeleteAmonestacion = async (id) => {
 
 }
 
+// Manejo para la paginacion
+const participationByPage = 10;
+let currentPage = 1;
+let participation = [];
 
-async function cargarTabla() {
+async function showParticipation(page) {
+    const start = (page - 1) * participationByPage;
+    const end = start + participationByPage;
+    const participationPage = participation.slice(start, end);
 
     const cargarTabla = document.getElementById('participationCards');
+    cargarTabla.innerHTML = '';
 
-    try {
-        cargarTabla.innerHTML = '';
-        const form = new FormData();
-        form.append('idEquipo', idEquipo)
-        // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(PARTICIPACION_API, 'readAllByIdEquipo', form);
-        const DATA2 = await fetchData(PARTICIPACION_API, 'readAll');
+    const DATA2 = await fetchData(PARTICIPACION_API, 'readAll');
 
-        // Mapa de id_jugador a id_participacion
-        const participacionMap = new Map();
+    // Mapa de id_jugador a id_participacion
+    const participacionMap = new Map();
 
-        if(DATA2.status){
-            DATA2.dataset.forEach(row => {
-                if(row.id_partido ===  parseInt(idPartido)){
-                    participacionMap.set(row.id_jugador, row.id_participacion);
-                }
-            });
-        }
+    if(DATA2.status){
+        DATA2.dataset.forEach(row => {
+            if(row.id_partido ===  parseInt(idPartido)){
+                participacionMap.set(row.id_jugador, row.id_participacion);
+            }
+        });
+    }
+    participationPage.forEach(row => {
+        const idParticipacion = participacionMap.get(row.id_jugador) || 0;
 
-        if (DATA.status) {
-            // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-                const idParticipacion = participacionMap.get(row.id_jugador) || 0;
-
-                const tablaHtml = `
+        const tablaHtml = `
                     <div class="col-sm-6 col-md-2 text-center shadow rounded-3 bg-blue-light-color p-3 me-4 mb-5">
                         <div class="bg-blue-color p-3" id="containerPicture">
                             <img src="${SERVER_URL}images/jugadores/${row.foto_jugador}" class="shadow rounded-circle" height="120px" width="120px" id="imgJugador">
@@ -405,31 +404,76 @@ async function cargarTabla() {
                         <div class="d-none">${idParticipacion}</div>
                     </div>
                 `;
-                cargarTabla.innerHTML += tablaHtml;
+        cargarTabla.innerHTML += tablaHtml;
 
-                // Actualizar la visibilidad de los botones después de añadir el HTML
-                const btnOpenCreate = document.getElementById(`btnOpenCreate_${row.id_jugador}`);
-                const btnUpdate = document.getElementById(`btnUpdate_${row.id_jugador}`);
-                const btnOpenGol = document.getElementById(`btnOpenGol_${row.id_jugador}`);
-                const btnOpenAmonestacion = document.getElementById(`btnOpenAmonestacion_${row.id_jugador}`);
-                const btnOpenDelete = document.getElementById(`btnOpenDelete_${row.id_jugador}`);
+        // Actualizar la visibilidad de los botones después de añadir el HTML
+        const btnOpenCreate = document.getElementById(`btnOpenCreate_${row.id_jugador}`);
+        const btnUpdate = document.getElementById(`btnUpdate_${row.id_jugador}`);
+        const btnOpenGol = document.getElementById(`btnOpenGol_${row.id_jugador}`);
+        const btnOpenAmonestacion = document.getElementById(`btnOpenAmonestacion_${row.id_jugador}`);
+        const btnOpenDelete = document.getElementById(`btnOpenDelete_${row.id_jugador}`);
 
-                if(idParticipacion > 0){
-                    btnUpdate.classList.remove('d-none');
-                    btnOpenGol.classList.remove('d-none');
-                    btnOpenAmonestacion.classList.remove('d-none');
-                    btnOpenDelete.classList.remove('d-none')
-                } else{
-                    btnOpenCreate.classList.remove('d-none');
-                }
+        if(idParticipacion > 0){
+            btnUpdate.classList.remove('d-none');
+            btnOpenGol.classList.remove('d-none');
+            btnOpenAmonestacion.classList.remove('d-none');
+            btnOpenDelete.classList.remove('d-none')
+        } else{
+            btnOpenCreate.classList.remove('d-none');
+        }
+    });
 
-            });
+    updatePaginate();
+}
+
+
+async function cargarTabla() {
+
+    const cargarTabla = document.getElementById('participationCards');
+
+    try {
+        cargarTabla.innerHTML = '';
+        const form = new FormData();
+        form.append('idEquipo', idEquipo)
+        // Petición para obtener los registros disponibles.
+        const DATA = await fetchData(PARTICIPACION_API, 'readAllByIdEquipo', form);
+
+
+        if (DATA.status) {
+            participation = DATA.dataset;
+            await showParticipation(currentPage);
         } else {
-            await sweetAlert(4, DATA.error, true);
+            await sweetAlert(3, DATA.error, true);
         }
     } catch (error) {
         console.error('Error al obtener datos de la API:', error);
     }
+}
+
+// Función para actualizar los contlesiones de paginación
+function updatePaginate() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
+
+    const totalPaginas = Math.ceil(participation.length / participationByPage);
+
+    if (currentPage > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="nextPage(${currentPage - 1})">Anterior</a></li>`;
+    }
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link text-light" href="#" onclick="nextPage(${i})">${i}</a></li>`;
+    }
+
+    if (currentPage < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="nextPage(${currentPage + 1})">Siguiente</a></li>`;
+    }
+}
+
+// Función para cambiar de página
+async function nextPage(newPage) {
+    currentPage = newPage;
+    await showParticipation(currentPage);
 }
 
 async function cargarGolTarjetas (idParticipacion) {
@@ -663,6 +707,7 @@ window.onload = async function () {
                 await sweetAlert(1, DATA.message, true);
                 // Se carga nuevamente la tabla para visualizar los cambios.
                 await cargarTabla();
+                idPlayer = '';
             } else {
                 await sweetAlert(2, DATA.error, false);
                 console.error(DATA.exception);
