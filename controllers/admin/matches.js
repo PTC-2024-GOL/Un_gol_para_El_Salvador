@@ -34,6 +34,8 @@ let SAVE_FORM,
     LOGO_RIVAL_DIV,
     JORNADA,
     IMAGENES_EQUIPOS,
+    MENSAJE,
+    MENSAJEALERT,
     IMAGENES_RIVALES;
 let SEARCH_FORM;
 
@@ -53,6 +55,7 @@ async function loadComponent(path) {
 * Retorno: ninguno.
 */
 const openCreate = async () => {
+    MENSAJEALERT.classList.add('d-none');
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
     ID_PARTIDO.value = null;
@@ -89,6 +92,7 @@ const seeModal = async (id) => {
             MODAL_TITLE.textContent = 'Ver partido';
             // Se prepara el formulario.
             SEE_FORM.reset();
+            MENSAJE.classList.add('d-none');
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
             EQUIPO_SEE.disabled = false;
@@ -142,10 +146,10 @@ const openUpdate = async (id) => {
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
-            MODAL_TITLE.textContent = 'Actualizar partido';
+            MODAL_TITLE2.textContent = 'Actualizar partido';
             // Se prepara el formulario.
             SAVE_FORM.reset();
-
+            MENSAJEALERT.classList.add('d-none');
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
             ID_PARTIDO.value = ROW.id_partido;
@@ -412,12 +416,36 @@ window.onload = async function () {
         LOCALIDAD = document.getElementById('localidad'),
         LOGO1 = document.getElementById('logo1'),
         LOGO2 = document.getElementById('logo2'),
+        MENSAJE = document.getElementById('passwordHelpBlock'),
+        MENSAJEALERT = document.getElementById('mensajeAlert'),
         TIPO_RESULTADO_PARTIDO = document.getElementById('tipoResultado');
 
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
         event.preventDefault();
+        // Se verifica que el resultado partido tenga sentido con el tipo de resultado
+        const str = RESULTADO_PARTIDO.value;
+        const parts = str.split("-");
+        const equipo = parts[0];
+        const rival = parts[1];
+        const mensaje =  MENSAJEALERT.classList.remove('d-none');
+
+        if ((TIPO_RESULTADO_PARTIDO.value == 'Victoria') && ((equipo < rival) || (equipo == rival))) {
+            sweetAlert(2, 'El resultado no coincide con el tipo de resultado', false);
+            mensaje;
+            return;
+        }
+        if ((TIPO_RESULTADO_PARTIDO.value == 'Derrota') && ((equipo > rival)|| (equipo == rival))) {
+            sweetAlert(2, 'El resultado no coincide con el tipo de resultado', false);
+            mensaje;
+            return;
+        }
+        if ((TIPO_RESULTADO_PARTIDO.value == 'Empate') && (!(equipo == rival))) {
+            sweetAlert(2, 'El resultado no coincide con el tipo de resultado', false);
+            mensaje;
+            return;
+        }
         // Se verifica la acción a realizar.
         (ID_PARTIDO.value) ? action = 'updateRow' : action = 'createRow';
         // Constante tipo objeto con los datos del formulario.
@@ -478,9 +506,6 @@ window.onload = async function () {
     
         if(selectedValue == 'Pendiente'){
             RESULTADO_PARTIDO.value = '0-0';
-        }
-        else{
-            RESULTADO_PARTIDO.value = '';
         }
      
     });
