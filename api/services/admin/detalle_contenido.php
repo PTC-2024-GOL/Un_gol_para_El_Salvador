@@ -39,31 +39,39 @@ if (isset($_GET['action'])) {
             case 'createRow':
                 $_POST = Validator::validateForm($_POST);
 
-                foreach ($_POST['arregloJugadores'] as $idJugador) {
-                    // Convertir el ID del jugador a un entero
-                    $idJugador = intval($idJugador);
+                // Decodificar el arreglo de jugadores
+                $arregloJugadores = json_decode($_POST['arregloJugadores'], true);
 
-                    if (
-                        !$detalle->setIdSubContenido($_POST['idSubContenido']) or
-                        !$detalle->setCantidadSubContenido($_POST['CantidadSubContenido']) or
-                        !$detalle->setIdTarea($_POST['IdTarea']) or
-                        !$detalle->setCantidadTarea($_POST['CantidadTarea']) or
-                        !$detalle->setIdJugador($idJugador) or
-                        !$detalle->setIdEntrenamiento($_POST['idEntrenamiento'])
-                    ) {
-                        $result['error'] = $detalle->getDataError();
-                        break;
-                    } elseif (!$detalle->createRow()) {
-                        $result['error'] = 'Ocurrió un problema al crear el detalle del contenido para el jugador con ID ' . $idJugador;
-                        break;
+                if (is_array($arregloJugadores)) {
+                    foreach ($arregloJugadores as $idJugador) {
+                        // Convertir el ID del jugador a un entero
+                        $idJugador = intval($idJugador);
+
+                        if (
+                            !$detalle->setIdSubContenido($_POST['idSubContenido']) or
+                            !$detalle->setCantidadSubContenido($_POST['CantidadSubContenido']) or
+                            !$detalle->setIdTarea($_POST['IdTarea']) or
+                            !$detalle->setCantidadTarea($_POST['CantidadTarea']) or
+                            !$detalle->setIdJugador($idJugador) or
+                            !$detalle->setIdEntrenamiento($_POST['idEntrenamiento'])
+                        ) {
+                            $result['error'] = $detalle->getDataError();
+                            break;
+                        } elseif (!$detalle->createRow()) {
+                            $result['error'] = 'Ocurrió un problema al crear el detalle del contenido para el jugador con ID ' . $idJugador;
+                            break;
+                        }
                     }
-                }
 
-                if (!isset($result['error'])) {
-                    $result['status'] = 1;
-                    $result['message'] = 'Detalle contenido creado correctamente para todos los jugadores.';
+                    if (!isset($result['error'])) {
+                        $result['status'] = 1;
+                        $result['message'] = 'Detalle contenido creado correctamente para todos los jugadores.';
+                    }
+                } else {
+                    $result['error'] = 'Formato de arregloJugadores no es válido.';
                 }
                 break;
+
 
             // Leer todos los horarios
             case 'readAllHorario':
