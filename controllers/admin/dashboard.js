@@ -1,3 +1,4 @@
+let adminName;
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -47,8 +48,16 @@ const graficoPieDashboard = async () => {
 
 }
 
+const getUser = async () => {
+    const DATA = await fetchData(USER_API, 'getUser');
 
-const calendar = async () => {
+    if (DATA.status) {
+        adminName.textContent = DATA.nombre.split(' ')[0] + ' ' + DATA.apellido.split(' ')[0] // Split nos sirve para cortar un string y que solo aparezca en este caso el primer nombre y primer apellido.
+    }
+}
+
+
+    const calendar = async () => {
     
   const calendarEl = document.getElementById('calendar');
   const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -71,10 +80,8 @@ window.onload = async function () {
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Dashboard'; 
 
-    //Agrega el nombre del admin que ha iniciado sesion
-    const adminName = document.getElementById('nombreAdmin');
-    adminName.textContent ='José Gonzáles';
-    graficoPieDashboard();
-    calendar();
-    console.log(adminName.text)
+    adminName = document.getElementById('nombreAdmin');
+    await graficoPieDashboard();
+    await calendar();
+    await getUser();
 }

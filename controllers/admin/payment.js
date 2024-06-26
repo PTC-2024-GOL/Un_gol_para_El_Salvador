@@ -282,9 +282,9 @@ function mostrarPago(pagina) {
             <tr>
                 <td>${row.NOMBRE}</td>
                 <td>${row.FECHA}</td>
-                <td>${row.CANTIDAD}</td>
+                <td>$${row.CANTIDAD}</td>
                 <td>${row.TARDIO}</td>
-                <td>${row.MORA}</td>
+                <td>$${row.MORA}</td>
                 <td>${row.MES}</td>
                 <td>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
