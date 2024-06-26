@@ -17,6 +17,8 @@ class PagoHandler
     protected $mes = null;
     protected $jugador = null;
 
+    protected $mesPago = null;
+
 
     /*
      *  Métodos para realizar las operaciones SCRUD (search, create, read, update, and delete).
@@ -96,5 +98,50 @@ class PagoHandler
         $sql = 'CALL eliminar_pago(?);';
         $params = array($this->id);
         return Database::executeRow($sql, $params);
+    }
+
+    // ----------------------------------------- INGRESOS -----------------------------------------------------------------
+
+    public function totalMoney()
+    {
+        $sql = 'SELECT SUM(cantidad_pago) AS total_pagos FROM pagos';
+        return Database::getRow($sql);
+    }
+
+    public function totalMoneyMora()
+    {
+        $sql = 'SELECT COUNT(pago_tardio) AS total_mora FROM pagos WHERE pago_tardio = 1 AND mes_pago = ?;';
+        $params = array($this->mes);
+        return Database::getRow($sql, $params);
+    }
+
+    public function totalMoneyMounth()
+    {
+        $sql = 'SELECT * FROM vista_ingresos';
+        return Database::getRows($sql);
+    }
+
+    public function totalPlayers()
+    {
+        $sql = 'SELECT COUNT(id_jugador) AS total FROM jugadores';
+        return Database::getRow($sql);
+    }
+
+    public function noScholarships()
+    {
+        $sql = 'SELECT COUNT(becado) AS becado FROM jugadores WHERE becado = "Ninguna"';
+        return Database::getRow($sql);
+    }
+
+    public function halfScholarships()
+    {
+        $sql = 'SELECT COUNT(becado) AS becado FROM jugadores WHERE becado = "Media beca"';
+        return Database::getRow($sql);
+    }
+
+    public function completeScholarships()
+    {
+        $sql = 'SELECT COUNT(becado) AS becado FROM jugadores WHERE becado = "Beca completa"';
+        return Database::getRow($sql);
     }
 }
