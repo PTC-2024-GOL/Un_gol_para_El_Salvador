@@ -38,22 +38,33 @@ if (isset($_GET['action'])) {
             // Crear detalle contenido
             case 'createRow':
                 $_POST = Validator::validateForm($_POST);
-                if (
-                    !$detalle->setIdSubContenido($_POST['idSubContenido']) or
-                    !$detalle->setCantidadSubContenido($_POST['CantidadSubContenido']) or
-                    !$detalle->setIdTarea($_POST['IdTarea']) or
-                    !$detalle->setCantidadTarea($_POST['CantidadTarea']) or
-                    !$detalle->setIdJugador($_POST['idJugador']) or
-                    !$detalle->setIdEntrenamiento($_POST['idEntrenamiento'])
-                ) {
-                    $result['error'] = $detalle->getDataError();
-                } elseif ($detalle->createRow()) {
+
+                foreach ($_POST['arregloJugadores'] as $idJugador) {
+                    // Convertir el ID del jugador a un entero
+                    $idJugador = intval($idJugador);
+
+                    if (
+                        !$detalle->setIdSubContenido($_POST['idSubContenido']) or
+                        !$detalle->setCantidadSubContenido($_POST['CantidadSubContenido']) or
+                        !$detalle->setIdTarea($_POST['IdTarea']) or
+                        !$detalle->setCantidadTarea($_POST['CantidadTarea']) or
+                        !$detalle->setIdJugador($idJugador) or
+                        !$detalle->setIdEntrenamiento($_POST['idEntrenamiento'])
+                    ) {
+                        $result['error'] = $detalle->getDataError();
+                        break;
+                    } elseif (!$detalle->createRow()) {
+                        $result['error'] = 'Ocurrió un problema al crear el detalle del contenido para el jugador con ID ' . $idJugador;
+                        break;
+                    }
+                }
+
+                if (!isset($result['error'])) {
                     $result['status'] = 1;
-                    $result['message'] = 'detalle contenido creado correctamente';
-                } else {
-                    $result['error'] = 'Ocurrió un problema al crear el detalle ddel contenido';
+                    $result['message'] = 'Detalle contenido creado correctamente para todos los jugadores.';
                 }
                 break;
+
             // Leer todos los horarios
             case 'readAllHorario':
                 if ($result['dataset'] = $detalle->readAllHorario()) {
@@ -74,15 +85,15 @@ if (isset($_GET['action'])) {
                 }
                 break;
             // Leer todos los jugadores
-                case 'readAllJugadores':
-                    if (!$detalle->setIdEquipo($_POST['idEquipo'])) {
-                        $result['error'] = $detalle->getDataError();
-                    } elseif ($result['dataset'] = $detalle->readAllJugadores()) {
-                        $result['status'] = 1;
-                    } else {
-                        $result['error'] = 'Jugadores inexistente';
-                    }
-                    break;
+            case 'readAllJugadores':
+                if (!$detalle->setIdEquipo($_POST['idEquipo'])) {
+                    $result['error'] = $detalle->getDataError();
+                } elseif ($result['dataset'] = $detalle->readAllJugadores()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Jugadores inexistente';
+                }
+                break;
             // Leer horarios en base al idequipo
             case 'readOneHorario':
                 if (!$detalle->setIdEquipo($_POST['idEquipo'])) {
@@ -129,7 +140,7 @@ if (isset($_GET['action'])) {
                     !$detalle->setCantidadSubContenido($_POST['CantidadSubContenido']) or
                     !$detalle->setIdTarea($_POST['IdTarea']) or
                     !$detalle->setCantidadTarea($_POST['CantidadTarea']) or
-                    !$detalle->setIdDetalleContenido($_POST['idDetalle']) 
+                    !$detalle->setIdDetalleContenido($_POST['idDetalle'])
                 ) {
                     $result['error'] = $detalle->getDataError();
                 } elseif ($detalle->updateRow()) {

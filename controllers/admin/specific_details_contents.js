@@ -8,9 +8,11 @@ let SAVE_FORM,
     MINUTOS_TAREA,
     IDDETALLE_CONTENIDO,
     JUGADORES,
+    ID_JUGADOR,
     ID_URL,
     ID_ENTRENAMIENTO,
-    ID_EQUIPO
+    ID_EQUIPO,
+    ADD_JUGADOR
     ;
 
 let SEARCH_FORM;
@@ -118,8 +120,11 @@ const fillSelected = (data, selectId, selectedValue = null) => {
 
 const openCreate = async () => {
     // Se muestra la caja de diálogo con su título.
+    ID_JUGADOR.disabled = false;
     eliminardata('delete full');
+    ADD_JUGADOR = 1;
     SAVE_MODAL.show();
+    IDDETALLE_CONTENIDO.value = 0;
     MODAL_TITLE.textContent = 'Agregar detalle';
     // Se prepara el formulario.
     SAVE_FORM.reset();
@@ -156,12 +161,14 @@ const openUpdate = async (id) => {
             MODAL_TITLE.textContent = 'Actualizar detalle';
             // Se prepara el formulario.
             SAVE_FORM.reset();
+            ADD_JUGADOR = 0;
 
             const FORM = new FormData();
             FORM.append('idEquipo', ID_EQUIPO);
             await fillSelect(SD_CONTENTS_API, 'readAllSubContenidos', 'subcontenido', DATA.dataset.id_sub_tema_contenido);
             await fillSelect(SD_CONTENTS_API, 'readAllTareas', 'tarea', DATA.dataset.id_tarea);
             await fillSelectPost(SD_CONTENTS_API, 'readAllJugadores', 'generador', FORM, DATA.dataset.id_jugador);
+            ID_JUGADOR.disabled = true;
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
             IDDETALLE_CONTENIDO.value = ROW.id_detalle_contenido;
@@ -338,18 +345,20 @@ window.onload = async function () {
         ID_SUBCONTENIDO = document.getElementById('iddetallecontenido'),
         SUBCONTENIDO = document.getElementById('subcontenido'),
         TAREA = document.getElementById('tarea');
+        ID_JUGADOR = document.getElementById('generador');
     CANTIDAD_CONTENIDO = document.getElementById('cantidadEquipo');
     MINUTOS_TAREA = document.getElementById('minutostarea');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
         event.preventDefault();
-        // Se verifica la acción a realizar.
-        (IDDETALLE_CONTENIDO.value) ? action = 'updateRow' : action = 'createRow';
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SAVE_FORM);
+        FORM.append('idEntrenamiento', ID_ENTRENAMIENTO);
+        console.log(ID_ENTRENAMIENTO);
         // Petición para guardar los datos del formulario.
-        const DATA = await fetchData(SD_CONTENTS_API, action, FORM);
+        if (!(IDDETALLE_CONTENIDO.value == 0)) {
+        const DATA = await fetchData(SD_CONTENTS_API, 'updateRow', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se cierra la caja de diálogo.
@@ -362,6 +371,24 @@ window.onload = async function () {
             sweetAlert(2, DATA.error, false);
             console.error(DATA.exception);
         }
+    } else {
+        console.log(datosguardados);
+        console.log(TAREA.value);
+        FORM.append('arregloJugadores', datosguardados);
+        const DATA = await fetchData(SD_CONTENTS_API, 'createRow', FORM);
+        console.log(DATA);
+        if (DATA.status) {
+            // Se cierra la caja de diálogo.
+            SAVE_MODAL.hide();
+            // Se muestra un mensaje de éxito.
+            sweetAlert(1, DATA.message, true);
+            // Se carga nuevamente la tabla para visualizar los cambios.
+            fillTable();
+        } else {
+            sweetAlert(2, DATA.error, false);
+            console.error(DATA.exception);
+        }
+    }
     });
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');
@@ -383,6 +410,7 @@ window.onload = async function () {
     const selectJugador = document.getElementById('generador');
     selectJugador.addEventListener('change', (event) => {
         const selectedJugadorId = event.target.value;
+        if (ADD_JUGADOR) {
         if (selectedJugadorId == 0) {
             // Si entra a este if seleccionar todos los jugadores
             eliminardata('delete full');
@@ -488,6 +516,7 @@ window.onload = async function () {
                 nombresDeLosJugadoresDiv.appendChild(rowContainer);
             }
         }
+    }
     });
 
 };
