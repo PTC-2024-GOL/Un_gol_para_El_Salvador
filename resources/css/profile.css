@@ -1,0 +1,27 @@
+.profile-container {
+    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-image {
+    width: 20vw;
+    height: 20vw;
+    object-fit: cover;
+}
+
+.user-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.user-email {
+    font-size: 1rem;
+    color: #777;
+}
+
+.margin{
+    margin-right: 5px !important;
+}
