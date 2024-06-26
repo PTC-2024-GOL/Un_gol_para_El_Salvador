@@ -174,7 +174,7 @@ const openUpdate = async (id) => {
             IDDETALLE_CONTENIDO.value = ROW.id_detalle_contenido;
             MINUTOS_TAREA.value = parseInt(ROW.minutos_tarea);
             CANTIDAD_CONTENIDO.value = parseInt(ROW.minutos_contenido);
-            
+
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -345,7 +345,7 @@ window.onload = async function () {
         ID_SUBCONTENIDO = document.getElementById('iddetallecontenido'),
         SUBCONTENIDO = document.getElementById('subcontenido'),
         TAREA = document.getElementById('tarea');
-        ID_JUGADOR = document.getElementById('generador');
+    ID_JUGADOR = document.getElementById('generador');
     CANTIDAD_CONTENIDO = document.getElementById('cantidadEquipo');
     MINUTOS_TAREA = document.getElementById('minutostarea');
     // Método del evento para cuando se envía el formulario de guardar.
@@ -358,37 +358,39 @@ window.onload = async function () {
         console.log(ID_ENTRENAMIENTO);
         // Petición para guardar los datos del formulario.
         if (!(IDDETALLE_CONTENIDO.value == 0)) {
-        const DATA = await fetchData(SD_CONTENTS_API, 'updateRow', FORM);
-        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-        if (DATA.status) {
-            // Se cierra la caja de diálogo.
-            SAVE_MODAL.hide();
-            // Se muestra un mensaje de éxito.
-            sweetAlert(1, DATA.message, true);
-            // Se carga nuevamente la tabla para visualizar los cambios.
-            fillTable();
+            const DATA = await fetchData(SD_CONTENTS_API, 'updateRow', FORM);
+            // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+            if (DATA.status) {
+                // Se cierra la caja de diálogo.
+                SAVE_MODAL.hide();
+                // Se muestra un mensaje de éxito.
+                sweetAlert(1, DATA.message, true);
+                // Se carga nuevamente la tabla para visualizar los cambios.
+                fillTable();
+            } else {
+                sweetAlert(2, DATA.error, false);
+                console.error(DATA.exception);
+            }
         } else {
-            sweetAlert(2, DATA.error, false);
-            console.error(DATA.exception);
+            console.log(datosguardados);
+            console.log(TAREA.value);
+            // Convertir el arreglo a una cadena JSON
+            const jugadoresJSON = JSON.stringify(datosguardados);
+            FORM.append('arregloJugadores', jugadoresJSON);
+            const DATA = await fetchData(SD_CONTENTS_API, 'createRow', FORM);
+            console.log(DATA);
+            if (DATA.status) {
+                // Se cierra la caja de diálogo.
+                SAVE_MODAL.hide();
+                // Se muestra un mensaje de éxito.
+                sweetAlert(1, DATA.message, true);
+                // Se carga nuevamente la tabla para visualizar los cambios.
+                fillTable();
+            } else {
+                sweetAlert(2, DATA.error, false);
+                console.error(DATA.exception);
+            }
         }
-    } else {
-        console.log(datosguardados);
-        console.log(TAREA.value);
-        FORM.append('arregloJugadores', datosguardados);
-        const DATA = await fetchData(SD_CONTENTS_API, 'createRow', FORM);
-        console.log(DATA);
-        if (DATA.status) {
-            // Se cierra la caja de diálogo.
-            SAVE_MODAL.hide();
-            // Se muestra un mensaje de éxito.
-            sweetAlert(1, DATA.message, true);
-            // Se carga nuevamente la tabla para visualizar los cambios.
-            fillTable();
-        } else {
-            sweetAlert(2, DATA.error, false);
-            console.error(DATA.exception);
-        }
-    }
     });
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');
@@ -411,11 +413,63 @@ window.onload = async function () {
     selectJugador.addEventListener('change', (event) => {
         const selectedJugadorId = event.target.value;
         if (ADD_JUGADOR) {
-        if (selectedJugadorId == 0) {
-            // Si entra a este if seleccionar todos los jugadores
-            eliminardata('delete full');
+            if (selectedJugadorId == 0) {
+                // Si entra a este if seleccionar todos los jugadores
+                eliminardata('delete full');
 
-            lista_datos.forEach(jugadorSeleccionado => {
+                lista_datos.forEach(jugadorSeleccionado => {
+                    const elementoAgregado = datosguardados.some(elemento => elemento === jugadorSeleccionado.id);
+                    if (!elementoAgregado) {
+                        // Crear un nuevo contenedor de fila para el input y el botón
+                        const rowContainer = document.createElement('div');
+                        rowContainer.id = 'rowContainer_' + jugadorSeleccionado.id;
+                        rowContainer.classList.add('row', 'py-1', 'ms-1');
+
+                        // Crear un nuevo input para el nombre del jugador
+                        const nombreJugadorInput = document.createElement('input');
+                        nombreJugadorInput.id = 'nombreAdministrador_' + jugadorSeleccionado.id;
+                        nombreJugadorInput.type = 'text';
+                        nombreJugadorInput.name = 'nombreAdministrador_' + jugadorSeleccionado.id;
+                        nombreJugadorInput.classList.add('col-9', 'rounded-3', 'me-2', 'inputt');
+                        nombreJugadorInput.disabled = true;
+                        nombreJugadorInput.value = jugadorSeleccionado.jugadores;
+
+                        // Crear un nuevo botón de eliminar
+                        const botonEliminar = document.createElement('button');
+                        botonEliminar.id = 'btnEliminar_' + jugadorSeleccionado.id;
+                        botonEliminar.type = 'button';
+                        botonEliminar.classList.add('btn', 'transparente', 'col-1', 'border', 'border-danger');
+                        datosguardados.push(jugadorSeleccionado.id);
+                        console.log(datosguardados);
+                        botonEliminar.onclick = function () {
+                            eliminardata(jugadorSeleccionado.id);
+                            eliminarInput(jugadorSeleccionado.id);
+                        };
+
+                        // Crear la imagen para el botón de eliminar
+                        const imagenEliminar = document.createElement('img');
+                        imagenEliminar.src = '../../../resources/img/svg/icons_forms/trash 1.svg';
+                        imagenEliminar.width = 10;
+                        imagenEliminar.height = 10;
+
+                        // Agregar la imagen al botón de eliminar
+                        botonEliminar.appendChild(imagenEliminar);
+
+                        // Agregar el input y el botón al contenedor de fila
+                        rowContainer.appendChild(nombreJugadorInput);
+                        rowContainer.appendChild(botonEliminar);
+
+                        // Obtener el contenedor de los nombres de los jugadores
+                        const nombresDeLosJugadoresDiv = document.getElementById('nombresDeLosJugadores');
+
+                        // Agregar el contenedor de fila al contenedor de nombres de los jugadores
+                        nombresDeLosJugadoresDiv.appendChild(rowContainer);
+                    }
+                });
+            }
+            else {
+                const jugadorSeleccionado = lista_datos.find(jugadorSeleccionado => jugadorSeleccionado.id == selectedJugadorId);
+                console.log(jugadorSeleccionado);
                 const elementoAgregado = datosguardados.some(elemento => elemento === jugadorSeleccionado.id);
                 if (!elementoAgregado) {
                     // Crear un nuevo contenedor de fila para el input y el botón
@@ -463,60 +517,8 @@ window.onload = async function () {
                     // Agregar el contenedor de fila al contenedor de nombres de los jugadores
                     nombresDeLosJugadoresDiv.appendChild(rowContainer);
                 }
-            });
-        }
-        else {
-            const jugadorSeleccionado = lista_datos.find(jugadorSeleccionado => jugadorSeleccionado.id == selectedJugadorId);
-            console.log(jugadorSeleccionado);
-            const elementoAgregado = datosguardados.some(elemento => elemento === jugadorSeleccionado.id);
-            if (!elementoAgregado) {
-                // Crear un nuevo contenedor de fila para el input y el botón
-                const rowContainer = document.createElement('div');
-                rowContainer.id = 'rowContainer_' + jugadorSeleccionado.id;
-                rowContainer.classList.add('row', 'py-1', 'ms-1');
-
-                // Crear un nuevo input para el nombre del jugador
-                const nombreJugadorInput = document.createElement('input');
-                nombreJugadorInput.id = 'nombreAdministrador_' + jugadorSeleccionado.id;
-                nombreJugadorInput.type = 'text';
-                nombreJugadorInput.name = 'nombreAdministrador_' + jugadorSeleccionado.id;
-                nombreJugadorInput.classList.add('col-9', 'rounded-3', 'me-2', 'inputt');
-                nombreJugadorInput.disabled = true;
-                nombreJugadorInput.value = jugadorSeleccionado.jugadores;
-
-                // Crear un nuevo botón de eliminar
-                const botonEliminar = document.createElement('button');
-                botonEliminar.id = 'btnEliminar_' + jugadorSeleccionado.id;
-                botonEliminar.type = 'button';
-                botonEliminar.classList.add('btn', 'transparente', 'col-1', 'border', 'border-danger');
-                datosguardados.push(jugadorSeleccionado.id);
-                console.log(datosguardados);
-                botonEliminar.onclick = function () {
-                    eliminardata(jugadorSeleccionado.id);
-                    eliminarInput(jugadorSeleccionado.id);
-                };
-
-                // Crear la imagen para el botón de eliminar
-                const imagenEliminar = document.createElement('img');
-                imagenEliminar.src = '../../../resources/img/svg/icons_forms/trash 1.svg';
-                imagenEliminar.width = 10;
-                imagenEliminar.height = 10;
-
-                // Agregar la imagen al botón de eliminar
-                botonEliminar.appendChild(imagenEliminar);
-
-                // Agregar el input y el botón al contenedor de fila
-                rowContainer.appendChild(nombreJugadorInput);
-                rowContainer.appendChild(botonEliminar);
-
-                // Obtener el contenedor de los nombres de los jugadores
-                const nombresDeLosJugadoresDiv = document.getElementById('nombresDeLosJugadores');
-
-                // Agregar el contenedor de fila al contenedor de nombres de los jugadores
-                nombresDeLosJugadoresDiv.appendChild(rowContainer);
             }
         }
-    }
     });
 
 };

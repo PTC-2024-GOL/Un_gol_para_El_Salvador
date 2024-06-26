@@ -351,4 +351,21 @@ class AdministradoresHandler
         $params = array($this->alias);
         return Database::executeRow($sql, $params);
     }
+
+    //mostrar perfil
+    public function readProfile()
+    {
+        $sql = 'SELECT id_administrador AS ID,
+                foto_administrador AS IMAGEN, 
+                nombre_administrador AS NOMBRE,
+                correo_administrador AS CORREO, 
+                telefono_administrador AS TELÉFONO,
+                dui_administrador AS DUI,
+                fecha_nacimiento_administrador AS NACIMIENTO,
+                estado_administrador  AS ESTADO
+                FROM administradores;
+                WHERE id_administrador = ?';
+        $params = array($_SESSION['idAdministrador']);
+        return Database::getRow($sql, $params);
+    }
 }
