@@ -7,16 +7,12 @@ let idPartido;
 
 let ID_PARTIDO,
     ID_EQUIPO,
-    LOGO_RIVAL,
-    LOGO_EQUIPO,
-    NOMBRE_RIVAL,
-    FECHA,
-    LOCALIDAD,
-    RESULTADO;
+    LOGO_EQUIPO;
+
+let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
 const PARTIDO_API = 'services/admin/partidos.php';
-
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -24,32 +20,29 @@ async function loadComponent(path) {
     return text;
 }
 
+// Manejo para la paginacion
+const matchesByPage = 10;
+let currentPage = 1;
+let matches = [];
 
-async function fillCards() {
+function showMatches(page) {
+    const start = (page - 1) * matchesByPage;
+    const end = start + matchesByPage;
+    const matchesPage = matches.slice(start, end);
 
-    const cargarCartas = document.getElementById('matches_cards');
-
-    try {
-        cargarCartas.innerHTML = '';
-        // Se verifica la acción a realizar.
-        const form = new FormData();
-        form.append('idEquipo', idEquipo);
-
-        // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(PARTIDO_API, 'readAllByIdEquipos', form);
-
-        if (DATA.status) {
-            // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-
-                const cardsHtml =  `<div class="col-md-6 col-sm-12">
+    const fillTable = document.getElementById('matches_cards');
+    fillTable.innerHTML = '';
+    matchesPage.forEach(row => {
+        const tablaHtml = `
+                <tr>
+                <div class="col-md-6 col-sm-12">
                 <div class="tarjetas p-4">
                     <div class="row">
                         <div class="col-auto">
                             <img src="../../../resources/img/svg/calendar.svg" alt="">
                         </div>
                         <div class="col">
-                            <p class="fw-semibold mb-0">${row.fecha_partido}</p>
+                            <p class="fw-semibold mb-0">${row.fecha}</p>
                             <p class="small">${row.localidad_partido}</p>
                         </div>
                     </div>
@@ -72,9 +65,31 @@ async function fillCards() {
                     </button>
                 </div>
                 </div>
-              `;
-                cargarCartas.innerHTML += cardsHtml;
-            });
+                </tr>
+                `;
+        fillTable.innerHTML += tablaHtml;
+    });
+
+    updatePaginate();
+}
+
+
+async function fillCards() {
+
+    const cargarCartas = document.getElementById('matches_cards');
+
+    try {
+        cargarCartas.innerHTML = '';
+        // Se verifica la acción a realizar.
+        const form = new FormData();
+        form.append('idEquipo', idEquipo);
+
+        // Petición para obtener los registros disponibles.
+        const DATA = await fetchData(PARTIDO_API, 'readAllByIdEquipos', form);
+
+        if (DATA.status) {
+           matches = DATA.dataset;
+           showMatches(currentPage);
         } else {
             await sweetAlert(3, DATA.error, true, '../../../views/admin/pages/matches_participations1.html');
         }
@@ -83,58 +98,31 @@ async function fillCards() {
     }
 }
 
-async function searchMatches(form = null) {
+// Función para actualizar los contlesiones de paginación
+function updatePaginate() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
 
-    const cargarCartas = document.getElementById('matches_cards');
+    const totalPaginas = Math.ceil(matches.length / matchesByPage);
 
-        cargarCartas.innerHTML = '';
+    if (currentPage > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="nextPage(${currentPage - 1})">Anterior</a></li>`;
+    }
 
-        // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(PARTIDO_API, 'searchRows', form);
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link text-light" href="#" onclick="nextPage(${i})">${i}</a></li>`;
+    }
 
-        if (DATA.status) {
-            // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-                idPartido = row.id_partido;
-
-                const cardsHtml =  `<div class="col-md-6 col-sm-12">
-                <div class="tarjetas p-4">
-                    <div class="row">
-                        <div class="col-auto">
-                            <img src="../../../resources/img/svg/calendar.svg" alt="">
-                        </div>
-                        <div class="col">
-                            <p class="fw-semibold mb-0">${row.fecha}</p>
-                            <p class="small">${row.localidad_partido}</p>
-                        </div>
-                    </div>
-                    <div class="row align-items-center">
-                        <div class="col-4">
-                            <img src="${SERVER_URL}images/equipos/${row.logo_equipo}" class="img">
-                            <p class="small mt-3">${row.nombre_equipo}</p>
-                        </div>
-                        <div class="col-4">
-                            <h2 class="fw-semibold">${row.resultado_partido}</h2>
-                        </div>
-                        <div class="col-4">
-                            <img src="${SERVER_URL}images/partidos/${row.logo_rival}" class="img">
-                            <p class="small mt-3">${row.nombre_rival}</p>
-                        </div>
-                    </div>
-                    <hr>
-                    <button class="btn bg-blue-principal-color text-white btn-sm rounded-3"  onclick="goToPlayers(${idEquipo}, ${idPartido})">
-                        Agregar participaciones
-                    </button>
-                </div>
-                </div>
-              `;
-                cargarCartas.innerHTML += cardsHtml;
-            });
-        } else {
-            await sweetAlert(3, DATA.error, true);
-        }
+    if (currentPage < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="nextPage(${currentPage + 1})">Siguiente</a></li>`;
+    }
 }
 
+// Función para cambiar de página
+function nextPage(newPage) {
+    currentPage = newPage;
+    showMatches(currentPage);
+}
 
 // Creamos una funcion que recibe como parametro el id del equipo que fue seleccionado
 function goToPlayers(idEquipo, idPartido) {
@@ -161,13 +149,20 @@ window.onload = async function () {
     SEARCH_FORM = document.getElementById('searchForm');
 
     // Método del evento para cuando se envía el formulario de buscar.
-    SEARCH_FORM.addEventListener('submit', (event) => {
+    SEARCH_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
         event.preventDefault();
-        // Constante tipo objeto con los datos del formulario.
+
         const FORM = new FormData(SEARCH_FORM);
 
-        // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
-        searchMatches(FORM);
+        // Petición para obtener los registros disponibles.
+        const DATA = await fetchData(PARTIDO_API, 'searchRows', FORM);
+
+        if (DATA.status) {
+            matches = DATA.dataset;
+            showMatches(currentPage);
+        } else {
+            await sweetAlert(3, DATA.error, true);
+        }
     });
 }

@@ -88,8 +88,8 @@ class DetalleContenidoHandler
     public function readAllSubContenidos()
     {
         $sql = "SELECT 
-                    sub_tema_contenido,
-                    id_sub_tema_contenido
+                    id_sub_tema_contenido,
+                    sub_tema_contenido
                     FROM sub_temas_contenidos;";
         return Database::getRows($sql);
     }
@@ -154,8 +154,8 @@ class DetalleContenidoHandler
     public function readAllJugadores()
     {
         $sql = "SELECT 
-                nombre_jugador,
-                id_jugador
+                id,
+                jugadores
                 FROM vista_equipos_jugadores WHERE id_equipo = ?;";
         $params = array($this->idEquipo);
         return Database::getRows($sql, $params);

@@ -157,16 +157,18 @@ a{
     font-size: larger;
 }
 
+/*Estilo para participaciones*/
 #containerPicture {
     border-bottom-right-radius: 20px;
     border-top-left-radius: 20px;
 }
 
 #dorsal {
-    margin-top: 10px;
     width: 40px;
     height: 40px;
-    align-content: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #info1{
@@ -176,8 +178,29 @@ a{
 }
 
 /*Estilo de seleccionado para los botones del estado de animo*/
+.estado-btn:hover{
+    transform: scale(1.10);
+}
+
 .selected {
-    background-color: #cfeafd;
-    box-shadow: -1px 6px 23px -8px rgba(0,0,0,0.75);
+    box-shadow: -1px 13px 62px -35px rgba(0,0,0,0.75);
+    border-radius: 20px;
+    background-color: white;
+}
+
+/*Estilos para los botones del filtrado*/
+
+.style{
+    background-color: #0164d5;
+    border-color: #0164d5;
+    color: white;
+}
+
+.btn-style:hover {
+    transform: scale(1.05);
+    color: white;
+}
+
+#imgJugador {
     border-radius: 20px;
 }

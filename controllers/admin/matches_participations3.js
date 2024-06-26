@@ -69,6 +69,9 @@ async function loadComponent(path) {
 *   Retorno: ninguno.
 */
 const openCreate = (idJugador) => {
+    idPlayer = '';
+    ID_PARTICIPACION = '';
+
     resetEstadoAnimo();
     golesDiv.classList.add('d-none');
     // Se muestra la caja de diálogo con su título.
@@ -138,7 +141,10 @@ const openAmonestaciones = async (idParticipacion) => {
 */
 const openUpdate = async (id, idJugador) => {
     try {
+        idPlayer = '';
+        ID_PARTICIPACION = '';
         idPlayer = idJugador;
+
         resetEstadoAnimo();
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
@@ -373,35 +379,51 @@ async function showParticipation(page) {
         const idParticipacion = participacionMap.get(row.id_jugador) || 0;
 
         const tablaHtml = `
-                    <div class="col-sm-6 col-md-2 text-center shadow rounded-3 bg-blue-light-color p-3 me-4 mb-5">
-                        <div class="bg-blue-color p-3" id="containerPicture">
-                            <img src="${SERVER_URL}images/jugadores/${row.foto_jugador}" class="shadow rounded-circle" height="120px" width="120px" id="imgJugador">
-                        </div>
-                        <div class="bg-white p-3 mt-2 rounded-3" id="info1">
-                            <p class="fw-semibold mb-0">${row.nombre_jugador} ${row.apellido_jugador}</p>
-                            <small class="mt-0">${row.posicion}</small>
-                            <div class="bg-blue-principal-color text-light rounded-circle" id="dorsal">
-                                <div class="fs-5">${row.dorsal_jugador}</div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="shadow rounded-5">
+                            <div class="row p-3 align-items-center">
+                            <div class="col-4 ">
+                                <img src="${SERVER_URL}images/jugadores/${row.foto_jugador}" class="shadow" height="120px" width="120px" id="imgJugador">
                             </div>
+                            <div class="col-8">
+                                <div class="row align-items-center">
+                                    <div class="col-9">
+                                        <small class="text-blue-color">${row.posicion}</small>
+                                        <p class="fw-semibold mb-0">${row.nombre_jugador} ${row.apellido_jugador}</p>
+                                    </div>
+                                    <div class="col-3 text-center">
+                                        <div class="bg-blue-principal-color text-light rounded-circle" id="dorsal">
+                                            <div class="fs-5">${row.dorsal_jugador}</div>
+                                        </div>
+                                    </div>
+                                </div>                             
+                                <hr>
+                                <div class="d-flex mt-3 justify-content-center">
+                                <button type="button" class="btn btn-light shadow-sm d-none" id="btnOpenCreate_${row.id_jugador}" onclick="openCreate(${row.id_jugador})">
+                                    <img src="../../../resources/img/svg/plus.svg" width="20" height="20">
+                                    Agregar participación 
+                                </button>
+                                
+                                 <button type="button" class="btn transparente d-none mx-2" id="btnUpdate_${row.id_jugador}" onclick="openUpdate(${idParticipacion}, ${row.id_jugador})">
+                                    <img src="../../../resources/img/svg/pen 2.svg" width="20" height="20">
+                                </button>
+                                
+                                <button type="button" class="btn transparente d-none mx-2" id="btnOpenGol_${row.id_jugador}" onclick="openGoles(${idParticipacion})">
+                                    <img src="../../../resources/img/svg/icons_forms/ball.svg" width="20" height="20">
+                                </button>
+                                
+                                <button type="button" class="btn transparente d-none mx-2" id="btnOpenAmonestacion_${row.id_jugador}" onclick="openAmonestaciones(${idParticipacion})">
+                                    <img src="../../../resources/img/svg/icons_forms/amonestacion.svg" width="20" height="20">
+                                </button>
+                                
+                                <button type="button" class="btn transparente d-none mx-2" id="btnOpenDelete_${row.id_jugador}" onclick="openDelete(${idParticipacion})">
+                                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="20" height="20">
+                                </button>
+
+                                </div>
+                            </div>
+                        </div
                         </div>
-                        <div class="d-flex justify-content-evenly mt-3">
-                            <button type="button" class="btn transparente d-none" id="btnOpenCreate_${row.id_jugador}" onclick="openCreate(${row.id_jugador})">
-                                <img src="../../../resources/img/svg/plus.svg" width="20" height="20">
-                            </button>
-                            <button type="button" class="btn transparente d-none" id="btnUpdate_${row.id_jugador}" onclick="openUpdate(${idParticipacion}, ${row.id_jugador})">
-                                <img src="../../../resources/img/svg/pen 2.svg" width="20" height="20">
-                            </button>
-                            <button type="button" class="btn transparente d-none" id="btnOpenGol_${row.id_jugador}" onclick="openGoles(${idParticipacion})">
-                                <img src="../../../resources/img/svg/icons_forms/ball.svg" width="16" height="16">
-                            </button>
-                            <button type="button" class="btn transparente d-none" id="btnOpenAmonestacion_${row.id_jugador}" onclick="openAmonestaciones(${idParticipacion})">
-                                <img src="../../../resources/img/svg/icons_forms/amonestacion.svg" width="20" height="20">
-                            </button>
-                            <button type="button" class="btn transparente d-none" id="btnOpenDelete_${row.id_jugador}" onclick="openDelete(${idParticipacion})">
-                                <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="15" height="15">
-                            </button>
-                        </div>
-                        <div class="d-none">${idParticipacion}</div>
                     </div>
                 `;
         cargarTabla.innerHTML += tablaHtml;
@@ -428,6 +450,8 @@ async function showParticipation(page) {
 
 
 async function cargarTabla() {
+    resetButton();
+    resetEstadoAnimo();
 
     const cargarTabla = document.getElementById('participationCards');
 
@@ -600,6 +624,14 @@ function resetEstadoAnimo() {
     });
 }
 
+function resetButton() {
+    const allButtons = document.querySelectorAll('.btn-style');
+    allButtons.forEach(button => {
+        button.classList.remove('style');
+    });
+}
+
+//Funcion que obtiene el estado de animo y lo selecciona de acuerdo al elegido por el usuario
 const estadoAnimo = (event) => {
     // Obtener el elemento clicado
     const clickedElement = event.currentTarget;
@@ -620,6 +652,39 @@ const estadoAnimo = (event) => {
     // Agrega la clase 'selected' al botón clicado
     clickedElement.classList.add('selected');
 };
+
+// Funcion que permite el filtrado de jugadores a traves de su area de juego.
+const filtroAreaJuego = async (event) => {
+    //Obtenemos el elemento clicleado
+    const clickedButton = event.currentTarget;
+    //Obtenemos el texto del elemento clicleado
+    const buttonText = clickedButton.innerText;
+
+    let areaJuego = buttonText;
+
+    const allButtons = document.querySelectorAll('.btn-style');
+
+    allButtons.forEach(button => {
+        button.classList.remove('style');
+    });
+
+    // Agrega la clase 'selected' al botón clicado
+    clickedButton.classList.add('style');
+
+    const FORM = new FormData();
+    FORM.append('areaJuego', areaJuego);
+
+    const DATA = await fetchData(PARTICIPACION_API, 'readAllByAreaJuego', FORM);
+
+    if(DATA.status){
+
+        participation = DATA.dataset;
+        await showParticipation(currentPage);
+    }else {
+        await sweetAlert(3, DATA.error, true);
+    }
+
+}
 
 // window.onload
 window.onload = async function () {
@@ -704,10 +769,9 @@ window.onload = async function () {
                 // Se cierra la caja de diálogo.
                 SAVE_MODAL.hide();
                 // Se muestra un mensaje de éxito.
-                await sweetAlert(1, DATA.message, true);
+                await sweetAlert(1, DATA.message, false);
                 // Se carga nuevamente la tabla para visualizar los cambios.
                 await cargarTabla();
-                idPlayer = '';
             } else {
                 await sweetAlert(2, DATA.error, false);
                 console.error(DATA.exception);
@@ -775,20 +839,21 @@ window.onload = async function () {
 
 
 
-    // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');
-    // Verificar si SEARCH_FORM está seleccionado correctamente
-    console.log(SEARCH_FORM)
-    // Método del evento para cuando se envía el formulario de buscar.
-    SEARCH_FORM.addEventListener('submit', (event) => {
-        // Se evita recargar la página web después de enviar el formulario.
+
+    SEARCH_FORM.addEventListener('submit', async (event) => {
         event.preventDefault();
-        // Constante tipo objeto con los datos del formulario.
+
         const FORM = new FormData(SEARCH_FORM);
-        console.log(SEARCH_FORM);
-        console.log(FORM);
-        // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
-        cargarTabla(FORM);
+
+        const DATA = await fetchData(PARTICIPACION_API, 'searchRows', FORM);
+
+        if(DATA.status){
+            participation = DATA.dataset;
+            await showParticipation(currentPage);
+        } else{
+            await sweetAlert(3, DATA.error, true);
+        }
     });
 };
 

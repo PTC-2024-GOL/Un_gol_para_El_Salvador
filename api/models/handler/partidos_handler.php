@@ -68,7 +68,7 @@ class PartidosHandler
 
     public function readAllByIdEquipo()
     {
-        $sql = "SELECT * FROM vista_partidos_equipos WHERE id_equipo = ?;";
+        $sql = "SELECT * FROM vista_detalle_partidos WHERE id_equipo = ?;";
         $params = array($this->idEquipo);
         return Database::getRows($sql, $params);
     }
