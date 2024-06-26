@@ -38,14 +38,12 @@
     <div class="table-responsive">
         <table class="table table align-middle table-striped table-borderless">
             <!-- Cabeza de la tabla para mostrar la cantidad de registros y los títulos de las columnas -->
-            <thead class="text-center">
+            <thead class="text-start">
                 <tr>
                     <td colspan="6" id="rowsFound"></td>
                 </tr>
                 <tr>
                     <th>Nombre de la plantilla</th>
-					<th>Ver plantilla a detalle</th>
-					<th>Acciones</th>
                 </tr>
             </thead>
             <!-- Cuerpo de la tabla para mostrar un registro por fila -->
@@ -91,24 +89,67 @@
 </div>
 
 
-<!-- Componente Modal para guardar un registro -->
+<!-- Componente Modal para guardar un registro con el Stepper -->
 <div class="modal fade" id="detailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-	aria-labelledby="modalTitle" aria-hidden="true">
-	<div class="modal-dialog modal-xl modal-dialog-centered">
-		<div class="modal-content">
-			<div class="modal-header bg-blue-principal-color text-light">
-				<img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
-				<h1 class="modal-title fs-5" id="modalTitleDetail"></h1>
-				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-					aria-label="Close"></button>
-			</div>
-			<!-- Formulario para crear o actualizar un registro -->
-			<form class="form container-fluid" id="detailForm">
-				<input type="number" class="d-none" id="idPlantilla" name="idPlantilla">
+    aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-principal-color text-light">
+                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                <h1 class="modal-title fs-5" id="modalTitleDetail"></h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <!-- Formulario para crear o actualizar un registro -->
+            <form class="form container-fluid" id="detailForm">
+                <input type="number" class="d-none" id="idPlantilla" name="idPlantilla">
                 <div id="stepper-container">
                     <div id="stepper"></div>
                 </div>
-			</form>
-		</div>
-	</div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Componente Modal para guardar un registro con el formulario normal -->
+<div class="modal fade" id="templateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modalTitle2" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-principal-color text-light">
+                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                <h1 class="modal-title fs-5" id="modalTitle2"></h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <!-- Formulario para crear o actualizar un registro -->
+            <form class="form container-fluid" id="templateForm">
+                <input type="number" class="d-none" id="idPlantillaEquipo" name="idPlantillaEquipo">
+                <div class="row g-3">
+                    <div class="col-sm-12 col-md-6 d-none">
+                        <label for="plantilla" class="form-label fw-semibold">Elige la plantilla</label>
+                        <select id="plantilla" name="plantilla" class="form-select" required></select>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="equipo" class="form-label fw-semibold">Elige al Equipo</label>
+                        <select id="equipo" name="equipo" class="form-select" required></select>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="temporada" class="form-label fw-semibold">Elige la temporada</label>
+                        <select id="temporada" name="temporada" class="form-select" required></select>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="jugador" class="form-label fw-semibold">Elige al Jugador</label>
+                        <select id="jugador" name="jugador" class="form-select" required></select>
+                    </div>
+                </div>
+                <div class="btns-group">
+                    <div class="mt-5 text-end">
+                        <button type="submit" class="btn bg-blue-principal-color text-white">Guardar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
