@@ -60,7 +60,7 @@ if (isset($_GET['action'])) {
                 } elseif ($result['dataset'] = $pago->readOne()) {
                     $result['status'] = 1;
                 } else {
-                    $result['error'] = 'Tipología inexistente';
+                    $result['error'] = 'Pagos inexistente';
                 }
                 break;
                 // Actualizar

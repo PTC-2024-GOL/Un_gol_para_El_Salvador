@@ -1,0 +1,234 @@
+<section class="about m-4">
+    <div class="col-10 mx-auto">
+        <div class="profile-container p-4">
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-outline-dark mr-2 mb-2" onclick="openEdit()">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-outline-dark mb-2" onclick="openPassword()">
+                    <i class="fas fa-lock"></i>
+                </button>
+            </div>
+            <div class="text-center">
+                <img src="" id="foto" alt="Foto de Perfil" class="profile-image img-fluid rounded-circle mb-3">
+                <h2 class="user-name" id="nombre">Joel Mena</h2>
+                <p class="user-email" id="email">joel@gmail.com</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<article>
+    <!-- Tabs Navigation -->
+    <ul class="nav nav-tabs mt-4 justify-content-center" id="profileTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active text-dark" id="favorites-tab" data-bs-toggle="tab"
+                data-bs-target="#favorites" type="button" role="tab" aria-controls="favorites"
+                aria-selected="true">Favoritos</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link text-dark" id="history-tab" data-bs-toggle="tab" data-bs-target="#history"
+                type="button" role="tab" aria-controls="history" aria-selected="false">Historial de Compras</button>
+        </li>
+    </ul>
+
+    <!-- Tabs Content -->
+    <div class="tab-content" id="profileTabsContent">
+        <!-- Favoritos -->
+        <div class="tab-pane fade show active" id="favorites" role="tabpanel" aria-labelledby="favorites-tab">
+            <div class="row row-cols-1 row-cols-md-3 g-4 mb-4" id="favorites-cards">
+                <!-- Aquí se cargarán las cartas -->
+            </div>
+        </div>
+
+        <!-- Historial de Compras -->
+        <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
+            <!-- Columna para la tabla-->
+            <div class="container col-md-10">
+                <!-- Tabla para mostrar los Perfils existentes -->
+                <table class="table table-hover">
+                    <!-- Cabeza de la tabla para mostrar la cantidad de Perfils y los títulos de las columnas -->
+                    <thead>
+                        <tr>
+                            <td colspan="6" id="rowsFound"></td>
+                        </tr>
+                        <tr>
+                            <th>CLIENTE</th>
+                            <th>DIRECCIÓN DEL PEDIDO</th>
+                            <th>FECHA DE PEDIDO</th>
+                            <th>ESTADO DE PEDIDO</th>
+                            <th>ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <!-- Cuerpo de la tabla para mostrar un Perfil por fila -->
+                    <tbody id="tabla_pedidos"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</article>
+
+
+<!-- Modal de detalle de pedido -->
+<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table align-middle table-striped table-borderless">
+                        <!-- Cabeza de la tabla para mostrar la cantidad de Perfils y los títulos de las columnas -->
+                        <thead>
+                            <tr>
+                                <td colspan="6" id="rowsFound"></td>
+                            </tr>
+                            <tr>
+                                <th>Foto</th>
+                                <th>Nombre del producto</th>
+                                <th>Cantidad comprada</th>
+                                <th>Precio unitario</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <!-- Cuerpo de la tabla para mostrar un Perfil por fila -->
+                        <tbody id="tabla_detalle"></tbody>
+                    </table>
+                </div>
+                <div>
+                    <p class="text-start">TOTAL QUE PAGO (US$) <b id="pago"></b></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Componente Modal para cambiar contraseña -->
+<div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalTitle"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- Formulario para actualizar la contraseña -->
+            <form id="saveForm">
+                <div class="modal-body row g-3">
+                    <div class="col-sm-12 col-md-12">
+                        <div class="col-sm-12 col-md-12">
+                            <label for="claveActual" class="form-label">Contraseña actual</label>
+                            <input id="claveActual" type="password" name="claveActual" class="form-control"
+                                placeholder="Ingresa la clave del cliente" autocomplete="off" required>
+                        </div>
+                        <div class="col-sm-12 col-md-12">
+                            <label for="claveCliente" class="form-label">Contraseña nueva</label>
+                            <input id="claveCliente" type="password" name="claveCliente" class="form-control"
+                                placeholder="Ingresa la clave del cliente" autocomplete="off" required>
+                        </div>
+                        <div class="col-sm-12 col-md-12">
+                            <label for="repetirclaveCliente" class="form-label">Repetir contraseña</label>
+                            <input id="repetirclaveCliente" type="password" name="repetirclaveCliente"
+                                class="form-control" placeholder="Repite la clave del cliente" autocomplete="off"
+                                required>
+                        </div>
+                    </div>
+                    <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
+                        <button type="reset" class="btn btn-outline-dark">Cancelar</button>
+                        <button type="submit" class="btn btn-outline-primary">Guardar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Componente Modal para editar perfil -->
+<div class="modal fade" id="editModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modalTitleEdit" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalTitleEdit"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- Formulario para actualizar el perfil -->
+            <form id="editForm">
+                <div class="modal-body row g-3">
+                    <input type="number" id="idPerfil" name="idPerfil" class="d-none">
+                    <div class="col-sm-6 col-md-6 col-lg-6 col-12 mb-3 ">
+                        <div class=" form-floating borde ">
+                            <input id="nombrePerfil" type="text" name="nombrePerfil" placeholder="Nombre"
+                                class="form-control" required autocomplete="off" />
+                            <label for="nombrePerfil">Nombre</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6 col-12 mb-3">
+                        <div class="form-floating borde">
+                            <input id="fechanacimientoPerfil" type="date" name="fechanacimientoPerfil"
+                                placeholder="fechanacimiento" class="form-control" required autocomplete="off" />
+                            <label for="fechanacimientoPerfil">Fecha nacimiento</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6 col-12 mb-3">
+                        <div class="form-floating borde ">
+                            <input id="apellidoPerfil" type="text" name="apellidoPerfil" placeholder="Apellido"
+                                class="form-control" required autocomplete="off" />
+                            <label for="apellidoPerfil">Apellido</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6 col-12 mb-3">
+                        <div class="form-floating borde">
+                            <input id="telefonoPerfil" type="text" name="telefonoPerfil" class="form-control"
+                                placeholder="0000-0000" required autocomplete="off" />
+                            <label for="telefonoPerfil">Teléfono</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6 col-12 mb-3">
+                        <div class="form-floating borde ">
+                            <input id="correoPerfil" type="email" name="correoPerfil" placeholder="Correo electrónico"
+                                class="form-control" required autocomplete="off" />
+                            <label for="correoPerfil">Correo electrónico</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6 col-12 mb-3">
+                        <div class="form-floating borde">
+                            <input id="duiPerfil" type="text" name="duiPerfil" placeholder="00000000-0"
+                                class="form-control" required autocomplete="off" />
+                            <label for="duiPerfil">DUI</label>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6 col-12 mb-3">
+                        <div class="form-floating borde">
+                            <select class="form-select" name="generoPerfil" id=generoPerfil>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6 col-6 mb-3">
+                        <div class="form-floating borde">
+                            <input id="imagenPerfil" type="file" name="imagenPerfil" class="form-control"
+                                accept=".png, .jpg">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-6 col-6 mb-3">
+                        <div class="form-floating borde ">
+                            <input id="direccionPerfil" type="text" name="direccionPerfil" placeholder="Dirección"
+                                class="form-control" required autocomplete="off" />
+                            <label for="direccionPerfil">Dirección</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
+                        <button type="reset" class="btn btn-outline-dark">Cancelar</button>
+                        <button type="submit" class="btn btn-outline-primary">Guardar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
