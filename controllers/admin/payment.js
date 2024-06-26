@@ -182,9 +182,9 @@ const openUpdate = async (id) => {
             const ROW = DATA.dataset;
             ID_PAGO.value = ROW.ID;
             fillSelect(JUGADOR_API, 'readAll', 'nombreJugador', ROW.NOMBRE);
-            FECHA_PAGO.value = ROW.FECHAPAGO;
+            FECHA_PAGO.value = ROW.FECHA;
             CANTIDAD_PAGO.value = ROW.CANTIDAD;
-            Selected(lista_pago, 'readAll', 'tardioPago', ROW.TARDIO);
+            SelectedPago(lista_pago, 'readAll', 'tardioPago', ROW.TARDIO);
             PAGOTARDIO_PAGO.value = ROW.TARDIO;
             MORA_PAGO.value = ROW.MORA;
             Selected(lista_datos, 'readAll', 'mesPago', ROW.MES)
@@ -333,10 +333,13 @@ function cambiarPagina(nuevaPagina) {
 function updateMoraPago() {
     if (PAGOTARDIO_PAGO.value == 0) {
         CONTENEDOR_PAGO.classList.add('d-none');
+        MORA_PAGO.value = 0;
+        console.log(MORA_PAGO.value);
     } 
     else if (PAGOTARDIO_PAGO.value == 1){
         CONTENEDOR_PAGO.classList.remove('d-none');
         MORA_PAGO.value = 1;
+        console.log(MORA_PAGO.value);
     }
     else{
     }

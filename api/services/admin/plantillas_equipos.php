@@ -52,7 +52,7 @@ if (isset($_GET['action'])) {
                 break;
                 // Leer uno
             case 'readOne':
-                if (!$plantilla->setId($_POST['idPlantilla'])) {
+                if (!$plantilla->setId($_POST['idPlantillaEquipo'])) {
                     $result['error'] = $plantilla->getDataError();
                 } elseif ($result['dataset'] = $plantilla->readOne()) {
                     $result['status'] = 1;
@@ -75,7 +75,7 @@ if (isset($_GET['action'])) {
             case 'updateRow':
                 $_POST = Validator::validateForm($_POST);
                 if (
-                    !$plantilla->setId($_POST['idPlantilla']) or
+                    !$plantilla->setId($_POST['idPlantillaEquipo']) or
                     !$plantilla->setPlantilla($_POST['plantilla']) or
                     !$plantilla->setEquipo($_POST['equipo']) or
                     !$plantilla->setJugador($_POST['jugador']) or
@@ -92,7 +92,7 @@ if (isset($_GET['action'])) {
                 // Eliminar
             case 'deleteRow':
                 if (
-                    !$plantilla->setId($_POST['idPlantilla'])
+                    !$plantilla->setId($_POST['idPlantillaEquipo'])
                 ) {
                     $result['error'] = $plantilla->getDataError();
                 } elseif ($plantilla->deleteRow()) {

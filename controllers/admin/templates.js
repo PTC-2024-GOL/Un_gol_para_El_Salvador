@@ -11,6 +11,15 @@ let DETAIL_FORM,
     JUGADOR,
     TEMPORADA,
     EQUIPO;
+    
+let TEMPLATE_MODAL,
+    TEMPLATE_TITLE;
+let TEMPLATE_FORM,
+    ID_PLANTILLA_EQUIPO,
+    PLANTILLAS,
+    JUGADORES,
+    TEMPORADAS,
+    EQUIPOS;
 
 // Constantes para completar las rutas de la API.
 const API = 'services/admin/plantillas.php';
@@ -27,9 +36,9 @@ async function loadComponent(path) {
     return text;
 }
 /*
-*   Función para preparar el formulario al momento de insertar un registro.
-*   Parámetros: ninguno.
-*   Retorno: ninguno.
+* Función para preparar el formulario al momento de insertar un registro.
+* Parámetros: ninguno.
+* Retorno: ninguno.
 */
 const openCreate = () => {
     // Se muestra la caja de diálogo con su título.
@@ -43,58 +52,58 @@ const steps = [
     {
         title: "Plantilla",
         content: `<div class="step">
-                    <div class="d-flex justify-content-end mb-3">
-                        <button type="button" class="btn bg-blue-principal-color text-white next-step">+ Agregar a plantilla</button>
-                    </div> 
-                    <div class="table-responsive">
-                        <table class="table table align-middle table-striped table-borderless">
-                            <thead>
-                                <tr>
-                                    <td colspan="6" id="rowsFound"></td>
-                                </tr>
-                                <tr>
-                                    <th>Dorsal</th>
-                                    <th>Posición</th>
-                                    <th>Foto</th>
-                                    <th>Jugador</th>
-                                    <th>Fecha de nacimiento</th>
-                                    <th>Logo</th>
-                                    <th>Equipo</th>
-                                    <th>Temporada</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabla_jugadores"></tbody>
-                        </table>
-                    </div>
-                  </div>`
+    <div class="d-flex justify-content-end mb-3">
+        <button type="button" class="btn bg-blue-principal-color text-white next-step">+ Agregar a plantilla</button>
+    </div>
+    <div class="table-responsive">
+        <table class="table table align-middle table-striped table-borderless">
+            <thead>
+                <tr>
+                    <td colspan="6" id="rowsFound"></td>
+                </tr>
+                <tr>
+                    <th>Dorsal</th>
+                    <th>Posición</th>
+                    <th>Foto</th>
+                    <th>Jugador</th>
+                    <th>Fecha de nacimiento</th>
+                    <th>Logo</th>
+                    <th>Equipo</th>
+                    <th>Temporada</th>
+                </tr>
+            </thead>
+            <tbody id="tabla_jugadores"></tbody>
+        </table>
+    </div>
+</div>`
     },
     {
         title: "Jugador",
         content: `<div class="step">
-                    <div class="row g-3">
-                        <div class="col-sm-12 col-md-6">
-                            <label for="plantilla" class="form-label fw-semibold">Elige la plantilla</label>
-                            <select id="plantilla" name="plantilla" class="form-select" required></select>
-                        </div>
-                        <div class="col-sm-12 col-md-6">
-                            <label for="equipo" class="form-label fw-semibold">Elige al Equipo</label>
-                            <select id="equipo" name="equipo" class="form-select" required></select>
-                        </div>
-                        <div class="col-sm-12 col-md-6">
-                            <label for="temporada" class="form-label fw-semibold">Elige la temporada</label>
-                            <select id="temporada" name="temporada" class="form-select" required></select>
-                        </div>
-                        <div class="col-sm-12 col-md-6">
-                            <label for="jugador" class="form-label fw-semibold">Elige al Jugador</label>
-                            <select id="jugador" name="jugador" class="form-select" required></select>
-                        </div>
-                    </div>
-                    <div class="btns-group">
-                        <div class="mt-5 text-end">
-                            <button type="submit" id="guardar" class="btn bg-blue-principal-color text-white">Guardar</button>
-                        </div>
-                    </div>
-                  </div>`
+    <div class="row g-3">
+        <div class="col-sm-12 col-md-6">
+            <label for="plantilla" class="form-label fw-semibold">Elige la plantilla</label>
+            <select id="plantilla" name="plantilla" class="form-select" required></select>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <label for="equipo" class="form-label fw-semibold">Elige al Equipo</label>
+            <select id="equipo" name="equipo" class="form-select" required></select>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <label for="temporada" class="form-label fw-semibold">Elige la temporada</label>
+            <select id="temporada" name="temporada" class="form-select" required></select>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <label for="jugador" class="form-label fw-semibold">Elige al Jugador</label>
+            <select id="jugador" name="jugador" class="form-select" required></select>
+        </div>
+    </div>
+    <div class="btns-group">
+        <div class="mt-5 text-end">
+            <button type="submit" id="guardar" class="btn bg-blue-principal-color text-white">Guardar</button>
+        </div>
+    </div>
+</div>`
     }
 ];
 
@@ -107,16 +116,17 @@ const createStepper = () => {
     stepperContainer.appendChild(stepperDiv);
 
     stepperDiv.innerHTML = `
-        <div class="progressbar p-3 container-fluid" id="progressBar">
-            <div class="progress" id="progress"></div>
-            ${steps.map((step, index) => `<div class="progress-step ${index === 0 ? 'progress-step-active' : ''}" id="progress-step${index + 1}" data-title="${step.title}"></div>`).join('')}
-        </div>
-        <div id="stepperContent"></div>
-        <div class="d-flex justify-content-between mt-3">
-            <button type="button" class="btn bg-red-cream-color text-white" id="prevBtn">Anterior</button>
-            <button type="button" class="btn bg-blue-principal-color text-white d-none" id="nextBtn">Siguiente</button>
-        </div>
-    `;
+<div class="progressbar p-3 container-fluid" id="progressBar">
+    <div class="progress" id="progress"></div>
+    ${steps.map((step, index) => `<div class="progress-step ${index === 0 ? 'progress-step-active' : ''}"
+        id="progress-step${index + 1}" data-title="${step.title}"></div>`).join('')}
+</div>
+<div id="stepperContent"></div>
+<div class="d-flex justify-content-between mt-3">
+    <button type="button" class="btn bg-red-cream-color text-white" id="prevBtn">Anterior</button>
+    <button type="button" class="btn bg-blue-principal-color text-white d-none" id="nextBtn">Siguiente</button>
+</div>
+`;
 
     document.getElementById('prevBtn').addEventListener('click', () => changeStep(-1));
     document.getElementById('nextBtn').addEventListener('click', () => changeStep(1));
@@ -134,19 +144,15 @@ const showStep = (stepIndex) => {
     progress.style.width = `${(stepIndex / (steps.length - 1)) * 95}%`;
 
     document.querySelectorAll('.progress-step').forEach((step, index) => {
-        if (index <= stepIndex) {
-            step.classList.add('progress-step-active');
-        } else {
+        if (index <= stepIndex) { step.classList.add('progress-step-active'); } else {
             step.classList.remove('progress-step-active');
         }
-    });
-
-    document.getElementById('prevBtn').style.display = stepIndex === 0 ? 'none' : 'inline-block';
-    document.getElementById('nextBtn').innerText = stepIndex === steps.length - 1 ? 'Finalizar' : 'Siguiente';
-
-    if (stepIndex === 0) {
-        document.querySelector('.next-step').addEventListener('click', () => changeStep(1));
-    }
+    }); document.getElementById('prevBtn').style.display = stepIndex === 0
+        ? 'none' : 'inline-block'; document.getElementById('nextBtn').innerText = stepIndex === steps.length - 1 ? 'Finalizar'
+            : 'Siguiente'; if (stepIndex === 0) {
+                document.querySelector('.next-step').addEventListener('click', () =>
+                    changeStep(1));
+            }
 
     if (stepIndex === 0) {
         const form = new FormData();
@@ -164,15 +170,9 @@ const showStep = (stepIndex) => {
 };
 
 const changeStep = (step) => {
-    if (currentStep + step >= 0 && currentStep + step < steps.length) {
-        currentStep += step;
-        showStep(currentStep);
-    }
+    if (currentStep + step >= 0 && currentStep + step < steps.length) { currentStep += step; showStep(currentStep); }
 };
-
-let id_plantilla_tabla;
-
-const openDetail = (id, nombre) => {
+let id_plantilla_tabla; const openDetail = (id, nombre) => {
     DETAIL_MODAL.show();
     id_plantilla_tabla = id;
     DETAIL_MODAL_TITLE.textContent = 'Detalle de la plantilla ' + nombre;
@@ -206,22 +206,22 @@ async function cargarTabla(FORM = null) {
         // Mostrar elementos obtenidos de la API
         DATA.dataset.forEach(row => {
             const tablaHtml = `
-            <tr>
-                <td>${row.DORSAL}</td>
-                <td>${row.POSICION_PRINCIPAL}</td>
-                <td><img src="${SERVER_URL}images/jugadores/${row.IMAGEN}" height="50" width="50" class="circulo"></td>
-                <td>${row.NOMBRE}</td>
-                <td>${row.NACIMIENTO}</td>
-                <td><img src="${SERVER_URL}images/equipos/${row.LOGO}" height="25" width="25" class="circulo"></td>
-                <td>${row.NOMBRE_EQUIPO}</td>
-                <td>${row.NOMBRE_TEMPORADA}</td>
-                <td>
-                    <button type="button" id="btnEli" class="btn transparente" onclick="openDeletePlayer(${row.IDP})">
+        <tr>
+            <td>${row.DORSAL}</td>
+            <td>${row.POSICION_PRINCIPAL}</td>
+            <td><img src="${SERVER_URL}images/jugadores/${row.IMAGEN}" height="50" width="50" class="circulo"></td>
+            <td>${row.NOMBRE}</td>
+            <td>${row.NACIMIENTO}</td>
+            <td><img src="${SERVER_URL}images/equipos/${row.LOGO}" height="25" width="25" class="circulo"></td>
+            <td>${row.NOMBRE_EQUIPO}</td>
+            <td>${row.NOMBRE_TEMPORADA}</td>
+            <td>
+                <button type="button" id="btnEli" class="btn transparente" onclick="openDeletePlayer(${row.IDP})">
                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
-                </td>
-            </tr>
-                `;
+                </button>
+            </td>
+        </tr>
+        `;
             cargarTabla.innerHTML += tablaHtml;
         });
     } catch (error) {
@@ -262,9 +262,9 @@ const openDeletePlayer = async (id) => {
 }
 
 /*
-*   Función asíncrona para preparar el formulario al momento de actualizar un registro.
-*   Parámetros: id (identificador del registro seleccionado).
-*   Retorno: ninguno.
+* Función asíncrona para preparar el formulario al momento de actualizar un registro.
+* Parámetros: id (identificador del registro seleccionado).
+* Retorno: ninguno.
 */
 const openUpdate = async (id) => {
     try {
@@ -295,9 +295,9 @@ const openUpdate = async (id) => {
 
 }
 /*
-*   Función asíncrona para eliminar un registro.
-*   Parámetros: id (identificador del registro seleccionado).
-*   Retorno: ninguno.
+* Función asíncrona para eliminar un registro.
+* Parámetros: id (identificador del registro seleccionado).
+* Retorno: ninguno.
 */
 const openDelete = async (id) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
@@ -330,6 +330,92 @@ const openDelete = async (id) => {
 }
 
 
+/*
+*   Función para preparar el formulario al momento de insertar un registro.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
+const openCreateD = (id) => {
+    // Se muestra la caja de diálogo con su título.
+    TEMPLATE_MODAL.show();
+    TEMPLATE_TITLE.textContent = 'Agregar jugador a la plantilla';
+    // Se prepara el formulario.
+    TEMPLATE_FORM.reset();
+    fillSelect(PLANTILLA_API, 'readAll', 'plantilla', id);
+    fillSelect(JUGADOR_API, 'readAll', 'jugador');
+    fillSelect(TEMPORADA_API, 'readAll', 'temporada');
+    fillSelect(EQUIPO_API, 'readAll', 'equipo');
+}
+/*
+*   Función asíncrona para preparar el formulario al momento de actualizar un registro.
+*   Parámetros: id (identificador del registro seleccionado).
+*   Retorno: ninguno.
+*/
+const openUpdateD = async (id) => {
+    try {
+        console.log('Valor del id: ', id);
+        // Se define un objeto con los datos del registro seleccionado.
+        const FORM = new FormData();
+        FORM.append('idPlantillaEquipo', id);
+        // Petición para obtener los datos del registro solicitado.
+        const DATA = await fetchData(API_PLANTILLAS, 'readOne', FORM);
+        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+        if (DATA.status) {
+            // Se muestra la caja de diálogo con su título.
+            TEMPLATE_MODAL.show();
+            TEMPLATE_TITLE.textContent = 'Actualizar cuerpo técnico';
+            // Se prepara el formulario.
+            TEMPLATE_FORM.reset();
+            // Se inicializan los campos con los datos.
+            const ROW = DATA.dataset;
+            ID_PLANTILLA_EQUIPO.value = ROW.IDP;
+            console.log(ID_PLANTILLA_EQUIPO.value);
+            fillSelect(PLANTILLA_API, 'readAll', 'plantilla', ROW.ID_PLANTILLA);
+            fillSelect(JUGADOR_API, 'readAll', 'jugador', ROW.ID);
+            fillSelect(TEMPORADA_API, 'readAll', 'temporada', ROW.ID_TEMPORADA);
+            fillSelect(EQUIPO_API, 'readAll', 'equipo', ROW.ID_EQUIPO);
+        } else {
+            sweetAlert(2, DATA.error, false);
+        }
+    } catch (Error) {
+        console.log(Error);
+    }
+}
+/*
+*   Función asíncrona para eliminar un registro.
+*   Parámetros: id (identificador del registro seleccionado).
+*   Retorno: ninguno.
+*/
+const openDeleteD = async (id) => {
+    // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
+    const RESPONSE = await confirmAction('¿Desea eliminar del cuerpo técnico?');
+    try {
+        // Se verifica la respuesta del mensaje.
+        if (RESPONSE) {
+            // Se define una constante tipo objeto con los datos del registro seleccionado.
+            const FORM = new FormData();
+            FORM.append('idPlantillaEquipo', id);
+            console.log(id);
+            // Petición para eliminar el registro seleccionado.
+            const DATA = await fetchData(API_PLANTILLAS, 'deleteRow', FORM);
+            console.log(DATA.status);
+            // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+            if (DATA.status) {
+                // Se muestra un mensaje de éxito.
+                await sweetAlert(1, DATA.message, true);
+                // Se carga nuevamente la tabla para visualizar los cambios.
+                fillTable();
+            } else {
+                sweetAlert(2, DATA.error, false);
+            }
+        }
+    }
+    catch (Error) {
+        console.log(Error + ' Error al cargar el mensaje');
+    }
+
+}
+
 // Variables y constantes para la paginación
 const plantillasPorPagina = 10;
 let paginaActual = 1;
@@ -361,37 +447,156 @@ async function fillTable(form = null) {
     }
 }
 
+
 // Función para mostrar técnicos en una página específica
-function mostrarPlantillas(pagina) {
+// Función para mostrar plantillas en una página específica
+async function mostrarPlantillas(pagina) {
     const inicio = (pagina - 1) * plantillasPorPagina;
     const fin = inicio + plantillasPorPagina;
     const plantillasPagina = plantillas.slice(inicio, fin);
 
     const cargarTabla = document.getElementById('tabla_plantillas');
     cargarTabla.innerHTML = '';
-    plantillasPagina.forEach(row => {
+    for (const row of plantillasPagina) {
         const tablaHtml = `
-                <tr class="text-center">
-                    <td>${row.NOMBRE}</td>
-                    <td>
-                        <button type="button" class="btn btn-warnig" onclick="openDetail(${row.ID}, '${row.NOMBRE}')">
-                        <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
-                        </button>
-                    </td>
-                    <td>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
-                        <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                    </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.ID})">
-                        <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading-${row.ID}">
+                            <div class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${row.ID}" aria-expanded="false" aria-controls="collapse-${row.ID}">
+                                <div class="row w-100 align-items-center">
+                                    <div class="col text-start">
+                                        <p class="mb-0">${row.NOMBRE}</p>
+                                    </div>
+                                    <div class="col-auto d-flex gap-2">
+                                        <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
+                                            <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                                        </button>
+                                        <button type="button" class="btn transparente" onclick="openDelete(${row.ID})">
+                                            <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </h2>
+                        <div id="collapse-${row.ID}" class="accordion-collapse collapse" aria-labelledby="heading-${row.ID}" data-bs-parent="#tabla_plantillas">
+                          <div class="accordion-body mt-5">
+                            <div class="row w-100"> 
+                             <div class="col-sm-12 col-md-6">
+                                <button class="btn bg-blue-principal-color mb-5 text-white ms-auto borde-transparente btn-sm rounded-3" onclick="openCreateD(${row.ID})">
+                                    <span class="fs-5 me-2">+</span> Agregar un elemento a la plantilla
+                                </button>
+                             </div>
+                             <div class="col-sm-12 col-md-6">
+                                <form id="searchFormTemplate" class="d-flex">
+                                    <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow" name="search" placeholder="Buscar" required>
+                                    <button type="submit" class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
+                                    <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
+                                    </button>
+                                </form>
+                             </div>
+                            </div>
+                                <div id="carousel-container-${row.ID}" class="carousel-container"></div>
+                          </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
         `;
         cargarTabla.innerHTML += tablaHtml;
-    });
+
+        await cargarCarrouselParaPlantillas(row.ID);
+    }
 
     actualizarPaginacion();
+}
+
+async function cargarCarrouselParaPlantillas(id) {
+    try {
+        // Petición para obtener los plantillaos del cuerpo técnico
+        const form = new FormData();
+        form.append('idPlantillaEquipo', id);
+        const plantillasResponse = await fetchData(API_PLANTILLAS, 'readOneTemplate', form);
+        const plantillas = plantillasResponse.dataset;
+
+        const carouselContainer = document.getElementById(`carousel-container-${id}`);
+        const carouselId = `carousel-${id}`;
+        carouselContainer.innerHTML = ''; // Clear the container before adding new content
+
+        const carousel = document.createElement('div');
+        carousel.className = 'carousel slide';
+        carousel.id = carouselId;
+        carousel.dataset.bsRide = 'carousel';
+
+        let innerHTML = '';
+
+        if (Array.isArray(plantillas) && plantillas.length > 0) {
+            innerHTML = `
+        <div class="carousel-inner">
+            `;
+            // Agrupar plantillaos en grupos de tres
+            for (let i = 0; i < plantillas.length; i += 3) {
+                innerHTML += ` <div
+                class="carousel-item ${i === 0 ? 'active' : ''}">
+                <div class="row">
+                    `;
+                // Mostrar hasta tres plantillaos en cada grupo
+                for (let j = i; j < i + 3 && j < plantillas.length; j++) {
+                    const plantilla = plantillas[j]; innerHTML
+                        += ` <div class="col-lg-4 col-md-4 col-sm-12 text-center">
+                        <div class="card">
+                            <div class="d-flex justify-content-between">
+                            <h5 class="text-start ms-3 mt-2"> ${plantilla.DORSAL}</h5>
+                            <img src="${SERVER_URL}images/equipos/${plantilla.LOGO}" class="card-img-top logo text-end" alt="${plantilla.NOMBRE_EQUIPO}">
+                            </div>
+                            <div class="justify-content-center">
+                                <img src="${SERVER_URL}images/jugadores/${plantilla.IMAGEN}"
+                                    class="card-img-top correccion" alt="${plantilla.TECNICO}">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">${plantilla.NOMBRE}</h5>
+                                <p class="card-text">${plantilla.POSICION_PRINCIPAL}</p>
+                                <p class="card-text">${plantilla.NOMBRE_EQUIPO}</p>
+                                <p class="card-text">${plantilla.NOMBRE_TEMPORADA}</p>
+                            </div>
+                            <div class="card-footer p-3">
+                                <button type="button" class="btn botones me-3" onclick="openUpdateD(${plantilla.IDP})">
+                                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                                </button>
+                                <button type="button" class="btn botones" onclick="openDeleteD(${plantilla.IDP})">
+                                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18"
+                                        height="18">
+                                </button>
+                            </div>
+                        </div>
+                </div>
+                `;
+                }
+                innerHTML += `
+        </div>
+        </div>
+        `;
+            }
+            innerHTML += `
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#${carouselId}" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#${carouselId}" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Siguiente</span>
+        </button>
+        `;
+        } else {
+            innerHTML = `<p>No hay tecnicos disponibles para este cuerpo técnico.</p>`;
+        }
+
+        carousel.innerHTML = innerHTML;
+        carouselContainer.appendChild(carousel);
+    } catch (error) {
+        console.error('Error en la api:', error);
+    }
 }
 
 // Función para actualizar los contplantillas de paginación
@@ -402,15 +607,20 @@ function actualizarPaginacion() {
     const totalPaginas = Math.ceil(plantillas.length / plantillasPorPagina);
 
     if (paginaActual > 1) {
-        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#"
+                onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
     }
 
     for (let i = 1; i <= totalPaginas; i++) {
-        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-light" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
+        paginacion.innerHTML += `<li
+            class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-light" href="#"
+                onclick="cambiarPagina(${i})">${i}</a></li>`;
     }
 
     if (paginaActual < totalPaginas) {
-        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
+        paginacion.innerHTML += `<li class="page-item"><a
+                    class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>
+                `;
     }
 }
 
@@ -441,6 +651,8 @@ window.onload = async function () {
         MODAL_TITLE = document.getElementById('modalTitle');
     DETAIL_MODAL = new bootstrap.Modal('#detailModal'),
         DETAIL_MODAL_TITLE = document.getElementById('modalTitleDetail');
+    TEMPLATE_MODAL = new bootstrap.Modal('#templateModal'),
+        TEMPLATE_TITLE = document.getElementById('modalTitle2');
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
         ID_PLANTILLA = document.getElementById('idPlantilla'),
@@ -483,5 +695,35 @@ window.onload = async function () {
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
         fillTable(FORM);
     });
-    createStepper();
+
+    // Constantes para establecer los elementos del formulario de guardar.
+    TEMPLATE_FORM = document.getElementById('templateForm'),
+        ID_PLANTILLA_EQUIPO = document.getElementById('idPlantillaEquipo'),
+        PLANTILLAS = document.getElementById('plantilla'),
+        JUGADOR = document.getElementById('jugador'),
+        TEMPORADAS = document.getElementById('temporada'),
+        EQUIPOS = document.getElementById('equipo');
+    // Método del evento para cuando se envía el formulario de guardar.
+    TEMPLATE_FORM.addEventListener('submit', async (event) => {
+        // Se evita recargar la página web después de enviar el formulario.
+        event.preventDefault();
+        // Se verifica la acción a realizar.
+        (ID_PLANTILLA_EQUIPO.value) ? action = 'updateRow' : action = 'createRow';
+        // Constante tipo objeto con los datos del formulario.
+        const FORM = new FormData(TEMPLATE_FORM);
+        // Petición para guardar los datos del formulario.
+        const DATA = await fetchData(API_PLANTILLAS, action, FORM);
+        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+        if (DATA.status) {
+            // Se cierra la caja de diálogo.
+            TEMPLATE_MODAL.hide();
+            // Se muestra un mensaje de éxito.
+            sweetAlert(1, DATA.message, true);
+            // Se carga nuevamente la tabla para visualizar los cambios.
+            fillTable();
+        } else {
+            sweetAlert(2, DATA.error, false);
+            console.error(DATA.exception);
+        }
+    });
 };

@@ -70,7 +70,7 @@ class PagoHandler
                 j.id_jugador AS NOMBRE
                 FROM pagos p
                 INNER JOIN jugadores j ON p.id_jugador = j.id_jugador
-                WHERE j.id_jugador LIKE ?';
+                WHERE p.id_pago LIKE ?';
         $params = array($this->id);
         return Database::getRow($sql, $params);
     }
