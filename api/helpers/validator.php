@@ -72,11 +72,22 @@ class Validator
         }
     }
 
-    /*
-     *   Método para validar un archivo de imagen.
-     *   Parámetros: $file (archivo de un formulario) y $dimension (medida mínima para la imagen).
-     *   Retorno: booleano (true si el archivo es correcto o false en caso contrario).
-     */
+    public static function validatePositiveNumber($value)
+    {
+        // Se verifica que el valor sea un número entero mayor a 0.
+        if ($value >= 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+        /*
+         *   Método para validar un archivo de imagen.
+         *   Parámetros: $file (archivo de un formulario) y $dimension (medida mínima para la imagen).
+         *   Retorno: booleano (true si el archivo es correcto o false en caso contrario).
+         */
     public static function validateImageFile($file, $dimension)
     {
         if (is_uploaded_file($file['tmp_name'])) {

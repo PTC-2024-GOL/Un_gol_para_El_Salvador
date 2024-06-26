@@ -22,11 +22,21 @@ class ParticipacionesPartidosHandler
     protected $estadoAnimo = null;
     protected $puntuacion = null;
     protected $idEquipo = null;
+    protected $areaJuego = null;
 
 
     /*
     *  Métodos para realizar las operaciones CRUD (create, read, update, and delete).
     */
+    public function searchRows()
+    {
+        $value = '%' . Validator::getSearchValue() . '%';
+        $sql = "SELECT * FROM vista_jugadores_por_equipo
+                WHERE vista_jugadores_por_equipo.nombre_jugador LIKE ? OR vista_jugadores_por_equipo.apellido_jugador LIKE ?;";
+        $params = array($value, $value);
+        return Database::getRows($sql, $params);
+    }
+
 
     //Función para insertar una participacion.
     public function createRow()
@@ -69,6 +79,15 @@ class ParticipacionesPartidosHandler
         $params = array($this->idParticipacion);
         return Database::getRow($sql, $params);
     }
+
+    public function readByPlayerArea()
+    {
+        $sql = 'SELECT * FROM vista_jugadores_por_equipo
+                WHERE area_de_juego = ?';
+        $params = array($this->areaJuego);
+        return Database::getRows($sql, $params);
+    }
+
 
     //Función para actualizar las participaciones.
     public function updateRow()

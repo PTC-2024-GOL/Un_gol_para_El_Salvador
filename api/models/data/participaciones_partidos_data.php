@@ -97,7 +97,7 @@ class ParticipacionesPartidosData extends ParticipacionesPartidosHandler
 
     public function setAsistencias($value)
     {
-        if (Validator::validateNaturalNumber($value)) {
+        if (Validator::validatePositiveNumber($value)) {
             $this->asistencias = $value;
             return true;
         } else {
@@ -127,6 +127,14 @@ class ParticipacionesPartidosData extends ParticipacionesPartidosHandler
             return false;
         }
     }
+
+    public function setAreaJuego($value)
+    {
+        $this->areaJuego = $value;
+        return true;
+
+    }
+
 
     // Método para obtener el error de los datos.
     public function getDataError()

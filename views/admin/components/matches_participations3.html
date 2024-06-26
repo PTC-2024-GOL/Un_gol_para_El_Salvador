@@ -5,7 +5,7 @@
             <div class="col-sm-12 col-md-6">
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
-                        name="search" placeholder="Buscar" required>
+                        name="search" placeholder="Buscar por el nombre o apellido del jugador" required>
                     <button type="submit"
                         class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
@@ -18,12 +18,26 @@
         </div>
     </div>
     <hr>
-    <div class="d-flex align-items-center mb-3">
+    <div class="d-flex align-items-center mb-4 mt-2">
         <img src="../../../resources/img/svg/icons_forms/info.svg" class="img-fluid me-2" alt="">
         Recuerda agregar los goles y amonestaciones que el jugador tuvo en el partido
     </div>
 
-    <div class="row align-items-center mt-4" id="participationCards">
+
+
+    <div class="row">
+        <div class="col-md-auto col-sm-12">
+            <button class="btn btn btn-outline-primary rounded-5  btn-style" onclick="filtroAreaJuego(event)">Ofensiva</button>
+        </div>
+        <div class="col-md-auto col-sm-12">
+            <button class="btn  btn-outline-primary rounded-5  btn-style" onclick="filtroAreaJuego(event)">Defensiva</button>
+        </div>
+        <div class="col-md-auto col-sm-12">
+            <button class="btn btn-outline-primary rounded-5 btn-style" onclick="filtroAreaJuego(event)">Ofensiva y defensiva</button>
+        </div>
+    </div>
+
+    <div class="row align-items-center mt-1 mb-4 g-4" id="participationCards">
 
     </div>
     <nav aria-label="Page navigation example">

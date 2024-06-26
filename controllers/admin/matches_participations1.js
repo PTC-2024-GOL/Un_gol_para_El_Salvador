@@ -10,6 +10,34 @@ async function loadComponent(path) {
     return text;
 }
 
+// Manejo para la paginacion
+const soccerTeamByPage = 10;
+let currentPage = 1;
+let soccerTeam = [];
+
+
+function showSoccerTeam(page) {
+    const start = (page - 1) * soccerTeamByPage;
+    const end = start + soccerTeamByPage;
+    const soccerTeamPage = soccerTeam.slice(start, end);
+
+    const fillTable = document.getElementById('cards');
+    fillTable.innerHTML = '';
+    soccerTeamPage.forEach(row => {
+        const tablaHtml = `
+                <tr>
+                    <div class="col-md-3 col-sm-12">
+                        <div class="tarjetas-equipos shadow " onclick="goToMatches(${row.ID})"> 
+                            <img src="${SERVER_URL}images/equipos/${row.logo_equipo}" id="imagenEquipo" width="160px" height="160px" class="rounded-circle p-4"> 
+                            <p class="titulo-equipo text-light p-2" id="tituloEquipo">${row.NOMBRE}</p> 
+                        </div>
+                    </div>
+                `;
+        fillTable.innerHTML += tablaHtml;
+    });
+
+    updatePaginate();
+}
 
 // Funcion que muestra todos los equipos registrados
 async function fillCards(form = null) {
@@ -27,19 +55,8 @@ async function fillCards(form = null) {
         const DATA = await fetchData(SOCCER_TEAM_API, action, form);
 
         if (DATA.status) {
-            // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-
-                const cardsHtml =  `
-                <div class="col-md-3 col-sm-12">
-                  <div class="tarjetas-equipos shadow bg-skyBlue-pastel-color" onclick="goToMatches(${row.ID})"> 
-                    <img src="${SERVER_URL}images/equipos/${row.logo_equipo}" id="imagenEquipo" width="160px" height="160px" class="rounded-circle p-4"> 
-                    <p class="titulo-equipo text-light p-2" id="tituloEquipo">${row.NOMBRE}</p> 
-                  </div>
-                </div>
-              `;
-                cargarCartas.innerHTML += cardsHtml;
-            });
+            soccerTeam = DATA.dataset;
+            showSoccerTeam(currentPage);
         } else {
             await sweetAlert(4, DATA.error, true);
             HIDDEN.classList.remove('d-none');
@@ -48,6 +65,33 @@ async function fillCards(form = null) {
         console.error('Error al obtener datos de la API:', error);
     }
 }
+
+// Función para actualizar los contlesiones de paginación
+function updatePaginate() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
+
+    const totalPaginas = Math.ceil(soccerTeam.length / soccerTeamByPage);
+
+    if (currentPage > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="nextPage(${currentPage - 1})">Anterior</a></li>`;
+    }
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link text-light" href="#" onclick="nextPage(${i})">${i}</a></li>`;
+    }
+
+    if (currentPage < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="nextPage(${currentPage + 1})">Siguiente</a></li>`;
+    }
+}
+
+// Función para cambiar de página
+function nextPage(newPage) {
+    currentPage = newPage;
+    showSoccerTeam(currentPage);
+}
+
 
 // Creamos una funcion que recibe como parametro el id y nombre del equipo que fue seleccionado y se los manda a la siguiente pantalla
 function goToMatches(idEquipo) {

@@ -15,6 +15,17 @@ if (isset($_GET['action'])) {
     if (isset($_SESSION['idAdministrador']) /*and Validator::validateSessionTime()*/) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
+            // Buscar
+            case 'searchRows':
+                if (!Validator::validateSearch($_POST['search'])) {
+                    $result['error'] = Validator::getSearchError();
+                } elseif ($result['dataset'] = $participacion->searchRows()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Existen ' . count($result['dataset']) . ' coincidencias';
+                } else {
+                    $result['error'] = 'No hay coincidencias';
+                }
+                break;
             // Crear
             case 'createRow':
                 $_POST = Validator::validateForm($_POST);
@@ -63,6 +74,15 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                 } else {
                     $result['error'] = 'Participación inexistente';
+                }
+                break;
+            case 'readAllByAreaJuego':
+                if (!$participacion->setAreaJuego($_POST['areaJuego'])) {
+                    $result['error'] = $participacion->getDataError();
+                } elseif ($result['dataset'] = $participacion->readByPlayerArea()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Aún no hay jugadores ingresados en esta área de juego';
                 }
                 break;
             // Actualizar
