@@ -60,7 +60,7 @@ if (isset($_GET['action'])) {
                 } elseif ($result['dataset'] = $pago->readOne()) {
                     $result['status'] = 1;
                 } else {
-                    $result['error'] = 'Pagos inexistente';
+                    $result['error'] = 'Pago inexistente';
                 }
                 break;
                 // Actualizar
@@ -94,6 +94,66 @@ if (isset($_GET['action'])) {
                     $result['message'] = 'El pago fue eliminado correctamente';
                 } else {
                     $result['error'] = 'Ocurrió un problema al eliminar el pago';
+                }
+                break;
+                // INGRESOS
+            // Leer todos
+            case 'totalMoney':
+                if ($result['dataset'] = $pago->totalMoney()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
+                } else {
+                    $result['error'] = 'No hay pagos registrados';
+                }
+                break;
+            // Leer uno
+            case 'totalMoneyMora':
+                if (!$pago->setMes($_POST['mes'])) {
+                    $result['error'] = $pago->getDataError();
+                } elseif ($result['dataset'] = $pago->totalMoneyMora()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Pago inexistente';
+                }
+                break;
+            // Leer uno
+            case 'totalMoneyMounth':
+                if ($result['dataset'] = $pago->totalMoneyMounth()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Pago inexistente';
+                }
+                break;
+            case 'totalPlayers':
+                if ($result['dataset'] = $pago->totalPlayers()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
+                } else {
+                    $result['error'] = 'No hay jugadores registrados';
+                }
+                break;
+            case 'noScholarships':
+                if ($result['dataset'] = $pago->noScholarships()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
+                } else {
+                    $result['error'] = 'No hay jugadores sin becas';
+                }
+                break;
+            case 'halfScholarships':
+                if ($result['dataset'] = $pago->halfScholarships()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
+                } else {
+                    $result['error'] = 'No hay jugadores con medias becas';
+                }
+                break;
+            case 'completeScholarships':
+                if ($result['dataset'] = $pago->completeScholarships()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
+                } else {
+                    $result['error'] = 'No hay jugadores con becas completas';
                 }
                 break;
             default:

@@ -263,46 +263,46 @@ async function mostrarCategorias(pagina) {
     cargarTabla.innerHTML = '';
     for (const row of categoriasPagina) {
         const tablaHtml = `
-                <tr>
-  <td colspan="5">
-    <div class="accordion-item">
-      <h2 class="accordion-header" id="heading-${row.id_categoria}">
-        <div class="accordion-button collapsed d-flex align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${row.id_categoria}" aria-expanded="false" aria-controls="collapse-${row.ID}">
-          <div class="row w-100 align-items-center">
-            <div class="col ">
-              ${row.nombre_categoria}
-            </div>
-            <div class="col">
-              ${row.edad_minima_permitida}
-            </div>
-            <div class="col">
-              ${row.edad_maxima_permitida}
-            </div>
-            <div class="col">
-              ${row.nombre_temporada}
-            </div>
-          </div>
-        </div>
-      </h2>
-      <div id="collapse-${row.id_categoria}" class="accordion-collapse collapse" aria-labelledby="heading-${row.id_categoria}" data-bs-parent="#tabla_cuerpo_tecnico">
-        <div class="accordion-body">
-          <button class="btn bg-blue-principal-color mb-5 text-white ms-auto borde-transparente btn-sm rounded-3" onclick="openCreateHc(${row.id_categoria})">
-            <span class="fs-5 me-2">+</span> Agregar un horario a la categoría
-          </button>
-          <div id="carousel-container-${row.id_categoria}" class="carousel-container"></div>
-        </div>
-      </div>
-    </div>
-  </td>
-  <td>
-    <button type="button" class="btn transparente" onclick="openUpdate(${row.id_categoria})">
-      <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-    </button>
-    <button type="button" class="btn transparente" onclick="openDelete(${row.id_categoria})">
-      <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-    </button>
-  </td>
-</tr>
+            <tr>
+                <td colspan="5">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading-${row.id_categoria}">
+                            <div class="accordion-button collapsed d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${row.id_categoria}" aria-expanded="false" aria-controls="collapse-${row.id_categoria}">
+                                <div class="row w-100 align-items-center">
+                                    <div class="col">
+                                        ${row.nombre_categoria}
+                                    </div>
+                                    <div class="col">
+                                        ${row.edad_minima_permitida}
+                                    </div>
+                                    <div class="col">
+                                        ${row.edad_maxima_permitida}
+                                    </div>
+                                    <div class="col">
+                                        ${row.nombre_temporada}
+                                    </div>
+                                </div>
+                            </div>
+                        </h2>
+                        <div id="collapse-${row.id_categoria}" class="accordion-collapse collapse" aria-labelledby="heading-${row.id_categoria}" data-bs-parent="#tabla_categorias">
+                            <div class="accordion-body">
+                                <button class="btn bg-blue-principal-color mb-5 text-white ms-auto borde-transparente btn-sm rounded-3" onclick="openCreateHc(${row.id_categoria})">
+                                    <span class="fs-5 me-2">+</span> Agregar un horario a la categoría
+                                </button>
+                                <div id="carousel-container-${row.id_categoria}" class="carousel-container"></div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id_categoria})">
+                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                    </button>
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_categoria})">
+                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                    </button>
+                </td>
+            </tr>
         `;
         cargarTabla.innerHTML += tablaHtml;
         await cargarCarrouselParaCategoria(row.id_categoria);

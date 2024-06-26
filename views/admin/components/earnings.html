@@ -23,9 +23,9 @@
         <div class="row p-5 d-flex justify-content-center mx-2 gx-5">
             <!-- Primera col -->
             <div class="col-sm-12 col-md-6 text-center">
-                <h4 class="fw-bold mb-3">Ingreso anual</h4>
+                <h4 class="fw-bold mb-3">Ingreso total</h4>
                 <div class="container bg-blue-light-color p-5 rounded-3 shadow">
-                    <h1 class="fw-bold">$100</h1>
+                    <h1 class="fw-bold" id="total"></h1>
                     <p class="fw-semibold">Total</p>
                 </div>
             </div>
@@ -33,14 +33,29 @@
             <div class="col-sm-12 col-md-6 text-center">
                 <h4 class="fw-bold mb-3">Total de pagos con mora</h4>
 
-                <label for="inputPassword" class="form-label float-start">Selecciona el mes del cual quieres ver la
+                <label for="mes" class="form-label float-start">Selecciona el mes del cual quieres ver la
                     cantidad de moras</label>
                 <div class="col-sm-12">
-                    <select type="password" class="form-select rounded-3 shadow" id="inputPassword"></select>
+                    <select class="form-select rounded-3 shadow" id="mes" onchange="totalMora()">
+                        <option>Selecciona un mes</option>
+                        <option>Enero</option>
+                        <option>Febrero</option>
+                        <option>Marzo</option>
+                        <option>Abril</option>
+                        <option>Mayo</option>
+                        <option>Junio</option>
+                        <option>Julio</option>
+                        <option>Agosto</option>
+                        <option>Septiembre</option>
+                        <option>Octubre</option>
+                        <option>Noviembre</option>
+                        <option>Diciembre</option>
+
+                    </select>
                 </div>
 
                 <div class="container bg-blue-light-color p-5 rounded-3 mt-3 shadow">
-                    <h1 class="fw-bold">10</h1>
+                    <h1 class="fw-bold" id="mora"></h1>
                     <p class="fw-semibold">Pagos con mora</p>
                 </div>
             </div>
@@ -58,7 +73,7 @@
                     <img src="../../../resources/img/svg/icons_generals/t_beca.svg" class="bg-white rounded-circle p-3"
                         width="110px" height="110px" alt="">
                     <p class="fw-bold mt-3">Total de alumnos</p>
-                    <h3 class="p-2 bg-yellow-color rounded-4 text-light fw-bold">60</h3>
+                    <h3 class="p-2 bg-yellow-color rounded-4 text-light fw-bold" id="jugador"></h3>
                 </div>
             </div>
             <!-- Segunda col -->
@@ -67,7 +82,7 @@
                     <img src="../../../resources/img/svg/icons_generals/n_beca.svg" class="bg-white rounded-circle p-3"
                         width="110px" height="110px" alt="">
                     <p class="fw-bold mt-3">Sin becas</p>
-                    <h3 class="p-2 bg-green-color rounded-4 text-light fw-bold">10</h3>
+                    <h3 class="p-2 bg-green-color rounded-4 text-light fw-bold" id="sinBeca"></h3>
                 </div>
             </div>
             <!-- Tercera col -->
@@ -76,7 +91,7 @@
                     <img src="../../../resources/img/svg/icons_generals/c_beca.svg" class="bg-white rounded-circle p-3"
                         width="110px" height="110px" alt="">
                     <p class="fw-bold mt-3">Becas completas</p>
-                    <h3 class="p-2 bg-blue-color rounded-4 text-light fw-bold">40</h3>
+                    <h3 class="p-2 bg-blue-color rounded-4 text-light fw-bold" id="becaCompleta"></h3>
                 </div>
             </div>
             <!-- Cuarta col -->
@@ -85,7 +100,7 @@
                     <img src="../../../resources/img/svg/icons_generals/m_beca.svg" class="bg-white rounded-circle p-3"
                         width="110px" height="110px" alt="">
                     <p class="fw-bold mt-3">Medias becas</p>
-                    <h3 class="p-2 bg-orange-color rounded-4 text-light fw-bold">10</h3>
+                    <h3 class="p-2 bg-orange-color rounded-4 text-light fw-bold" id="mediaBeca"></h3>
                 </div>
             </div>
         </div>
