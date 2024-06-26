@@ -8,11 +8,12 @@ let SAVE_FORM,
     MORA_PAGO,
     MES_PAGO;
 let SEARCH_FORM;
+let CONTENEDOR_PAGO;
 let ROWS_FOUND;
 
 // Constantes para completar las rutas de la API.
 const PAGO_API = 'services/admin/pagos.php';
-const JUGADOR_API = '';
+const JUGADOR_API = 'services/admin/jugadores.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -32,9 +33,21 @@ const openCreate = () => {
     SAVE_FORM.reset();
     fillSelect(JUGADOR_API, 'readAll', 'nombreJugador');
     Selected(lista_datos, 'readAll', 'mesPago');
+    SelectedPago(lista_pago, 'readAll', 'tardioPago');
     updateMoraPago();
     
 }
+
+const lista_pago = [
+    {
+        pago: "No",
+        id: "0",
+    },
+    {
+        pago: "Si",
+        id: "1",
+    }
+]
 
 
 
@@ -117,6 +130,34 @@ const Selected = (data, action, selectId, selectedValue = null) => {
 };
 
 
+// Función para poblar un combobox (select) con opciones quemadas
+const SelectedPago = (data, action, selectId, selectedValue = null) => {
+    const selectElement = document.getElementById(selectId);
+
+    // Limpiar opciones previas del combobox
+    selectElement.innerHTML = '';
+
+    // Crear opción por defecto
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Selecciona si el pago es tardio';
+    selectElement.appendChild(defaultOption);
+
+    // Llenar el combobox con los datos proporcionados
+    data.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.id; // Suponiendo que hay una propiedad 'id' en los datos
+        option.textContent = item.pago; // Cambia 'horario' al nombre de la propiedad que deseas mostrar en el combobox
+        selectElement.appendChild(option);
+        console.log(option);
+    });
+
+    // Seleccionar el valor especificado si se proporciona
+    if (selectedValue !== null) {
+        selectElement.value = selectedValue;
+    }
+};
+
 
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
@@ -143,6 +184,7 @@ const openUpdate = async (id) => {
             fillSelect(JUGADOR_API, 'readAll', 'nombreJugador', ROW.NOMBRE);
             FECHA_PAGO.value = ROW.FECHAPAGO;
             CANTIDAD_PAGO.value = ROW.CANTIDAD;
+            Selected(lista_pago, 'readAll', 'tardioPago', ROW.TARDIO);
             PAGOTARDIO_PAGO.value = ROW.TARDIO;
             MORA_PAGO.value = ROW.MORA;
             Selected(lista_datos, 'readAll', 'mesPago', ROW.MES)
@@ -215,7 +257,7 @@ async function fillTable(form = null) {
             // Se muestra un mensaje de acuerdo con el resultado.
             const tablaHtml = `
                 <tr class="border-danger">
-                    <td class="text-danger">${DATA.error}</td>
+                    
                 </tr>
             `;
             cargarTabla.innerHTML += tablaHtml;
@@ -286,12 +328,20 @@ function cambiarPagina(nuevaPagina) {
     mostrarPago(paginaActual);
 }
 
+
+// Función para ocultar el input mora
 function updateMoraPago() {
-    if (PAGOTARDIO_PAGO.value == 1) {
-        MORA_PAGO.disabled = false;
-    } else {
-        MORA_PAGO.disabled = true;
+    if (PAGOTARDIO_PAGO.value == 0) {
+        CONTENEDOR_PAGO.classList.add('d-none');
+    } 
+    else if (PAGOTARDIO_PAGO.value == 1){
+        CONTENEDOR_PAGO.classList.remove('d-none');
+        MORA_PAGO.value = 1;
     }
+    else{
+    }
+
+    
 }
 
 
@@ -314,6 +364,7 @@ window.onload = async function () {
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
 
+    CONTENEDOR_PAGO = document.getElementById('contenedorPago');
     // Constantes para establecer los elementos del formulario de guardar.
         SAVE_FORM = document.getElementById('saveForm'),
         ID_PAGO = document.getElementById('idPago'),
@@ -363,4 +414,5 @@ window.onload = async function () {
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
         fillTable(FORM);
     });
+    
 };
