@@ -69,6 +69,7 @@ class PlantillasEquiposHandler
         pe.id_temporada AS ID_TEMPORADA,
         t.nombre_temporada AS NOMBRE_TEMPORADA,
         pe.id_equipo AS ID_EQUIPO,
+        e.logo_equipo AS LOGO,
         e.nombre_equipo AS NOMBRE_EQUIPO,
         e.logo_equipo AS LOGO,
         j.foto_jugador AS IMAGEN

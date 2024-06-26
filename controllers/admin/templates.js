@@ -545,7 +545,10 @@ async function cargarCarrouselParaPlantillas(id) {
                     const plantilla = plantillas[j]; innerHTML
                         += ` <div class="col-lg-4 col-md-4 col-sm-12 text-center">
                         <div class="card">
+                            <div class="d-flex justify-content-between">
                             <h5 class="text-start ms-3 mt-2"> ${plantilla.DORSAL}</h5>
+                            <img src="${SERVER_URL}images/equipos/${plantilla.LOGO}" class="card-img-top logo text-end" alt="${plantilla.NOMBRE_EQUIPO}">
+                            </div>
                             <div class="justify-content-center">
                                 <img src="${SERVER_URL}images/jugadores/${plantilla.IMAGEN}"
                                     class="card-img-top correccion" alt="${plantilla.TECNICO}">
@@ -553,6 +556,8 @@ async function cargarCarrouselParaPlantillas(id) {
                             <div class="card-body">
                                 <h5 class="card-title">${plantilla.NOMBRE}</h5>
                                 <p class="card-text">${plantilla.POSICION_PRINCIPAL}</p>
+                                <p class="card-text">${plantilla.NOMBRE_EQUIPO}</p>
+                                <p class="card-text">${plantilla.NOMBRE_TEMPORADA}</p>
                             </div>
                             <div class="card-footer p-3">
                                 <button type="button" class="btn botones me-3" onclick="openUpdateD(${plantilla.IDP})">
