@@ -1,61 +1,27 @@
-<section class="about m-4">
+<section class="acerca-de m-4">
     <div class="col-10 mx-auto">
-        <div class="profile-container p-4">
-            <div class="d-flex justify-content-end ">
-                <button class="btn btn-outline-blue bg-blue-principal-color text-white mb-2 margin" onclick="openEdit()">
+        <div class="contenedor-perfil p-4 mb-5">
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-borde-azul bg-color-azul-principal text-white mb-2 margin" onclick="openEdit()">
                     <i class="bi bi-pencil-square"></i>
                 </button>
-                <button class="btn btn-outline-blue bg-blue-principal-color text-white mb-2" onclick="openPassword()">
+                <button class="btn btn-borde-azul bg-color-azul-principal text-white mb-2" onclick="openPassword()">
                     <i class="bi bi-lock-fill"></i>
                 </button>
             </div>
             <div class="text-center">
-                <img src="" id="foto" alt="Foto de Perfil" class="profile-image img-fluid rounded-circle mb-3">
-                <h2 class="user-name" id="nombre"></h2>
-                <p class="user-email" id="email"></p>
+                <div class="cabecera-perfil">
+                    <img src="your-image-url-here" id="foto" alt="Foto de Perfil" class="imagen-perfil img-fluid rounded-circle mb-3">
+                </div>
             </div>
+            
+        </div>
+        <div class="text-center margen-custom">
+            <h2 class="user-name" id="nombre">Joel Mena</h2>
+            <p class="user-email" id="email">joel@gmail.com</p>
         </div>
     </div>
 </section>
-
-
-<!-- Modal de detalle de pedido -->
-<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"></span></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="table-responsive">
-                    <table class="table table align-middle table-striped table-borderless">
-                        <!-- Cabeza de la tabla para mostrar la cantidad de Perfils y los títulos de las columnas -->
-                        <thead>
-                            <tr>
-                                <td colspan="6" id="rowsFound"></td>
-                            </tr>
-                            <tr>
-                                <th>Foto</th>
-                                <th>Nombre del producto</th>
-                                <th>Cantidad comprada</th>
-                                <th>Precio unitario</th>
-                                <th>Subtotal</th>
-                            </tr>
-                        </thead>
-                        <!-- Cuerpo de la tabla para mostrar un Perfil por fila -->
-                        <tbody id="tabla_detalle"></tbody>
-                    </table>
-                </div>
-                <div>
-                    <p class="text-start">TOTAL QUE PAGO (US$) <b id="pago"></b></p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 <!-- Componente Modal para cambiar contraseña -->
@@ -117,17 +83,18 @@
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
                     <input type="number" class="d-none" id="idAdministrador" name="idAdministrador">
                     <div class="container text-center text-md-start text-lg-start">
-                        <div class="row align-items-center justify-content-center gy-3">
+                        <div class="row align-items-center justify-content-center gy-3 mt-3 mb-2">
                             <div class="col-sm-12 col-md-auto">
-                                <img class="circulo mt-2" id="img_admin" src="../../../resources/img/svg/avatar.svg"
-                                    width="120px" height="120px">
+                                <img class="circulo" id="imagenJugador" src="../../../resources/img/png/default.jpg"
+                                     width="130px" height="130px">
                             </div>
-                            <div class="col-sm-12 text-center">
+                            <div class="col-sm-12 text-center ">
                                 <!-- Botón para cargar imagen -->
-                                <input type="file" class="form-control" accept=".png .jpg" name="imagenAdministrador" id="imagenAdministrador" hidden>
+                                <input type="file" class="form-control" id="imagen_jugador" name="imagen"
+                                    hidden>
                                 <!-- Para que tenga el mismo funcionamiento del input file le ponemos el for y le agregamos el id del input file -->
-                                <label class="btn bg-blue-secondary-color text-light rounded-4"
-                                    for="imagenAdministrador">Elige la
+                                <label class="btn bg-blue-secondary-color rounded-4 text-light"
+                                    for="imagen_jugador">Cargar
                                     imagen</label>
                             </div>
                         </div>
