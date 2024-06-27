@@ -31,9 +31,6 @@
     border-radius: 15px;
 }
 
-.form-margin {
-    margin: 20px;
-}
 
 .text-margin {
     margin-top: 20px;
@@ -41,4 +38,8 @@
 
 .margin-contenedor {
     margin-top  : 0px !important;
+}
+
+.circulo {
+    border-radius: 50%;
 }

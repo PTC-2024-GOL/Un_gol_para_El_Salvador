@@ -203,6 +203,8 @@ if (isset($_GET['action'])) {
                     !$administrador->setImagen($_FILES['imagenAdministrador'])
                 ) {
                     $result['error'] = $administrador->getDataError();
+                } elseif ($_POST['claveAdministrador'] != $_POST['confirmarClave']) {
+                    $result['error'] = 'Contraseñas diferentes';
                 } elseif ($administrador->firstUser()) {
                     $result['status'] = 1;
                     $result['message'] = 'Primer administrador registrado correctamente';

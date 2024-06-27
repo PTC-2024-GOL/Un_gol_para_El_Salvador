@@ -1,5 +1,7 @@
 // Constante para establecer el formulario de inicio de sesión.
-let SAVE_FORM;
+let SAVE_FORM,
+    FOTO,
+    IMAGEN;
 // Constante para completar la ruta de la API.
 
 
@@ -32,6 +34,27 @@ window.onload = async function () {
         mask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/]
     });
 
+    // Constantes para establecer los elementos del formulario de guardar.
+    SAVE_FORM = document.getElementById('saveForm'),
+        FOTO = document.getElementById('img_admin'),
+        IMAGEN = document.getElementById('imagenAdministrador');
+
+    
+        IMAGEN.addEventListener('change', function (event) {
+        // Verifica si hay una imagen seleccionada
+        if (event.target.files && event.target.files[0]) {
+            // con el objeto FileReader lee de forma asincrona el archivo seleccionado
+            const reader = new FileReader();
+            // Luego de haber leido la imagen seleccionada se nos devuele un objeto de tipo blob
+            // Con el metodo createObjectUrl de fileReader crea una url temporal para la imagen
+            reader.onload = function (event) {
+                // finalmente la url creada se le asigna al atributo src de la etiqueta img
+                FOTO.src = event.target.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    });
+
     // Petición para consultar los usuarios registrados.
     const DATA = await fetchData(USER_API, 'readUsers');
     // Se comprueba si existe una sesión, de lo contrario se sigue con el flujo normal.
@@ -62,5 +85,6 @@ window.onload = async function () {
             }
         });
     }
+
 
 };
