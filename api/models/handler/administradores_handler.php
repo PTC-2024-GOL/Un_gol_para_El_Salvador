@@ -363,7 +363,7 @@ class AdministradoresHandler
                 dui_administrador AS DUI,
                 fecha_nacimiento_administrador AS NACIMIENTO,
                 estado_administrador  AS ESTADO
-                FROM administradores;
+                FROM administradores
                 WHERE id_administrador = ?';
         $params = array($_SESSION['idAdministrador']);
         return Database::getRow($sql, $params);

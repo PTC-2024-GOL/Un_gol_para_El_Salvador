@@ -40,7 +40,9 @@ MAIN.insertAdjacentHTML('beforebegin', `
                         </div>
                     </div>
                     <div class="col">
+                        <a class="nav-link" href="profile.html">
                         <img src="../../../resources/img/svg/avatar.svg" id="imagen" class="rounded-circle" width="55px" height="55px">
+                        </a>
                     </div>
                 </div>
             </div>
