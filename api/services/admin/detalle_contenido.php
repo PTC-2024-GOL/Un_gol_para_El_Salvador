@@ -82,6 +82,16 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'No existen registros';
                 }
                 break;
+            //Leer el idequipo en base al identrenamiento
+            case 'readOneEquipo':
+                if (!$detalle->setIdEntrenamiento($_POST['idEntrenamiento'])) {
+                    $result['error'] = $detalle->getDataError();
+                } elseif ($result['dataset'] = $detalle->readOneEquipo()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Equipo inexistente';
+                }
+                break;
             // Leer todos los contenidos
             case 'readAllDContenido':
                 if (!$detalle->setIdEntrenamiento($_POST['idEntrenamiento'])) {

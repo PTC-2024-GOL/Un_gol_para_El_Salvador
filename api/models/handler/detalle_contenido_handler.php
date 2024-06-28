@@ -149,6 +149,17 @@ class DetalleContenidoHandler
         $params = array($this->idEntrenamiento);
         return Database::getRows($sql, $params);
     }
+
+    //Función para leer el idequipo de un entrenamiento. Esta función es para "Detalle Contenido"
+    // Esta función se carga en el windows.onload
+    public function readOneEquipo()
+    {
+        $sql = "SELECT 
+                id_equipo
+                FROM entrenamientos WHERE id_entrenamiento = ?;";
+        $params = array($this->idEntrenamiento);
+        return Database::getRow($sql, $params);
+    }
     //Función para rellenar la opcion del combobox con jugadores, 
     //Función para leer todos los jugadores de un equipo. Esta función es para "Detalle Contenido" 
     public function readAllJugadores()

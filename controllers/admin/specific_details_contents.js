@@ -290,7 +290,6 @@ async function fillTable(form = null, actions = 0) {
             </tr>
                 `;
                 cargarTabla.innerHTML += tablaHtml;
-                ID_EQUIPO = row.id_equipo;
             });
         } else {
             sweetAlert(4, DATA.error, true);
@@ -334,6 +333,11 @@ window.onload = async function () {
     titleElement.textContent = 'Detalles contenido especifico';
     ID_URL = new URLSearchParams(window.location.search);
     ID_ENTRENAMIENTO = ID_URL.get('id_entrenamiento');
+    const FORM = new FormData();
+    FORM.append('idEntrenamiento', ID_ENTRENAMIENTO);
+    const DATA = await fetchData(SD_CONTENTS_API, 'readOneEquipo', FORM);
+    ID_EQUIPO = DATA.dataset.id_equipo;
+    console.log('Este es el idequipo que trae el windowsOnload',ID_EQUIPO);
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
