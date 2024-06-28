@@ -78,6 +78,14 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Administrador inexistente';
                 }
                 break;
+                // Ver uno en perfil
+            case 'readOneProfile':
+                if ($result['dataset'] = $administrador->readOneProfile()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Perfil inexistente';
+                }
+                break;
                 // Actualizar
             case 'updateRow':
                 $_POST = Validator::validateForm($_POST);
@@ -100,6 +108,28 @@ if (isset($_GET['action'])) {
                     $result['fileStatus'] = Validator::changeFile($_FILES['imagenAdministrador'], $administrador::RUTA_IMAGEN, $administrador->getFilename());
                 } else {
                     $result['error'] = 'Ocurrió un problema al modificar el administrador';
+                }
+                break;
+                // Actualizar perfil
+            case 'updateRowProfile':
+                $_POST = Validator::validateForm($_POST);
+                if (
+                    !$administrador->setNombre($_POST['nombrePerfil']) or
+                    !$administrador->setApellido($_POST['apellidoPerfil']) or
+                    !$administrador->setCorreo($_POST['correoPerfil']) or
+                    !$administrador->setTelefono($_POST['telefonoPerfil']) or
+                    !$administrador->setDUI($_POST['duiPerfil']) or
+                    !$administrador->setNacimiento($_POST['fechanacimientoPerfil']) or
+                    !$administrador->setImagen($_FILES['imagen'], $administrador->getFilename())
+                ) {
+                    $result['error'] = $administrador->getDataError();
+                } elseif ($administrador->updateRowProfile()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Perfil modificado correctamente';
+                    // Se asigna el estado del archivo después de actualizar.
+                    $result['fileStatus'] = Validator::changeFile($_FILES['imagen'], $administrador::RUTA_IMAGEN, $administrador->getFilename());
+                } else {
+                    $result['error'] = 'Ocurrió un problema al modificar el perfil';
                 }
                 break;
                 // Eliminar

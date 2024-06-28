@@ -13,8 +13,7 @@ let EDIT_FORM,
     TELEFONO_PERFIL,
     DUI_PERFIL,
     NACIMIENTO_PERFIL,
-    GENERO_PERFIL,
-    DIRECCION_PERFIL,
+    FOTO_PERFIL,
     IMAGEN_PERFIL;
 
     
@@ -44,12 +43,8 @@ async function openProfile() {
         // Se colocan los datos en la página web de acuerdo con el producto seleccionado previamente.
         document.getElementById('foto').src = SERVER_URL.concat('images/administradores/', DATA.dataset.IMAGEN);
         document.getElementById('nombre').textContent = DATA.dataset.NOMBRE;
-        document.getElementById('email').textContent = DATA.dataset.CORREO;
-
-        
-    } else {
-
-    }
+        document.getElementById('email').textContent = DATA.dataset.CORREO
+    } 
 }
 
 
@@ -59,7 +54,7 @@ const openEdit = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(USER_API, 'readOne');
+        const DATA = await fetchData(ADMINISTRADOR_API, 'readOneProfile');
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
@@ -75,9 +70,7 @@ const openEdit = async (id) => {
             TELEFONO_PERFIL.value = ROW.TELÉFONO;
             DUI_PERFIL.value = ROW.DUI;
             NACIMIENTO_PERFIL.value = ROW.NACIMIENTO;
-            fillSelected(lista_datos, 'readAll', 'generoPerfil', ROW.GENERO);
-            DIRECCION_PERFIL.value = ROW.DIRECCION;
-            IMAGEN_PERFIL.value = ROW.IMAGEN;
+            FOTO_PERFIL.src = SERVER_URL.concat('images/administradores/', ROW.IMAGEN);
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -107,8 +100,8 @@ window.onload = async function () {
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
         ACTUAL_ADMINISTRADOR = document.getElementById('claveActual'),
-        CLAVE_ADMINISTRADOR = document.getElementById('claveCliente'),
-        REPETIR_CLAVE = document.getElementById('repetirclaveCliente');
+        CLAVE_ADMINISTRADOR = document.getElementById('claveAdministrador'),
+        REPETIR_CLAVE = document.getElementById('repetirclaveAdministrador');
 
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
@@ -117,7 +110,7 @@ window.onload = async function () {
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SAVE_FORM);
         // Petición para guardar los datos del formulario.
-        const DATA = await fetchData(USER_API, 'changePassword', FORM);
+        const DATA = await fetchData(ADMINISTRADOR_API, 'changePassword', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se cierra la caja de diálogo.
@@ -142,9 +135,8 @@ window.onload = async function () {
         TELEFONO_PERFIL = document.getElementById('telefonoPerfil'),
         DUI_PERFIL = document.getElementById('duiPerfil'),
         NACIMIENTO_PERFIL = document.getElementById('fechanacimientoPerfil'),
-        GENERO_PERFIL = document.getElementById('generoPerfil'),
-        DIRECCION_PERFIL = document.getElementById('direccionPerfil'),
-        IMAGEN_PERFIL = document.getElementById('imagenPerfil');
+        FOTO_PERFIL = document.getElementById('imagenJugador'),
+        IMAGEN_PERFIL = document.getElementById('imagen_jugador');
 
     // Método del evento para cuando se envía el formulario de guardar.
     EDIT_FORM.addEventListener('submit', async (event) => {
@@ -153,17 +145,47 @@ window.onload = async function () {
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(EDIT_FORM);
         // Petición para guardar los datos del formulario.
-        const DATA = await fetchData(USER_API, 'updateRow', FORM);
+        const DATA = await fetchData(ADMINISTRADOR_API, 'updateRowProfile', FORM);
+        console.log(DATA.status);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se cierra la caja de diálogo.
             EDIT_MODAL.hide();
             // Se muestra un mensaje de éxito.
-            sweetAlert(1, DATA.message, true);
+            sweetAlert(1, DATA.message, true); 
+            
+            openProfile(); 
         } else {
             sweetAlert(2, DATA.error, false);
         }
     });
+
+    IMAGEN_PERFIL.addEventListener('change', function (event) {
+        // Verifica si hay una imagen seleccionada
+        if (event.target.files && event.target.files[0]) {
+            // con el objeto FileReader lee de forma asincrona el archivo seleccionado
+            const reader = new FileReader();
+            // Luego de haber leido la imagen seleccionada se nos devuele un objeto de tipo blob
+            // Con el metodo createObjectUrl de fileReader crea una url temporal para la imagen
+            reader.onload = function (event) {
+                // finalmente la url creada se le asigna al atributo src de la etiqueta img
+                FOTO_PERFIL.src = event.target.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    });
+
+    // Llamada a la función para establecer la mascara del campo teléfono.
+    vanillaTextMask.maskInput({
+        inputElement: document.getElementById('telefonoPerfil'),
+        mask: [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
+    });
+    // Llamada a la función para establecer la mascara del campo DUI.
+    vanillaTextMask.maskInput({
+        inputElement: document.getElementById('duiPerfil'),
+        mask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/]
+    });
+
 
 
 };

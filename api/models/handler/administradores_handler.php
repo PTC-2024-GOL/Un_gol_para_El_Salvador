@@ -357,7 +357,7 @@ class AdministradoresHandler
     {
         $sql = 'SELECT id_administrador AS ID,
                 foto_administrador AS IMAGEN, 
-                nombre_administrador AS NOMBRE,
+                CONCAT(nombre_administrador, " ", apellido_administrador) AS NOMBRE,
                 correo_administrador AS CORREO, 
                 telefono_administrador AS TELÉFONO,
                 dui_administrador AS DUI,
@@ -367,5 +367,40 @@ class AdministradoresHandler
                 WHERE id_administrador = ?';
         $params = array($_SESSION['idAdministrador']);
         return Database::getRow($sql, $params);
+    }
+
+    //leer una linea en el perfil
+    public function readOneProfile()
+    {
+        $sql = 'SELECT id_administrador AS ID,
+                nombre_administrador AS NOMBRE,
+                apellido_administrador AS APELLIDO,
+                correo_administrador AS CORREO,
+                telefono_administrador AS TELÉFONO,
+                dui_administrador AS DUI,
+                fecha_nacimiento_administrador AS NACIMIENTO,
+                clave_administrador AS CLAVE,
+                foto_administrador AS IMAGEN
+                FROM administradores
+                WHERE id_administrador LIKE ?';
+        $params = array($_SESSION['idAdministrador']);
+        return Database::getRow($sql, $params);
+    }
+
+    //Función para actualizar el perfil.
+    public function updateRowProfile()
+    {
+        $sql = 'CALL actualizar_administrador_validado(?,?,?,?,?,?,?,?);';
+        $params = array(
+            $_SESSION['idAdministrador'],
+            $this->nombre,
+            $this->apellido,
+            $this->correo,
+            $this->telefono,
+            $this->dui,
+            $this->nacimiento,
+            $this->imagen
+        );
+        return Database::executeRow($sql, $params);
     }
 }
