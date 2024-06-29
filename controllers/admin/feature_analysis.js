@@ -32,7 +32,10 @@ let ESTADO_INICIAL_SAVE_FORM;
 let ESTADO_INICIAL_VIEW_FORM;
 
 // Constantes para completar las rutas de la API.
-const EQUIPO_API = '';
+const API = 'services/admin/caracteristicas_analisis.php';
+
+// Constante tipo objeto para obtener los parámetros disponibles en la URL.
+let PARAMS = new URLSearchParams(location.search);
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -104,7 +107,7 @@ const seeModal = async (id) => {
         const FORM = new FormData();
         FORM.append('idAnalisis', id);
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(EQUIPO_API, 'readOne', FORM);
+        const DATA = await fetchData(API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
@@ -147,7 +150,7 @@ const openUpdate = async (id) => {
         const FORM = new FormData();
         FORM.append('idAnalisis', id);
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(EQUIPO_API, 'readOne', FORM);
+        const DATA = await fetchData(API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
@@ -191,7 +194,7 @@ const openDelete = async (id) => {
             FORM.append('idAnalisis', id);
             console.log(id);
             // Petición para eliminar el registro seleccionado.
-            const DATA = await fetchData(EQUIPO_API, 'deleteRow', FORM);
+            const DATA = await fetchData(API, 'deleteRow', FORM);
             console.log(DATA.status);
             // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
             if (DATA.status) {
@@ -211,7 +214,50 @@ const openDelete = async (id) => {
 }
 
 
-async function cargarTabla(form = null) {
+async function buscarAnalisis(FORM) {
+    const cargarTabla = document.getElementById('tabla_analisis');
+
+    cargarTabla.innerHTML = '';
+    // Se define un objeto con los datos de la categoría seleccionada.
+    FORM.append('idEntrenamiento', PARAMS.get('id'));
+    console.log(FORM);
+    // Petición para obtener los registros disponibles.
+    const DATA = await fetchData(API, "searchRows", FORM);
+    console.log(DATA);
+
+    if (DATA.status) {
+        // Mostrar elementos obtenidos de la API
+        DATA.dataset.forEach(row => {
+            const tablaHtml = `
+            <tr>
+                <td>${row.PROMEDIO}</td>
+                <td>${row.JUGADOR}</td>
+                <td>
+                    <button type="button" class="btn transparente" onclick="seeModal()">
+                    <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18px" height="18px">
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn transparente" onclick="openGraphic(${row.IDJ})">
+                    <img src="../../../resources/img/svg/icons_forms/Frame.svg" width="18" height="18">
+                    </button>
+                    <button type="button" class="btn transparente" onclick="openUpdate(${row.IDJ})">
+                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                    </button>
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.IDJ})">
+                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                    </button>
+                </td>
+            </tr>
+                `;
+            cargarTabla.innerHTML += tablaHtml;
+        });
+    } else {
+        sweetAlert(4, DATA.error, true);
+    }
+}
+
+async function cargarTabla() {
     const lista_datos = [
         {
             promedio: 7.45,
@@ -242,35 +288,38 @@ async function cargarTabla(form = null) {
 
     try {
         cargarTabla.innerHTML = '';
-        // Se verifica la acción a realizar.
-        (form) ? action = 'searchRows' : action = 'readAll';
-        console.log(form);
+        // Se define un objeto con los datos de la categoría seleccionada.
+        const FORM = new FormData();
+        FORM.append('idEntrenamiento', PARAMS.get('id'));
+        console.log(FORM);
         // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(EQUIPO_API, action, form);
+        const DATA = await fetchData(API, "readAll", FORM);
         console.log(DATA);
 
         if (DATA.status) {
             // Mostrar elementos obtenidos de la API
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
-                <tr>
-                    <td>${row.NOMBRE}</td>
-                    <td>${row.TELEFONO}</td>
-                    <td>${row.ID_CATEGORIA}</td>
-                    <td>
-                        <button type="button" class="btn btn-warnig" onclick="seeModal()">
-                        <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
-                        </button>
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
-                        <img src="../../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" onclick="openDelete(${row.ID})">
-                            <i class="bi bi-trash-fill"></i>
-                        </button>
-                    </td>
-                </tr>
+            <tr>
+                <td>${row.PROMEDIO}</td>
+                <td>${row.JUGADOR}</td>
+                <td>
+                    <button type="button" class="btn transparente" onclick="seeModal()">
+                    <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18px" height="18px">
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn transparente" onclick="openGraphic(${row.IDJ})">
+                    <img src="../../../resources/img/svg/icons_forms/Frame.svg" width="18" height="18">
+                    </button>
+                    <button type="button" class="btn transparente" onclick="openUpdate(${row.IDJ})">
+                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                    </button>
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.IDJ})">
+                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                    </button>
+                </td>
+            </tr>
                 `;
                 cargarTabla.innerHTML += tablaHtml;
             });
@@ -395,13 +444,13 @@ const restaurarFormulario = async (num = null) => {
                 progressStep.classList.remove("progress-step-active");
             }
         });
-    
+
         const progressActive = document.querySelectorAll(".progress-step-active");
         const widthIncrement = num; // Porcentaje de incremento deseado
-    
+
         // Calculamos el nuevo ancho de la barra de progreso
         let widthPercentage = (progressActive.length - 1) * widthIncrement;
-    
+
         // Asignamos el nuevo ancho a la barra de progreso
         progress.style.width = widthPercentage + "%";
     }
@@ -461,7 +510,7 @@ window.onload = async function () {
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SAVE_FORM);
         // Petición para guardar los datos del formulario.
-        const DATA = await fetchData(EQUIPO_API, action, FORM);
+        const DATA = await fetchData(API, action, FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se cierra la caja de diálogo.
@@ -490,7 +539,7 @@ window.onload = async function () {
         console.log(SEARCH_FORM);
         console.log(FORM);
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
-        cargarTabla(FORM);
+        buscarAnalisis(FORM);
     });
 };
 
