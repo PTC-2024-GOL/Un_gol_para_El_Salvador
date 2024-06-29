@@ -27,7 +27,7 @@ class CaracteristicasAnalisisHandler
         $sql = 'SELECT IDJ ,JUGADOR, 
         ROUND(AVG(NOTA), 2) AS PROMEDIO 
         FROM vista_caracteristicas_analisis 
-        WHERE IDE = ? AND JUGADOR LIKE ?
+        WHERE IDE = ? AND IDJ LIKE ?
         ORDER BY JUGADOR;';
         $params = array($this->entrenamiento ,$value);
         return Database::getRows($sql, $params);

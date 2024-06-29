@@ -33,6 +33,7 @@ let ESTADO_INICIAL_VIEW_FORM;
 
 // Constantes para completar las rutas de la API.
 const API = 'services/admin/caracteristicas_analisis.php';
+const JUGADOR_API = 'services/admin/jugadores.php';
 
 // Constante tipo objeto para obtener los parámetros disponibles en la URL.
 let PARAMS = new URLSearchParams(location.search);
@@ -456,6 +457,14 @@ const restaurarFormulario = async (num = null) => {
     }
 }
 
+async function cargarSearch(){
+    try{
+        fillSelect(JUGADOR_API, 'readAll', 'search');
+    }catch{
+        console.log('No se pudo cargar el select de esta forma.')
+    }
+}
+
 // window.onload
 window.onload = async function () {
     // Obtiene el contenedor principal
@@ -470,6 +479,7 @@ window.onload = async function () {
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Análisis de las características';
     cargarTabla();
+    cargarSearch();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
