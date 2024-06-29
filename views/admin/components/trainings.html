@@ -15,6 +15,15 @@
                     </button>
                 </form>
             </div>
+
+            <div class="col-sm-12 col-md-6">
+                <!-- Botón Agregar -->
+                <button
+                    class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
+                    type="submit" onclick="openCreate()">
+                    <span class="fs-5 me-2">+</span> Agregar entrenamiento
+                </button>
+            </div>
         </div>
     </div>
     <hr>
@@ -28,10 +37,10 @@
                     <td colspan="6" id="rowsFound"></td>
                 </tr>
                 <tr>
-                    <th>N°</th>
                     <th>Fecha</th>
                     <th>Características de los jugadores</th>
                     <th>Contenidos vistos</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <!-- Cuerpo de la tabla para mostrar un registro por fila -->
@@ -57,7 +66,7 @@
             <form id="seeForm">
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input type="hidden" id="idCategoria" name="idCategoria">
+                    <input type="hidden" id="idCategoria">
                     <div class="col-sm-12 col-md-12">
                         <label for="horario" class="form-label fw-semibold">Selecciona un jugador</label>
                         <select id="horario" type="text" name="horario" class="form-select" required></select>
@@ -254,13 +263,68 @@
             <!-- Formulario para visualizar un registro -->
             <form id="contForm">
                 <div class="modal-body row g-3">
-                    <h2 class="modal-title fs-6 text-black"> Contenidos vistos en esta jornada: </h2>
+                    <h2 class="modal-title fs-6 text-black"> Contenidos vistos en este entrenamiento: </h2>
                     <ul class="list-group text-center" id="lista_contenidos">
 
                     </ul>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
                     <button type="reset" class="btn bg-red-cream-color text-white">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Componente Modal para guardar un registro -->
+<div class="modal fade" id="upModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-principal-color">
+                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                <h1 class="modal-title fs-5 text-white" id="modalTitleUp"></h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <!-- Formulario para crear o actualizar un registro -->
+            <form id="upForm">
+                <div class="modal-body row g-3">
+                    <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                    <input type="hidden" id="idEntrenamiento" name="idEntrenamiento">
+                    <div class="col-sm-12 col-md-6">
+                        <label for="fecha" class="form-label fw-semibold">Fecha</label>
+                        <input id="fecha" type="date" name="fecha" class="form-control"
+                            placeholder="Escribe la fecha del entrenamiento" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="idCategoriaa" class="form-label fw-semibold">Selecciona la categoria</label>
+                        <select id="idCategoriaa" type="text" name="idCategoria" class="form-select" required></select>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="idHorario" class="form-label fw-semibold">Selecciona el horario</label>
+                        <select id="idHorario" type="text" name="idHorario" class="form-select" required></select>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="sesion" class="form-label fw-semibold">Selecciona el número de la sesión</label>
+                        <select id="sesion" type="text" name="sesion" class="form-select" required>
+                            <option value="Sesion 1">Sesión 1</option>
+                            <option value="Sesion 2">Sesión 2</option>
+                            <option value="Sesion 3">Sesión 3</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="idJornada" class="form-label fw-semibold">Selecciona la jornada</label>
+                        <select id="idJornada" type="text" name="idJornada" class="form-select" required></select>
+                    </div>
+                    <div class="col-sm-12 col-md-6" id="equipos">
+                        <label for="idEquipo" class="form-label fw-semibold">Selecciona el equipo</label>
+                        <select id="idEquipo" type="text" name="idEquipo" class="form-select" required></select>
+                    </div>
+                </div>
+                <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
+                    <button type="reset" class="btn bg-red-cream-color text-white">Cancelar</button>
+                    <button type="submit" class="btn bg-blue-principal-color text-white ">Confirmar</button>
                 </div>
             </form>
         </div>
