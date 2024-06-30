@@ -46,7 +46,7 @@ class LesionesData extends LesionesHandler
             $this->idSubtipologia = $value;
             return true;
         } else {
-            $this->data_error = 'El identificador de la sub tipología es incorrecta';
+            $this->data_error = 'El identificador de la subtipología es incorrecta';
             return false;
         }
     }
