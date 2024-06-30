@@ -27,6 +27,7 @@ let SAVE_FORM,
     AUTOCONFIANZA,
     SACRICIO,
     AUTOCONTROL;
+let ENTRENAMIENTO;
 let SEARCH_FORM;
 let ESTADO_INICIAL_SAVE_FORM;
 let ESTADO_INICIAL_VIEW_FORM;
@@ -49,13 +50,14 @@ async function loadComponent(path) {
 *   Parámetros: ninguno.
 *   Retorno: ninguno.
 */
-const openCreate = () => {
+const openCreate = (id) => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
     MODAL_TITLE.textContent = 'Crear análisis del jugador';
     // Se prepara el formulario.
     SAVE_FORM.reset();
-    JUGADOR.value = PARAMS.get('id')
+    JUGADOR.value = id;
+    ENTRENAMIENTO.value = PARAMS.get('id');
 }
 
 /*
@@ -331,7 +333,7 @@ async function buscarAnalisis(FORM) {
                 <td>${row.PROMEDIO}</td>
                 <td>${row.JUGADOR}</td>
                 <td>
-                    <button type="button" class="btn transparente" onclick="seeModal()">
+                    <button type="button" class="btn transparente" onclick="openCreate(${row.IDJ})">
                     <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18px" height="18px">
                     </button>
                 </td>
@@ -402,7 +404,7 @@ async function cargarTabla() {
                 <td>${row.PROMEDIO}</td>
                 <td>${row.JUGADOR}</td>
                 <td>
-                    <button type="button" class="btn transparente" onclick="seeModal()">
+                    <button type="button" class="btn transparente" onclick="openCreate(${row.IDJ})">
                     <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18px" height="18px">
                     </button>
                 </td>
@@ -608,6 +610,7 @@ window.onload = async function () {
         AUTOCONFIANZA = document.getElementById('autoconfianza'),
         SACRICIO = document.getElementById('sacrificio'),
         AUTOCONTROL = document.getElementById('autocontrol');
+    ENTRENAMIENTO = document.getElementById('entrenamiento');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
