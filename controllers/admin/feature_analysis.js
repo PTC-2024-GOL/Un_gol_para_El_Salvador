@@ -33,6 +33,8 @@ let ESTADO_INICIAL_VIEW_FORM;
 
 // Constantes para completar las rutas de la API.
 const API = 'services/admin/caracteristicas_analisis.php';
+const JUGADOR_API = 'services/admin/jugadores.php';
+const CARACTERISTICAS_API = 'services/admin/caracteristicas.php';
 
 // Constante tipo objeto para obtener los parámetros disponibles en la URL.
 let PARAMS = new URLSearchParams(location.search);
@@ -53,7 +55,7 @@ const openCreate = () => {
     MODAL_TITLE.textContent = 'Crear análisis del jugador';
     // Se prepara el formulario.
     SAVE_FORM.reset();
-    restaurarFormulario(23.75);
+    JUGADOR.value = PARAMS.get('id')
 }
 
 /*
@@ -130,10 +132,7 @@ const seeModal = async (id) => {
     } catch (Error) {
         SAVE_MODAL.show();
         MODAL_TITLE.textContent = 'Análisis del jugador';
-        SAVE_FORM.reset();
-        restaurarFormulario(31.16);
-        // Ejemplo de uso: actualizar del paso 1 al paso 2
-        updateSteps(1, 2);
+        SAVE_FORM.reset();        
 
     }
 }
@@ -174,7 +173,8 @@ const openUpdate = async (id) => {
         console.log(Error);
         SAVE_MODAL.show();
         MODAL_TITLE.textContent = 'Actualizar análisis del jugador';
-        restaurarFormulario(23.75);
+        ID_ANALISIS.value = id;
+        JUGADOR.value = PARAMS.get('id')
     }
 
 }
@@ -210,10 +210,108 @@ const openDelete = async (id) => {
     catch (Error) {
         console.log(Error + ' Error al cargar el mensaje');
     }
-
 }
 
+async function cargarNav() {
+    try {
+        // Petición para obtener las características usando fetchData
+        const data = await fetchData(CARACTERISTICAS_API, 'readAll');
 
+        if (data.status) {
+            const caracteristicas = data.dataset;
+
+            // Agrupar las características por clasificación
+            const grupos = caracteristicas.reduce((acc, caracteristica) => {
+                const { CLASIFICACION } = caracteristica;
+                if (!acc[CLASIFICACION]) {
+                    acc[CLASIFICACION] = [];
+                }
+                acc[CLASIFICACION].push(caracteristica);
+                return acc;
+            }, {});
+
+            // Crear la estructura de las tabs
+            const navTabs = document.createElement('ul');
+            navTabs.className = 'nav nav-tabs mt-4 justify-content-center';
+            navTabs.id = 'classificationTabs';
+            navTabs.role = 'tablist';
+
+            const tabContent = document.createElement('div');
+            tabContent.className = 'tab-content';
+            tabContent.id = 'classificationTabsContent';
+
+            let first = true;
+            for (const clasificacion in grupos) {
+                const tabId = `tab-${clasificacion.toLowerCase()}`;
+                const tabPaneId = `pane-${clasificacion.toLowerCase()}`;
+
+                // Crear el tab
+                const li = document.createElement('li');
+                li.className = 'nav-item';
+                li.role = 'presentation';
+
+                const button = document.createElement('button');
+                button.className = `nav-link ${first ? 'active' : ''} text-dark`;
+                button.id = `${tabId}`;
+                button.setAttribute('data-bs-toggle', 'tab');
+                button.setAttribute('data-bs-target', `#${tabPaneId}`);
+                button.type = 'button';
+                button.role = 'tab';
+                button.setAttribute('aria-controls', `${tabPaneId}`);
+                button.setAttribute('aria-selected', `${first}`);
+                button.innerText = clasificacion;
+
+                li.appendChild(button);
+                navTabs.appendChild(li);
+
+                // Crear el contenido del tab
+                const tabPane = document.createElement('div');
+                tabPane.className = `tab-pane fade ${first ? 'show active' : ''}`;
+                tabPane.id = `${tabPaneId}`;
+                tabPane.role = 'tabpanel';
+                tabPane.setAttribute('aria-labelledby', `${tabId}`);
+
+                const row = document.createElement('div');
+                row.className = 'row';
+
+                grupos[clasificacion].forEach(caracteristica => {
+                    const col = document.createElement('div');
+                    col.className = 'col-sm-12 col-md-6 mb-3 mt-2';
+
+                    const label = document.createElement('label');
+                    label.className = 'form-label';
+                    label.setAttribute('for', caracteristica.NOMBRE);
+                    label.innerText = caracteristica.NOMBRE;
+
+                    const input = document.createElement('input');
+                    input.id = caracteristica.NOMBRE;
+                    input.type = 'number';
+                    input.name = caracteristica.NOMBRE;
+                    input.className = 'form-control';
+                    input.min = '1';
+                    input.max = '10';
+                    input.placeholder = 'Ingrese la nota';
+
+                    col.appendChild(label);
+                    col.appendChild(input);
+                    row.appendChild(col);
+                });
+
+                tabPane.appendChild(row);
+                tabContent.appendChild(tabPane);
+
+                first = false;
+            }
+
+            const navSteps = document.getElementById('navSteps');
+            navSteps.innerHTML = ''; // Limpiar el contenido previo
+            navSteps.appendChild(navTabs);
+            navSteps.appendChild(tabContent);
+        }
+    } catch (error) {
+        console.error('Error al cargar las características:', error);
+    }
+}
 async function buscarAnalisis(FORM) {
     const cargarTabla = document.getElementById('tabla_analisis');
 
@@ -456,6 +554,14 @@ const restaurarFormulario = async (num = null) => {
     }
 }
 
+async function cargarSearch(){
+    try{
+        fillSelect(JUGADOR_API, 'readAll', 'search');
+    }catch{
+        console.log('No se pudo cargar el select de esta forma.')
+    }
+}
+
 // window.onload
 window.onload = async function () {
     // Obtiene el contenedor principal
@@ -470,6 +576,7 @@ window.onload = async function () {
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Análisis de las características';
     cargarTabla();
+    cargarSearch();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
@@ -524,7 +631,6 @@ window.onload = async function () {
             console.error(DATA.exception);
         }
     });
-    ESTADO_INICIAL_SAVE_FORM = document.getElementById('saveForm').innerHTML;
 
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');
@@ -541,5 +647,6 @@ window.onload = async function () {
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
         buscarAnalisis(FORM);
     });
+    cargarNav();
 };
 

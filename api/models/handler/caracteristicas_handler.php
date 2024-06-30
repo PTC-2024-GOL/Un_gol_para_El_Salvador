@@ -24,7 +24,7 @@ class CaracteristicasHandler
         $value = '%' . Validator::getSearchValue() . '%';
         $sql = 'SELECT * FROM vista_caracteristicas_jugadores
         WHERE NOMBRE LIKE ?
-        ORDER BY NOMBRE;';
+        ORDER BY CLASIFICACION;';
         $params = array($value);
         return Database::getRows($sql, $params);
     }
@@ -43,7 +43,7 @@ class CaracteristicasHandler
     //Función para leer todas las característica.
     public function readAll()
     {
-        $sql = 'SELECT * FROM vista_caracteristicas_jugadores;';
+        $sql = 'SELECT * FROM vista_caracteristicas_jugadores ORDER BY CLASIFICACION;';
         return Database::getRows($sql);
     }
 
