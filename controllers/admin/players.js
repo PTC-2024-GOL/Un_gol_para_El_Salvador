@@ -4,9 +4,10 @@ let SAVE_FORM,
     NOMBRE_JUGADOR,
     APELLIDO_JUGADOR,
     DORSAL_JUGADOR,
-    ESTATUS_JUGADOR,
     NACIMIENTO_JUGADOR,
     PERFIL_JUGADOR,
+    ALIAS,
+    ESTATUS_JUGADOR,
     BECADO,
     GENERO_JUGADOR,
     IMAGEN_JUGADOR,
@@ -15,6 +16,9 @@ let SAVE_FORM,
 let SEARCH_FORM;
 let IMAGEN;
 let SELECT_GENER0;
+
+let BOX_ALIAS;
+
 
 // Constantes para completar las rutas de la API.
 const JUGADOR_API = 'services/admin/jugadores.php';
@@ -32,6 +36,7 @@ async function loadComponent(path) {
 */
 const openCreate = async () => {
     ID_JUGADOR.value = '';
+    BOX_ALIAS.classList.add('d-none');
     await fillSelect(POSICIONES_API, 'readAll', 'posicionPrincipal' );
     await fillSelect(POSICIONES_API, 'readAll', 'posicionSecundaria' );
     // Se muestra la caja de diálogo con su título.
@@ -66,6 +71,7 @@ const openUpdate = async (id) => {
         const DATA = await fetchData(JUGADOR_API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
+            BOX_ALIAS.classList.remove('d-none');
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
             MODAL_TITLE.textContent = 'Actualizar jugador';
@@ -82,6 +88,8 @@ const openUpdate = async (id) => {
             await fillSelect(POSICIONES_API, 'readAll', 'posicionPrincipal', ROW.id_posicion_principal);
             await fillSelect(POSICIONES_API, 'readAll', 'posicionSecundaria', ROW.id_posicion_secundaria);
             DORSAL_JUGADOR.value = ROW.dorsal_jugador;
+            ALIAS.value = ROW.alias_jugador;
+            ESTATUS_JUGADOR.value = ROW.estatus_jugador;
             CLAVE_JUGADOR.disabled = true;
             REPETIR_CLAVE.disabled = true;
             IMAGEN.src = SERVER_URL + 'images/jugadores/' + ROW.foto_jugador;
@@ -271,15 +279,18 @@ window.onload = async function () {
         NACIMIENTO_JUGADOR = document.getElementById('fechaNacimientoJugador'),
         PERFIL_JUGADOR = document.getElementById('perfilJugador'),
         DORSAL_JUGADOR = document.getElementById('Dorsal'),
-        ESTATUS_JUGADOR = document.getElementById('estadoJugador'),
         BECADO = document.getElementById('beca'),
+        ESTATUS_JUGADOR = document.getElementById('estadoJugador');
         GENERO_JUGADOR = document.getElementById('generoJugador'),
         IMAGEN_JUGADOR = document.getElementById('imagen_jugador'),
         IMAGEN = document.getElementById('imagenJugador'),
         CLAVE_JUGADOR = document.getElementById('claveJugador'),
         REPETIR_CLAVE = document.getElementById('repetirclaveJugador');
+    ALIAS = document.getElementById('alias');
 
     SELECT_GENER0 = document.getElementById('selectGenero');
+
+    BOX_ALIAS = document.getElementById('boxAlias');
 
     // Agregamos el evento change al input de tipo file que selecciona la imagen
     IMAGEN_JUGADOR.addEventListener('change', function (event) {
@@ -328,6 +339,7 @@ window.onload = async function () {
             await sweetAlert(2, DATA.error, false);
         }
     });
+
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');
     // Verificar si SEARCH_FORM está seleccionado correctamente
