@@ -135,4 +135,27 @@ class PartidosHandler
         $params = array($this->idPartido);
         return Database::executeRow($sql, $params);
     }
+
+    // FUNCIONES PARA EL DASHBOARD
+
+    public function lastMatch()
+    {
+        $sql = 'SELECT * FROM vista_detalle_partidos ORDER BY fecha DESC LIMIT 1';
+        return Database::getRow($sql);
+    }
+
+    public function matchesResult()
+    {
+
+        $sql = 'CALL resultadosPartido(?);';
+        $params = array($this->idEquipo);
+        return Database::getRow($sql, $params);
+    }
+
+    public function trainingAnylsis()
+    {
+        $sql = 'CALL analisisEntrenamientos(?);';
+        $params = array($this->idEquipo);
+        return Database::getRows($sql, $params);
+    }
 }

@@ -137,6 +137,32 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Ocurrió un problema al eliminar el partido';
                 }
                 break;
+            case 'lastMatch':
+                if ($result['dataset'] = $partido->lastMatch()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
+                } else {
+                    $result['error'] = 'No existen registros';
+                }
+                break;
+            case 'matchesResult':
+                if (!$partido->setIdEquipo($_POST['idEquipo'])) {
+                    $result['error'] = $partido->getDataError();
+                } elseif ($result['dataset'] = $partido->matchesResult()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'El equipo seleccionado aún no ha tenido partidos';
+                }
+                break;
+            case 'trainingAnylsis':
+                if (!$partido->setIdEquipo($_POST['idEquipo'])) {
+                    $result['error'] = $partido->getDataError();
+                } elseif ($result['dataset'] = $partido->trainingAnylsis()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'El equipo seleccionado aún no ha tenido pruebas en los entrenamientos';
+                }
+                break;
             default:
                 $result['error'] = 'Acción no disponible dentro de la sesión';
         }

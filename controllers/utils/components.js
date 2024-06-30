@@ -254,6 +254,57 @@ function preselectOption(selectElement, valueToSelect) {
     }
 }
 
+/*
+*   Función asíncrona para cerrar la sesión del usuario.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
+const logOut = async () => {
+    // Se muestra un mensaje de confirmación y se captura la respuesta en una constante.
+    const RESPONSE = await confirmAction('¿Está seguro de cerrar la sesión?');
+    // Se verifica la respuesta del mensaje.
+    if (RESPONSE) {
+        // Petición para eliminar la sesión.
+        const DATA = await fetchData(USER_API, 'logOut');
+        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+        if (DATA.status) {
+            sweetAlert(1, DATA.message, true, 'index.html');
+        } else {
+            sweetAlert(2, DATA.exception, false);
+        }
+    }
+}
+
+/*
+*   Función asíncrona para intercambiar datos con el servidor.
+*   Parámetros: filename (nombre del archivo), action (accion a realizar) y form (objeto opcional con los datos que serán enviados al servidor).
+*   Retorno: constante tipo objeto con los datos en formato JSON.
+*/
+const fetchData = async (filename, action, form = null) => {
+    // Se define una constante tipo objeto para establecer las opciones de la petición.
+    const OPTIONS = {};
+    // Se determina el tipo de petición a realizar.
+    if (form) {
+        OPTIONS.method = 'post';
+        OPTIONS.body = form;
+    } else {
+        OPTIONS.method = 'get';
+    }
+
+    try {
+        // Se declara una constante tipo objeto con la ruta específica del servidor.
+        const PATH = new URL(SERVER_URL + filename);
+        // Se agrega un parámetro a la ruta con el valor de la acción solicitada.
+        PATH.searchParams.append('action', action);
+        // Se define una constante tipo objeto con la respuesta de la petición.
+        const RESPONSE = await fetch(PATH.href, OPTIONS);
+        // Se retorna el resultado en formato JSON.
+        return await RESPONSE.json();
+    } catch (error) {
+        // Se muestra un mensaje en la consola del navegador web cuando ocurre un problema.
+        console.log(error);
+    }
+}
 
 /*
 *   Función para generar un gráfico de barras verticales. Requiere la librería chart.js para funcionar.
@@ -329,6 +380,8 @@ const lineGraph = (canvas, xAxis, yAxis, legend, title) => {
 *   Parámetros: canvas (identificador de la etiqueta canvas), legends (valores para las etiquetas), values (valores de los datos) y title (título del gráfico).
 *   Retorno: ninguno.
 */
+// Variable que guardara la grafica que se cree
+let graph = null;
 const DoughnutGraph = (canvas, legends, values, title) => {
     // Se declara un arreglo para guardar códigos de colores en formato hexadecimal.
     let colors = [];
@@ -336,8 +389,14 @@ const DoughnutGraph = (canvas, legends, values, title) => {
     values.forEach(() => {
         colors.push('#' + (Math.random().toString(16)).substring(2, 8));
     });
+
+    //Verifica si la variable graph cuenta con una grafica previamente creada, si es si entonces la va destruir
+    if (graph) {
+        graph.destroy();
+    }
+
     // Se crea una instancia para generar el gráfico con los datos recibidos.
-    new Chart(document.getElementById(canvas), {
+    graph = new Chart(document.getElementById(canvas), {
         type: 'doughnut',
         data: {
             labels: legends,
@@ -357,54 +416,3 @@ const DoughnutGraph = (canvas, legends, values, title) => {
     });
 }
 
-/*
-*   Función asíncrona para cerrar la sesión del usuario.
-*   Parámetros: ninguno.
-*   Retorno: ninguno.
-*/
-const logOut = async () => {
-    // Se muestra un mensaje de confirmación y se captura la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Está seguro de cerrar la sesión?');
-    // Se verifica la respuesta del mensaje.
-    if (RESPONSE) {
-        // Petición para eliminar la sesión.
-        const DATA = await fetchData(USER_API, 'logOut');
-        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-        if (DATA.status) {
-            sweetAlert(1, DATA.message, true, 'index.html');
-        } else {
-            sweetAlert(2, DATA.exception, false);
-        }
-    }
-}
-
-/*
-*   Función asíncrona para intercambiar datos con el servidor.
-*   Parámetros: filename (nombre del archivo), action (accion a realizar) y form (objeto opcional con los datos que serán enviados al servidor).
-*   Retorno: constante tipo objeto con los datos en formato JSON.
-*/
-const fetchData = async (filename, action, form = null) => {
-    // Se define una constante tipo objeto para establecer las opciones de la petición.
-    const OPTIONS = {};
-    // Se determina el tipo de petición a realizar.
-    if (form) {
-        OPTIONS.method = 'post';
-        OPTIONS.body = form;
-    } else {
-        OPTIONS.method = 'get';
-    }
-    
-    try {
-        // Se declara una constante tipo objeto con la ruta específica del servidor.
-        const PATH = new URL(SERVER_URL + filename);
-        // Se agrega un parámetro a la ruta con el valor de la acción solicitada.
-        PATH.searchParams.append('action', action);
-        // Se define una constante tipo objeto con la respuesta de la petición.
-        const RESPONSE = await fetch(PATH.href, OPTIONS);
-        // Se retorna el resultado en formato JSON.
-        return await RESPONSE.json();
-    } catch (error) {
-        // Se muestra un mensaje en la consola del navegador web cuando ocurre un problema.
-        console.log(error);
-    }
-}

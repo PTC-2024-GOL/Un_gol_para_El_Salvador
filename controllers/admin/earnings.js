@@ -61,6 +61,8 @@ const total = async () => {
     const DATA = await fetchData(PAGO_API, 'totalMoney');
     if(DATA.status){
         TOTAL.textContent = '$' + DATA.dataset.total_pagos;
+    } else{
+        TOTAL.textContent = DATA.error;
     }
 }
 
@@ -74,6 +76,8 @@ const totalMora = async () => {
 
     if(DATA.status){
         MORA.textContent = DATA.dataset.total_mora;
+    } else {
+        MORA.textContent = DATA.message;
     }
 }
 
@@ -81,6 +85,8 @@ const totalJugadores = async ()=>{
     const DATA = await fetchData(PAGO_API, 'totalPlayers');
     if(DATA.status){
         JUGADOR.textContent = DATA.dataset.total;
+    } else{
+        JUGADOR.textContent = DATA.error;
     }
 }
 
@@ -88,6 +94,8 @@ const sinBeca = async ()=>{
     const DATA = await fetchData(PAGO_API, 'noScholarships');
     if(DATA.status){
         SIN_BECA.textContent = DATA.dataset.becado;
+    } else {
+        SIN_BECA.textContent = DATA.error;
     }
 }
 
@@ -95,6 +103,8 @@ const mediaBeca = async ()=>{
     const DATA = await fetchData(PAGO_API, 'halfScholarships');
     if(DATA.status){
         MEDIA_BECA.textContent = DATA.dataset.becado;
+    } else {
+        MEDIA_BECA.textContent = DATA.error
     }
 }
 

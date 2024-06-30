@@ -20,9 +20,9 @@
                     </div>
                     <!-- Input para seleccionar al equipo -->
                     <div class="mb-3 row mt-5">
-                        <label for="inputPassword" class="col-sm-4 col-form-label">Elige el equipo</label>
+                        <label for="equipos" class="col-sm-4 col-form-label">Elige el equipo</label>
                         <div class="col-sm-8">
-                            <select type="password" class="form-select" id="inputPassword"></select>
+                            <select class="form-select" id="equipos" onchange="changeSoccer()"></select>
                         </div>
                     </div>
                     <!-- Fila que contiene el icono e informacion de las estadisticas -->
@@ -32,43 +32,45 @@
                         </div>
                         <div class="col-sm-12 col-md-10">
                             <p class="fs-6 fw-semibold mb-0">Estadísticas generales del equipo</p>
-                            <p class="small fw-light">Revisa las estadísticas generales tanto en áreas técnicas,
-                                tácticas, técnicas y mentales de los equipos </p>
+                            <p class="small fw-light">Revisa el promedio que el equipo tiene en las áreas técnicas,
+                                tácticas, condicionales, psicológicas y personales asignadas en las pruebas de entrenamiento </p>
                         </div>
                     </div>
                 </div>
                 <!-- Grafica -->
                 <div class="col-sm-12 col-md-6 text-center">
                     <!-- Por el momento solo es una imagen -->
-                    <canvas id="estadistica"></canvas>
+                    <canvas id="estadistica" class="d-none"></canvas>
+                    <p id="text" class="mt-5 fw-semibold bg-blue-light-color p-3 rounded-3">Selecciona un equipo para mostrar la gráfica</p>
+                    <p id="graphicText" class="d-none mt-5 fw-semibold bg-blue-light-color p-3 rounded-3"></p>
                 </div>
             </div>
 
             <!-- Seccion de resultados de partido -->
-            <p class="fs-5 fw-semibold mb-4 mt-5">Resultados generales de partidos jugados</p>
+            <p class="fs-5 fw-semibold mb-4 mt-5">Resultados generales del equipo</p>
             <div class="row d-flex d-flex text-center">
                 <div class="col-sm-12 col-md-2">
-                    <h1 class="p-3 fw-semibold text-light result_one rounded-3" id="">5</h1>
+                    <h1 class="p-3 fw-semibold text-light result_one rounded-3" id="ganados"></h1>
                     <p class="fw-light">Partidos ganados</p>
                 </div>
                 <div class="col-sm-12 col-md-2">
-                    <h1 class="p-3 fw-semibold text-light result_one result_second rounded-3" id="">5</h1>
+                    <h1 class="p-3 fw-semibold text-light result_one result_second rounded-3" id="perdidos"></h1>
                     <p class="fw-light">Partidos perdidos</p>
                 </div>
                 <div class="col-sm-12 col-md-2">
-                    <h1 class="p-3 fw-semibold text-light result_one result_third  rounded-3  " id="">5</h1>
+                    <h1 class="p-3 fw-semibold text-light result_one result_third  rounded-3  " id="empatados"></h1>
                     <p class="fw-light">Partidos empatados</p>
                 </div>
                 <div class="col-sm-12 col-md-2 resutl4">
-                    <h1 class="p-3 fw-semibold text-light result_one result_second rounded-3" id="">5</h1>
+                    <h1 class="p-3 fw-semibold text-light result_one result_second rounded-3" id="golesContra"></h1>
                     <p class="fw-light">Goles en contra</p>
                 </div>
                 <div class="col-sm-12 col-md-2 resutl5">
-                    <h1 class="p-3 fw-semibold text-light result_one rounded-3" id="">5</h1>
+                    <h1 class="p-3 fw-semibold text-light result_one rounded-3" id="golesFavor"></h1>
                     <p class="fw-light">Goles a favor</p>
                 </div>
                 <div class="col-sm-12 col-md-2 resutl6">
-                    <h1 class="p-3 fw-semibold text-light result_one result_third  rounded-3  " id="">5</h1>
+                    <h1 class="p-3 fw-semibold text-light result_one result_third  rounded-3  " id="diferencia"></h1>
                     <p class="fw-light">Diferencia</p>
                 </div>
             </div>
@@ -146,69 +148,8 @@
                         </div>
                     </div>
                 </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        <div class="container">
-                            <div class="row align-items-center">
-                                <div class="col-3 ">
-                                    <img src="../../../resources/img/svg/icons_dashboard/logo_gol.svg"
-                                        class="img-fluid rounded-circle" alt="">
-                                </div>
-                                <div class="col-4">
-                                    <div class="container ">
-                                        <small>Gol</small>
-                                    </div>
-                                </div>
-                                <div class="col-5">
-                                    <div
-                                        class="container text-light bg-blue-principal-color rounded-3 text-center d-none d-md-block">
-                                        <small>Categoría 16</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="container">
-                            <div class="row align-items-center">
-                                <div class="col-3 ">
-                                    <img src="../../../resources/img/svg/icons_dashboard/logo_gol.svg"
-                                        class="img-fluid rounded-circle" alt="">
-                                </div>
-                                <div class="col-4">
-                                    <div class="container ">
-                                        <small>Gol</small>
-                                    </div>
-                                </div>
-                                <div class="col-5">
-                                    <div
-                                        class="container text-light bg-blue-principal-color rounded-3 text-center d-none d-md-block">
-                                        <small>Categoría 16</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="container">
-                            <div class="row align-items-center">
-                                <div class="col-3 ">
-                                    <img src="../../../resources/img/svg/icons_dashboard/logo_gol.svg"
-                                        class="img-fluid rounded-circle" alt="">
-                                </div>
-                                <div class="col-4">
-                                    <div class="container ">
-                                        <small>Gol</small>
-                                    </div>
-                                </div>
-                                <div class="col-5 d-none d-md-block">
-                                    <div class="container text-light bg-blue-principal-color rounded-3 text-center">
-                                        <small>Categoría 16</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
+                <ul class="list-group list-group-flush" id="teams">
+
                 </ul>
             </div>
         </div>
