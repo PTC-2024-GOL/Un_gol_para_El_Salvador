@@ -61,11 +61,11 @@ class JugadoresData extends JugadoresHandler
 
     public function setDorsal($value)
     {
-        if (Validator::validateNaturalNumber($value)) {
+        if (Validator::validatePositiveNumber2($value)) {
             $this->dorsalJ = $value;
             return true;
         } else {
-            $this->data_error = 'El número de dorsal no es un número natural';
+            $this->data_error = 'El número de dorsal debe ser mayor a 0 y menor a 100';
             return false;
         }
     }

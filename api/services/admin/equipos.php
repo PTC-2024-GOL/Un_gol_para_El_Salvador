@@ -118,7 +118,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Equipo eliminado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar el equipo';
+                    $result['error'] = 'Ocurrió un problema al eliminar el equipo. Por seguridad no puedes eliminar este equipo porque lo estas ocupando en otras tablas.';
                 }
                 break;
             default:

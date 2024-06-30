@@ -74,8 +74,18 @@ class Validator
 
     public static function validatePositiveNumber($value)
     {
-        // Se verifica que el valor sea un número entero mayor a 0.
+        // Se verifica que el valor sea un número entero mayor o igual a 0.
         if ($value >= 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static function validatePositiveNumber2($value)
+    {
+        // Se verifica que el valor sea un número entero mayor a 0 y menor a 100.
+        if ($value > 0 && $value < 100) {
             return true;
         } else {
             return false;

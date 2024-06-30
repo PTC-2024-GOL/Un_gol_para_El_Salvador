@@ -19,6 +19,7 @@ async function loadComponent(path) {
 *   Retorno: ninguno.
 */
 const openCreate = () => {
+    ID_CONTENIDO = ''
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
     MODAL_TITLE.textContent = 'Agregar una contenido';
