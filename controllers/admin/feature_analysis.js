@@ -243,6 +243,7 @@ async function cargarNav() {
                     input.min = '1';
                     input.max = '10';
                     input.placeholder = 'Ingrese la nota';
+                    input.setAttribute('data-id-caracteristica-jugador', caracteristica.ID);
 
                     col.appendChild(label);
                     col.appendChild(input);
@@ -483,21 +484,42 @@ window.onload = async function () {
         ENTRENAMIENTO = document.getElementById('entrenamiento');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
-        // Se evita recargar la página web después de enviar el formulario.
+        // Evitar recargar la página al enviar el formulario
         event.preventDefault();
-        // Se verifica la acción a realizar.
-        (ID_ANALISIS.value) ? action = 'updateRow' : action = 'createRow';
-        // Constante tipo objeto con los datos del formulario.
-        const FORM = new FormData(SAVE_FORM);
-        // Petición para guardar los datos del formulario.
-        const DATA = await fetchData(API, action, FORM);
-        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+    
+        // Determinar la acción a realizar (crear o actualizar)
+        const action = (ID_ANALISIS.value) ? 'updateRow' : 'createRow';
+    
+        // Crear un objeto FormData con los datos del formulario
+        const formData = new FormData(SAVE_FORM);
+    
+        // Crear un arreglo para las características
+        const caracteristicas = [];
+    
+        // Recorrer los inputs del formulario y agregar las características
+        SAVE_FORM.querySelectorAll('input[type="number"]').forEach(input => {
+            const idCaracteristicaJugador = input.getAttribute('data-id-caracteristica-jugador');
+            const notaCaracteristicaAnalisis = input.value;
+    
+            caracteristicas.push({
+                id_caracteristica_jugador: idCaracteristicaJugador,
+                nota_caracteristica_analisis: notaCaracteristicaAnalisis
+            });
+        });
+    
+        // Agregar los datos adicionales al FormData
+        formData.append('caracteristicas', JSON.stringify(caracteristicas));
+    
+        // Enviar la solicitud para guardar los datos
+        const DATA = await fetchData(API, action, formData);
+    
+        // Comprobar si la respuesta es satisfactoria
         if (DATA.status) {
-            // Se cierra la caja de diálogo.
+            // Cerrar la caja de diálogo
             SAVE_MODAL.hide();
-            // Se muestra un mensaje de éxito.
+            // Mostrar un mensaje de éxito
             sweetAlert(1, DATA.message, true);
-            // Se carga nuevamente la tabla para visualizar los cambios.
+            // Recargar la tabla para visualizar los cambios
             cargarTabla();
         } else {
             sweetAlert(2, DATA.error, false);
