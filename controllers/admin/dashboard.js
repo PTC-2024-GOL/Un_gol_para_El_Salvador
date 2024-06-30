@@ -18,6 +18,9 @@ let DIFERENCIA;
 //VARIABLES PARA MOSTRAR LOS EQUIPOS
 let TEAMS;
 
+//VARIABLES PARA EL ULTIMO PARTIDO
+let MATCH;
+
 let API_SOCCER = 'services/admin/equipos.php';
 let MATCHES_API = 'services/admin/partidos.php';
 
@@ -104,8 +107,43 @@ const soccerTeams = async () => {
         `
         });
     }
+}
 
-
+const lastMatch = async () => {
+    const DATA = await fetchData(MATCHES_API, 'lastMatch');
+    if(DATA.status){
+        MATCH.innerHTML = `
+                    <div class="container mt-3 p-3">
+                    <!-- Primera fila que contiene la fecha -->
+                    <div class="row d-flex align-items-center">
+                        <div class="col-10 text-center">
+                            <p class="mb-0 fw-semibold">${DATA.dataset.fecha}</p>
+                            <p class="small">${DATA.dataset.localidad_partido}</p>
+                        </div>
+                    </div>
+                    <!-- Segunda fila que contiene el resultado -->
+                    <div class="row d-flex align-items-center mt-2">
+                        <div class="col-1">
+                            <img src="${SERVER_URL}images/equipos/${DATA.dataset.logo_equipo}"
+                                 class="rounded-circle" width="50px" height="50px" alt="">
+                        </div>
+                        <div class="col-4">
+                            <p class="float-end">${DATA.dataset.nombre_equipo}</p>
+                        </div>
+                        <div class="col-2 text-center">
+                            <h1 class="text-blue-principal-color fw-semibold">${DATA.dataset.resultado_partido}</h1>
+                        </div>
+                        <div class="col-4">
+                            <p class="float-start">${DATA.dataset.nombre_rival}</p>
+                        </div>
+                        <div class="col-1">
+                            <img src="${SERVER_URL}images/rivales/${DATA.dataset.logo_rival}"
+                                 class="rounded-circle float-end" width="50px" height="50px" alt="">
+                        </div>
+                    </div>
+                </div>
+        `
+    }
 }
 
 const getUser = async () => {
@@ -157,9 +195,13 @@ window.onload = async function () {
     //LISTADO DE EQUIPO
     TEAMS = document.getElementById('teams');
 
+    //PARTIDO
+    MATCH = document.getElementById('match');
+
     await calendar();
     await getUser();
     await soccerTeams();
+    await lastMatch();
 
     await fillSelect(API_SOCCER, 'readAll', 'equipos');
 }
