@@ -43,8 +43,8 @@ const lista_datos = [
         id: 'Condicionales',
     },
     {
-        clasificacion: 'Psicologicos',
-        id: 'Psicologicos',
+        clasificacion: 'Psicológicos',
+        id: 'Psicológicos',
     },
     {
         clasificacion: 'Personales',
