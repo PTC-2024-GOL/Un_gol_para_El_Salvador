@@ -200,6 +200,7 @@ function mostrarAdministradores(pagina) {
                 <td>${row.CORREO}</td>
                 <td>${row.TELÉFONO}</td>
                 <td>${row.DUI}</td>
+                <td>${row.ALIAS}</td>
                 <td class="${getRowColor(row.ESTADO)}">${row.ESTADO}</td>
                 <td>
                     <button type="button" class="btn transparente" onclick="openState(${row.ID})">
