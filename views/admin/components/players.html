@@ -141,7 +141,7 @@
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="Dorsal" class="form-label fw-semibold">Dorsal</label>
-                        <input id="Dorsal" type="number" name="dorsal"  max="99" min="1" class="form-control" required>
+                        <input id="Dorsal" type="number" name="dorsal" placeholder="Escribe el número dorsal"  max="99" min="1" class="form-control" required>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="estadoJugador" class="form-label fw-semibold">Estado del jugador</label>
@@ -150,6 +150,10 @@
                             <option>Baja temporal</option>
                             <option>Baja definitiva</option>
                         </select>
+                    </div>
+                    <div class="col-sm-12 col-md-6 mb-2 d-none" id="boxAlias">
+                        <label for="alias" class="form-label fw-semibold">Alías del jugador</label>
+                        <input id="alias" name="alias_jugador" class="form-control" disabled>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="beca" class="form-label fw-semibold">Selecciona la beca del jugador</label>
