@@ -47,19 +47,19 @@
 </div>
 
 <!-- Componente Modal para guardar un registro -->
-<div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+<div class="modal fade" id="saveModal1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="modalTitle" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-blue-principal-color text-light">
                 <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
-                <h1 class="modal-title fs-5" id="modalTitle"></h1>
+                <h1 class="modal-title fs-5" id="modalTitle1"></h1>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                     aria-label="Close"></button>
             </div>
             <!-- Formulario para crear o actualizar un registro -->
             <form class="form container-fluid" id="saveForm">
-                <input type="hidden" id="idAnalisis" name="idAnalisis">
+                <input type="hidden" id="idAnalisis1" name="idAnalisis1">
                 <h3 class="text-center">Análisis de características</h3>
                 <!-- Progress bar -->
                 <div class="progressbar p-3 container-fluid">
@@ -75,8 +75,8 @@
                 <!-- Steps -->
                 <div class="form-step form-step-active" id="step1">
                     <div class="col-sm-12 col-md-12">
-                        <label for="jugador" class="form-label">Selecciona el jugador</label>
-                        <select id="jugador" type="text" name="jugador" class="form-select"></select>
+                        <label for="jugadores" class="form-label">Selecciona el jugador</label>
+                        <select id="jugadores" type="text" name="jugadores" class="form-select"></select>
                     </div>
                     <div class="mt-5">
                         <button class="btn btn-next bg-blue-principal-color text-white ">Siguiente</button>
@@ -255,6 +255,34 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Componente Modal para guardar un registro -->
+<div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-principal-color text-light">
+                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                <h1 class="modal-title fs-5" id="modalTitle"></h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <!-- Formulario para crear o actualizar un registro -->
+            <form class="form container-fluid" id="saveForm">
+                <h3 class="text-center">Análisis de características</h3>
+                <input type="number" id="idAnalisis" name="idAnalisis" class="d-none">
+                <input type="number" id="jugador" name="jugador" class="d-none">
+                <div id="navSteps">
+
+                </div>
+                <div class="mt-5 text-end">
+                    <button type="submit" class="btn bg-blue-principal-color text-white ">Guardar</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
