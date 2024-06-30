@@ -7,30 +7,8 @@ let GRAPHIC_MODAL,
 let SAVE_FORM,
     ID_ANALISIS,
     JUGADOR,
-    FUERZA,
-    RESISTENCIA,
-    VELOCIDAD,
-    AGILIDAD,
-    PASE_CORTO,
-    PASE_MEDIO,
-    PASE_LARGO,
-    CONDUCCION,
-    RECEPCION,
-    CABECEO,
-    REGATE,
-    DEFINICION,
-    DECISIONES,
-    OFENSIVOS,
-    DEFENSIVOS,
-    INTERPRETACION,
-    CONCENTRACION,
-    AUTOCONFIANZA,
-    SACRICIO,
-    AUTOCONTROL;
-let ENTRENAMIENTO;
+    ENTRENAMIENTO;
 let SEARCH_FORM;
-let ESTADO_INICIAL_SAVE_FORM;
-let ESTADO_INICIAL_VIEW_FORM;
 
 // Constantes para completar las rutas de la API.
 const API = 'services/admin/caracteristicas_analisis.php';
@@ -75,34 +53,6 @@ const openGraphic = () => {
 }
 
 
-// Ocultar el primer form-step y mostrar el segundo
-function updateSteps(currentStep, nextStep) {
-    // Ocultar el form-step actual y mostrar el siguiente
-    const currentFormStep = document.getElementById(`step${currentStep}`);
-    const nextFormStep = document.getElementById(`step${nextStep}`);
-    currentFormStep.remove();
-    nextFormStep.classList.add('form-step-active');
-
-    // Ocultar el progress-step actual y mostrar el siguiente
-    const currentProgressStep = document.getElementById(`progress-step${currentStep}`);
-    const nextProgressStep = document.getElementById(`progress-step${nextStep}`);
-    currentProgressStep.remove();
-    nextProgressStep.classList.add('progress-step-active');
-
-    const form = document.getElementById('saveForm');
-    const formInputs = form.querySelectorAll("input");
-    formInputs.forEach((input) => {
-        input.disabled = true;
-        input.placeholder = "";
-    });
-    const deletePast = document.getElementById(`past`);
-    deletePast.remove();
-    const deleteSave = document.getElementById(`guardar`);
-    deleteSave.remove();
-
-}
-
-
 // Funcion para preparar el formulario al momento de abrirlo
 
 const seeModal = async (id) => {
@@ -134,7 +84,7 @@ const seeModal = async (id) => {
     } catch (Error) {
         SAVE_MODAL.show();
         MODAL_TITLE.textContent = 'Análisis del jugador';
-        SAVE_FORM.reset();        
+        SAVE_FORM.reset();
 
     }
 }
@@ -496,70 +446,10 @@ const graficoBarrasAnalisis = async () => {
 
 }
 
-// Función para restaurar el formulario guardar
-const restaurarFormulario = async (num = null) => {
-    document.getElementById('saveForm').innerHTML = ESTADO_INICIAL_SAVE_FORM;
-
-    const prevBtns = document.querySelectorAll(".btn-prev");
-    const nextBtns = document.querySelectorAll(".btn-next");
-    const progress = document.getElementById("progress");
-    const formSteps = document.querySelectorAll(".form-step");
-    const progressSteps = document.querySelectorAll(".progress-step");
-
-    let formStepsNum = 0;
-    updateFormSteps(); // Asegurar que el primer paso esté activo al cargar el formulario
-    updateProgressbar(); // Asegurar que la barra de progreso se llene correctamente al cargar el formulario
-
-
-    nextBtns.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            formStepsNum++;
-            updateFormSteps();
-            updateProgressbar();
-        });
-    });
-
-    prevBtns.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            formStepsNum--;
-            updateFormSteps();
-            updateProgressbar();
-        });
-    });
-
-    function updateFormSteps() {
-        formSteps.forEach((formStep) => {
-            formStep.classList.contains("form-step-active") &&
-                formStep.classList.remove("form-step-active");
-        });
-
-        formSteps[formStepsNum].classList.add("form-step-active");
-    }
-
-    function updateProgressbar() {
-        progressSteps.forEach((progressStep, idx) => {
-            if (idx < formStepsNum + 1) {
-                progressStep.classList.add("progress-step-active");
-            } else {
-                progressStep.classList.remove("progress-step-active");
-            }
-        });
-
-        const progressActive = document.querySelectorAll(".progress-step-active");
-        const widthIncrement = num; // Porcentaje de incremento deseado
-
-        // Calculamos el nuevo ancho de la barra de progreso
-        let widthPercentage = (progressActive.length - 1) * widthIncrement;
-
-        // Asignamos el nuevo ancho a la barra de progreso
-        progress.style.width = widthPercentage + "%";
-    }
-}
-
-async function cargarSearch(){
-    try{
+async function cargarSearch() {
+    try {
         fillSelect(JUGADOR_API, 'readAll', 'search');
-    }catch{
+    } catch {
         console.log('No se pudo cargar el select de esta forma.')
     }
 }
@@ -590,27 +480,7 @@ window.onload = async function () {
     SAVE_FORM = document.getElementById('saveForm'),
         ID_ANALISIS = document.getElementById('idAnalisis'),
         JUGADOR = document.getElementById('jugador'),
-        FUERZA = document.getElementById('fuerza'),
-        RESISTENCIA = document.getElementById('resistencia'),
-        VELOCIDAD = document.getElementById('velocidad'),
-        AGILIDAD = document.getElementById('agilidad'),
-        PASE_CORTO = document.getElementById('paseCorto'),
-        PASE_MEDIO = document.getElementById('paseMedio'),
-        PASE_LARGO = document.getElementById('paseLargo'),
-        CONDUCCION = document.getElementById('conduccion'),
-        RECEPCION = document.getElementById('recepcion'),
-        CABECEO = document.getElementById('cabeceo'),
-        REGATE = document.getElementById('regate'),
-        DEFINICION = document.getElementById('definicionGol'),
-        DECISIONES = document.getElementById('tomaDecisiones'),
-        OFENSIVOS = document.getElementById('conceptosOfensivos'),
-        DEFENSIVOS = document.getElementById('conceptosDefensivos'),
-        INTERPRETACION = document.getElementById('interpretacion'),
-        CONCENTRACION = document.getElementById('concentracion'),
-        AUTOCONFIANZA = document.getElementById('autoconfianza'),
-        SACRICIO = document.getElementById('sacrificio'),
-        AUTOCONTROL = document.getElementById('autocontrol');
-    ENTRENAMIENTO = document.getElementById('entrenamiento');
+        ENTRENAMIENTO = document.getElementById('entrenamiento');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
