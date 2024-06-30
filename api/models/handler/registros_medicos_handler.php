@@ -41,11 +41,10 @@ class RegistrosHandler{
             $this->retornoPartido = NULL;
         }
 
-        $sql = 'CALL sp_insertar_registro_medico(?,?,?,?,?,?,?);';
+        $sql = 'CALL sp_insertar_registro_medico(?,?,?,?,?,?);';
         $params = array(
             $this->jugador,
             $this->fechaLesion,
-            $this->fechaRegistro,
             $this->diasLesionado,
             $this->lesion,
             $this->retornoEntreno,
@@ -65,7 +64,7 @@ class RegistrosHandler{
     //Función para leer un registro médico.
     public function readOne()
     {
-        $sql = 'SELECT * FROM registro_medico
+        $sql = 'SELECT * FROM registros_medicos
         WHERE id_registro_medico LIKE ?';
         $params = array($this->idRegistroMedico);
         return Database::getRow($sql, $params);
@@ -74,12 +73,15 @@ class RegistrosHandler{
     //Función para actualizar un registro médico.
     public function updateRow()
     {
-        $sql = 'CALL sp_actualizar_registro_medico(?,?,?,?,?,?,?,?);';
+        if ($this->retornoPartido == ''){
+            $this->retornoPartido = NULL;
+        }
+
+        $sql = 'CALL sp_actualizar_registro_medico(?,?,?,?,?,?,?);';
         $params = array(
             $this->idRegistroMedico,
             $this->jugador,
             $this->fechaLesion,
-            $this->fechaRegistro,
             $this->diasLesionado,
             $this->lesion,
             $this->retornoEntreno,

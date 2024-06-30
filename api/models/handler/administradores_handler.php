@@ -401,6 +401,7 @@ class AdministradoresHandler
             $this->nacimiento,
             $this->imagen
         );
+        $_SESSION['fotoAdministrador'] = $this->imagen;
         return Database::executeRow($sql, $params);
     }
 }

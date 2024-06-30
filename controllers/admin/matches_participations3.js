@@ -52,6 +52,9 @@ let idParticipation;
 let idPlayer;
 let golesDiv;
 
+let MESAGGE_GOL;
+let MESSAGE_AMONESTACION;
+
 // Constantes para completar las rutas de la API.
 const PARTICIPACION_API = 'services/admin/participaciones_partidos.php';
 const GOLES_API = 'services/admin/detalles_goles.php';
@@ -70,7 +73,7 @@ async function loadComponent(path) {
 */
 const openCreate = (idJugador) => {
     idPlayer = '';
-    ID_PARTICIPACION = '';
+    //ID_PARTICIPACION = '';
 
     resetEstadoAnimo();
     golesDiv.classList.add('d-none');
@@ -107,7 +110,7 @@ const openCreateAmonestacion = () => {
 *   Retorno: ninguno.
 */
 const openGoles = async (idParticipacion) => {
-    ID_GOL = '';
+    //ID_GOL = '';
     // Se muestra la caja de diálogo con su título.
     SEE_GOLES_MODAL.show();
     await cargarGolTarjetas(idParticipacion);
@@ -123,7 +126,7 @@ const openGoles = async (idParticipacion) => {
 *   Retorno: ninguno.
 */
 const openAmonestaciones = async (idParticipacion) => {
-    ID_AMONESTACION = '';
+    //ID_AMONESTACION = '';
     // Se muestra la caja de diálogo con su título.
     SEE_AMONESTACION_MODAL.show();
     await cargarAmonestacionTarjetas(idParticipacion);
@@ -142,7 +145,7 @@ const openAmonestaciones = async (idParticipacion) => {
 const openUpdate = async (id, idJugador) => {
     try {
         idPlayer = '';
-        ID_PARTICIPACION = '';
+        //ID_PARTICIPACION = '';
         idPlayer = idJugador;
 
         resetEstadoAnimo();
@@ -501,7 +504,7 @@ async function nextPage(newPage) {
 }
 
 async function cargarGolTarjetas (idParticipacion) {
-
+    MESAGGE_GOL.classList.add('d-none');
     const cargarGoles = document.getElementById('gol_card');
 
     try {
@@ -537,7 +540,9 @@ async function cargarGolTarjetas (idParticipacion) {
                 cargarGoles.innerHTML += tarjetasGoles;
             });
         } else {
-            await sweetAlert(4, DATA.error, true);
+            MESAGGE_GOL.classList.remove('d-none');
+            MESAGGE_GOL.textContent = DATA.error;
+
         }
     } catch (error) {
         console.error('Error al obtener datos de la API:', error);
@@ -546,6 +551,7 @@ async function cargarGolTarjetas (idParticipacion) {
 
 
 async function cargarAmonestacionTarjetas (idParticipacion) {
+    MESSAGE_AMONESTACION.classList.add('d-none');
 
     const cargarAmonestacion = document.getElementById('amonestacion_card');
 
@@ -583,7 +589,9 @@ async function cargarAmonestacionTarjetas (idParticipacion) {
                 cargarAmonestacion.innerHTML += tarjetasAmonestacion;
             });
         } else {
-            sweetAlert(4, DATA.error, true);
+            MESSAGE_AMONESTACION.classList.remove('d-none');
+            MESSAGE_AMONESTACION.textContent = DATA.error;
+
         }
     } catch (error) {
         console.error('Error al obtener datos de la API:', error);
@@ -704,6 +712,9 @@ window.onload = async function () {
 
     // DIV GOLES
     golesDiv = document.getElementById('golesDiv');
+    MESAGGE_GOL = document.getElementById('messageGol');
+    MESSAGE_AMONESTACION = document.getElementById('messageAmonestacion');
+
 
     // Constantes para establecer los elementos del componente para los modals.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),

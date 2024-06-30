@@ -119,11 +119,11 @@ class ParticipacionesPartidosData extends ParticipacionesPartidosHandler
 
     public function setPuntuacion($value)
     {
-        if (Validator::validatePositiveDecimal($value)) {
+        if (Validator::validatePositiveDecimal2($value)) {
             $this->puntuacion = $value;
             return true;
         } else {
-            $this->data_error = 'Ingrese un número decimal válido';
+            $this->data_error = 'Ingrese un número decimal válido, mayor a cero y menor a 11';
             return false;
         }
     }

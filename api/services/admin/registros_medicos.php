@@ -30,7 +30,6 @@ if (isset($_GET['action'])) {
                 if (
                     !$registro->setJugador($_POST['jugador']) or
                     !$registro->setFechaLesion($_POST['fechaLesion']) or
-                    !$registro->setFechaRegistro($_POST['fechaRegistro']) or
                     !$registro->setDiasLesionado($_POST['diasLesionado']) or
                     !$registro->setLesion($_POST['lesion']) or
                     !$registro->setRetornoEntreno($_POST['retornoEntreno']) or
@@ -70,7 +69,6 @@ if (isset($_GET['action'])) {
                     !$registro->setIdRegistroMedico($_POST['idMedico']) or
                     !$registro->setJugador($_POST['jugador']) or
                     !$registro->setFechaLesion($_POST['fechaLesion']) or
-                    !$registro->setFechaRegistro($_POST['fechaRegistro']) or
                     !$registro->setDiasLesionado($_POST['diasLesionado']) or
                     !$registro->setLesion($_POST['lesion']) or
                     !$registro->setRetornoEntreno($_POST['retornoEntreno']) or

@@ -59,13 +59,12 @@ const openUpdate = async (id) => {
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
             ID_REGISTRO_MEDICO.value = ROW.id_registro_medico;
-            fillSelect(JUGADOR_API, 'readAll', 'jugador', ROW.nombre_completo_jugador);
+            fillSelect(JUGADOR_API, 'readAll', 'jugador', ROW.id_jugador);
             FECHA_LESION.value = ROW.fecha_lesion;
-            FECHA_REGISTRO.value = ROW.fecha_registro;
             DIAS_LESIONADO.value = ROW.dias_lesionado;
-            fillSelect(LESION_API, 'readAll', 'lesion', ROW.nombre_sub_tipologia);
+            fillSelect(LESION_API, 'readAll', 'lesion', ROW.id_lesion);
             RETORNO_ENTRENO.value = ROW.retorno_entreno;
-            fillSelect(PARTIDO_API, 'readAll', 'retornoPartido', ROW.fecha_partido);
+            fillSelect(PARTIDO_API, 'readAll', 'retornoPartido', ROW.retorno_partido);
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -196,15 +195,15 @@ function actualizarPaginacion() {
     const totalPaginas = Math.ceil(registros.length / registrosPorPagina);
 
     if (paginaActual > 1) {
-        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-light" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
     }
 
     for (let i = 1; i <= totalPaginas; i++) {
-        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
+        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-light" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
     }
 
     if (paginaActual < totalPaginas) {
-        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-light" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
     }
 }
 

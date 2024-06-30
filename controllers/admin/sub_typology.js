@@ -50,7 +50,7 @@ const openUpdate = async (id) => {
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
             ID_SUBTIPOLOGIA.value = ROW.ID;
-            fillSelect(TIPOLOGIA_API, 'readAll', 'nombreTipologia', ROW.TIPOLOGIA);
+            await fillSelect(TIPOLOGIA_API, 'readAll', 'nombreTipologia', ROW.ID_TIPOLOGIA);
             NOMBRE_SUBTIPOLOGIA.value = ROW.NOMBRE;
         } else {
             sweetAlert(2, DATA.error, false);

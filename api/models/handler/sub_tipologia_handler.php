@@ -52,6 +52,7 @@ class SubTipologiaHandler
     {
         $sql = 'SELECT st.id_sub_tipologia AS ID,
                 st.nombre_sub_tipologia AS NOMBRE,
+                st.id_tipologia AS ID_TIPOLOGIA,
                 t.tipologia AS TIPOLOGIA
                 FROM sub_tipologias st
                 INNER JOIN tipologias t ON st.id_tipologia = t.id_tipologia

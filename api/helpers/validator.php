@@ -461,6 +461,16 @@ class Validator
         }
     }
 
+    public static function validatePositiveDecimal2($value)
+    {
+        // Se verifica que el valor sea un número decimal positivo.
+        if (filter_var($value, FILTER_VALIDATE_FLOAT) && $value > 0 && $value < 11) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /*
      *   Método para un dato de tipo DATETIME
      *   Prametros: $value (dato a validar)

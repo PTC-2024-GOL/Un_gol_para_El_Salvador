@@ -128,6 +128,8 @@ if (isset($_GET['action'])) {
                     $result['message'] = 'Perfil modificado correctamente';
                     // Se asigna el estado del archivo después de actualizar.
                     $result['fileStatus'] = Validator::changeFile($_FILES['imagen'], $administrador::RUTA_IMAGEN, $administrador->getFilename());
+                    $_SESSION['nombreAdministrador'] = $_POST['nombrePerfil'];
+                    $_SESSION['apellidoAdministrador'] = $_POST['apellidoPerfil'];
                 } else {
                     $result['error'] = 'Ocurrió un problema al modificar el perfil';
                 }

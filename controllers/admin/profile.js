@@ -43,7 +43,8 @@ async function openProfile() {
         // Se colocan los datos en la página web de acuerdo con el producto seleccionado previamente.
         document.getElementById('foto').src = SERVER_URL.concat('images/administradores/', DATA.dataset.IMAGEN);
         document.getElementById('nombre').textContent = DATA.dataset.NOMBRE;
-        document.getElementById('email').textContent = DATA.dataset.CORREO
+        document.getElementById('email').textContent = DATA.dataset.CORREO;
+        document.getElementById('phone').textContent ='(+503) '+ DATA.dataset.TELÉFONO;
     } 
 }
 
@@ -152,7 +153,7 @@ window.onload = async function () {
             // Se cierra la caja de diálogo.
             EDIT_MODAL.hide();
             // Se muestra un mensaje de éxito.
-            sweetAlert(1, DATA.message, true); 
+            sweetAlert(1, DATA.message, true, 'profile.html');
             
             openProfile(); 
         } else {
