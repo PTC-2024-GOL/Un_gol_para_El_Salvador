@@ -673,6 +673,7 @@ const filtroAreaJuego = async (event) => {
 
     const FORM = new FormData();
     FORM.append('areaJuego', areaJuego);
+    FORM.append('idEquipo', idEquipo);
 
     const DATA = await fetchData(PARTICIPACION_API, 'readAllByAreaJuego', FORM);
 

@@ -60,7 +60,7 @@ function showMatches(page) {
                         </div>
                     </div>
                     <hr>
-                    <button class="btn bg-blue-principal-color text-white btn-sm rounded-3"  onclick="goToPlayers(${row.id_partido}, ${idEquipo})">
+                    <button class="btn bg-blue-principal-color text-white btn-sm rounded-3"  onclick="goToPlayers(${row.id_partido})">
                         Agregar participaciones
                     </button>
                 </div>
@@ -125,10 +125,10 @@ function nextPage(newPage) {
 }
 
 // Creamos una funcion que recibe como parametro el id del equipo que fue seleccionado
-function goToPlayers(idEquipo, idPartido) {
+function goToPlayers(idPartido) {
   
     // Redirecciona a la otra pantalla y manda tambien el id del equipo
-    window.location.href = `../pages/matches_participations3.html?idEquipo=${idEquipo}&idPartido=${idPartido}`;
+    window.location.href = `../pages/matches_participations3.html?idPartido=${idPartido}&idEquipo=${idEquipo}`;
 }
 
 window.onload = async function () {

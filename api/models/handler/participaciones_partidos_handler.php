@@ -83,8 +83,8 @@ class ParticipacionesPartidosHandler
     public function readByPlayerArea()
     {
         $sql = 'SELECT * FROM vista_jugadores_por_equipo
-                WHERE area_de_juego = ?';
-        $params = array($this->areaJuego);
+                WHERE area_de_juego = ? AND id_equipo = ?';
+        $params = array($this->areaJuego, $this->idEquipo);
         return Database::getRows($sql, $params);
     }
 

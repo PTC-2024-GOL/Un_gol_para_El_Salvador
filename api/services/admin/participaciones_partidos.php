@@ -77,7 +77,10 @@ if (isset($_GET['action'])) {
                 }
                 break;
             case 'readAllByAreaJuego':
-                if (!$participacion->setAreaJuego($_POST['areaJuego'])) {
+                if (
+                    !$participacion->setAreaJuego($_POST['areaJuego']) or
+                    !$participacion->setIdEquipo($_POST['idEquipo'])
+                ) {
                     $result['error'] = $participacion->getDataError();
                 } elseif ($result['dataset'] = $participacion->readByPlayerArea()) {
                     $result['status'] = 1;

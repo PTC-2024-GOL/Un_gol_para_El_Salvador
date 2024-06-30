@@ -161,8 +161,8 @@ async function fillTable(form = null) {
                 const tablaHtml = `
                 <tr>
                     <td>${row.fecha_creacion_format}</td>
-                    <td>${row.altura_jugador}</td>
-                    <td>${row.peso_jugador}</td>
+                    <td>${row.altura_jugador} mts</td>
+                    <td>${row.peso_jugador} lbs</td>
                     <td>${row.indice_masa_corporal}</td>
                     <td>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id_estado_fisico_jugador})">

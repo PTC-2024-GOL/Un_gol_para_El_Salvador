@@ -303,18 +303,18 @@ window.onload = async function () {
         event.preventDefault();
         // Se verifica la acción a realizar.
         (ID_JUGADOR.value) ? action = 'updateRow' : action = 'createRow';
+
+        const POSICION_SECUNDARIA = document.getElementById('posicionSecundaria');
+        const POSICION_PRIMARIA = document.getElementById('posicionPrincipal');
+
+        if(POSICION_SECUNDARIA.value === ""){
+            POSICION_SECUNDARIA.value = POSICION_PRIMARIA.value;
+        }
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SAVE_FORM);
         // Petición para guardar los datos del formulario.
         const DATA = await fetchData(JUGADOR_API, action, FORM);
 
-        const POSICION_SECUNDARIA = document.getElementById('posicionSecundaria');
-        const POSICION_PRIMARIA = document.getElementById('posicionPrincipal');
-
-        if(POSICION_SECUNDARIA.value === ' '){
-            let posicion2 = POSICION_PRIMARIA.value;
-            FORM.set('posicion2', posicion2);
-        }
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se cierra la caja de diálogo.

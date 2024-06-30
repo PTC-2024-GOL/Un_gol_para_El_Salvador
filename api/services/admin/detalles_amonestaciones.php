@@ -38,7 +38,7 @@ if (isset($_GET['action'])) {
                 } elseif ($result['dataset'] = $detalleAmonestacion->readAllAmonestaciones()) {
                     $result['status'] = 1;
                 } else {
-                    $result['error'] = 'Aún no se han registrado amonestaciones';
+                    $result['error'] = 'El jugador seleccionado no tiene amonestaciones en este partido';
                 }
                 break;
             case 'readOne':

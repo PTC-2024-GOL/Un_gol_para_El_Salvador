@@ -192,17 +192,25 @@ MAIN.insertAdjacentHTML('beforebegin', `
 
 //Peticion a la Api para revisar si hay un usuario autenticado
 const DATA = await fetchData(USER_API, 'getUser');
+// Se verifica si el usuario está autenticado, de lo contrario se envía a iniciar sesión.
+if (DATA.session){
+    if (DATA.status){
+        // Obtenemos los elementos del html
+        const userName = document.getElementById('name');
+        const img = document.getElementById('imagen');
 
-if(DATA.status){
-    // Obtenemos los elementos del html
-    const userName = document.getElementById('name');
-    const img = document.getElementById('imagen');
-
-    //Asignamos los datos traidos de la api a nuestro elementos html.
-         userName.textContent = DATA.nombre.split(' ')[0] + ' ' + DATA.apellido.split(' ')[0] // Split nos sirve para cortar un string y que solo aparezca en este caso el primer nombre y primer apellido.
-         img.src = `${SERVER_URL}images/administradores/${DATA.foto}`;
+        //Asignamos los datos traidos de la api a nuestro elementos html.
+        userName.textContent = DATA.nombre.split(' ')[0] + ' ' + DATA.apellido.split(' ')[0] // Split nos sirve para cortar un string y que solo aparezca en este caso el primer nombre y primer apellido.
+        img.src = `${SERVER_URL}images/administradores/${DATA.foto}`;
     } else {
-
+        await sweetAlert(3, DATA.error, false, 'index.html')
+    }
+}else{
+    if(location.pathname.endsWith('index.html')){
+        console.log('index.html');
+    } else{
+        location.href = 'index.html';
+    }
 }
 }
 

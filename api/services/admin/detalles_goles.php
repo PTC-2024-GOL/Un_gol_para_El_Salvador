@@ -37,7 +37,7 @@ if (isset($_GET['action'])) {
                 } elseif ($result['dataset'] = $detalleGol->readAllGoles()) {
                     $result['status'] = 1;
                 } else {
-                    $result['error'] = 'Aún no se han registrado goles';
+                    $result['error'] = 'El jugador seleccionado no tiene goles en este partido';
                 }
                 break;
             case 'readOne':
