@@ -35,7 +35,7 @@ const openCreate = () => {
     REPETIR_CLAVE.disabled = false;
     // Se prepara el formulario.
     SAVE_FORM.reset();
-    FOTO_ADMINISTRADOR.src = "../../../resources/img/svg/avatar.svg";
+    FOTO_ADMINISTRADOR.src = "../../../resources/img/png/default.jpg";
 }
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
@@ -322,9 +322,10 @@ window.onload = async function () {
             sweetAlert(1, DATA.message, true);
             // Se carga nuevamente la tabla para visualizar los cambios.
             fillTable();
-        } else {
+        } else if (!DATA.exception) {
             sweetAlert(2, DATA.error, false);
-            console.error(DATA.exception);
+        } else {
+            sweetAlert(2, DATA.exception, false);
         }
     });
     // Constante para establecer el formulario de buscar.

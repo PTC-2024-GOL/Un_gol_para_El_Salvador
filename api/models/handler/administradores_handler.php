@@ -287,11 +287,19 @@ class AdministradoresHandler
     //Función para chequear si el DUI o el CORREO estan duplicados.
     public function checkDuplicate($value)
     {
-        $sql = 'SELECT ID
-                FROM vista_tabla_administradores
-                WHERE DUI = ? OR CORREO = ?';
-        $params = array($value, $value);
-        return Database::getRow($sql, $params);
+        if ($this->id) {
+            $sql = 'SELECT id_administrador
+            FROM administradores
+            WHERE dui_administrador = ? OR correo_administrador = ? AND id_administrador != ?';
+            $params = array($value, $value, $this->id);
+            return Database::getRow($sql, $params);
+        } else {
+            $sql = 'SELECT id_administrador
+            FROM administradores
+            WHERE dui_administrador = ? OR correo_administrador = ?';
+            $params = array($value, $value);
+            return Database::getRow($sql, $params);
+        }
     }
 
     //Función para ingresar el primer usuario.

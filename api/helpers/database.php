@@ -105,6 +105,10 @@ class Database
                 break;
             case '45000':
                 self::$error;
+            case '45001':
+                self::$error;
+            case '45002':
+                self::$error;
                 break;
             case '23000':
                 self::$error;
