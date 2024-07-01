@@ -188,6 +188,18 @@ class AdministradoresData extends AdministradoresHandler
         }
     }
 
+    public function setFilenameProfile()
+    {
+        if ($data = $this->readFilenameProfile()) {
+            $this->filename = $data['IMAGEN'];
+            return true;
+        } else {
+            $this->data_error = 'Imagen inexistente';
+            return false;
+        }
+    }
+
+
     // Método para obtener el error de los datos.
     public function getDataError()
     {

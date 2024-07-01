@@ -23,6 +23,8 @@ class Database
             self::$connection = new PDO('mysql:host=' . SERVER . ';dbname=' . DATABASE, USERNAME, PASSWORD);
             // Se prepara la sentencia SQL.
             self::$statement = self::$connection->prepare($query);
+            // Establece lc_time_names(Fechas) a español.
+            self::$connection->exec("SET lc_time_names = 'es_ES';");
             // Se ejecuta la sentencia preparada y se retorna el resultado.
             return self::$statement->execute($values);
         } catch (PDOException $error) {

@@ -116,6 +116,7 @@ if (isset($_GET['action'])) {
                 if (
                     !$administrador->setNombre($_POST['nombrePerfil']) or
                     !$administrador->setApellido($_POST['apellidoPerfil']) or
+                    !$administrador->setFilenameProfile() or
                     !$administrador->setCorreo($_POST['correoPerfil']) or
                     !$administrador->setTelefono($_POST['telefonoPerfil']) or
                     !$administrador->setDUI($_POST['duiPerfil']) or

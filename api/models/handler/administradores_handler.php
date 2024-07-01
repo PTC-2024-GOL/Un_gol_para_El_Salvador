@@ -233,6 +233,16 @@ class AdministradoresHandler
         return Database::getRow($sql, $params);
     }
 
+    // Leer la imagen del administrador que ha iniciado sesion.
+    public function readFilenameProfile()
+    {
+        $sql = 'SELECT IMAGEN
+                FROM vista_tabla_administradores
+                WHERE ID = ?';
+        $params = array($_SESSION['idAdministrador'],);
+        return Database::getRow($sql, $params);
+    }
+
     //Función para actualizar un admministrador.
     public function updateRow()
     {
