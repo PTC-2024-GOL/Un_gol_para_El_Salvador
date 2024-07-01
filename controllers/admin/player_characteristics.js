@@ -39,16 +39,12 @@ const lista_datos = [
         id: 'Tácticos',
     },
     {
-        clasificacion: 'Condicionales',
-        id: 'Condicionales',
-    },
-    {
         clasificacion: 'Psicológicos',
         id: 'Psicológicos',
     },
     {
-        clasificacion: 'Personales',
-        id: 'Personales',
+        clasificacion: 'Físicos',
+        id: 'Físicos',
     }
 ];
 
