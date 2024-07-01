@@ -246,6 +246,7 @@ async function fillTable(form = null) {
         } else {
             // Se muestra un mensaje de acuerdo con el resultado.
             ROWS_FOUND.textContent = "Existen 0 coincidencias";
+            await sweetAlert(3, DATA.error, true);
         }
     } catch (error) {
         console.error('Error al obtener datos de la API:', error);

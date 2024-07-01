@@ -37,8 +37,9 @@ class RegistrosHandler{
     //Función para insertar un registro médico.
     public function createRow()
     {
-        if ($this->retornoPartido == ''){
+        if ($this->retornoPartido == '' or $this->retornoEntreno == ''){
             $this->retornoPartido = NULL;
+            $this->retornoEntreno = NULL;
         }
 
         $sql = 'CALL sp_insertar_registro_medico(?,?,?,?,?,?);';
@@ -73,8 +74,9 @@ class RegistrosHandler{
     //Función para actualizar un registro médico.
     public function updateRow()
     {
-        if ($this->retornoPartido == ''){
+        if ($this->retornoPartido == '' or $this->retornoEntreno == ''){
             $this->retornoPartido = NULL;
+            $this->retornoEntreno = NULL;
         }
 
         $sql = 'CALL sp_actualizar_registro_medico(?,?,?,?,?,?,?);';

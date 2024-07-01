@@ -12,7 +12,7 @@ class PosicionesHandler{
     //Declaracion de variables aqui
     protected $idPosicion = null;
     protected $posicion = null;
-    protected $area_de_juego = null;
+    protected $areaJuego = null;
 
     /*
     *  Métodos para realizar las operaciones SCRUD (search, create, read, update, and delete).
@@ -35,7 +35,7 @@ class PosicionesHandler{
         $sql = 'CALL sp_insertar_posicion(?,?);';
         $params = array(
             $this->posicion,
-            $this->area_de_juego
+            $this->areaJuego
         );
         return Database::executeRow($sql, $params);
     }
@@ -64,7 +64,7 @@ class PosicionesHandler{
         $params = array(
             $this->idPosicion,
             $this->posicion,
-            $this->area_de_juego
+            $this->areaJuego
         );
         return Database::executeRow($sql, $params);
     }

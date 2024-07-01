@@ -46,7 +46,7 @@ class PosicionesData extends PosicionesHandler
 
     public function setAreaJuego($value)
     {
-        $this->area_de_juego = $value;
+        $this->areaJuego = $value;
         return true;
     }
 
