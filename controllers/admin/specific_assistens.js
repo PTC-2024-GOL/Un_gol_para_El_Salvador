@@ -4,12 +4,15 @@ let SAVE_FORM,
     JUGADOR,
     BOTON,
     ASISTENCIA,
+    BOOLASISTENCIA,
     ID_ASISTENCIA,
     OBSERVACION;
 let SEARCH_FORM,
 ID_URL,
 ID_ENTRENAMIENTO_url,
 ID_HORARIO_url;
+
+let LISTA_DATOS = [];
 
 // Constantes para completar las rutas de la API.
 // La lógica de esta pantalla aún no está terminada debido a que todavía me hace falta definir qué ocurrirá cuando se agregue una observación Y cuando se seleccione Una nueva opción de los ítems que contiene cada select
@@ -60,19 +63,15 @@ async function loadComponent(path) {
 }
 
 // Función para poblar un combobox (select) con opciones
-async function fillSelected(data, action, selectElement, selectedValue) {
+async function fillSelected(data, selectElement, selectedValue) {
     try {
-            selectElement.innerHTML = '';
-        // Llenar el combobox con los datos proporcionados
+        selectElement.innerHTML = '';
         data.forEach(item => {
             const option = document.createElement('option');
-            option.value = item.asistencia; // Suponiendo que hay una propiedad 'asistencia' en los datos y la queremos usar como identificador
+            option.value = item.asistencia;
             option.textContent = item.asistencia;
-            if (item.asistencia == selectedValue)
-            {
-                console.log('Estoy seleccionando la opción:', item.asistencia, '<- -> ' , selectedValue);
-                console.log('Estoy seleccionando la opción:', item.asistencia);
-            option.selected = true; // Cambia 'asistencia' al nombre de la propiedad que deseas mostrar en el combobox
+            if (item.asistencia === selectedValue) {
+                option.selected = true;
             }
             selectElement.appendChild(option);
         });
@@ -82,30 +81,75 @@ async function fillSelected(data, action, selectElement, selectedValue) {
 }
 
 /*
+*   Función asíncrona para realizar peticiones a la API.
+*   Esta función envia todos los datos del formulario. en forma de arreglos
+*/
+const guardar = async () => {
+    // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
+    const RESPONSE = await confirmAction('¿Desea guardar la asistencia?');
+    try {
+        // Se verifica la respuesta del mensaje.
+        if (RESPONSE) {
+            // Se define una constante tipo objeto con los datos del registro seleccionado.
+            const FORM = new FormData();
+            FORM.append('idAsistenciaBool', BOOLASISTENCIA);
+            FORM.append('idEntrenamiento', ID_ENTRENAMIENTO_url);
+            FORM.append('idHorario', ID_HORARIO_url);
+            FORM.append('listaDatos', JSON.stringify(LISTA_DATOS));
+            console.log(id);
+            // Petición para eliminar el registro seleccionado.
+            const DATA = await fetchData(API, 'deleteRow', FORM);
+            console.log(DATA.status);
+            // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+            if (DATA.status) {
+                // Se muestra un mensaje de éxito.
+                await sweetAlert(1, DATA.message, true);
+                // Se carga nuevamente la tabla para visualizar los cambios.
+                fillTable();
+            } else {
+                sweetAlert(2, DATA.error, false);
+            }
+        }
+    }
+    catch (Error) {
+        console.log(Error + ' Error al cargar el mensaje');
+    }
+
+}
+
+/*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
 const openUpdate = async (id) => {
     try {
-        // Se define un objeto con los datos del registro seleccionado.
-        const FORM = new FormData();
-        FORM.append('idAsitencia', id);
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(ASISTENCIAS_API_2, 'readOne', FORM);
+        const DATA = LISTA_DATOS.find(item => item.id == id);
+        console.log('Datos del registro:', DATA);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-        if (DATA.status) {
+        if (DATA.observacion) {
+            // Se muestra la caja de diálogo con su título.
+            SAVE_MODAL.show();
+            MODAL_TITLE.textContent = 'Editar observación';
+            // Se prepara el formulario.
+            SAVE_FORM.reset();
+            // Se inicializan los campos con los datos.
+            ID_ASISTENCIA.value = DATA.id;
+            OBSERVACION.value = DATA.observacion;
+            console.log('ID ASISTENCIA:', ID_ASISTENCIA.value);
+            console.log('OBSERVACION:', OBSERVACION.value);
+        } else {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
             MODAL_TITLE.textContent = 'Agregar observación';
             // Se prepara el formulario.
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
-            const ROW = DATA.dataset;
-            ID_ASISTENCIA.value = ROW.ID;
-            OBSERVACION.value = ROW.OBSERVACION;
-        } else {
-            sweetAlert(2, DATA.error, false);
+            ID_ASISTENCIA.value = DATA.id;
+            OBSERVACION.value = null;
+            console.log('ID ASISTENCIA:', ID_ASISTENCIA.value);
+            console.log('OBSERVACION:', OBSERVACION.value);
         }
     } catch (Error) {
         console.log(Error);
@@ -115,69 +159,73 @@ const openUpdate = async (id) => {
 
 }
 // Crea una función que en base a un id, cree un combobox y usando la función fillSelected, lo llene con las opciones de la lista_datos_asistencias y que se seleccione la opción por defecto llamada Asistencia, quiero tener control de cada combobox así que cuando le crees su id, usa el id que se le pase como parametro como identificador de cada combobox.
+// Función para crear un combobox y llenarlo con opciones
 async function createSelect(identificador, selectedValue) {
     try {
         const selectElement = document.createElement('select');
-        newid = 'asistencia_' + identificador;
+        const newid = 'asistencia_' + identificador;
         selectElement.id = newid;
         selectElement.classList.add('form-select');
-        await fillSelected(lista_datos_asistencias, 'readAll', selectElement, selectedValue);
-        console.log('Elemento select antes de devolver:', selectElement, ' ', selectedValue);
+        await fillSelected(lista_datos_asistencias, selectElement, selectedValue);
+
+        // Añadir evento change al selectElement
+        selectElement.addEventListener('change', (event) => {
+            const selectedOption = event.target.value;
+            const item = LISTA_DATOS.find(item => item.id == identificador);
+            if (item) {
+                item.asistencia = selectedOption;
+                console.log(`Asistencia actualizada para el jugador con ID ${identificador}: ${selectedOption}`);
+                console.log('Lista de datos actualizada:', LISTA_DATOS);
+            }
+        });
+
         return selectElement;
     } catch (error) {
         console.error('Error al crear el combobox:', error);
     }
-}
+} 
+
+
 
 //Crea un comentario que describa la función que esta debajo
 // Función asíncrona para llenar la tabla con los registros de la base de datos.
 async function fillTable(asistencia) {
-    let lista_datos = [];
     const cargarTabla = document.getElementById('tabla_asistencias_2');
 
     try {
         cargarTabla.innerHTML = '';
-        // Petición para obtener los registros disponibles.
         let form = new FormData();
-        let action = '';
+        let action = asistencia == 0 ? 'readAlldefault' : 'readAll';
         form.append('idEntrenamiento', ID_ENTRENAMIENTO_url);
-        (asistencia == 0) ? action = 'readAlldefault' : action = 'readAll';
         const DATA = await fetchData(ASISTENCIAS_API_2, action, form);
-        console.log(DATA);
-        lista_datos = DATA.dataset; 
+        LISTA_DATOS = DATA.dataset;
+
         if (DATA.status) {
-            // Mostrar elementos obtenidos de la API
-            if (lista_datos.length > 0) {
-                console.error('Entre al if, así que si detecto que hay datos');
-                console.log(lista_datos);
-                // Primero, creamos todas las promesas para los elementos select
-                const selectPromises = lista_datos.map(row => createSelect(row.id, row.asistencia));
-                
-                // Luego, resolvemos todas las promesas
-                Promise.all(selectPromises).then(selects => {
-                    // Ahora que todas las promesas se han resuelto, podemos construir la cadena de texto
-                    lista_datos.forEach((row, index) => {
-                        console.error('Estos son los id Encontrados: ', row.id);
-                        const tablaHtml = `
-                            <tr>
-                                <td>${row.jugador}</td>
-                                <td id="select-container-${row.id}"></td>
-                                <td>
-                                    <button type="button" class="btn" onclick="openUpdate(${row.id})">
-                                        <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
-                                    </button>
-                                </td>
-                            </tr>
-                        `;
-                        cargarTabla.innerHTML += tablaHtml;
+            if (LISTA_DATOS.length > 0) {
+                const selectPromises = LISTA_DATOS.map(row => createSelect(row.id, row.asistencia));
+                const selects = await Promise.all(selectPromises);
 
-                        // Insertar el elemento select en el contenedor adecuado
-                        document.getElementById(`select-container-${row.id}`).appendChild(selects[index]);
-
-                        // Asignar la opción seleccionada
-                        selects[index].value = row.asistencia;
-                    });
+                LISTA_DATOS.forEach((row, index) => {
+                    const tablaHtml = `
+                        <tr>
+                            <td>${row.jugador}</td>
+                            <td id="select-container-${row.id}"></td>
+                            <td>
+                                <button type="button" class="btn" onclick="openUpdate(${row.id})">
+                                    <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                    cargarTabla.innerHTML += tablaHtml;
                 });
+
+                selects.forEach((select, index) => {
+                    const rowId = LISTA_DATOS[index].id;
+                    document.getElementById(`select-container-${rowId}`).appendChild(select);
+                    select.value = LISTA_DATOS[index].asistencia;
+                });
+
             } else {
                 cargarTabla.innerHTML = '<tr><td colspan="3">No se encontraron registros.</td></tr>';
             }
@@ -186,43 +234,10 @@ async function fillTable(asistencia) {
         }
     } catch (error) {
         console.error('Error al obtener datos de la API:', error);
-        // Mostrar materiales de respaldo
-        if (lista_datos.length > 0) {
-            console.error('Entre al if, así que si detecto que hay datos');
-
-            // Primero, creamos todas las promesas para los elementos select
-            const selectPromises = lista_datos.map(row => createSelect(row.id));
-
-            // Luego, resolvemos todas las promesas
-            Promise.all(selectPromises).then(selects => {
-                // Ahora que todas las promesas se han resuelto, podemos construir la cadena de texto
-                lista_datos.forEach((row, index) => {
-                    console.error('Estos son los id Encontrados: ', row.id);
-                    const tablaHtml = `
-                        <tr>
-                            <td>${row.jugador}</td>
-                            <td id="select-container-${row.id}"></td>
-                            <td>
-                                <button type="button" class="btn btn-warning" onclick="openUpdate(${row.id})">
-                                    <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                    cargarTabla.innerHTML += tablaHtml;
-
-                    // Insertar el elemento select en el contenedor adecuado
-                    document.getElementById(`select-container-${row.id}`).appendChild(selects[index]);
-
-                    // Asignar la opción seleccionada
-                    selects[index].value = row.asistencia;
-                });
-            });
-        } else {
-            cargarTabla.innerHTML = '<tr><td colspan="3">No se encontraron registros.</td></tr>';
-        }
+        cargarTabla.innerHTML = '<tr><td colspan="3">Error al cargar datos.</td></tr>';
     }
 }
+
 
 
 
@@ -249,10 +264,11 @@ window.onload = async function () {
     ID_HORARIO_url = DATA.dataset.id_horario;
     (DATA.dataset.asistencia == 1) ? boton.textContent = 'Modificar registro' : boton.textContent = 'Guardar registro';
     (DATA.dataset.asistencia == 1) ? titleElement.textContent = 'Asistencia del equipo - actualizar' : titleElement.textContent = 'Asistencia del equipo - agregar asistencia';
-    fillTable(DATA.dataset.asistencia);
+    await fillTable(DATA.dataset.asistencia);
     console.log('ID ENTRENAMIENTO:', ID_ENTRENAMIENTO_url);
     console.log('ID HORARIO:', ID_HORARIO_url);
     console.log('Asistencia:', DATA.dataset.asistencia);
+    BOOLASISTENCIA = DATA.dataset.asistencia;
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
@@ -262,4 +278,29 @@ window.onload = async function () {
         ID_ASISTENCIA = document.getElementById('idAsitencia'),
         OBSERVACION = document.getElementById('Observacion');
 
+    // Método del evento para cuando se envía el formulario de buscar.
+    SAVE_FORM.addEventListener('submit', (event) => {
+        // Se evita recargar la página web después de enviar el formulario.
+        event.preventDefault();
+
+        // Constante tipo objeto con los datos del formulario.
+        let id = ID_ASISTENCIA.value;
+        let newObservation = OBSERVACION.value;
+
+        console.log('ID ASISTENCIA:', id);
+        console.log('OBSERVACION:', newObservation);
+        // Encuentra el objeto en el arreglo que corresponde al id dado.
+        let item = LISTA_DATOS.find(item => item.id === id);
+        console.log('Item:', item);
+        // Si se encuentra el objeto, modifica la observación.
+        if (item) {
+            item.observacion = newObservation;
+        }
+        console.log('Lista de datos:', LISTA_DATOS);
+        console.log('Item:', item);
+        // Limpia el formulario.
+        SAVE_FORM.reset();
+        // Cierra el modal.
+        SAVE_MODAL.hide();
+    });
 };
