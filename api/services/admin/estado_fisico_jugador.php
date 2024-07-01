@@ -87,7 +87,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Estado eliminado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar el estadofisico';
+                    $result['error'] = 'Ocurrió un problema al eliminar el estado fisico';
                 }
                 break;
             default:

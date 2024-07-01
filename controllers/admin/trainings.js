@@ -377,6 +377,17 @@ const seeCont = async (id) => {
     }
 }
 
+/*
+*   Función para abrir la página de detalles específicos.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
+//
+// Función para abrir la página de detalles específicos.
+const openPag = (id_entrenamiento) => {
+        window.location.href = `../pages/feature_analysis.html?id=${id_entrenamiento}`;   
+}
+
 //Crea un comentario que describa la función que esta debajo
 /*
 *   Función asíncrona para cargar la tabla de detalles de contenidos.
@@ -430,7 +441,7 @@ async function cargarTabla(form = null) {
                 <tr>
                     <td>${row.detalle_entrenamiento}</td>
                     <td class="justify-content-center">
-                        <button type="button" class="btn transparente" onclick="seeModal(${row.id_entrenamiento})">
+                        <button type="button" class="btn transparente" onclick="openPag(${row.id_entrenamiento})">
                         <img src="../../../resources/img/svg/icons_forms/stadistic.png" width="30" height="30">
                         </button>
                     </td>

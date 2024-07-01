@@ -9,103 +9,42 @@ let SAVE_FORM,
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
-const ASISTENCIAS_API = '';
-const HORARIOS_API = '';
+const DETALLE_CONTENIDO_API = 'services/admin/detalle_contenido.php';
 
+// Lista de datos para mostrar en la tabla de horarios
 const lista_datos_horario = [
     {
-        horario: "Lunes 15- 8:00 AM- 10:20 AM",
+        horario: "8:00 AM- 10:20 AM",
         id: 1,
     },
     {
-        horario: 'Lunes 15- 1:30 PM - 3_00 PM',
+        horario: '1:30 PM - 3_00 PM',
         id: 2,
     },
     {
-        horario: 'Viernes 12 8:00 AM- 10:20 AM',
+        horario: '4:00 PM- 6:30 PM',
         id: 3,
-    },
-    {
-        horario: 'Viernes 11 10:30 AM- 12:50 PM',
-        id: 4,
-    },
-    {
-        horario: 'Martes 9 3:30 PM- 5:50 PM',
-        id: 5,
-    },
-    {
-        horario: 'Miércoles 10 8:00 AM- 10:20 AM',
-        id: 6,
-    },
-    {
-        horario: 'Jueves 11 8:00 AM- 10:20 AM',
-        id: 7,
-    },
-    {
-        horario: 'Jueves 11 1:30 PM- 3:50 PM',
-        id: 8,
-    },
-    {
-        horario: 'Miércoles 10 10:30 AM- 12:50 PM',
-        id: 9,
-    },
-    {
-        horario: 'Martes 9 8:00 AM- 10:20 AM',
-        id: 10,
-    },
-    {
-        horario: 'Viernes 12 1:30 PM- 3:50 PM',
-        id: 11,
-    },
+    }
 ];
-// Lista de datos para mostrar en la tabla de horarios
-/*
-*   Lista de datos para pruebas
-*/
 
 
+//Función asíncrona para cargar un componente HTML.
 async function loadComponent(path) {
     const response = await fetch(path);
     const text = await response.text();
     return text;
 }
 
-// Función para poblar un combobox (select) con opciones
-const fillSelected = (data, action, selectId, selectedValue = null) => {
-    const selectElement = document.getElementById(selectId);
-
-    // Limpiar opciones previas del combobox
-    selectElement.innerHTML = '';
-
-    // Crear opción por defecto
-    const defaultOption = document.createElement('option');
-    defaultOption.value = '';
-    defaultOption.textContent = 'Selecciona a el horario';
-    selectElement.appendChild(defaultOption);
-
-    // Llenar el combobox con los datos proporcionados
-    data.forEach(item => {
-        const option = document.createElement('option');
-        option.value = item.id; // Suponiendo que hay una propiedad 'id' en los datos
-        option.textContent = item.horario; // Cambia 'horario' al nombre de la propiedad que deseas mostrar en el combobox
-        selectElement.appendChild(option);
-    });
-
-    // Seleccionar el valor especificado si se proporciona
-    if (selectedValue !== null) {
-        selectElement.value = selectedValue;
-    }
-};
-
-
-
-// Funcion para abrir una página nueva
 /*
-*   En la práctica, esta función redirige a una nueva página en la misma ventana del navegador pero con el id horario.
+*   Función para abrir la página de detalles específicos.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
 */
-
+//
+// Función para abrir la página de detalles específicos.
 const openPag = () => {
-    window.location.href = '../pages/specific_assistens.html';
+    id_entrenamiento = document.getElementById('horario').value;
+        window.location.href = `../pages/specific_assistens.html?id_entrenamiento=${id_entrenamiento}`;
 }
 
 // Funcion para preparar el formulario al momento de abrirlo
@@ -118,19 +57,17 @@ const seeModal = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
-        FORM.append('idCategoria', id);
+        FORM.append('idEquipo', id);
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(ASISTENCIAS_API, 'readOne', FORM);
+        await fillSelectPost(DETALLE_CONTENIDO_API, 'readOneHorario', 'horario', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SEE_MODAL.show();
-            MODAL_TITLE.textContent = 'Elegir horario';
+            MODAL_TITLE.textContent = 'Elegir entrenamiento';
             // Se prepara el formulario.
             SEE_FORM.reset();
             // Se inicializan los campos con los datos.
-            const ROW = DATA.dataset;
-            ID_CATEGORIA.value = ROW.ID;
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -139,16 +76,16 @@ const seeModal = async (id) => {
         SEE_MODAL.show();
         MODAL_TITLE.textContent = 'Elegir horario';
         SEE_FORM.reset();
-        fillSelected(lista_datos_horario, 'readAll', 'horario');
     }
 }
 
-// Funcion para preparar el formulario al momento de abrirlo
+//Crea un comentario que describa la función llamada cargarTabla
 /*
-*   Función asíncrona para preparar el la tabla que contendrá los datos.
-*   Parámetros: ninguno.
+*   Función asíncrona para cargar la tabla de detalles de contenidos.
+*   Parámetros: form (formulario de búsqueda).
 *   Retorno: ninguno.
 */
+
 async function cargarTabla(form = null) {
     const lista_datos = [
         {
@@ -172,15 +109,15 @@ async function cargarTabla(form = null) {
             id: 4,
         }
     ];
-    const cargarTabla = document.getElementById('tabla_asistencias');
+    const cargarTabla = document.getElementById('tabla_detalles_contenidos');
 
     try {
         cargarTabla.innerHTML = '';
         // Se verifica la acción a realizar.
-        (form) ? action = 'searchRows' : action = 'readAll';
+        (form) ? action = 'searchRowsHorario' : action = 'readAllHorario';
         console.log(form);
         // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(ASISTENCIAS_API, action, form);
+        const DATA = await fetchData(DETALLE_CONTENIDO_API, action, form);
         console.log(DATA);
 
         if (DATA.status) {
@@ -188,14 +125,15 @@ async function cargarTabla(form = null) {
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
                 <tr>
-                    <td>${row.EQUIPO}</td>
-                    <td>${row.CATEGORIA}</td>
-                    <td>
-                        <button type="button" class="btn transparente" onclick="seeModal(${row.ID})">
-                        <img src="../../../resources/img/svg/icons_forms/reloj.png" width="30" height="30">
-                        </button>
-                    </td>
-                </tr>
+                <td>${row.nombre_equipo}</td>
+                <td>${row.nombre_categoria}</td>
+                
+                <td>
+                    <button type="button" class="btn transparente" onclick="seeModal(${row.id_equipo})">
+                    <img src="../../../resources/img/svg/icons_forms/reloj.png" width="30" height="30">
+                    </button>
+                </td>
+            </tr>
                 `;
                 cargarTabla.innerHTML += tablaHtml;
             });
@@ -208,11 +146,11 @@ async function cargarTabla(form = null) {
         lista_datos.forEach(row => {
             const tablaHtml = `
             <tr>
-                <td>${row.equipo}</td>
-                <td>${row.categoria}</td>
+                <td>${row.nombre_equipo}</td>
+                <td>${row.nombre_categoria}</td>
                 
                 <td>
-                    <button type="button" class="btn transparente" onclick="seeModal(${row.id})">
+                    <button type="button" class="btn transparente" onclick="seeModal(${row.id_equipo})">
                     <img src="../../../resources/img/svg/icons_forms/reloj.png" width="30" height="30">
                     </button>
                 </td>
@@ -233,9 +171,8 @@ window.onload = async function () {
     loadTemplate();
     // Agrega el HTML del encabezado
     appContainer.innerHTML = adminHtml;
-    fillSelected(lista_datos_horario, 'readAll', 'horario');
     const titleElement = document.getElementById('title');
-    titleElement.textContent = 'Asistencias - elegir horario';
+    titleElement.textContent = 'Asistencias';
     cargarTabla();
     // Constantes para establecer los elementos del componente Modal.
 
@@ -246,35 +183,6 @@ window.onload = async function () {
     SAVE_FORM = document.getElementById('seeForm'),
         ID_CATEGORIA = document.getElementById('idCategoria'),
         HORARIO = document.getElementById('horario');
-    // Método del evento para cuando se envía el formulario de guardar.
-    SAVE_FORM.addEventListener('submit', async (event) => {
-        // Se evita recargar la página web después de enviar el formulario.
-        event.preventDefault();
-        // Se verifica la acción a realizar.
-        (ID_CATEGORIA.value) ? action = 'select' : action = 'createRow';
-        // Constante tipo objeto con los datos del formulario.
-        const FORM = new FormData(SAVE_FORM);
-        // Petición para guardar los datos del formulario.
-        const DATA = await fetchData(ASISTENCIAS_API, action, FORM);
-        //Aqui debo hacer la lógica de lo que sucederá cuando se le dé click a seleccionar horario.
-        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-        //Pondré el metodo para abrir la siguiente pantalla antes del if, luego deberé ponerla
-        // Redirige a una nueva página en la misma ventana del navegador
-
-
-        if (DATA.status) {
-            // Se cierra la caja de diálogo.
-            SAVE_MODAL.hide();
-            // Se muestra un mensaje de éxito.
-            sweetAlert(1, DATA.message, true);
-            // Se carga nuevamente la tabla para visualizar los cambios.
-            cargarTabla();
-        } else {
-            sweetAlert(2, DATA.error, false);
-            console.error(DATA.exception);
-
-        }
-    });
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');
     // Verificar si SEARCH_FORM está seleccionado correctamente

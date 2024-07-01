@@ -16,18 +16,6 @@ class EstadoFisicoJugadorHandler
     protected $imc = null;
 
 
-    /*
-     *  Métodos para realizar las operaciones SCRUD (search, create, read, update, and delete).
-     * CREATE TABLE estados_fisicos_jugadores(
-  id_estado_fisico_jugador INT AUTO_INCREMENT PRIMARY KEY,
-  id_jugador INT NOT NULL, 
-  CONSTRAINT fk_estado_fisico_jugador FOREIGN KEY (id_jugador) REFERENCES jugadores(id_jugador),
-  altura_jugador DECIMAL(4, 2) UNSIGNED NOT NULL,
-  peso_jugador DECIMAL(5, 2) UNSIGNED NOT NULL,
-  indice_masa_corporal DECIMAL(5, 2) UNSIGNED NULL
-);
-     */
-
     //Función para buscar un Estado fisico o varios.
     public function searchRows()
     {
