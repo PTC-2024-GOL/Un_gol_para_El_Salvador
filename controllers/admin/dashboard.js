@@ -154,12 +154,78 @@ const getUser = async () => {
     }
 }
 
+let title;
+let eventIdCounter = 1;
 
 const calendar = async () => {
 
     const calendarEl = document.getElementById('calendar');
     const calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth'
+        initialView: 'dayGridMonth',
+        selectable: true,
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+
+        //Evento que se activa cuando se da clic a una fecha del calendario
+        dateClick: function(info) {
+            title = prompt('Escribe un titulo para la fecha');
+            if (title) {
+                const dateStr = prompt('Escribe la hora para el evento en formato HH:MM (24 horas)', '12:00');
+
+                // Validar la hora ingresada
+                const timePattern = /^([01]\d|2[0-3]):([0-5]\d)$/;
+                if (!timePattern.test(dateStr)) {
+                    alert('Hora no válida. Por favor, use el formato HH:MM.');
+                    return;
+                }
+
+                const dateTimeStr = `${info.dateStr}T${dateStr}:00`; // Formato ISO 8601
+                const endDateTimeStr = `${info.dateStr}T${dateStr}:59`;
+
+                const color = prompt('Escribe un color para el evento (por ejemplo, "#ff0000" para rojo)');
+                calendar.addEvent({
+                    title: title,
+                    id: eventIdCounter++,
+                    start: dateTimeStr,
+                    end: endDateTimeStr,
+                    backgroundColor: color,
+                    borderColor: color,
+                });
+            }
+            alert('clicked ' + info.dateStr);
+        },
+
+        //Evento que se activa cuando se hace clic a un evento en el calendario - Para eliminar o editar.
+        eventClick: function(info) {
+            const action = prompt('¿Qué acción deseas realizar? Escribe "editar" o "eliminar".');
+
+            if (action === 'editar') {
+                let newTitle = prompt('Actualizar título:', info.event.title);
+                if (newTitle) {
+                    let newColor = prompt('Actualizar color:', info.event.backgroundColor);
+
+                    // Actualizar el evento con el nuevo título y color
+                    calendar.getEventById(info.event.id).setProp('title', newTitle);
+                    calendar.getEventById(info.event.id).setProp('backgroundColor', newColor);
+
+                    alert(`Evento actualizado: ${newTitle}`);
+                }
+            } else if (action === 'eliminar') {
+                if (confirm(`¿Seguro que quieres eliminar el evento "${info.event.title}"?`)) {
+                    info.event.remove(); // Eliminar el evento del calendario
+                    alert(`Evento "${info.event.title}" eliminado.`);
+                }
+            } else {
+                alert('Acción no válida.');
+            }
+        },
+        select: function(info) {
+            alert('selected ' + info.startStr + ' to ' + info.endStr);
+        },
+        events: []
     });
     calendar.render();
 
