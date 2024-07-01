@@ -44,11 +44,11 @@ class CaracteristicasAnalisisData extends CaracteristicasAnalisisHandler
     // Validación y asignación del ID de la caracteristica del jugador.
     public function setCaracteristica($value)
     {
-        if (Validator::validateNaturalNumber($value)) {
+        try{
             $this->caracteristica = $value;
             return true;
-        } else {
-            $this->data_error = 'El identificador de la caracteristica del jugador es incorrecto';
+        }catch(error){
+            $this->data_error = 'Ocurrió un error a la hora de mandar las características.';
             return false;
         }
     }

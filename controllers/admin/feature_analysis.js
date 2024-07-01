@@ -1,5 +1,3 @@
-
-
 let SAVE_MODAL,
     MODAL_TITLE;
 let GRAPHIC_MODAL,
@@ -28,7 +26,7 @@ async function loadComponent(path) {
 *   Parámetros: ninguno.
 *   Retorno: ninguno.
 */
-const openCreate = (id) => {
+const openCreate1 = (id) => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
     MODAL_TITLE.textContent = 'Crear análisis del jugador';
@@ -95,74 +93,51 @@ const seeModal = async (id) => {
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const openUpdate = async (id) => {
+const openCreate = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
-        FORM.append('idAnalisis', id);
+        FORM.append('idJugador', id);
+        FORM.append('idEntrenamiento', PARAMS.get('id'));
+
         // Petición para obtener los datos del registro solicitado.
         const DATA = await fetchData(API, 'readOne', FORM);
+
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
             MODAL_TITLE.textContent = 'Actualizar análisis del jugador';
+
             // Se prepara el formulario.
             SAVE_FORM.reset();
-            // Se inicializan los campos con los datos.
-            const ROW = DATA.dataset;
-            ID_EQUIPO.value = ROW.ID;
-            NOMBRE_EQUIPO.value = ROW.NOMBRE;
-            TELEFONO_EQUIPO.value = ROW.TELEFONO;
-            ID_CUERPO_TECNICO.value = ROW.ID_CUERPO_TECNICO;
-            ID_ADMINISTRADOR.value = ROW.ID_ADMINISTRADOR;
-            ID_CATEGORIA.value = ROW.ID_CATEGORIA;
-            LOGO_EQUIPO.value = ROW.LOGO;
+
+            // Cargar las características
+            await cargarNav();
+
+            JUGADOR.value = id;
+            ENTRENAMIENTO.value = PARAMS.get('id');
+            // Esperar a que los inputs se hayan generado en el DOM
+            setTimeout(() => {
+                const caracteristicas = DATA.dataset;
+
+                // Recorrer los inputs del formulario y asignar valores
+                caracteristicas.forEach(caracteristica => {
+                    const input = document.querySelector(`input[data-id-caracteristica-jugador="${caracteristica.IDC}"]`);
+                    if (input) {
+                        input.value = caracteristica.NOTA;
+                    }
+                });
+            }, 500); // Ajusta este tiempo según sea necesario para asegurar que los inputs estén generados
         } else {
             sweetAlert(2, DATA.error, false);
         }
     } catch (Error) {
-        console.log(Error);
-        SAVE_MODAL.show();
-        MODAL_TITLE.textContent = 'Actualizar análisis del jugador';
-        ID_ANALISIS.value = id;
-        JUGADOR.value = PARAMS.get('id')
+        console.error(Error);
+        sweetAlert(2, 'Ocurrió un error al cargar los datos', false);
     }
+};
 
-}
-/*
-*   Función asíncrona para eliminar un registro.
-*   Parámetros: id (identificador del registro seleccionado).
-*   Retorno: ninguno.
-*/
-const openDelete = async (id) => {
-    // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar el análisis?');
-    try {
-        // Se verifica la respuesta del mensaje.
-        if (RESPONSE) {
-            // Se define una constante tipo objeto con los datos del registro seleccionado.
-            const FORM = new FormData();
-            FORM.append('idAnalisis', id);
-            console.log(id);
-            // Petición para eliminar el registro seleccionado.
-            const DATA = await fetchData(API, 'deleteRow', FORM);
-            console.log(DATA.status);
-            // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-            if (DATA.status) {
-                // Se muestra un mensaje de éxito.
-                await sweetAlert(1, DATA.message, true);
-                // Se carga nuevamente la tabla para visualizar los cambios.
-                cargarTabla();
-            } else {
-                sweetAlert(2, DATA.error, false);
-            }
-        }
-    }
-    catch (Error) {
-        console.log(Error + ' Error al cargar el mensaje');
-    }
-}
 
 async function cargarNav() {
     try {
@@ -292,12 +267,6 @@ async function buscarAnalisis(FORM) {
                     <button type="button" class="btn transparente" onclick="openGraphic(${row.IDJ})">
                     <img src="../../../resources/img/svg/icons_forms/Frame.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.IDJ})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                    </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.IDJ})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
                 </td>
             </tr>
                 `;
@@ -363,12 +332,6 @@ async function cargarTabla() {
                     <button type="button" class="btn transparente" onclick="openGraphic(${row.IDJ})">
                     <img src="../../../resources/img/svg/icons_forms/Frame.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.IDJ})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                    </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.IDJ})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
                 </td>
             </tr>
                 `;
@@ -394,11 +357,6 @@ async function cargarTabla() {
                     <button type="button" class="btn transparente" onclick="openGraphic(${row.id})">
                     <img src="../../../resources/img/svg/icons_forms/Frame.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                    </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
                 </td>
             </tr>
@@ -496,20 +454,22 @@ window.onload = async function () {
         // Crear un arreglo para las características
         const caracteristicas = [];
     
-        // Recorrer los inputs del formulario y agregar las características
+        // Recorrer los inputs del formulario y agregar las características válidas
         SAVE_FORM.querySelectorAll('input[type="number"]').forEach(input => {
             const idCaracteristicaJugador = input.getAttribute('data-id-caracteristica-jugador');
             const notaCaracteristicaAnalisis = input.value;
     
-            caracteristicas.push({
-                id_caracteristica_jugador: idCaracteristicaJugador,
-                nota_caracteristica_analisis: notaCaracteristicaAnalisis
-            });
+            if (idCaracteristicaJugador && notaCaracteristicaAnalisis) {
+                caracteristicas.push({
+                    id_caracteristica_jugador: idCaracteristicaJugador,
+                    nota_caracteristica_analisis: notaCaracteristicaAnalisis
+                });
+            }
         });
     
         // Agregar los datos adicionales al FormData
         formData.append('caracteristicas', JSON.stringify(caracteristicas));
-    
+        console.log(JSON.stringify(caracteristicas));
         // Enviar la solicitud para guardar los datos
         const DATA = await fetchData(API, action, formData);
     
@@ -526,6 +486,7 @@ window.onload = async function () {
             console.error(DATA.exception);
         }
     });
+    
 
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');
