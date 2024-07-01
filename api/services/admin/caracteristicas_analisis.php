@@ -16,8 +16,10 @@ if (isset($_GET['action'])) {
         switch ($_GET['action']) {
                 // Buscar
             case 'searchRows':
-                if (!$caracteristica->setEntrenamiento($_POST['idEntrenamiento']) or
-                   !Validator::validateSearch($_POST['search'])) {
+                if (
+                    !$caracteristica->setEntrenamiento($_POST['idEntrenamiento']) or
+                    !Validator::validateSearch($_POST['search'])
+                ) {
                     $result['error'] = Validator::getSearchError();
                 } elseif ($result['dataset'] = $caracteristica->searchRows()) {
                     $result['status'] = 1;
@@ -26,20 +28,35 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'No hay coincidencias';
                 }
                 break;
-                //crear
+                // Crear
             case 'createRow':
                 $_POST = Validator::validateForm($_POST);
                 if (
                     !$caracteristica->setJugador($_POST['jugador']) or
-                    !$caracteristica->setEntrenamiento($_POST['entrenamiento']) or
-                    !$caracteristica->setCaracteristica($_POST['caracteristicas'])
+                    !$caracteristica->setEntrenamiento($_POST['entrenamiento'])
                 ) {
                     $result['error'] = $caracteristica->getDataError();
-                } elseif ($caracteristica->createRow()) {
-                    $result['status'] = 1;
-                    $result['message'] = 'Caracteristica creada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al crear la característica';
+                    $caracteristicas = json_decode($_POST['caracteristicas'], true);
+                    $success = true;
+                    foreach ($caracteristicas as $carac) {
+                        if (
+                            !$caracteristica->setCaracteristica($carac['id_caracteristica_jugador']) or
+                            !$caracteristica->setNota($carac['nota_caracteristica_analisis'])
+                        ) {
+                            $result['error'] = $caracteristica->getDataError();
+                            $success = false;
+                            break;
+                        } elseif (!$caracteristica->createRow()) {
+                            $result['error'] = 'Ocurrió un problema al crear las características';
+                            $success = false;
+                            break;
+                        }
+                    }
+                    if ($success) {
+                        $result['status'] = 1;
+                        $result['message'] = 'Característica(s) creada(s) correctamente';
+                    }
                 }
                 break;
                 // Leer todos

@@ -36,15 +36,16 @@ class CaracteristicasAnalisisHandler
     //Función para insertar una característica.
     public function createRow()
     {
-        $sql = 'CALL insertarCaracteristicasYDetalles(?,?,?);';
+        $sql = 'CALL insertarCaracteristicasYDetallesRemodelado(?,?,?,?);';
         $params = array(
             $this->jugador,
             $this->entrenamiento,
-            $this->caracteristica
+            $this->caracteristica,
+            $this->nota
         );
         return Database::executeRow($sql, $params);
     }
-
+    
     //Función para leer todas las característica.
     public function readAll()
     {
