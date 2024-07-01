@@ -15,5 +15,5 @@ window.onload = async function () {
     appContainer.innerHTML = lesionHtml;
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
-    titleElement.textContent = 'Contáctanos'; 
+    titleElement.textContent = 'Contáctanos';
 }

@@ -161,7 +161,7 @@ async function fillTable(form = null) {
         // Petición para obtener los registros disponibles.
         let action;
         form ? action = 'searchRows' : action = 'readAll';
-        
+
         const DATA = await fetchData(API, action, form);
         console.log(form);
         console.log(DATA);

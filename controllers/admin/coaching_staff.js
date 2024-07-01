@@ -198,7 +198,7 @@ async function fillTable(form = null) {
         // Petición para obtener los registros disponibles.
         let action;
         form ? action = 'searchRows' : action = 'readAll';
-        
+
         const DATA = await fetchData(CUERPOTECNICO_API, action, form);
         if (DATA.status) {
             cuerpoTecnico = DATA.dataset;
@@ -391,7 +391,7 @@ window.onload = async function () {
         MODAL_TITLE = document.getElementById('modalTitle');
 
     // Constantes para establecer los elementos del formulario de guardar.
-        SAVE_FORM = document.getElementById('saveForm'),
+    SAVE_FORM = document.getElementById('saveForm'),
         ID_CUERPOTECNICO = document.getElementById('idCuerpotecnico'),
         CUERPOTECNICO = document.getElementById('cuerpoTecnico');
     // Método del evento para cuando se envía el formulario de guardar.

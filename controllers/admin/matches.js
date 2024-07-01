@@ -321,7 +321,7 @@ async function fillCards(form = null) {
                 cargarCartas.innerHTML += cardsHtml;
             });
         }
-         else {
+        else {
             sweetAlert(4, DATA.error, true);
         }
     } catch (error) {
@@ -429,14 +429,14 @@ window.onload = async function () {
         const parts = str.split("-");
         const equipo = parts[0];
         const rival = parts[1];
-        const mensaje =  MENSAJEALERT.classList.remove('d-none');
+        const mensaje = MENSAJEALERT.classList.remove('d-none');
 
         if ((TIPO_RESULTADO_PARTIDO.value == 'Victoria') && ((equipo < rival) || (equipo == rival))) {
             sweetAlert(2, 'El resultado no coincide con el tipo de resultado', false);
             mensaje;
             return;
         }
-        if ((TIPO_RESULTADO_PARTIDO.value == 'Derrota') && ((equipo > rival)|| (equipo == rival))) {
+        if ((TIPO_RESULTADO_PARTIDO.value == 'Derrota') && ((equipo > rival) || (equipo == rival))) {
             sweetAlert(2, 'El resultado no coincide con el tipo de resultado', false);
             mensaje;
             return;
@@ -475,39 +475,39 @@ window.onload = async function () {
     EQUIPO.addEventListener('change', (event) => {
         // Obtiene el valor seleccionado del elemento select
         const selectedValue = event.target.value;
-    
+
         // Busca la imagen correspondiente en el arreglo de IMAGENES_EQUIPOS
         const selectedImage = IMAGENES_EQUIPOS.find(image => image.id == selectedValue);
-    
+
         // Si se encuentra la imagen, actualiza el atributo src del elemento img
         if (selectedImage) {
             LOGO1.src = `${SERVER_URL}images/equipos/${selectedImage.imagen}`;
-        } 
+        }
     });
-    
+
     // Método para el evento change del campo select rivales
     RIVAL.addEventListener('change', (event) => {
         // Obtiene el valor seleccionado del elemento select
         const selectedValue = event.target.value;
-    
+
         // Busca la imagen correspondiente en el arreglo de IMAGENES_EQUIPOS
         const selectedImage = IMAGENES_RIVALES.find(image => image.id == selectedValue);
-    
+
         // Si se encuentra la imagen, actualiza el atributo src del elemento img
         if (selectedImage) {
             LOGO2.src = `${SERVER_URL}images/rivales/${selectedImage.imagen}`;
-        } 
+        }
     });
 
     // Método para el evento change del campo select Tipo de resultado
     TIPO_RESULTADO_PARTIDO.addEventListener('change', (event) => {
         // Obtiene el valor seleccionado del elemento select
         const selectedValue = event.target.value;
-    
-        if(selectedValue == 'Pendiente'){
+
+        if (selectedValue == 'Pendiente') {
             RESULTADO_PARTIDO.value = '0-0';
         }
-     
+
     });
 
     // Constante para establecer el formulario de buscar.

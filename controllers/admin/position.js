@@ -50,7 +50,7 @@ const lista_select = [
 ];
 
 // Función para poblar un combobox (select) con opciones
-const fillSelected = (data, action,selectId, selectedValue = null) => {
+const fillSelected = (data, action, selectId, selectedValue = null) => {
     const selectElement = document.getElementById(selectId);
 
     // Limpiar opciones previas del combobox
@@ -99,7 +99,7 @@ const openUpdate = async (id) => {
             const ROW = DATA.dataset;
             ID_POSICION.value = ROW.id_posicion;
             NOMBRE_POSICION.value = ROW.posicion;
-            fillSelected(lista_select, 'readAll', 'areaJuego',ROW.area_de_juego);
+            fillSelected(lista_select, 'readAll', 'areaJuego', ROW.area_de_juego);
         } else {
             sweetAlert(2, DATA.error, false);
         }

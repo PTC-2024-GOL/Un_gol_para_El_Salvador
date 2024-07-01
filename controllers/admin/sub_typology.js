@@ -110,7 +110,7 @@ async function fillTable(form = null) {
         // Petición para obtener los registros disponibles.
         let action;
         form ? action = 'searchRows' : action = 'readAll';
-        
+
         const DATA = await fetchData(SUBTIPOLOGIA_API, action, form);
         if (DATA.status) {
             subTipologia = DATA.dataset;

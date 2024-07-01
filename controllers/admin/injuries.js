@@ -23,8 +23,8 @@ async function loadComponent(path) {
 const openCreate = async () => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
-    await fillSelect(TIPO_LESIONES_API,'readAll', 'tipoLesion');
-    await fillSelect(SUBTIPOLOGIAS_API,'readAll', 'tipologia');
+    await fillSelect(TIPO_LESIONES_API, 'readAll', 'tipoLesion');
+    await fillSelect(SUBTIPOLOGIAS_API, 'readAll', 'tipologia');
     MODAL_TITLE.textContent = 'Agregar lesión';
     // Se prepara el formulario.
     SAVE_FORM.reset();
@@ -51,8 +51,8 @@ const openUpdate = async (id) => {
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
             ID_LESION.value = ROW.id_lesion;
-            await fillSelect(TIPO_LESIONES_API,'readAll', 'tipoLesion', ROW.id_tipo_lesion);
-            await fillSelect(SUBTIPOLOGIAS_API,'readAll', 'tipologia', ROW.id_sub_tipologia);
+            await fillSelect(TIPO_LESIONES_API, 'readAll', 'tipoLesion', ROW.id_tipo_lesion);
+            await fillSelect(SUBTIPOLOGIAS_API, 'readAll', 'tipologia', ROW.id_sub_tipologia);
         } else {
             await sweetAlert(2, DATA.error, false);
         }
@@ -146,8 +146,8 @@ async function fillTable(form = null) {
         const DATA = await fetchData(LESIONES_API, action, form);
 
         if (DATA.status) {
-           injuries = DATA.dataset;
-           showInjuries(currentPage);
+            injuries = DATA.dataset;
+            showInjuries(currentPage);
         } else {
             await sweetAlert(4, DATA.error, true);
         }
@@ -204,33 +204,33 @@ window.onload = async function () {
 
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
-        ID_LESION= document.getElementById('idLesion'),
+        ID_LESION = document.getElementById('idLesion'),
         ID_TIPO_LESION = document.getElementById('tipoLesion'),
         ID_SUB_TIPOLOGIA = document.getElementById('tipologia'),
 
-    // Método del evento para cuando se envía el formulario de guardar.
-    SAVE_FORM.addEventListener('submit', async (event) => {
-        // Se evita recargar la página web después de enviar el formulario.
-        event.preventDefault();
-        // Se verifica la acción a realizar.
-        (ID_LESION.value) ? action = 'updateRow' : action = 'createRow';
-        // Constante tipo objeto con los datos del formulario.
-        const FORM = new FormData(SAVE_FORM);
-        // Petición para guardar los datos del formulario.
-        const DATA = await fetchData(LESIONES_API, action, FORM);
-        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-        if (DATA.status) {
-            // Se cierra la caja de diálogo.
-            SAVE_MODAL.hide();
-            // Se muestra un mensaje de éxito.
-            await sweetAlert(1, DATA.message, true);
-            // Se carga nuevamente la tabla para visualizar los cambios.
-            await fillTable();
-        } else {
-            await sweetAlert(2, DATA.error, false);
-            console.error(DATA.exception);
-        }
-    });
+        // Método del evento para cuando se envía el formulario de guardar.
+        SAVE_FORM.addEventListener('submit', async (event) => {
+            // Se evita recargar la página web después de enviar el formulario.
+            event.preventDefault();
+            // Se verifica la acción a realizar.
+            (ID_LESION.value) ? action = 'updateRow' : action = 'createRow';
+            // Constante tipo objeto con los datos del formulario.
+            const FORM = new FormData(SAVE_FORM);
+            // Petición para guardar los datos del formulario.
+            const DATA = await fetchData(LESIONES_API, action, FORM);
+            // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+            if (DATA.status) {
+                // Se cierra la caja de diálogo.
+                SAVE_MODAL.hide();
+                // Se muestra un mensaje de éxito.
+                await sweetAlert(1, DATA.message, true);
+                // Se carga nuevamente la tabla para visualizar los cambios.
+                await fillTable();
+            } else {
+                await sweetAlert(2, DATA.error, false);
+                console.error(DATA.exception);
+            }
+        });
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');
 

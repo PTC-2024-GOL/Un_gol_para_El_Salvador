@@ -16,7 +16,7 @@ let EDIT_FORM,
     FOTO_PERFIL,
     IMAGEN_PERFIL;
 
-    
+
 // Constantes para completar las rutas de la API.
 const ADMINISTRADOR_API = 'services/admin/administradores.php';
 
@@ -44,8 +44,8 @@ async function openProfile() {
         document.getElementById('foto').src = SERVER_URL.concat('images/administradores/', DATA.dataset.IMAGEN);
         document.getElementById('nombre').textContent = DATA.dataset.NOMBRE;
         document.getElementById('email').textContent = DATA.dataset.CORREO;
-        document.getElementById('phone').textContent ='(+503) '+ DATA.dataset.TELÉFONO;
-    } 
+        document.getElementById('phone').textContent = '(+503) ' + DATA.dataset.TELÉFONO;
+    }
 }
 
 
@@ -123,7 +123,7 @@ window.onload = async function () {
         }
     });
 
-    
+
     EDIT_MODAL = new bootstrap.Modal('#editModal'),
         EDIT_TITLE = document.getElementById('modalTitleEdit');
 
@@ -154,8 +154,8 @@ window.onload = async function () {
             EDIT_MODAL.hide();
             // Se muestra un mensaje de éxito.
             sweetAlert(1, DATA.message, true, 'profile.html');
-            
-            openProfile(); 
+
+            openProfile();
         } else {
             sweetAlert(2, DATA.error, false);
         }

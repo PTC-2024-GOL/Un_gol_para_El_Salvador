@@ -337,7 +337,7 @@ window.onload = async function () {
     FORM.append('idEntrenamiento', ID_ENTRENAMIENTO);
     const DATA = await fetchData(SD_CONTENTS_API, 'readOneEquipo', FORM);
     ID_EQUIPO = DATA.dataset.id_equipo;
-    console.log('Este es el idequipo que trae el windowsOnload',ID_EQUIPO);
+    console.log('Este es el idequipo que trae el windowsOnload', ID_EQUIPO);
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),

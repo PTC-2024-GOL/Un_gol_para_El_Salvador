@@ -40,7 +40,7 @@ const changeSoccer = async () => {
     //GRAFICA
     const DATA = await fetchData(MATCHES_API, 'trainingAnylsis', FORM);
 
-    if(DATA.status){
+    if (DATA.status) {
         TEXT.classList.add('d-none');
         GRAPHIC.classList.remove('d-none');
         GRAPHIC_TEXT.classList.add('d-none');
@@ -53,7 +53,7 @@ const changeSoccer = async () => {
         });
         // Si ocurre un error, se utilizan los datos de ejemplo definidos arriba.
         DoughnutGraph('estadistica', caracteristica, promedio, 'Promedio por cada área');
-    } else{
+    } else {
         TEXT.classList.add('d-none');
         GRAPHIC_TEXT.classList.remove('d-none');
         GRAPHIC_TEXT.textContent = DATA.error;
@@ -64,13 +64,13 @@ const changeSoccer = async () => {
 
     const DATA2 = await fetchData(MATCHES_API, 'matchesResult', FORM);
 
-    if(DATA2.status){
+    if (DATA2.status) {
         GANADOS.textContent = DATA2.dataset.victorias;
         PERDIDOS.textContent = DATA2.dataset.derrotas;
         EMPATADOS.textContent = DATA2.dataset.empates;
         GOLES_CONTRA.textContent = DATA2.dataset.golesEnContra;
         GOLES_FAVOR.textContent = DATA2.dataset.golesAFavor;
-        DIFERENCIA .textContent = DATA2.dataset.diferencia;
+        DIFERENCIA.textContent = DATA2.dataset.diferencia;
     }
 
 
@@ -80,7 +80,7 @@ const soccerTeams = async () => {
 
     const DATA = await fetchData(API_SOCCER, 'readAll');
 
-    if(DATA.status){
+    if (DATA.status) {
         TEAMS.innerHTML = '';
         DATA.dataset.forEach(row => {
             TEAMS.innerHTML += `
@@ -111,7 +111,7 @@ const soccerTeams = async () => {
 
 const lastMatch = async () => {
     const DATA = await fetchData(MATCHES_API, 'lastMatch');
-    if(DATA.status){
+    if (DATA.status) {
         MATCH.innerHTML = `
                     <div class="container mt-3 p-3">
                     <!-- Primera fila que contiene la fecha -->
@@ -155,13 +155,13 @@ const getUser = async () => {
 }
 
 
-    const calendar = async () => {
-    
-  const calendarEl = document.getElementById('calendar');
-  const calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: 'dayGridMonth'
-  });
-  calendar.render();
+const calendar = async () => {
+
+    const calendarEl = document.getElementById('calendar');
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth'
+    });
+    calendar.render();
 
 }
 

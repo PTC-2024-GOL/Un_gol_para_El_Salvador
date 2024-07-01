@@ -48,7 +48,7 @@ const lista_select = [
 ];
 
 // Función para poblar un combobox (select) con opciones
-const fillSelected = (data, action,selectId, selectedValue = null) => {
+const fillSelected = (data, action, selectId, selectedValue = null) => {
     const selectElement = document.getElementById(selectId);
 
     // Limpiar opciones previas del combobox
@@ -76,13 +76,13 @@ const fillSelected = (data, action,selectId, selectedValue = null) => {
 
 
 const openCreate = () => {
-        // Se muestra la caja de diálogo con su título.
-        SAVE_MODAL.show();
-        MODAL_TITLE.textContent = 'Agregar una jornada';
-        // Se prepara el formulario.
-        SAVE_FORM.reset();
-        // Se carga la lista utilizando el metodo ReadAll de la api de temporada.
-        fillSelect(PLANTILLA_API, 'readAll', 'plantilla');
+    // Se muestra la caja de diálogo con su título.
+    SAVE_MODAL.show();
+    MODAL_TITLE.textContent = 'Agregar una jornada';
+    // Se prepara el formulario.
+    SAVE_FORM.reset();
+    // Se carga la lista utilizando el metodo ReadAll de la api de temporada.
+    fillSelect(PLANTILLA_API, 'readAll', 'plantilla');
 }
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
@@ -295,7 +295,7 @@ window.onload = async function () {
             // Se carga nuevamente la tabla para visualizar los cambios.
             fillTable();
         }
-        else if(!DATA.exception){
+        else if (!DATA.exception) {
             sweetAlert(2, DATA.error, false);
         }
         else {

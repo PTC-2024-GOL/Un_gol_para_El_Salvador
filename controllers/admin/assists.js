@@ -260,7 +260,7 @@ window.onload = async function () {
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         //Pondré el metodo para abrir la siguiente pantalla antes del if, luego deberé ponerla
         // Redirige a una nueva página en la misma ventana del navegador
-       
+
 
         if (DATA.status) {
             // Se cierra la caja de diálogo.
@@ -272,7 +272,7 @@ window.onload = async function () {
         } else {
             sweetAlert(2, DATA.error, false);
             console.error(DATA.exception);
-            
+
         }
     });
     // Constante para establecer el formulario de buscar.

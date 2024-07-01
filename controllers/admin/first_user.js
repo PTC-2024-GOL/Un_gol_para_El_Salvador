@@ -39,8 +39,8 @@ window.onload = async function () {
         FOTO = document.getElementById('img_admin'),
         IMAGEN = document.getElementById('imagenAdministrador');
 
-    
-        IMAGEN.addEventListener('change', function (event) {
+
+    IMAGEN.addEventListener('change', function (event) {
         // Verifica si hay una imagen seleccionada
         if (event.target.files && event.target.files[0]) {
             // con el objeto FileReader lee de forma asincrona el archivo seleccionado
@@ -80,7 +80,7 @@ window.onload = async function () {
             // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
             if (DATA.status) {
                 sweetAlert(1, DATA.message, true, 'index.html');
-           } else {
+            } else {
                 sweetAlert(2, DATA.error, false);
             }
         });

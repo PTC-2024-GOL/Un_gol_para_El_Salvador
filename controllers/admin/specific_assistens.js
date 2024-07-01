@@ -42,7 +42,7 @@ const lista_datos_asistencias = [
     {
         asistencia: "Lesión"
     },
-    
+
     {
         asistencia: "Otro"
     }
@@ -58,7 +58,7 @@ async function loadComponent(path) {
 // Función para poblar un combobox (select) con opciones
 async function fillSelected(data, action, selectElement, selectedValue = '') {
     try {
-        
+
         // Llenar el combobox con los datos proporcionados
         data.forEach(item => {
             const option = document.createElement('option');
@@ -200,10 +200,10 @@ async function fillTable(form = null) {
         // Mostrar materiales de respaldo
         if (lista_datos.length > 0) {
             console.error('Entre al if, así que si detecto que hay datos');
-            
+
             // Primero, creamos todas las promesas para los elementos select
             const selectPromises = lista_datos.map(row => createSelect(row.id));
-            
+
             // Luego, resolvemos todas las promesas
             Promise.all(selectPromises).then(selects => {
                 // Ahora que todas las promesas se han resuelto, podemos construir la cadena de texto
