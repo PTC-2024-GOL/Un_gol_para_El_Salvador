@@ -6,6 +6,8 @@ que se aplicaron al proyecto de Hamacoteca, hecho por los desarrolladores:
 -Juan Pablo Flores Díaz.
 -Xochilt Gabriela López Pineda. 
 -Joel Omar Mena Domínguez.
+-Eduardo René Cubias Morán.
+-Susan Abigail Castillo Oliva.
 
 Introducción:
 Los estándares de programación en JavaScript son pautas y convenciones que los desarrolladores 

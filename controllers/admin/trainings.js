@@ -367,7 +367,7 @@ const seeCont = async (id) => {
             // Llamar a la función fillContents con la lista de datos de contenidos y el id del ul
             fillContents(ROW, null, 'lista_contenidos');
         } else {
-            sweetAlert(2, DATA.error, false);
+            sweetAlert(4, DATA.error, false, `../pages/specific_details_contents.html?id_entrenamiento=${id}`);
         }
     } catch (Error) {
         console.log(Error);

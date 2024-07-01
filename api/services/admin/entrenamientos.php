@@ -60,7 +60,7 @@ if (isset($_GET['action'])) {
                 } elseif ($result['dataset'] = $entrenamientos->readOneDetalles()) {
                     $result['status'] = 1;
                 } else {
-                    $result['error'] = 'Detalle del entrenamiento inexistente';
+                    $result['error'] = 'Aún no se han asignado contenidos a este entrenamiento, presiona aceptar para agregar contenidos al entrenamiento';
                 }
                 break;
                  // Leer uno

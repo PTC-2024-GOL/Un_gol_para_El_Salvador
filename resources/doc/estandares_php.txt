@@ -6,6 +6,8 @@ que se aplicaron al proyecto de Hamacoteca, hecho por los desarrolladores:
 -Juan Pablo Flores Díaz.
 -Xochilt Gabriela López Pineda. 
 -Joel Omar Mena Domínguez.
+-Eduardo René Cubias Morán.
+-Susan Abigail Castillo Oliva.
 
 Introducción:
 Este documento tiene como objetivo establecer una serie de estándares y buenas prácticas para la programación en PHP, 
