@@ -420,6 +420,95 @@ async function cargarSearch() {
     }
 }
 
+// Variables y constantes para la paginación
+const analisisPorPagina = 10;
+let paginaActual = 1;
+let analisis = [];
+
+// Función para cargar tabla de técnicos con paginación
+async function fillTable(form = null) {
+    const cargarTabla = document.getElementById('tabla_analisis');
+    try {
+        cargarTabla.innerHTML = '';
+        // Petición para obtener los registros disponibles.
+        let action;
+        form ? action = 'searchRows' : action = 'readAll';
+        console.log(form);
+        const DATA = await fetchData(API, action, form);
+        console.log(DATA);
+
+        if (DATA.status) {
+            analisis = DATA.dataset;
+            mostrarAnalisis(paginaActual);
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = DATA.message;
+        } else {
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = "Existen 0 coincidencias";
+            await sweetAlert(3, DATA.error, true);
+        }
+    } catch (error) {
+        console.error('Error al obtener datos de la API:', error);
+    }
+}
+
+// Función para mostrar técnicos en una página específica
+function mostrarAnalisis(pagina) {
+    const inicio = (pagina - 1) * analisisPorPagina;
+    const fin = inicio + analisisPorPagina;
+    const analisisPagina = analisis.slice(inicio, fin);
+
+    const cargarTabla = document.getElementById('tabla_analisis');
+    cargarTabla.innerHTML = '';
+    analisisPagina.forEach(row => {
+        const tablaHtml = `
+                <tr>
+                    <td>${row.PROMEDIO}</td>
+                    <td>${row.JUGADOR}</td>
+                    <td>
+                        <button type="button" class="btn transparente" onclick="openCreate(${row.IDJ})">
+                        <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18px" height="18px">
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn transparente" onclick="openGraphic(${row.IDJ})">
+                        <img src="../../../resources/img/svg/icons_forms/Frame.svg" width="18" height="18">
+                        </button>
+                    </td>
+                </tr>
+        `;
+        cargarTabla.innerHTML += tablaHtml;
+    });
+
+    actualizarPaginacion();
+}
+
+// Función para actualizar los controles de paginación
+function actualizarPaginacion() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
+
+    const totalPaginas = Math.ceil(analisis.length / analisisPorPagina);
+
+    if (paginaActual > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-light" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
+    }
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-light" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
+    }
+
+    if (paginaActual < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-light" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
+    }
+}
+
+// Función para cambiar de página
+function cambiarPagina(nuevaPagina) {
+    paginaActual = nuevaPagina;
+    mostrarAnalisis(paginaActual);
+}
+
 // window.onload
 window.onload = async function () {
     // Obtiene el contenedor principal
@@ -433,6 +522,7 @@ window.onload = async function () {
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Análisis de las características';
+    ROWS_FOUND = document.getElementById('rowsFound');
     cargarTabla();
     cargarSearch();
     // Constantes para establecer los elementos del componente Modal.
