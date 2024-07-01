@@ -86,7 +86,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Tipo de gol eliminado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar el tipo de gol';
+                    $result['error'] = 'Ocurrió un problema al eliminar el tipo de gol. Por seguridad no puedes elimininarlo cuando lo estas ocupando en otras tablas';
                 }
                 break;
             default:

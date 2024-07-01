@@ -83,7 +83,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Tipo de jugada eliminada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar el tipo de jugada';
+                    $result['error'] = 'Ocurrió un problema al eliminar el tipo de jugada. Por seguridad no la puedes eliminar porque la estas ocupando en otra tablas.';
                 }
                 break;
             default:

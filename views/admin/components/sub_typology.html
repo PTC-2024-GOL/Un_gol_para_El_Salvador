@@ -5,7 +5,7 @@
             <div class="col-sm-12 col-md-6">
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
-                        name="search" placeholder="Buscar" required>
+                        name="search" placeholder="Buscar por el nombre de la tipología" required>
                     <button type="submit"
                         class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
@@ -21,7 +21,7 @@
                 <button
                     class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
                     type="submit" onclick="openCreate()">
-                    <span class="fs-5 me-2">+</span> Agregar sub tipología
+                    <span class="fs-5 me-2">+</span> Agregar subtipología
                 </button>
             </div>
         </div>
@@ -37,7 +37,7 @@
                 </tr>
                 <tr>
                     <th>Nombre de la tipología</th>
-                    <th>Nombre de la sub tipología</th>
+                    <th>Nombre de la subtipología</th>
                 </tr>
             </thead>
             <!-- Cuerpo de la tabla para mostrar un registro por fila -->
@@ -69,13 +69,12 @@
                     <div class="col-sm-12 col-md-6">
                         <label for="nombreTipologia" class="form-label fw-semibold">Selecciona la tipología</label>
                         <select id="nombreTipologia" type="text" name="nombreTipologia" class="form-select"
-                            required></select>
+                            required autocomplete="off"></select>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="nombreSubtipologia" class="form-label fw-semibold">Nombre de la sub
-                            tipología</label>
+                        <label for="nombreSubtipologia" class="form-label fw-semibold">Nombre de la subtipología</label>
                         <input id="nombreSubtipologia" type="text" name="nombreSubtipologia" class="form-control"
-                            placeholder="Escribe el nombre de la sub tipología" required>
+                            placeholder="Escribe el nombre de la sub tipología" required autocomplete="off">
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">

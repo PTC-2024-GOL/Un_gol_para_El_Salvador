@@ -35,9 +35,9 @@ if (isset($_GET['action'])) {
                         $result['error'] = $subtipologia->getDataError();
                     } elseif ($subtipologia->createRow()) {
                         $result['status'] = 1;
-                        $result['message'] = 'Sub tipología creada correctamente';
+                        $result['message'] = 'Subtipología creada correctamente';
                     } else {
-                        $result['error'] = 'Ocurrió un problema al crear la sub tipología';
+                        $result['error'] = 'Ocurrió un problema al crear la subtipología';
                     }
                     break;
                 // Leer todos
@@ -46,7 +46,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
-                    $result['error'] = 'No hay sub tipología registradas';
+                    $result['error'] = 'No hay subtipología registradas';
                 }
                 break;
                 // Leer uno
@@ -56,7 +56,7 @@ if (isset($_GET['action'])) {
                 } elseif ($result['dataset'] = $subtipologia->readOne()) {
                     $result['status'] = 1;
                 } else {
-                    $result['error'] = 'Tipología inexistente';
+                    $result['error'] = 'Subtipología inexistente';
                 }
                 break;
                 // Actualizar
@@ -70,9 +70,9 @@ if (isset($_GET['action'])) {
                     $result['error'] = $subtipologia->getDataError();
                 } elseif ($subtipologia->updateRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Sub tipología modificada correctamente';
+                    $result['message'] = 'Subtipología modificada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al modificar la sub tipología';
+                    $result['error'] = 'Ocurrió un problema al modificar la subtipología';
                 }
                 break;
                 // Eliminar
@@ -83,9 +83,9 @@ if (isset($_GET['action'])) {
                     $result['error'] = $subtipologia->getDataError();
                 } elseif ($subtipologia->deleteRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Sub tipología eliminada correctamente';
+                    $result['message'] = 'Subtipología eliminada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar la sub tipología';
+                    $result['error'] = 'Ocurrió un problema al eliminar la subztipología';
                 }
                 break;
             default:

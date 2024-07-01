@@ -23,7 +23,7 @@ async function loadComponent(path) {
 const openCreate = () => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
-    MODAL_TITLE.textContent = 'Crear sub tipología';
+    MODAL_TITLE.textContent = 'Crear subtipología';
     // Se prepara el formulario.
     SAVE_FORM.reset();
     fillSelect(TIPOLOGIA_API, 'readAll', 'nombreTipologia');
@@ -44,7 +44,7 @@ const openUpdate = async (id) => {
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
-            MODAL_TITLE.textContent = 'Actualizar sub tipología';
+            MODAL_TITLE.textContent = 'Actualizar subtipología';
             // Se prepara el formulario.
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
@@ -58,7 +58,7 @@ const openUpdate = async (id) => {
     } catch (Error) {
         console.log(Error);
         SAVE_MODAL.show();
-        MODAL_TITLE.textContent = 'Actualizar sub tipología';
+        MODAL_TITLE.textContent = 'Actualizar subtipología';
     }
 
 }
@@ -69,7 +69,7 @@ const openUpdate = async (id) => {
 */
 const openDelete = async (id) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar la sub tipología de forma permanente?');
+    const RESPONSE = await confirmAction('¿Desea eliminar la subtipología de forma permanente?');
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
@@ -195,7 +195,7 @@ window.onload = async function () {
     appContainer.innerHTML = adminHtml;
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
-    titleElement.textContent = 'Sub tipologías';
+    titleElement.textContent = 'Subtipologías';
     ROWS_FOUND = document.getElementById('rowsFound');
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
