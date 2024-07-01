@@ -85,7 +85,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Subtipología eliminada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar la subztipología';
+                    $result['error'] = 'Ocurrió un problema al eliminar la subtipología. Por seguridad no puedes eliminar este jugador porque esta siendo utilizado en otras tablas.';
                 }
                 break;
             default:

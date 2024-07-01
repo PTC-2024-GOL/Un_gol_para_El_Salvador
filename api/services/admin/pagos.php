@@ -93,7 +93,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'El pago fue eliminado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar el pago';
+                    $result['error'] = 'Ocurrió un problema al eliminar el pago. Por seguridad no puedes eliminar este jugador porque esta siendo utilizado en otras tablas.';
                 }
                 break;
                 // INGRESOS
