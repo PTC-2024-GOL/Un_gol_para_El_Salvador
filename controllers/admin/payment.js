@@ -254,6 +254,8 @@ async function fillTable(form = null) {
             // Se muestra un mensaje de acuerdo con el resultado.
             ROWS_FOUND.textContent = DATA.message;
         } else {
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = "Existen 0 coincidencias";
             await sweetAlert(3, DATA.error, true);
         }
     } catch (error) {
