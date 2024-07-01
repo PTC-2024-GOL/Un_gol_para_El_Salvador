@@ -66,6 +66,19 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'característica inexistente';
                 }
                 break;
+                // Gráfica
+            case 'graphic':
+                if (
+                    !$caracteristica->setEntrenamiento($_POST['idEntrenamiento']) or
+                    !$caracteristica->setJugador($_POST['idJugador'])
+                ) {
+                    $result['error'] = $caracteristica->getDataError();
+                } elseif ($result['dataset'] = $caracteristica->graphic()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Gráfica inexistente';
+                }
+                break;
                 // Actualizar
             case 'updateRow':
                 $_POST = Validator::validateForm($_POST);
@@ -81,19 +94,6 @@ if (isset($_GET['action'])) {
                     $result['message'] = 'Característica modificada correctamente';
                 } else {
                     $result['error'] = 'Ocurrió un problema al modificar la característica';
-                }
-                break;
-                // Eliminar
-            case 'deleteRow':
-                if (
-                    !$caracteristica->setId($_POST['idCaracteristica'])
-                ) {
-                    $result['error'] = $caracteristica->getDataError();
-                } elseif ($caracteristica->deleteRow()) {
-                    $result['status'] = 1;
-                    $result['message'] = 'caracterísca eliminada correctamente';
-                } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar la caracterísca';
                 }
                 break;
             default:

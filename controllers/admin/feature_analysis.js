@@ -36,20 +36,65 @@ const openCreate1 = (id) => {
     ENTRENAMIENTO.value = PARAMS.get('id');
 }
 
+
+let estado_inicial = document.getElementById('analisis');
+let chartInstance = null;
+
 /*
 *   Función para abrir la gráfica al momento.
 *   Parámetros: ninguno.
 *   Retorno: ninguno.
 */
-const openGraphic = () => {
+const openGraphic = (id) => {
     // Se muestra la caja de diálogo con su título.
     GRAPHIC_MODAL.show();
     MODAL_TITLE2.textContent = 'Gráfica de análisis del jugador';
-    // Se prepara el formulario.
-    SAVE_FORM.reset();
-    graficoBarrasAnalisis();
+    const FORM = new FormData();
+    FORM.append('idJugador', id);
+    FORM.append('idEntrenamiento', PARAMS.get('id'));
+    graficoBarrasAnalisis(FORM);
 }
 
+/*
+*   Función asíncrona para mostrar un gráfico de barras con la cantidad de productos por categoría.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
+const graficoBarrasAnalisis = async (FORM) => {
+    try {
+        // Petición para obtener los datos del gráfico.
+        let DATA = await fetchData(API, 'graphic', FORM);
+        // Se comprueba si la respuesta es satisfactoria, de lo contrario se remueve la etiqueta canvas.
+        if (DATA.status) {
+            // Se declaran los arreglos para guardar los datos a graficar.
+            let caracteristicas = [];
+            let notas = [];
+            // Se recorre el conjunto de registros fila por fila a través del objeto row.
+            DATA.dataset.forEach(row => {
+                // Se agregan los datos a los arreglos.
+                caracteristicas.push(row.CARACTERISTICA);
+                notas.push(row.NOTA);
+            });
+
+            // Destruir la instancia existente del gráfico si existe
+            if (chartInstance) {
+                chartInstance.destroy();
+                chartInstance = null; // Asegúrate de restablecer la referencia
+            }
+
+            // Restablecer el canvas en caso de que sea necesario
+            const canvasContainer = document.getElementById('analisis').parentElement;
+            canvasContainer.innerHTML = '<canvas id="analisis"></canvas>';
+
+            // Llamada a la función para generar y mostrar un gráfico de barras. Se encuentra en el archivo components.js
+            chartInstance = barGraph('analisis', caracteristicas, notas, 'Análisis de características');
+        } else {
+            console.log(DATA.error);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 // Funcion para preparar el formulario al momento de abrirlo
 
@@ -366,44 +411,6 @@ async function cargarTabla() {
     }
 }
 
-/*
-*   Función asíncrona para mostrar un gráfico de barras con la cantidad de productos por categoría.
-*   Parámetros: ninguno.
-*   Retorno: ninguno.
-*/
-const graficoBarrasAnalisis = async () => {
-    /*
-*   Lista de datos de ejemplo en caso de error al obtener los datos reales.
-*/
-    const datosEjemplo = [
-        {
-            caracteristica: 'Fuerza',
-            nota: 7
-        },
-        {
-            caracteristica: 'Resistencia',
-            nota: 5
-        },
-        {
-            caracteristica: 'Agilidad',
-            nota: 7
-        },
-        {
-            caracteristica: 'Velocidad',
-            nota: 2
-        }
-    ];
-
-    let caracteristicas = [];
-    let notas = [];
-    datosEjemplo.forEach(filter => {
-        caracteristicas.push(filter.caracteristica);
-        notas.push(filter.nota);
-    });
-    // Si ocurre un error, se utilizan los datos de ejemplo definidos arriba.
-    barGraph('analisis', caracteristicas, notas, 'Análisis de características');
-
-}
 
 async function cargarSearch() {
     try {
