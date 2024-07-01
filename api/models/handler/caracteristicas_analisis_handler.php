@@ -51,9 +51,8 @@ class CaracteristicasAnalisisHandler
     {
         $sql = 'SELECT IDJ ,JUGADOR, 
         ROUND(AVG(NOTA), 2) AS PROMEDIO 
-        FROM vista_caracteristicas_analisis WHERE IDE = ? GROUP BY JUGADOR;';
-        $params = array($this->entrenamiento);
-        return Database::getRows($sql, $params);
+        FROM vista_caracteristicas_analisis GROUP BY JUGADOR;';
+        return Database::getRows($sql);
     }
 
     //Función para leer una característica.

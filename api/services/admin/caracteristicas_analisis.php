@@ -61,9 +61,7 @@ if (isset($_GET['action'])) {
                 break;
                 // Leer todos
             case 'readAll':
-                if (!$caracteristica->setEntrenamiento($_POST['idEntrenamiento'])) {
-                    $result['error'] = $caracteristica->getDataError();
-                } elseif ($result['dataset'] = $caracteristica->readAll()) {
+                if ($result['dataset'] = $caracteristica->readAll()) {
                     $result['status'] = 1;
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
