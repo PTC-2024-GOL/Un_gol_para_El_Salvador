@@ -92,13 +92,8 @@ class RegistrosData extends RegistrosHandler
     // Validación y asignación de la fecha de retorno a entreno del registro médico.
     public function setRetornoEntreno($value)
     {
-        if (Validator::validateDate($value)) {
-            $this->retornoEntreno = $value;
+        $this->retornoEntreno = $value;
             return true;
-        } else {
-            $this->data_error = 'La fecha de registro de la lesión no es valida';
-            return false;
-        }
     }
 
     // Validación y asignación del retorno a partido.
