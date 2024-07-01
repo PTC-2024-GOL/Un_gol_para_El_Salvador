@@ -156,9 +156,9 @@ function mostrarRegistros(pagina) {
     registrosPagina.forEach(row => {
         let retornoPartido;
 
-        if(row.retorno_partido == null){
+        if (row.retorno_partido == null) {
             retornoPartido = 'En espera';
-        } else{
+        } else {
             retornoPartido = row.fecha_partido;
         }
 

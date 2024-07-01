@@ -145,7 +145,7 @@ async function fillTable(form = null) {
         console.log('form antes del parametro' + form + ' y el action es ' + action);
         console.log('El parametro de URL contiene esto ' + JUGADOR);
         const FORM = new FormData();
-        if (action === 'readAll') { 
+        if (action === 'readAll') {
             FORM.append('idJugador', JUGADOR);
             form = FORM;
             console.log('entré al parametro de readAll ');
@@ -153,7 +153,7 @@ async function fillTable(form = null) {
         console.log('form despues del parametro' + FORM);
         // Petición para obtener los registros disponibles.
         const DATA = await fetchData(ESTADO_API, action, form);
-        console.log('Esto contiene la consulta '+ DATA);
+        console.log('Esto contiene la consulta ' + DATA);
         let nombreJugador;
         if (DATA.status) {
             // Mostrar elementos obtenidos de la API
@@ -179,7 +179,7 @@ async function fillTable(form = null) {
                 cargarTabla.innerHTML += tablaHtml;
             });
 
-            
+
         } else {
             sweetAlert(4, DATA.error, true);
         }
@@ -252,7 +252,7 @@ window.onload = async function () {
             const DATA = await fetchData(ESTADO_API, action, FORM);
             // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
             if (DATA.status) {
-                console.log('Entré al if de que se agrego el coso '+ DATA);
+                console.log('Entré al if de que se agrego el coso ' + DATA);
                 // Se cierra la caja de diálogo.
                 SAVE_MODAL.hide();
                 // Se muestra un mensaje de éxito.
@@ -260,7 +260,7 @@ window.onload = async function () {
                 // Se carga nuevamente la tabla para visualizar los cambios.
                 fillTable();
             } else {
-                console.log('Esto contiene el parametro ID_JUGADOR '+ ID_JUGADOR.value);
+                console.log('Esto contiene el parametro ID_JUGADOR ' + ID_JUGADOR.value);
                 sweetAlert(2, DATA.error, false);
                 console.error(DATA.exception);
             }

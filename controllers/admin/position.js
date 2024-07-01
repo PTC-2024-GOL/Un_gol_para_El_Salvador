@@ -50,7 +50,7 @@ const lista_select = [
 ];
 
 // Función para poblar un combobox (select) con opciones
-const fillSelected = (data, action,selectId, selectedValue = null) => {
+const fillSelected = (data, action, selectId, selectedValue = null) => {
     const selectElement = document.getElementById(selectId);
 
     // Limpiar opciones previas del combobox
@@ -99,7 +99,7 @@ const openUpdate = async (id) => {
             const ROW = DATA.dataset;
             ID_POSICION.value = ROW.id_posicion;
             NOMBRE_POSICION.value = ROW.posicion;
-            fillSelected(lista_select, 'readAll', 'areaJuego',ROW.area_de_juego);
+            fillSelected(lista_select, 'readAll', 'areaJuego', ROW.area_de_juego);
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -214,15 +214,15 @@ function actualizarPaginacion() {
     const totalPaginas = Math.ceil(posiciones.length / posicionesPorPagina);
 
     if (paginaActual > 1) {
-        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-light" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
     }
 
     for (let i = 1; i <= totalPaginas; i++) {
-        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
+        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-light" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
     }
 
     if (paginaActual < totalPaginas) {
-        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-light" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
     }
 }
 

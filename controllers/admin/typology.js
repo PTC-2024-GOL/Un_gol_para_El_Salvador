@@ -106,7 +106,7 @@ async function fillTable(form = null) {
         // Petición para obtener los registros disponibles.
         let action;
         form ? action = 'searchRows' : action = 'readAll';
-        
+
         const DATA = await fetchData(TIPOLOGIA_API, action, form);
         if (DATA.status) {
             tipologia = DATA.dataset;

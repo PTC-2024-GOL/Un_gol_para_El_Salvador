@@ -35,7 +35,7 @@ const openCreate = () => {
     Selected(lista_datos, 'readAll', 'mesPago');
     SelectedPago(lista_pago, 'readAll', 'tardioPago');
     updateMoraPago();
-    
+
 }
 
 const lista_pago = [
@@ -246,7 +246,7 @@ async function fillTable(form = null) {
         // Petición para obtener los registros disponibles.
         let action;
         form ? action = 'searchRows' : action = 'readAll';
-        
+
         const DATA = await fetchData(PAGO_API, action, form);
         if (DATA.status) {
             pago = DATA.dataset;
@@ -328,16 +328,16 @@ function updateMoraPago() {
         CONTENEDOR_PAGO.classList.add('d-none');
         MORA_PAGO.value = 0;
         console.log(MORA_PAGO.value);
-    } 
-    else if (PAGOTARDIO_PAGO.value == 1){
+    }
+    else if (PAGOTARDIO_PAGO.value == 1) {
         CONTENEDOR_PAGO.classList.remove('d-none');
         MORA_PAGO.value = 1;
         console.log(MORA_PAGO.value);
     }
-    else{
+    else {
     }
 
-    
+
 }
 
 
@@ -362,7 +362,7 @@ window.onload = async function () {
 
     CONTENEDOR_PAGO = document.getElementById('contenedorPago');
     // Constantes para establecer los elementos del formulario de guardar.
-        SAVE_FORM = document.getElementById('saveForm'),
+    SAVE_FORM = document.getElementById('saveForm'),
         ID_PAGO = document.getElementById('idPago'),
         JUGADOR_PAGO = document.getElementById('nombreJugador'),
         FECHA_PAGO = document.getElementById('fechaPago'),
@@ -410,5 +410,5 @@ window.onload = async function () {
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
         fillTable(FORM);
     });
-    
+
 };

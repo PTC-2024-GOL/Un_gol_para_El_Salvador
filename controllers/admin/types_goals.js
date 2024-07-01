@@ -22,7 +22,7 @@ async function loadComponent(path) {
 */
 const openCreate = async () => {
     ID_TIPO_GOL.value = '';
-    await fillSelect(TIPO_JUGADA_API, 'readAll', 'jugadaSelect' )
+    await fillSelect(TIPO_JUGADA_API, 'readAll', 'jugadaSelect')
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
     MODAL_TITLE.textContent = 'Crear tipo de gol';
@@ -204,32 +204,32 @@ window.onload = async function () {
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
         ID_TIPO_GOL = document.getElementById('idGol'),
-        ID_TIPO_JUGADA= document.getElementById('jugadaSelect'),
+        ID_TIPO_JUGADA = document.getElementById('jugadaSelect'),
         NOMBRE_TIPO_GOL = document.getElementById('tipoGol'),
 
-    // Método del evento para cuando se envía el formulario de guardar.
-    SAVE_FORM.addEventListener('submit', async (event) => {
-        // Se evita recargar la página web después de enviar el formulario.
-        event.preventDefault();
-        // Se verifica la acción a realizar.
-        (ID_TIPO_GOL.value) ? action = 'updateRow' : action = 'createRow';
-        // Constante tipo objeto con los datos del formulario.
-        const FORM = new FormData(SAVE_FORM);
-        // Petición para guardar los datos del formulario.
-        const DATA = await fetchData(TIPO_GOL_API, action, FORM);
-        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-        if (DATA.status) {
-            // Se cierra la caja de diálogo.
-            SAVE_MODAL.hide();
-            // Se muestra un mensaje de éxito.
-            await sweetAlert(1, DATA.message, true);
-            // Se carga nuevamente la tabla para visualizar los cambios.
-            await fillTable();
-        } else {
-            await sweetAlert(2, DATA.error, false);
-            console.error(DATA.exception);
-        }
-    });
+        // Método del evento para cuando se envía el formulario de guardar.
+        SAVE_FORM.addEventListener('submit', async (event) => {
+            // Se evita recargar la página web después de enviar el formulario.
+            event.preventDefault();
+            // Se verifica la acción a realizar.
+            (ID_TIPO_GOL.value) ? action = 'updateRow' : action = 'createRow';
+            // Constante tipo objeto con los datos del formulario.
+            const FORM = new FormData(SAVE_FORM);
+            // Petición para guardar los datos del formulario.
+            const DATA = await fetchData(TIPO_GOL_API, action, FORM);
+            // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+            if (DATA.status) {
+                // Se cierra la caja de diálogo.
+                SAVE_MODAL.hide();
+                // Se muestra un mensaje de éxito.
+                await sweetAlert(1, DATA.message, true);
+                // Se carga nuevamente la tabla para visualizar los cambios.
+                await fillTable();
+            } else {
+                await sweetAlert(2, DATA.error, false);
+                console.error(DATA.exception);
+            }
+        });
 
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');

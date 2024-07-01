@@ -48,7 +48,7 @@ const openPag = () => {
         console.log('Entrenamiento seleccionado:', id_entrenamiento, ' ', HORARIO.value);
         window.location.href = `../pages/specific_details_contents.html?id_entrenamiento=${id_entrenamiento}`;
         return;
-    }   
+    }
     sweetAlert(3, 'Seleccione un horario para continuar', false);
 }
 

@@ -88,8 +88,8 @@ async function fillCards() {
         const DATA = await fetchData(PARTIDO_API, 'readAllByIdEquipos', form);
 
         if (DATA.status) {
-           matches = DATA.dataset;
-           showMatches(currentPage);
+            matches = DATA.dataset;
+            showMatches(currentPage);
         } else {
             await sweetAlert(3, DATA.error, true, '../../../views/admin/pages/matches_participations1.html');
         }
@@ -126,7 +126,7 @@ function nextPage(newPage) {
 
 // Creamos una funcion que recibe como parametro el id del equipo que fue seleccionado
 function goToPlayers(idPartido) {
-  
+
     // Redirecciona a la otra pantalla y manda tambien el id del equipo
     window.location.href = `../pages/matches_participations3.html?idPartido=${idPartido}&idEquipo=${idEquipo}`;
 }
@@ -142,7 +142,7 @@ window.onload = async function () {
     appContainer.innerHTML = participacionesHtml;
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
-    titleElement.textContent = 'Participaciones'; 
+    titleElement.textContent = 'Participaciones';
     await fillCards();
 
     // Constante para establecer el formulario de buscar.

@@ -48,7 +48,7 @@ const lista_select = [
 ];
 
 // Función para poblar un combobox (select) con opciones
-const fillSelected = (data, action,selectId, selectedValue = null) => {
+const fillSelected = (data, action, selectId, selectedValue = null) => {
     const selectElement = document.getElementById(selectId);
 
     // Limpiar opciones previas del combobox
@@ -76,13 +76,13 @@ const fillSelected = (data, action,selectId, selectedValue = null) => {
 
 
 const openCreate = () => {
-        // Se muestra la caja de diálogo con su título.
-        SAVE_MODAL.show();
-        MODAL_TITLE.textContent = 'Agregar una jornada';
-        // Se prepara el formulario.
-        SAVE_FORM.reset();
-        // Se carga la lista utilizando el metodo ReadAll de la api de temporada.
-        fillSelect(PLANTILLA_API, 'readAll', 'plantilla');
+    // Se muestra la caja de diálogo con su título.
+    SAVE_MODAL.show();
+    MODAL_TITLE.textContent = 'Agregar una jornada';
+    // Se prepara el formulario.
+    SAVE_FORM.reset();
+    // Se carga la lista utilizando el metodo ReadAll de la api de temporada.
+    fillSelect(PLANTILLA_API, 'readAll', 'plantilla');
 }
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
@@ -231,15 +231,15 @@ function actualizarPaginacion() {
     const totalPaginas = Math.ceil(jornadas.length / jornadasPorPagina);
 
     if (paginaActual > 1) {
-        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-light" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
     }
 
     for (let i = 1; i <= totalPaginas; i++) {
-        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
+        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-light" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
     }
 
     if (paginaActual < totalPaginas) {
-        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-light" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
     }
 }
 
@@ -295,7 +295,7 @@ window.onload = async function () {
             // Se carga nuevamente la tabla para visualizar los cambios.
             fillTable();
         }
-        else if(!DATA.exception){
+        else if (!DATA.exception) {
             sweetAlert(2, DATA.error, false);
         }
         else {

@@ -198,7 +198,7 @@ async function fillTable(form = null) {
         // Petición para obtener los registros disponibles.
         let action;
         form ? action = 'searchRows' : action = 'readAll';
-        
+
         const DATA = await fetchData(CUERPOTECNICO_API, action, form);
         if (DATA.status) {
             cuerpoTecnico = DATA.dataset;
@@ -353,7 +353,7 @@ function actualizarPaginacion() {
     const totalPaginas = Math.ceil(cuerpoTecnico.length / cuerpoTecnicoPorPagina);
 
     if (paginaActual > 1) {
-        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-light" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
     }
 
     for (let i = 1; i <= totalPaginas; i++) {
@@ -361,7 +361,7 @@ function actualizarPaginacion() {
     }
 
     if (paginaActual < totalPaginas) {
-        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-light" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
     }
 }
 
@@ -391,7 +391,7 @@ window.onload = async function () {
         MODAL_TITLE = document.getElementById('modalTitle');
 
     // Constantes para establecer los elementos del formulario de guardar.
-        SAVE_FORM = document.getElementById('saveForm'),
+    SAVE_FORM = document.getElementById('saveForm'),
         ID_CUERPOTECNICO = document.getElementById('idCuerpotecnico'),
         CUERPOTECNICO = document.getElementById('cuerpoTecnico');
     // Método del evento para cuando se envía el formulario de guardar.

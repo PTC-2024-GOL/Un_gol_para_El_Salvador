@@ -226,15 +226,15 @@ function actualizarPaginacion() {
     const totalPaginas = Math.ceil(tecnicos.length / tecnicosPorPagina);
 
     if (paginaActual > 1) {
-        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-light"" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
     }
 
     for (let i = 1; i <= totalPaginas; i++) {
-        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
+        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-light"" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
     }
 
     if (paginaActual < totalPaginas) {
-        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-light"" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
     }
 }
 
@@ -347,12 +347,12 @@ window.onload = async function () {
         inputElement: document.getElementById('duiTecnico'),
         mask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/]
     });
-    
-    IMAGEN_TECNICO.addEventListener('change', function(event) {
+
+    IMAGEN_TECNICO.addEventListener('change', function (event) {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 FOTO_ADMINISTRADOR.src = e.target.result;
             }
             reader.readAsDataURL(file);

@@ -37,8 +37,8 @@ async function loadComponent(path) {
 const openCreate = async () => {
     ID_JUGADOR.value = '';
     BOX_ALIAS.classList.add('d-none');
-    await fillSelect(POSICIONES_API, 'readAll', 'posicionPrincipal' );
-    await fillSelect(POSICIONES_API, 'readAll', 'posicionSecundaria' );
+    await fillSelect(POSICIONES_API, 'readAll', 'posicionPrincipal');
+    await fillSelect(POSICIONES_API, 'readAll', 'posicionSecundaria');
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
     MODAL_TITLE.textContent = 'Agregar jugador';
@@ -240,10 +240,10 @@ const FilterByGender = async () => {
 
     const DATA = await fetchData(JUGADOR_API, 'readAllByGender', FORM);
 
-    if(DATA.status){
+    if (DATA.status) {
         playerSoccers = DATA.dataset;
         showPlayerSoccers(currentPage);
-    }else{
+    } else {
         console.log('Elige otra opción de filtrado')
     }
 }
@@ -281,7 +281,7 @@ window.onload = async function () {
         DORSAL_JUGADOR = document.getElementById('Dorsal'),
         BECADO = document.getElementById('beca'),
         ESTATUS_JUGADOR = document.getElementById('estadoJugador');
-        GENERO_JUGADOR = document.getElementById('generoJugador'),
+    GENERO_JUGADOR = document.getElementById('generoJugador'),
         IMAGEN_JUGADOR = document.getElementById('imagen_jugador'),
         IMAGEN = document.getElementById('imagenJugador'),
         CLAVE_JUGADOR = document.getElementById('claveJugador'),
@@ -318,7 +318,7 @@ window.onload = async function () {
         const POSICION_SECUNDARIA = document.getElementById('posicionSecundaria');
         const POSICION_PRIMARIA = document.getElementById('posicionPrincipal');
 
-        if(POSICION_SECUNDARIA.value === ""){
+        if (POSICION_SECUNDARIA.value === "") {
             POSICION_SECUNDARIA.value = POSICION_PRIMARIA.value;
         }
         // Constante tipo objeto con los datos del formulario.

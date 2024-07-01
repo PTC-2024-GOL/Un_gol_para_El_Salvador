@@ -25,7 +25,7 @@ const openCreate = async () => {
     // Se prepara el formulario.
     ID_SUBCONTENIDO.value = null;
     SAVE_FORM.reset();
-    await fillSelect(API,'readOneContents', 'contenido');
+    await fillSelect(API, 'readOneContents', 'contenido');
 }
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
@@ -50,7 +50,7 @@ const openUpdate = async (id) => {
             const ROW = DATA.dataset;
             ID_SUBCONTENIDO.value = ROW.id_sub_tema_contenido;
             NOMBRE_SUBCONTENIDO.value = ROW.sub_tema_contenido;
-            await fillSelect(API,'readOneContents', 'contenido', ROW.id_tema_contenido);
+            await fillSelect(API, 'readOneContents', 'contenido', ROW.id_tema_contenido);
         } else {
             sweetAlert(2, DATA.error, false);
         }

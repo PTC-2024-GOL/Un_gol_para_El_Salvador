@@ -24,7 +24,7 @@ const graficoLinealIngresos = async () => {
     let datosApi = [];
 
     // recorremos todos los datos que vienen de la api y retorna los datos del mes y nota
-    if(DATA.status) {
+    if (DATA.status) {
         datosApi = DATA.dataset.map((item) => {
             return {
                 mes: item.mes,
@@ -59,9 +59,9 @@ const graficoLinealIngresos = async () => {
 
 const total = async () => {
     const DATA = await fetchData(PAGO_API, 'totalMoney');
-    if(DATA.status){
+    if (DATA.status) {
         TOTAL.textContent = '$' + DATA.dataset.total_pagos;
-    } else{
+    } else {
         TOTAL.textContent = DATA.error;
     }
 }
@@ -74,43 +74,43 @@ const totalMora = async () => {
 
     const DATA = await fetchData(PAGO_API, 'totalMoneyMora', FORM);
 
-    if(DATA.status){
+    if (DATA.status) {
         MORA.textContent = DATA.dataset.total_mora;
     } else {
         MORA.textContent = DATA.message;
     }
 }
 
-const totalJugadores = async ()=>{
+const totalJugadores = async () => {
     const DATA = await fetchData(PAGO_API, 'totalPlayers');
-    if(DATA.status){
+    if (DATA.status) {
         JUGADOR.textContent = DATA.dataset.total;
-    } else{
+    } else {
         JUGADOR.textContent = DATA.error;
     }
 }
 
-const sinBeca = async ()=>{
+const sinBeca = async () => {
     const DATA = await fetchData(PAGO_API, 'noScholarships');
-    if(DATA.status){
+    if (DATA.status) {
         SIN_BECA.textContent = DATA.dataset.becado;
     } else {
         SIN_BECA.textContent = DATA.error;
     }
 }
 
-const mediaBeca = async ()=>{
+const mediaBeca = async () => {
     const DATA = await fetchData(PAGO_API, 'halfScholarships');
-    if(DATA.status){
+    if (DATA.status) {
         MEDIA_BECA.textContent = DATA.dataset.becado;
     } else {
         MEDIA_BECA.textContent = DATA.error
     }
 }
 
-const becaCompleta = async ()=>{
+const becaCompleta = async () => {
     const DATA = await fetchData(PAGO_API, 'completeScholarships');
-    if(DATA.status){
+    if (DATA.status) {
         BECA.textContent = DATA.dataset.becado;
     }
 }
@@ -126,7 +126,7 @@ window.onload = async function () {
     appContainer.innerHTML = lesionHtml;
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
-    titleElement.textContent = 'Ingresos'; 
+    titleElement.textContent = 'Ingresos';
     await graficoLinealIngresos();
 
     TOTAL = document.getElementById('total');

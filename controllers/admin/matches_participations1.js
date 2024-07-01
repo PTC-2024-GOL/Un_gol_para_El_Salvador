@@ -114,7 +114,7 @@ window.onload = async function () {
     appContainer.innerHTML = participacionesHtml;
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
-    titleElement.textContent = 'Participaciones'; 
+    titleElement.textContent = 'Participaciones';
     await fillCards();
 
     HIDDEN = document.getElementById('hiddenElement');

@@ -54,7 +54,7 @@ const seeModal = async (id) => {
     FORM.append('idEquipo', id);
     const DATA = await fetchData(EQUIPO_API, 'readAllStaff', FORM);
     if (DATA.status) {
-        DATA.dataset.forEach(ROW=> {
+        DATA.dataset.forEach(ROW => {
             const completeName = ROW.nombre_tecnico + ' ' + ROW.apellido_tecnico;
             const tablaHtml = `
                 <div class="col-sm-12 col-md-6 mb-3 text-center">
@@ -244,10 +244,10 @@ const FilterByGender = async () => {
 
     const DATA = await fetchData(EQUIPO_API, 'readAllByGender', FORM);
 
-    if(DATA.status){
+    if (DATA.status) {
         soccerTeam = DATA.dataset;
         showSoccerTeam(currentPage);
-    }else{
+    } else {
         console.log('Elige otra opción de filtrado')
     }
 }
@@ -349,6 +349,6 @@ window.onload = async function () {
     // Llamada a la función para establecer la mascara del campo teléfono.
     vanillaTextMask.maskInput({
         inputElement: document.getElementById('telefonoEquipo'),
-        mask: [/\d/, /\d/, /\d/, /\d/, '-' , /\d/, /\d/, /\d/, /\d/]
+        mask: [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
     });
 };

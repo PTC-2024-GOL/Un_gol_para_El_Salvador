@@ -39,16 +39,12 @@ const lista_datos = [
         id: 'Tácticos',
     },
     {
-        clasificacion: 'Condicionales',
-        id: 'Condicionales',
-    },
-    {
         clasificacion: 'Psicológicos',
         id: 'Psicológicos',
     },
     {
-        clasificacion: 'Personales',
-        id: 'Personales',
+        clasificacion: 'Físicos',
+        id: 'Físicos',
     }
 ];
 
@@ -161,7 +157,7 @@ async function fillTable(form = null) {
         // Petición para obtener los registros disponibles.
         let action;
         form ? action = 'searchRows' : action = 'readAll';
-        
+
         const DATA = await fetchData(API, action, form);
         console.log(form);
         console.log(DATA);
@@ -216,15 +212,15 @@ function actualizarPaginacion() {
     const totalPaginas = Math.ceil(caracteristica.length / caracteristicaJugadorPorPagina);
 
     if (paginaActual > 1) {
-        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-light" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
     }
 
     for (let i = 1; i <= totalPaginas; i++) {
-        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
+        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-light" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
     }
 
     if (paginaActual < totalPaginas) {
-        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-light" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
     }
 }
 

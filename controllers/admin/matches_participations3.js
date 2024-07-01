@@ -88,7 +88,7 @@ const openCreate = (idJugador) => {
 
 const openCreateGol = async () => {
     // Cerramos el modal que estaba anteriormete
-    await fillSelectOptions(TIPO_GOL_API, 'readAll', 'tipoGol' );
+    await fillSelectOptions(TIPO_GOL_API, 'readAll', 'tipoGol');
     SEE_GOLES_MODAL.hide();
     SAVE_MODAL_GOLES.show();
     MODAL_TITLE_GOLES1.textContent = 'Agregar tipo de gol';
@@ -371,9 +371,9 @@ async function showParticipation(page) {
     // Mapa de id_jugador a id_participacion
     const participacionMap = new Map();
 
-    if(DATA2.status){
+    if (DATA2.status) {
         DATA2.dataset.forEach(row => {
-            if(row.id_partido ===  parseInt(idPartido)){
+            if (row.id_partido === parseInt(idPartido)) {
                 participacionMap.set(row.id_jugador, row.id_participacion);
             }
         });
@@ -438,12 +438,12 @@ async function showParticipation(page) {
         const btnOpenAmonestacion = document.getElementById(`btnOpenAmonestacion_${row.id_jugador}`);
         const btnOpenDelete = document.getElementById(`btnOpenDelete_${row.id_jugador}`);
 
-        if(idParticipacion > 0){
+        if (idParticipacion > 0) {
             btnUpdate.classList.remove('d-none');
             btnOpenGol.classList.remove('d-none');
             btnOpenAmonestacion.classList.remove('d-none');
             btnOpenDelete.classList.remove('d-none')
-        } else{
+        } else {
             btnOpenCreate.classList.remove('d-none');
         }
     });
@@ -503,7 +503,7 @@ async function nextPage(newPage) {
     await showParticipation(currentPage);
 }
 
-async function cargarGolTarjetas (idParticipacion) {
+async function cargarGolTarjetas(idParticipacion) {
     MESAGGE_GOL.classList.add('d-none');
     const cargarGoles = document.getElementById('gol_card');
 
@@ -550,7 +550,7 @@ async function cargarGolTarjetas (idParticipacion) {
 }
 
 
-async function cargarAmonestacionTarjetas (idParticipacion) {
+async function cargarAmonestacionTarjetas(idParticipacion) {
     MESSAGE_AMONESTACION.classList.add('d-none');
 
     const cargarAmonestacion = document.getElementById('amonestacion_card');
@@ -685,11 +685,11 @@ const filtroAreaJuego = async (event) => {
 
     const DATA = await fetchData(PARTICIPACION_API, 'readAllByAreaJuego', FORM);
 
-    if(DATA.status){
+    if (DATA.status) {
 
         participation = DATA.dataset;
         await showParticipation(currentPage);
-    }else {
+    } else {
         await sweetAlert(3, DATA.error, true);
     }
 
@@ -746,80 +746,80 @@ window.onload = async function () {
     // -------------------------------- AMONESTACIONES ------------------------
 
     SAVE_AMONESTACION_MODAL = new bootstrap.Modal('#saveAmonestacionModal'),
-        MODAL_TITLE_AMONESTACION1 =  document.getElementById('modalTitle6');
+        MODAL_TITLE_AMONESTACION1 = document.getElementById('modalTitle6');
 
     SAVE_AMONESTACION_FORM = document.getElementById('saveAmonestacionForm'),
         ID_AMONESTACION = document.getElementById('idAmonestacion'),
         CANTIDAD_AMONESTACION = document.getElementById('cantidadAmonestacion'),
         TIPO_AMONESTACION = document.getElementById('tipoAmonestacion');
 
-    SEE_AMONESTACION_MODAL =new bootstrap.Modal('#SeeAmonestacionModal'),
+    SEE_AMONESTACION_MODAL = new bootstrap.Modal('#SeeAmonestacionModal'),
         MODAL_TITLE_AMONESTACION2 = document.getElementById('modalTitle5');
 
-        // Método del evento para cuando se envía el formulario de guardar.
-        SAVE_FORM.addEventListener('submit', async (event) => {
-            // Se evita recargar la página web después de enviar el formulario.
-            event.preventDefault();
-            // Se verifica la acción a realizar.
-            (ID_PARTICIPACION.value) ? action = 'updateRow' : action = 'createRow';
-            // Constante tipo objeto con los datos del formulario.
-            const FORM = new FormData(SAVE_FORM);
+    // Método del evento para cuando se envía el formulario de guardar.
+    SAVE_FORM.addEventListener('submit', async (event) => {
+        // Se evita recargar la página web después de enviar el formulario.
+        event.preventDefault();
+        // Se verifica la acción a realizar.
+        (ID_PARTICIPACION.value) ? action = 'updateRow' : action = 'createRow';
+        // Constante tipo objeto con los datos del formulario.
+        const FORM = new FormData(SAVE_FORM);
 
-            const titular = TITULAR.checked ? 1: 0;
-            const sustitucion = SUSTITUCION.checked ? 1 :0;
+        const titular = TITULAR.checked ? 1 : 0;
+        const sustitucion = SUSTITUCION.checked ? 1 : 0;
 
-            FORM.set('titular', titular);
-            FORM.set('sustitucion', sustitucion);
-            FORM.append('animo', animo);
-            FORM.append('idJugador', idPlayer);
-            FORM.append('idPartido', idPartido);
+        FORM.set('titular', titular);
+        FORM.set('sustitucion', sustitucion);
+        FORM.append('animo', animo);
+        FORM.append('idJugador', idPlayer);
+        FORM.append('idPartido', idPartido);
 
-            // Petición para guardar los datos del formulario.
-            const DATA = await fetchData(PARTICIPACION_API, action, FORM);
-            // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-            if (DATA.status) {
-                // Se cierra la caja de diálogo.
-                SAVE_MODAL.hide();
-                // Se muestra un mensaje de éxito.
-                await sweetAlert(1, DATA.message, false);
-                // Se carga nuevamente la tabla para visualizar los cambios.
-                await cargarTabla();
-            } else {
-                await sweetAlert(2, DATA.error, false);
-                console.error(DATA.exception);
-            }
-        });
+        // Petición para guardar los datos del formulario.
+        const DATA = await fetchData(PARTICIPACION_API, action, FORM);
+        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+        if (DATA.status) {
+            // Se cierra la caja de diálogo.
+            SAVE_MODAL.hide();
+            // Se muestra un mensaje de éxito.
+            await sweetAlert(1, DATA.message, false);
+            // Se carga nuevamente la tabla para visualizar los cambios.
+            await cargarTabla();
+        } else {
+            await sweetAlert(2, DATA.error, false);
+            console.error(DATA.exception);
+        }
+    });
 
 
     // Método del evento para cuando se envía el formulario de guardar.
-        SAVE_GOL_FORM.addEventListener('submit', async (event) => {
-            // Se evita recargar la página web después de enviar el formulario.
+    SAVE_GOL_FORM.addEventListener('submit', async (event) => {
+        // Se evita recargar la página web después de enviar el formulario.
 
-            event.preventDefault();
-            // Se verifica la acción a realizar.
-            (ID_GOL.value) ? action = 'updateRow' : action = 'createRow';
-            // Constante tipo objeto con los datos del formulario.
-            const FORM = new FormData(SAVE_GOL_FORM);
+        event.preventDefault();
+        // Se verifica la acción a realizar.
+        (ID_GOL.value) ? action = 'updateRow' : action = 'createRow';
+        // Constante tipo objeto con los datos del formulario.
+        const FORM = new FormData(SAVE_GOL_FORM);
 
 
-            FORM.append('idParticipacion', idParticipation);
+        FORM.append('idParticipacion', idParticipation);
 
-            // Petición para guardar los datos del formulario.
-            const DATA = await fetchData(GOLES_API, action, FORM);
-            // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-            if (DATA.status) {
-                // Se cierra la caja de diálogo.
-                SAVE_MODAL_GOLES.hide();
-                SEE_GOLES_MODAL.show();
-                // Se muestra un mensaje de éxito.
-                await sweetAlert(1, DATA.message, true);
-                // Se carga nuevamente la tabla para visualizar los cambios.
-                await cargarGolTarjetas(idParticipation)
-            } else {
-                await sweetAlert(2, DATA.error, false);
-                console.error(DATA.exception);
-            }
-        });
+        // Petición para guardar los datos del formulario.
+        const DATA = await fetchData(GOLES_API, action, FORM);
+        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+        if (DATA.status) {
+            // Se cierra la caja de diálogo.
+            SAVE_MODAL_GOLES.hide();
+            SEE_GOLES_MODAL.show();
+            // Se muestra un mensaje de éxito.
+            await sweetAlert(1, DATA.message, true);
+            // Se carga nuevamente la tabla para visualizar los cambios.
+            await cargarGolTarjetas(idParticipation)
+        } else {
+            await sweetAlert(2, DATA.error, false);
+            console.error(DATA.exception);
+        }
+    });
 
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_AMONESTACION_FORM.addEventListener('submit', async (event) => {
@@ -844,7 +844,7 @@ window.onload = async function () {
             // Se carga nuevamente la tabla para visualizar los cambios.
             await cargarAmonestacionTarjetas(idParticipation);
         } else {
-            await  sweetAlert(2, DATA.error, false);
+            await sweetAlert(2, DATA.error, false);
             console.error(DATA.exception);
         }
     });
@@ -860,10 +860,10 @@ window.onload = async function () {
 
         const DATA = await fetchData(PARTICIPACION_API, 'searchRows', FORM);
 
-        if(DATA.status){
+        if (DATA.status) {
             participation = DATA.dataset;
             await showParticipation(currentPage);
-        } else{
+        } else {
             await sweetAlert(3, DATA.error, true);
         }
     });

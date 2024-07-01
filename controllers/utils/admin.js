@@ -147,7 +147,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                 <li><a class="dropdown-item text-light" href="medical_records.html">Registro médico</a></li>
                                 <li><a class="dropdown-item text-light" href="types_injuries.html">Tipos de lesiones</a></li>
                                 <li><a class="dropdown-item text-light" href="typologies.html">Tipologías</a></li>
-                                <li><a class="dropdown-item text-light" href="sub_typologies.html">Sub Tipologías</a></li>
+                                <li><a class="dropdown-item text-light" href="sub_typologies.html">Subtipologías</a></li>
                                 <li><a class="dropdown-item text-light" href="injuries.html">Lesiones</a></li>
                             </ul>
                             </li>
