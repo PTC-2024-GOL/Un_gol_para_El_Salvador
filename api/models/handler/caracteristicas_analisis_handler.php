@@ -36,11 +36,11 @@ class CaracteristicasAnalisisHandler
     //Función para insertar una característica.
     public function createRow()
     {
-        $sql = 'CALL insertar_analisis_caracteristica_jugador(?,?);';
+        $sql = 'CALL insertarCaracteristicasYDetalles(?,?,?);';
         $params = array(
-            $this->nota,
-            $this->caracteristica,
             $this->jugador,
+            $this->entrenamiento,
+            $this->caracteristica
         );
         return Database::executeRow($sql, $params);
     }
@@ -58,11 +58,10 @@ class CaracteristicasAnalisisHandler
     //Función para leer una característica.
     public function readOne()
     {
-        $sql = 'SELECT JUGADOR, CARACTERISTICA, NOTA FROM vista_caracteristicas_analisis 
-                WHERE IDE = ? AND IDJCA = ?
-                GROUP BY JUGADOR;';
-        $params = array($this->entrenamiento,$this->id);
-        return Database::getRow($sql, $params);
+        $sql = 'SELECT JUGADOR, CARACTERISTICA, NOTA, IDC FROM vista_caracteristicas_analisis 
+                WHERE IDE = ? AND IDJCA = ?;';
+        $params = array($this->entrenamiento,$this->jugador);
+        return Database::getRows($sql, $params);
     }
 
 
@@ -76,14 +75,6 @@ class CaracteristicasAnalisisHandler
             $this->caracteristica,
             $this->jugador,
         );
-        return Database::executeRow($sql, $params);
-    }
-
-    //Función para eliminar una característica.
-    public function deleteRow()
-    {
-        $sql = 'CALL eliminar_analisis_caracteristica_jugador(?);';
-        $params = array($this->id);
         return Database::executeRow($sql, $params);
     }
 }

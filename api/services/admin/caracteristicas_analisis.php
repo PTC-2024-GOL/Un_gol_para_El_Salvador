@@ -30,9 +30,9 @@ if (isset($_GET['action'])) {
             case 'createRow':
                 $_POST = Validator::validateForm($_POST);
                 if (
-                    !$caracteristica->setNota($_POST['nota']) or
-                    !$caracteristica->setCaracteristica($_POST['clasificacionCaracteristica']) or
-                    !$caracteristica->setJugador($_POST['jugador'])
+                    !$caracteristica->setJugador($_POST['jugador']) or
+                    !$caracteristica->setEntrenamiento($_POST['entrenamiento']) or
+                    !$caracteristica->setCaracteristica($_POST['caracteristicas'])
                 ) {
                     $result['error'] = $caracteristica->getDataError();
                 } elseif ($caracteristica->createRow()) {
@@ -56,8 +56,8 @@ if (isset($_GET['action'])) {
                 // Leer uno
             case 'readOne':
                 if (
-                    !$caracteristica->setId($_POST['idCaracteristica']) or
-                    !$caracteristica->setEntrenamiento($_POST['idEntrenamiento'])
+                    !$caracteristica->setEntrenamiento($_POST['idEntrenamiento']) or
+                    !$caracteristica->setJugador($_POST['idJugador'])
                 ) {
                     $result['error'] = $caracteristica->getDataError();
                 } elseif ($result['dataset'] = $caracteristica->readOne()) {
