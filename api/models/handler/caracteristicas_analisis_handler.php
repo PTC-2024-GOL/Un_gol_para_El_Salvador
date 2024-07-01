@@ -64,6 +64,14 @@ class CaracteristicasAnalisisHandler
         return Database::getRows($sql, $params);
     }
 
+    //Función para la gráfica de una característica.
+    public function graphic()
+    {
+        $sql = 'SELECT CARACTERISTICA, NOTA FROM vista_caracteristicas_analisis 
+                WHERE IDE = ? AND IDJCA = ?;';
+        $params = array($this->entrenamiento,$this->jugador);
+        return Database::getRows($sql, $params);
+    }
 
     //Función para actualizar una característica.
     public function updateRow()
