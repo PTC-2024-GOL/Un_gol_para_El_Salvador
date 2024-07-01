@@ -26,9 +26,9 @@ class HorariosHandler
     {
         $value = '%' . Validator::getSearchValue() . '%';
         $sql = 'SELECT * FROM horarios
-        WHERE nombre_horario LIKE ? OR dia LIKE ? OR hora_inicial LIKE ? OR hora_final LIKE ? OR campo_de_entrenamiento LIKE ?
+        WHERE nombre_horario LIKE ? OR dia LIKE ?
         ORDER BY nombre_horario;';
-        $params = array($value, $value, $value, $value, $value);
+        $params = array($value, $value);
         return Database::getRows($sql, $params);
     }
 
