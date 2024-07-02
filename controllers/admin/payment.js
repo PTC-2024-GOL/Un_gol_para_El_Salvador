@@ -181,7 +181,7 @@ const openUpdate = async (id) => {
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
             ID_PAGO.value = ROW.ID;
-            fillSelect(JUGADOR_API, 'readAll', 'nombreJugador', ROW.NOMBRE);
+            await fillSelect(JUGADOR_API, 'readAll', 'nombreJugador', ROW.NOMBRE);
             FECHA_PAGO.value = ROW.FECHA;
             CANTIDAD_PAGO.value = ROW.CANTIDAD;
             SelectedPago(lista_pago, 'readAll', 'tardioPago', ROW.TARDIO);
