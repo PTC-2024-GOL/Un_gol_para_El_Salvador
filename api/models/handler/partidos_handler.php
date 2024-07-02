@@ -34,8 +34,8 @@ class PartidosHandler
     {
         $value = '%' . Validator::getSearchValue() . '%';
         $sql = "SELECT * FROM vista_detalle_partidos
-                WHERE nombre_rival LIKE ? OR nombre_equipo LIKE ?;";
-        $params = array($value, $value);
+                WHERE nombre_rival LIKE ? OR nombre_equipo LIKE ? OR fecha LIKE ?;";
+        $params = array($value, $value, $value);
         return Database::getRows($sql, $params);
     }
 

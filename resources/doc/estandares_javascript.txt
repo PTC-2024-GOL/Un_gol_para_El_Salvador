@@ -17,7 +17,7 @@ A continuación, se detallan los estándares de programación utilizados en el c
 -----------------------------------------------------------------------------------------------------------------------------
 
 1. Nomenclatura de Variables y Funciones:
--Nombres Descriptivos: Se utilizan nombres descriptivos en mayúsculas con guiones bajos para las constantes
+-Nombres Descriptivos: Se utilizan nombres descriptivos en mayúsculas con guiones bajos para las constantes y variables
 y en camelCase para las funciones.
 
 Ejemplo:
