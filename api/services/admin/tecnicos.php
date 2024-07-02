@@ -18,7 +18,7 @@ if (isset($_GET['action'])) {
         switch ($_GET['action']) {
                 // Buscar
             case 'searchRows':
-                if (!Validator::validateSearch($_POST['search'])) {
+                if (!Validator::validateSearch2($_POST['search'])) {
                     $result['error'] = Validator::getSearchError();
                 } elseif ($result['dataset'] = $Tecnico->searchRows()) {
                     $result['status'] = 1;
