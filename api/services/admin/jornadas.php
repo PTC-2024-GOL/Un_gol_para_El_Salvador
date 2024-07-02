@@ -15,7 +15,7 @@ if (isset($_GET['action'])) {
         switch ($_GET['action']) {
                 // Buscar
             case 'searchRows':
-                if (!Validator::validateSearch($_POST['search'])) {
+                if (!Validator::validateSearch2($_POST['search'])) {
                     $result['error'] = Validator::getSearchError();
                 } elseif ($result['dataset'] = $jornada->searchRows()) {
                     $result['status'] = 1;
@@ -90,7 +90,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Jornada eliminada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar la jornada';
+                    $result['error'] = 'Ocurrió un problema al eliminar la jornada. Por seguridad no puedes eliminar esta jornada porque esta siendo utilizado en otras tablas.';
                 }
                 break;
             default:

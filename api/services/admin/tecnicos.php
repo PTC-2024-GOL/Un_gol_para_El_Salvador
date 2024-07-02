@@ -18,7 +18,7 @@ if (isset($_GET['action'])) {
         switch ($_GET['action']) {
                 // Buscar
             case 'searchRows':
-                if (!Validator::validateSearch($_POST['search'])) {
+                if (!Validator::validateSearch2($_POST['search'])) {
                     $result['error'] = Validator::getSearchError();
                 } elseif ($result['dataset'] = $Tecnico->searchRows()) {
                     $result['status'] = 1;
@@ -108,7 +108,7 @@ if (isset($_GET['action'])) {
                     // Se asigna el estado del archivo después de eliminar.
                     $result['fileStatus'] = Validator::deleteFile($Tecnico::RUTA_IMAGEN, $Tecnico->getFilename());
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar el técnico';
+                    $result['error'] = 'Ocurrió un problema al eliminar el técnico. Por seguridad no puedes eliminar este técnico porque esta siendo utilizado en otras tablas.';
                 }
                 break;
                 // Estado

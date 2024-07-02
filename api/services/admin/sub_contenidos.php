@@ -36,7 +36,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Subcontenido creado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al crear el subcontenido';
+                    $result['error'] = 'El nombre del subcontenido debe ser único';
                 }
                 break;
                 // Leer todos
@@ -80,7 +80,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Subcontenido modificado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al modificar el subcontenido';
+                    $result['error'] = 'El nombre del subcontenido debe ser único';
                 }
                 break;
                 // Eliminar
@@ -93,7 +93,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Subcontenido eliminado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar el Subcontenido';
+                    $result['error'] = 'No puedes eliminar este subcontenido porque esta siendo utilizado por contenido por entrenamiento';
                 }
                 break;
             default:

@@ -93,7 +93,7 @@ class Validator
     }
 
 
-        /*
+    /*
          *   Método para validar un archivo de imagen.
          *   Parámetros: $file (archivo de un formulario) y $dimension (medida mínima para la imagen).
          *   Retorno: booleano (true si el archivo es correcto o false en caso contrario).
@@ -159,6 +159,21 @@ class Validator
     {
         // Se verifica el contenido y la longitud de acuerdo con la base de datos.
         if (preg_match('/^[a-zA-Z0-9ñÑáÁéÉíÍóÓúÚ\s\,\;\.]+$/', $value)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /*
+ *   Método para validar una cadena de texto (letras, dígitos, espacios en blanco, signos de puntuación y guiones).
+ *   Parámetros: $value (dato a validar).
+ *   Retorno: booleano (true si el valor es correcto o false en caso contrario).
+ */
+    public static function validateStringText($value)
+    {
+        // Se verifica el contenido y la longitud de acuerdo con la base de datos.
+        if (preg_match('/^[a-zA-Z0-9ñÑáÁéÉíÍóÓúÚ\s\,\;\.\-]+$/', $value)) {
             return true;
         } else {
             return false;
@@ -335,12 +350,12 @@ class Validator
         } elseif (str_word_count($value) > 3) {
             self::$search_error = 'La búsqueda contiene más de 3 palabras';
             return false;
-        } elseif (self::validateString($value)) {
+        } elseif (self::validateStringText($value)) {
             self::$search_value = $value;
             return true;
         } else {
-            self::$search_value = $value;
-            return true;
+            self::$search_error = 'La búsqueda contiene caracteres prohibidos';
+            return false;
         }
     }
 
@@ -545,5 +560,4 @@ class Validator
         }
         return false;
     }
-
 }

@@ -82,7 +82,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Plantilla eliminada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar la plantilla';
+                    $result['error'] = 'Ocurrió un problema al eliminar la plantilla. Por seguridad no puedes eliminar esta plantilla porque esta siendo utilizada en otras tablas.';
                 }
                 break;
             default:

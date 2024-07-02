@@ -82,7 +82,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Rol eliminado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar el rol';
+                    $result['error'] = 'Ocurrió un problema al eliminar el rol. Por seguridad no puedes eliminar este rol porque esta siendo utilizado en otras tablas.';
                 }
                 break;
             default:
