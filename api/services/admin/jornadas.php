@@ -90,7 +90,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Jornada eliminada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar la jornada';
+                    $result['error'] = 'Ocurrió un problema al eliminar la jornada. Por seguridad no puedes eliminar esta jornada porque esta siendo utilizado en otras tablas.';
                 }
                 break;
             default:

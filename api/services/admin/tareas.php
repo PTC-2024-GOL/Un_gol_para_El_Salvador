@@ -82,7 +82,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Tarea eliminada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar la tarea';
+                    $result['error'] = 'Ocurrió un problema al eliminar la tarea. Por seguridad no puedes eliminar este tarea porque esta siendo utilizado en otras tablas.';
                 }
                 break;
             default:

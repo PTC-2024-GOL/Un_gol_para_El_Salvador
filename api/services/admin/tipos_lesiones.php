@@ -82,7 +82,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Tipo de lesión eliminada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar el tipo de lesión';
+                    $result['error'] = 'Ocurrió un problema al eliminar el tipo de lesión. Por seguridad no puedes eliminar este tipo de lesión porque esta siendo utilizado en otras tablas.';
                 }
                 break;
             default:
