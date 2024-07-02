@@ -78,9 +78,9 @@ if (isset($_GET['action'])) {
                     $result['error'] = $subcontenidos->getDataError();
                 } elseif ($subcontenidos->updateRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Contenido modificado correctamente';
+                    $result['message'] = 'Subcontenido modificado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al modificar el contenido';
+                    $result['error'] = 'Ocurrió un problema al modificar el subcontenido';
                 }
                 break;
                 // Eliminar

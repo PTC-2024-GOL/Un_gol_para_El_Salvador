@@ -35,7 +35,7 @@ const openCreate = () => {
     REPETIR_CLAVE.disabled = false;
     // Se prepara el formulario.
     SAVE_FORM.reset();
-    FOTO_ADMINISTRADOR.src = "../../../resources/img/svg/avatar.svg";
+    FOTO_ADMINISTRADOR.src = "../../../resources/img/png/default.jpg";
 }
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
@@ -85,7 +85,7 @@ const openUpdate = async (id) => {
 */
 const openDelete = async (id) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar el técnico?');
+    const RESPONSE = await confirmAction('¿Desea eliminar al técnico?');
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {

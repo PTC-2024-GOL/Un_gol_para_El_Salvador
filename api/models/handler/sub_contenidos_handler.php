@@ -26,9 +26,9 @@ class SubContenidosHandler
                 FROM sub_temas_contenidos stc
                 INNER JOIN temas_contenidos tc 
                 ON stc.id_tema_contenido = tc.id_tema_contenido
-                WHERE sub_tema_contenido LIKE ?
+                WHERE sub_tema_contenido LIKE ? OR nombre_tema_contenido LIKE ?
                 ORDER BY sub_tema_contenido;';
-        $params = array($value);
+        $params = array($value, $value);
         return Database::getRows($sql, $params);
     }
 

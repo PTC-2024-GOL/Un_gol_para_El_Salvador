@@ -68,7 +68,7 @@ const openUpdate = async (id) => {
 */
 const openDelete = async (id) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar el sub-contenido?');
+    const RESPONSE = await confirmAction('¿Desea eliminar el subcontenido?');
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
@@ -194,7 +194,7 @@ window.onload = async function () {
     appContainer.innerHTML = subcontenidosHtml;
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
-    titleElement.textContent = 'Sub contenidos';
+    titleElement.textContent = 'Subcontenidos';
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),

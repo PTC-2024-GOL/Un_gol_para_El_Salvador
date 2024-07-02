@@ -119,7 +119,7 @@ if (isset($_GET['action'])) {
                     $result['error'] = $Tecnico->getDataError();
                 } elseif ($Tecnico->changeState()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Estado de técnico cambiado correctamente';
+                    $result['message'] = 'Estado del técnico cambiado correctamente';
                 } else {
                     $result['error'] = 'Ocurrió un problema al alterar el estado del técnico';
                 }

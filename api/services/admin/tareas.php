@@ -33,7 +33,7 @@ if (isset($_GET['action'])) {
                     $result['error'] = $tarea->getDataError();
                 } elseif ($tarea->createRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Tarea creado correctamente';
+                    $result['message'] = 'Tarea creada correctamente';
                 } else {
                     $result['error'] = 'Ocurrió un problema al crear la tarea';
                 }
@@ -44,7 +44,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
-                    $result['error'] = 'No existen tareas registrados';
+                    $result['error'] = 'No existen tareas registradas';
                 }
                 break;
                 // Leer uno
@@ -67,7 +67,7 @@ if (isset($_GET['action'])) {
                     $result['error'] = $tarea->getDataError();
                 } elseif ($tarea->updateRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Tarea modificado correctamente';
+                    $result['message'] = 'Tarea modificada correctamente';
                 } else {
                     $result['error'] = 'Ocurrió un problema al modificar la tarea';
                 }
@@ -80,7 +80,7 @@ if (isset($_GET['action'])) {
                     $result['error'] = $tarea->getDataError();
                 } elseif ($tarea->deleteRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Tarea eliminado correctamente';
+                    $result['message'] = 'Tarea eliminada correctamente';
                 } else {
                     $result['error'] = 'Ocurrió un problema al eliminar la tarea';
                 }

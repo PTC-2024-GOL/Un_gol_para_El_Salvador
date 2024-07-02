@@ -39,7 +39,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Horario creado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al crear el horario';
+                    $result['error'] = 'Ocurrió un problema al crear el horario, recuerda que la hora final debe ser mayor a la inicial';
                 }
                 break;
                 // Leer todos
@@ -48,7 +48,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
-                    $result['error'] = 'No existen horario registrados';
+                    $result['error'] = 'No existen horarios registrados';
                 }
                 break;
                 // Leer uno
@@ -77,7 +77,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Horario modificado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al modificar el horario';
+                    $result['error'] = 'Ocurrió un problema al modificar el horario, recuerda que la hora final debe ser mayor a la inicial';
                 }
                 break;
                 // Eliminar
@@ -90,7 +90,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Horario eliminado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar el horario';
+                    $result['error'] = 'Ocurrió un problema al eliminar el horario. Por seguridad no puedes eliminiar este horario porque esta siendo ocupado en otros registros.';
                 }
                 break;
             default:

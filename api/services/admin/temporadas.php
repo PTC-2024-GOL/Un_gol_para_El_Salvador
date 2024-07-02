@@ -33,9 +33,9 @@ if (isset($_GET['action'])) {
                     $result['error'] = $temporada->getDataError();
                 } elseif ($temporada->createRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Rol creado correctamente';
+                    $result['message'] = 'Temporada creada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al crear el rol';
+                    $result['error'] = 'Ocurrió un problema al crear la temporada, recuerda que el nombre de la temporada deber ser único';
                 }
                 break;
                 // Leer todos
@@ -44,7 +44,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
-                    $result['error'] = 'No existen roles registrados';
+                    $result['error'] = 'No existen temporadas creadas';
                 }
                 break;
                 // Leer uno
@@ -54,7 +54,7 @@ if (isset($_GET['action'])) {
                 } elseif ($result['dataset'] = $temporada->readOne()) {
                     $result['status'] = 1;
                 } else {
-                    $result['error'] = 'Rol inexistente';
+                    $result['error'] = 'Temporada inexistente';
                 }
                 break;
                 // Actualizar
@@ -67,9 +67,9 @@ if (isset($_GET['action'])) {
                     $result['error'] = $temporada->getDataError();
                 } elseif ($temporada->updateRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Rol modificado correctamente';
+                    $result['message'] = 'Temporada modificada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al modificar el rol';
+                    $result['error'] = 'Ocurrió un problema al modificar la temporada, recuerda que el nombre de la temporada deber ser único';
                 }
                 break;
                 // Eliminar
@@ -80,9 +80,9 @@ if (isset($_GET['action'])) {
                     $result['error'] = $temporada->getDataError();
                 } elseif ($temporada->deleteRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Rol eliminado correctamente';
+                    $result['message'] = 'Temporada eliminada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar el rol';
+                    $result['error'] = 'Ocurrió un problema al eliminar la temporada. Por seguridad no la puedes eliminar porque esta siendo utilizada en otros registros';
                 }
                 break;
             default:
