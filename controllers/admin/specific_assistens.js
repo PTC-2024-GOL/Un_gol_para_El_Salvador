@@ -106,7 +106,7 @@ const guardar = async () => {
                 await sweetAlert(1, DATA.message, true);
                 // Se carga nuevamente la tabla para visualizar los cambios.
                 BOTON.textContent = 'Modificar registro';
-                TITLEELEMENT.textContent = 'Asistencia del equipo - actualizar';
+                TITLEELEMENT.textContent = 'Asistencia del equipo - Actualizar';
                 BOOLASISTENCIA = 1;
                 fillTable(true);
             } else {
@@ -141,7 +141,7 @@ const openUpdate = async (id) => {
             ID_ASISTENCIA.value = DATA.id;
             OBSERVACION.value = DATA.observacion;
             console.log('ID ASISTENCIA:', ID_ASISTENCIA.value);
-            console.log('OBSERVACION:', OBSERVACION.value);
+            console.log('OBSERVACION:', DATA.observacion);
         } else {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
@@ -266,7 +266,7 @@ window.onload = async function () {
     const DATA = await fetchData(ASISTENCIAS_API_2, 'readOne', FORM);
     ID_HORARIO_url = DATA.dataset.id_horario;
     (DATA.dataset.asistencia == 1) ? BOTON.textContent = 'Modificar registro' : BOTON.textContent = 'Guardar registro';
-    (DATA.dataset.asistencia == 1) ? TITLEELEMENT.textContent = 'Asistencia del equipo - actualizar' : TITLEELEMENT.textContent = 'Asistencia del equipo - agregar asistencia';
+    (DATA.dataset.asistencia == 1) ? TITLEELEMENT.textContent = 'Asistencia del equipo - Actualizar' : TITLEELEMENT.textContent = 'Asistencia del equipo - agregar asistencia';
     await fillTable(DATA.dataset.asistencia);
     console.log('ID ENTRENAMIENTO:', ID_ENTRENAMIENTO_url);
     console.log('ID HORARIO:', ID_HORARIO_url);
@@ -293,7 +293,7 @@ window.onload = async function () {
         console.log('ID ASISTENCIA:', id);
         console.log('OBSERVACION:', newObservation);
         // Encuentra el objeto en el arreglo que corresponde al id dado.
-        let item = LISTA_DATOS.find(item => item.id === id);
+        let item = LISTA_DATOS.find(item => item.id == id);
         console.log('Item:', item);
         // Si se encuentra el objeto, modifica la observación.
         if (item) {
