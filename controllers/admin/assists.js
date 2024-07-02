@@ -43,6 +43,7 @@ async function loadComponent(path) {
 //
 // Función para abrir la página de detalles específicos.
 const openPag = () => {
+    id_entrenamiento = document.getElementById('horario').value;
     window.location.href = `../pages/specific_assistens.html?id_entrenamiento=${id_entrenamiento}`;
 }
 
