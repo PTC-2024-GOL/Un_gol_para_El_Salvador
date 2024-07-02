@@ -340,14 +340,6 @@ async function mostrarPlantillas(pagina) {
                                     <span class="fs-5 me-2">+</span> Agregar un elemento a la plantilla
                                 </button>
                              </div>
-                             <div class="col-sm-12 col-md-6">
-                                <form id="searchFormTemplate" class="d-flex">
-                                    <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow" name="search" placeholder="Buscar" required>
-                                    <button type="submit" class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
-                                    <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
-                                    </button>
-                                </form>
-                             </div>
                             </div>
                                 <div id="carousel-container-${row.ID}" class="carousel-container"></div>
                           </div>
