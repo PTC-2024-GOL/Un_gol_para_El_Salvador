@@ -13,8 +13,8 @@ class JornadasHandler
     protected $nombre = null;
     protected $numero = null;
     protected $plantilla = null;
-    protected $fecha_inicio = null;
-    protected $fecha_final = null;
+    protected $fechaInicio = null;
+    protected $fechaFinal = null;
 
 
     /*
@@ -40,8 +40,8 @@ class JornadasHandler
             $this->nombre,
             $this->numero,
             $this->plantilla,
-            $this->fecha_inicio,
-            $this->fecha_final
+            $this->fechaInicio,
+            $this->fechaFinal
         );
         return Database::executeRow($sql, $params);
     }
@@ -73,8 +73,8 @@ class JornadasHandler
             $this->nombre,
             $this->numero,
             $this->plantilla,
-            $this->fecha_inicio,
-            $this->fecha_final
+            $this->fechaInicio,
+            $this->fechaFinal
         );
         return Database::executeRow($sql, $params);
     }

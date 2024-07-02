@@ -69,7 +69,7 @@ class JornadasData extends JornadasHandler
     public function setFechaInicio($value)
     {
         if (Validator::validateDate($value)) {
-            $this->fecha_inicio = $value;
+            $this->fechaInicio = $value;
             return true;
         } else {
             $this->data_error = 'La fecha de inicio no es valida';
@@ -82,7 +82,7 @@ class JornadasData extends JornadasHandler
     public function setFechaFin($value)
     {
         if (Validator::validateDate($value)) {
-            $this->fecha_final = $value;
+            $this->fechaFinal = $value;
             return true;
         } else {
             $this->data_error = 'La fecha final no es valida';
