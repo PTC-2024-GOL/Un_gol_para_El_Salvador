@@ -1,3 +1,26 @@
+.bajo-peso {
+    color: #0A0E23; /* Color azul oscuro para Peso bajo */
+}
+
+.normal {
+    color: #00C079; /* Color verde para Normal */
+}
+
+.sobrepeso {
+    color: #005BAC; /* Color azul para Sobrepeso */
+}
+
+.obesidad-tipo-1 {
+    color: #D06969; /* Color rojo claro para Obesidad tipo 1 */
+}
+
+.obesidad-tipo-2 {
+    color: #D06868; /* Color rojo oscuro para Obesidad tipo 2 */
+}
+
+.obesidad-tipo-3 {
+    color: #FF2A2A; /* Color rojo para Obesidad tipo 3 */
+}
 /* Estilo para el menu */
 .offcanvas,
 .offcanvas-body,
@@ -204,3 +227,5 @@ a{
 #imgJugador {
     border-radius: 20px;
 }
+
+

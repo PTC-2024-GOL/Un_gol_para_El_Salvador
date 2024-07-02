@@ -40,7 +40,7 @@ class EstadoFisicoJugadorData extends EstadoFisicoJugadorHandler
 
 
     // Validación y asignación del peso
-    public function setPeso($value, $min = 75, $max = 300)
+    public function setPeso($value, $min = 40, $max = 200)
     {
         if ((Validator::validateNaturalNumber($value)) && ($value > $min && $value < $max)) {
             $this->altura = $value;
