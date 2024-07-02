@@ -327,6 +327,23 @@ class Validator
         }
     }
 
+    public static function validateSearch2($value)
+    {
+        if (trim($value) == '') {
+            self::$search_error = 'Ingrese un valor para buscar';
+            return false;
+        } elseif (str_word_count($value) > 3) {
+            self::$search_error = 'La búsqueda contiene más de 3 palabras';
+            return false;
+        } elseif (self::validateString($value)) {
+            self::$search_value = $value;
+            return true;
+        } else {
+            self::$search_value = $value;
+            return true;
+        }
+    }
+
     /*
      *   Método para validar un archivo al momento de subirlo al servidor.
      *   Parámetros: $file (archivo), $path (ruta del archivo) y $name (nombre del archivo).

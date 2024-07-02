@@ -5,7 +5,7 @@
             <div class="col-sm-12 col-md-6">
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
-                        name="search" placeholder="Buscar por la fecha de registro" required>
+                        name="search" placeholder="Buscar por fecha en formato (2000-01-01)" required>
                     <button type="submit"
                         class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
@@ -37,7 +37,7 @@
                 </tr>
                 <tr>
                     <th class="fw-semibold">Fecha de registro</th>
-                    <th class="fw-semibold">Altura(metros)</th>
+                    <th class="fw-semibold">Altura(centimetros)</th>
                     <th class="fw-semibold">Peso(lbs)</th>
                     <th class="fw-semibold">IMC</th>
                 </tr>
@@ -66,13 +66,13 @@
                     <input type="hidden" id="idEstado" name="idEstado">
                     <input type="hidden" id="idJugador" name="idJugador">
                     <div class="col-sm-12 col-md-6">
-                        <label for="altura" class="form-label fw-semibold">Altura(en m)</label>
-                        <input type="number" step=".01" class="form-control" id="altura" name="altura" min="1"
+                        <label for="altura" class="form-label fw-semibold">Altura(en ctm)</label>
+                        <input type="number" step=".01" class="form-control" id="altura" name="altura" min="100" max="220"
                             placeholder="Escribe la altura en metros" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="peso" class="form-label fw-semibold">Peso(en lbs)</label>
-                        <input type="number" step=".01" class="form-control" id="peso" name="peso" min="1"
+                        <input type="number" step=".01" class="form-control" id="peso" name="peso" min="75" max="300"
                             placeholder="Escribe el peso en libras" required>
                     </div>
                 </div>
