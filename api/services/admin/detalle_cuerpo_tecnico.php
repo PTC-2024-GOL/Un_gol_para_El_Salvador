@@ -36,9 +36,9 @@ if (isset($_GET['action'])) {
                     $result['error'] = $cuerpotecnico->getDataError();
                 } elseif ($cuerpotecnico->createRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Detalle de cuerpo técnico creado correctamente';
+                    $result['message'] = 'Detalle del cuerpo técnico creado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al crear el detalle cuerpo técnico';
+                    $result['error'] = 'Ocurrió un problema al crear el detalle del cuerpo técnico';
                 }
                 break;
                 // Leer todos
@@ -47,7 +47,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
-                    $result['error'] = 'No hay detalle de cuerpo técnico registrados';
+                    $result['error'] = 'No hay detalles del cuerpo técnico registrados';
                 }
                 break;
                 // Leer uno
@@ -59,7 +59,7 @@ if (isset($_GET['action'])) {
                 } elseif ($result['dataset'] = $cuerpotecnico->readOne()) {
                     $result['status'] = 1;
                 } else {
-                    $result['error'] = 'Detalle cuerpo técnico inexistente';
+                    $result['error'] = 'Detalle del cuerpo técnico inexistente';
                 }
                 break;
                 // Leer un detalle
@@ -72,7 +72,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
-                    $result['error'] = 'No hay detalle de cuerpo técnico registrados';
+                    $result['error'] = 'No hay detalle del cuerpo técnico registrado';
                 }
                 break;
                 // Actualizar
@@ -87,9 +87,9 @@ if (isset($_GET['action'])) {
                     $result['error'] = $cuerpotecnico->getDataError();
                 } elseif ($cuerpotecnico->updateRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Detalle cuerpo técnico modificado correctamente';
+                    $result['message'] = 'Detalle del cuerpo técnico modificado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al modificar el detalle de cuerpo técnico';
+                    $result['error'] = 'Ocurrió un problema al modificar el detalle del cuerpo técnico';
                 }
                 break;
                 // Eliminar
@@ -100,9 +100,9 @@ if (isset($_GET['action'])) {
                     $result['error'] = $cuerpotecnico->getDataError();
                 } elseif ($cuerpotecnico->deleteRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Detalle de cuerpo técnico eliminada correctamente';
+                    $result['message'] = 'Detalle del cuerpo técnico eliminado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar el detalle de cuerpo técnico';
+                    $result['error'] = 'Ocurrió un problema al eliminar el detalle del cuerpo técnico';
                 }
                 break;
             default:

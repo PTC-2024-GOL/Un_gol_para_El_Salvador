@@ -36,7 +36,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Tipo de jugada creada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al crear el tipo de jugada';
+                    $result['error'] = 'Ocurrió un problema al crear el tipo de jugada, recuerda que el nombre debe ser único';
                 }
                 break;
             // Leer todos
@@ -70,7 +70,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Tipo de jugada modificada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al modificar el tipo de jugada';
+                    $result['error'] = 'Ocurrió un problema al modificar el tipo de jugada, recuerda que el nombre debe ser único';
                 }
                 break;
             // Eliminar

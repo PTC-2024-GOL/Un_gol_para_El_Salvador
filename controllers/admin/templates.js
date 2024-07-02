@@ -216,7 +216,7 @@ const openUpdateD = async (id) => {
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             TEMPLATE_MODAL.show();
-            TEMPLATE_TITLE.textContent = 'Actualizar cuerpo técnico';
+            TEMPLATE_TITLE.textContent = 'Actualizar jugador de la plantilla';
             // Se prepara el formulario.
             TEMPLATE_FORM.reset();
             // Se inicializan los campos con los datos.
@@ -241,7 +241,7 @@ const openUpdateD = async (id) => {
 */
 const openDeleteD = async (id) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar del cuerpo técnico?');
+    const RESPONSE = await confirmAction('¿Desea eliminar al jugador de la plantilla?');
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
@@ -442,7 +442,7 @@ async function cargarCarrouselParaPlantillas(id) {
         </button>
         `;
         } else {
-            innerHTML = `<p>No hay tecnicos disponibles para este cuerpo técnico.</p>`;
+            innerHTML = `<p>No hay jugadores agregados a esta plantilla.</p>`;
         }
 
         carousel.innerHTML = innerHTML;

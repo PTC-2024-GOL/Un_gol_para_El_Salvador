@@ -36,9 +36,9 @@ if (isset($_GET['action'])) {
                     $result['error'] = $plantilla->getDataError();
                 } elseif ($plantilla->createRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Plantilla creado correctamente';
+                    $result['message'] = 'Jugador agregado a la plantilla correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al crear el plantilla';
+                    $result['error'] = 'Ocurrió un problema al crear la plantilla';
                 }
                 break;
                 // Leer todos
@@ -84,9 +84,9 @@ if (isset($_GET['action'])) {
                     $result['error'] = $plantilla->getDataError();
                 } elseif ($plantilla->updateRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Plantilla modificado correctamente';
+                    $result['message'] = 'Jugador de la plantilla modificado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al modificar el plantilla';
+                    $result['error'] = 'Ocurrió un problema al modificar la plantilla';
                 }
                 break;
                 // Eliminar
@@ -97,9 +97,9 @@ if (isset($_GET['action'])) {
                     $result['error'] = $plantilla->getDataError();
                 } elseif ($plantilla->deleteRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'plantilla eliminado correctamente';
+                    $result['message'] = 'Jugador eliminado correctamente del plantilla';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar el plantilla';
+                    $result['error'] = 'Ocurrió un problema al eliminar la plantilla';
                 }
                 break;
             default:

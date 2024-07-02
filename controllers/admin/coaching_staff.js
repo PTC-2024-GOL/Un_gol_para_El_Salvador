@@ -337,7 +337,7 @@ async function cargarCarrouselParaCuerpoTecnico(id) {
                 </button>
             `;
         } else {
-            innerHTML = `<p>No hay tecnicos disponibles para este cuerpo técnico.</p>`;
+            innerHTML = `<p>No hay técnicos agregados para este cuerpo técnico.</p>`;
         }
 
         carousel.innerHTML = innerHTML;

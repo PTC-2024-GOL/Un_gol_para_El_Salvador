@@ -39,7 +39,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Categoría creada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al crear la categoría';
+                    $result['error'] = 'Ocurrió un problema al crear la categoría, recuerda que la edad máxima debe ser mayor a la mínima y el nombre de la categoría debe ser única';
                 }
                 break;
             // Leer todos
@@ -76,7 +76,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Categoría modificada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al modificar la categoría';
+                    $result['error'] = 'Ocurrió un problema al modificar la categoría, recuerda que la edad máxima debe ser mayor a la mínima y el nombre de la categoría debe ser única';
                 }
                 break;
             // Eliminar
@@ -89,7 +89,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Categoría eliminada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar la categoría';
+                    $result['error'] = 'Ocurrió un problema al eliminar la categoría. Por seguridad no puedes elimininar esta categoría porque esta siendo ocupada en otros registros.';
                 }
                 break;
             default:

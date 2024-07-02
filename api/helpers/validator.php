@@ -471,6 +471,26 @@ class Validator
         }
     }
 
+    public static function validatePlayerDateBirthday($value)
+    {
+        // Se dividen las partes de la fecha y se guardan en un arreglo en el siguiene orden: año, mes y día.
+        $datev = strtotime($value);
+        $datem = strtotime('-6 years', time());
+        $datea = strtotime('-30 years', time());
+        if ($datev > $datem) {
+            return false;
+        } elseif ($datev < $datea) {
+            return false;
+        } else {
+            $date = explode('-', $value);
+            if (checkdate($date[1], $date[2], $date[0])) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
     public static function validatePositiveDecimal2($value)
     {
         // Se verifica que el valor sea un número decimal positivo.

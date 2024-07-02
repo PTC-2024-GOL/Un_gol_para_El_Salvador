@@ -33,7 +33,7 @@ if (isset($_GET['action'])) {
                     $result['error'] = $plantilla->getDataError();
                 } elseif ($plantilla->createRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Plantilla creado correctamente';
+                    $result['message'] = 'Plantilla creada correctamente';
                 } else {
                     $result['error'] = 'Ocurrió un problema al crear el plantilla';
                 }
@@ -67,9 +67,9 @@ if (isset($_GET['action'])) {
                     $result['error'] = $plantilla->getDataError();
                 } elseif ($plantilla->updateRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Plantilla modificado correctamente';
+                    $result['message'] = 'Plantilla modificada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al modificar el plantilla';
+                    $result['error'] = 'Ocurrió un problema al modificar la plantilla';
                 }
                 break;
                 // Eliminar
@@ -80,9 +80,9 @@ if (isset($_GET['action'])) {
                     $result['error'] = $plantilla->getDataError();
                 } elseif ($plantilla->deleteRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'plantilla eliminado correctamente';
+                    $result['message'] = 'Plantilla eliminada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar el plantilla';
+                    $result['error'] = 'Ocurrió un problema al eliminar la plantilla';
                 }
                 break;
             default:

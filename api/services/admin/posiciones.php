@@ -36,7 +36,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Posición creada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al crear la posición';
+                    $result['error'] = 'Ocurrió un problema al crear la posición, recuerda que el nombre de la posición debe ser única';
                 }
                 break;
             // Leer todos
@@ -71,7 +71,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Posición modificada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al modificar la posición';
+                    $result['error'] = 'Ocurrió un problema al modificar la posición, recuerda que el nombre de la posición debe ser única';
                 }
                 break;
             // Eliminar
@@ -84,7 +84,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Posición eliminada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar la posición';
+                    $result['error'] = 'Ocurrió un problema al eliminar la posición. Por seguridad no puedes eliminarla porque esta siendo ocupada en otros registros.';
                 }
                 break;
             default:

@@ -35,7 +35,7 @@ if (isset($_GET['action'])) {
                     $result['error'] = $estadofisico->getDataError();
                 } elseif ($estadofisico->createRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'registro del estado fisico creado correctamente';
+                    $result['message'] = 'Estado fisico del jugador creado correctamente';
                 } else {
                     $result['error'] = 'Ocurrió un problema al crear el estado fisico';
                 }

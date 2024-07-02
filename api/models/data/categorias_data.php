@@ -28,10 +28,7 @@ class CategoriasData extends CategoriasHandler
     // Validación y asignación del nombre de la categoría.
     public function setNombreCategoria($value, $min = 2, $max = 80)
     {
-        if (!Validator::validateAlphanumeric($value)) {
-            $this->data_error = 'El nombre de la categoría debe ser un valor alfanumerico';
-            return false;
-        } elseif (Validator::validateLength($value, $min, $max)) {
+        if (Validator::validateLength($value, $min, $max)) {
             $this->nombreCategoria = $value;
             return true;
         } else {

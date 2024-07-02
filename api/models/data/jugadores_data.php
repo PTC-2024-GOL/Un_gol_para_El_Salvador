@@ -97,11 +97,14 @@ class JugadoresData extends JugadoresHandler
     // Validación para la fecha de nacimiento.
     public function setNacimiento($value)
     {
-        if (Validator::validateDate($value)) {
+        if (!Validator::validateDate($value)) {
+            $this->data_error = 'La fecha ingresada no es correcta, verifica nuevamente';
+            return false;
+        } else if (Validator::validatePlayerDateBirthday($value)){
             $this->nacimientoJ = $value;
             return true;
-        } else {
-            $this->data_error = 'La fecha ingresada no es correcto, verifica nuevamente';
+        } else{
+            $this->data_error = 'El jugador debe ser mayor a los cinco años y menor a los 30 años';
             return false;
         }
     }
