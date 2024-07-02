@@ -50,14 +50,14 @@ class HorariosData extends HorariosHandler
     // Validación y asignación de la hora de inicio del horario.
     public function setHoraInicio($value)
     {
-        $this->hora_inicial = $value;
+        $this->horaInicial = $value;
         return true;
     }
 
     // Validación y asignación de la hora de inicio del horario.
     public function setHoraFinal($value)
     {
-        $this->hora_final = $value;
+        $this->horaFinal = $value;
         return true;
     }
 
@@ -68,7 +68,7 @@ class HorariosData extends HorariosHandler
             $this->data_error = 'El nombre del campo de entrenamiento debe ser un valor alfanumerico';
             return false;
         } elseif (Validator::validateLength($value, $min, $max)) {
-            $this->campo_entrenamiento = $value;
+            $this->campoEntrenamiento = $value;
             return true;
         } else {
             $this->data_error = 'El nombre del campo de entrenamiento debe tener una longitud entre ' . $min . ' y ' . $max;

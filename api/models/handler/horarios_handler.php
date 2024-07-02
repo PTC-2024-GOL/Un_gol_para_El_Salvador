@@ -12,9 +12,9 @@ class HorariosHandler
     protected $id = null;
     protected $nombre = null;
     protected $dia = null;
-    protected $hora_inicial = null;
-    protected $hora_final = null;
-    protected $campo_entrenamiento = null;
+    protected $horaInicial = null;
+    protected $horaFinal = null;
+    protected $campoEntrenamiento = null;
 
 
     /*
@@ -39,9 +39,9 @@ class HorariosHandler
         $params = array(
             $this->nombre,
             $this->dia,
-            $this->hora_inicial,
-            $this->hora_final,
-            $this->campo_entrenamiento
+            $this->horaInicial,
+            $this->horaFinal,
+            $this->campoEntrenamiento
         );
         return Database::executeRow($sql, $params);
     }
@@ -72,9 +72,9 @@ class HorariosHandler
             $this->id,
             $this->nombre,
             $this->dia,
-            $this->hora_inicial,
-            $this->hora_final,
-            $this->campo_entrenamiento
+            $this->horaInicial,
+            $this->horaFinal,
+            $this->campoEntrenamiento
         );
         return Database::executeRow($sql, $params);
     }
