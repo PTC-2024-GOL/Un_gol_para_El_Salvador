@@ -35,7 +35,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Contenido creado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al crear el contenido';
+                    $result['error'] = 'El nombre del contenido debe ser único';
                 }
                 break;
                 // Leer todos
@@ -69,7 +69,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Contenido modificado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al modificar el contenido';
+                    $result['error'] = 'El nombre del contenido debe ser único';
                 }
                 break;
                 // Eliminar
@@ -82,7 +82,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Contenido eliminado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar el Contentido';
+                    $result['error'] = 'El contenido esta relacionado con subcontenidos, elimina los subcontenidos primero';
                 }
                 break;
             default:
