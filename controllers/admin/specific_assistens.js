@@ -107,6 +107,7 @@ const guardar = async () => {
                 // Se carga nuevamente la tabla para visualizar los cambios.
                 BOTON.textContent = 'Modificar registro';
                 TITLEELEMENT.textContent = 'Asistencia del equipo - actualizar';
+                BOOLASISTENCIA = 1;
                 fillTable(true);
             } else {
                 sweetAlert(2, DATA.error, false);
