@@ -105,7 +105,7 @@ const guardar = async () => {
                 await sweetAlert(1, DATA.message, true);
                 // Se carga nuevamente la tabla para visualizar los cambios.
                 BOTON.textContent = 'Modificar registro';
-                TITLEELEMENT.textContent = 'Asistencia del equipo - actualizar';
+                TITLEELEMENT.textContent = 'Asistencia del equipo - Actualizar';
                 BOOLASISTENCIA = 1;
                 fillTable(true);
             } else {
@@ -265,7 +265,7 @@ window.onload = async function () {
     const DATA = await fetchData(ASISTENCIAS_API_2, 'readOne', FORM);
     ID_HORARIO_url = DATA.dataset.id_horario;
     (DATA.dataset.asistencia == 1) ? BOTON.textContent = 'Modificar registro' : BOTON.textContent = 'Guardar registro';
-    (DATA.dataset.asistencia == 1) ? TITLEELEMENT.textContent = 'Asistencia del equipo - actualizar' : TITLEELEMENT.textContent = 'Asistencia del equipo - agregar asistencia';
+    (DATA.dataset.asistencia == 1) ? TITLEELEMENT.textContent = 'Asistencia del equipo - Actualizar' : TITLEELEMENT.textContent = 'Asistencia del equipo - agregar asistencia';
     await fillTable(DATA.dataset.asistencia);
     console.log('ID ENTRENAMIENTO:', ID_ENTRENAMIENTO_url);
     console.log('ID HORARIO:', ID_HORARIO_url);
