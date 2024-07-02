@@ -52,7 +52,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
-                    $result['error'] = 'No existen registros';
+                    $result['error'] = 'No existen partidos registrados';
                 }
                 break;
             // Leer uno

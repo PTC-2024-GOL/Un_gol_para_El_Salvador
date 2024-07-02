@@ -1,0 +1,43 @@
+----------------------------------- BUENAS PRÁCTICAS IMPLEMENTADAS EN EL PROYECTO -----------------------------------------------
+
+1. Espaciado e Identación:
+La indentación en programación se refiere al espacio en blanco que se inserta al comienzo de una línea de código.
+Este espacio en blanco ayuda a estructurar el código de manera visual, haciendo que la jerarquía y el flujo del código
+sean más claros y fáciles de seguir.
+
+Identación: Usar 4 espacios por nivel de identación.
+
+Espacios en Blanco: Dejar una línea en blanco entre métodos para mejorar la legibilidad.
+
+--------------------------------------------------------------------------------------------------------------------------
+
+2. Comentarios:
+Clases: Incluir un comentario descriptivo al inicio de cada clase.
+
+Métodos: Incluir un comentario antes de cada método describiendo su propósito y,
+si es necesario, sus parámetros y valores de retorno.
+
+Código: Usar comentarios en línea para explicar partes complejas del código.
+
+---------------------------------------------------------------------------------------------------------------------------
+
+3. Manejo de errores, ejemplo de ello cuando en cada petición a la API si en dado caso la respuesta no viene
+favorable el bloque else se encarga de manejar este error, así como también el bloque try y catch.
+
+---------------------------------------------------------------------------------------------------------------------------
+
+4. Hacer uso de control de versiones, en nuestro caso se usa Git hub, de esta manera se logra un código más eficiente
+y se tiene un historial de todos los cambios que ha tenido el proyecto.
+
+---------------------------------------------------------------------------------------------------------------------------
+
+5. Pruebas unitarias luego de terminar un scrud o bloque de programación para verificar el correcto funcionamiento de esta,
+con el fin de corregirlos y evitar errores en un futuro.
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+6. Se utilizan funciones y métodos para modularizar el código.
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+7. Se utilizan contraseñas seguras y se almacenan con hash.

@@ -46,7 +46,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
-                    $result['error'] = 'No hay subtipología registradas';
+                    $result['error'] = 'No hay subtipologías registradas';
                 }
                 break;
                 // Leer uno

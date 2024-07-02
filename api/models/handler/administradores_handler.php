@@ -423,3 +423,4 @@ class AdministradoresHandler
         return Database::executeRow($sql, $params);
     }
 }
+

@@ -14,6 +14,8 @@ Los estándares de programación en JavaScript son pautas y convenciones que los
 siguen para escribir código de manera consistente, legible y mantenible. 
 A continuación, se detallan los estándares de programación utilizados en el código proporcionado.
 
+-----------------------------------------------------------------------------------------------------------------------------
+
 1. Nomenclatura de Variables y Funciones:
 -Nombres Descriptivos: Se utilizan nombres descriptivos en mayúsculas con guiones bajos para las constantes
 y en camelCase para las funciones.
@@ -36,6 +38,8 @@ const openCreate = () => {
     MODAL_TITLE.textContent = 'Crear administrador';
 }
 
+-----------------------------------------------------------------------------------------------------------------------------
+
 2.Indentación:
 La indentación en programación se refiere al espacio en blanco que se inserta al comienzo de una línea de código. 
 Este espacio en blanco ayuda a estructurar el código de manera visual, haciendo que la jerarquía y el flujo del código
@@ -49,11 +53,15 @@ const openCreate = () => {
     SAVE_FORM.reset();
 }
 
+-----------------------------------------------------------------------------------------------------------------------------
+
 3.Punto y Coma:
 -Inclusión de Puntos y Comas: Se incluyen puntos y comas al final de las líneas para evitar problemas potenciales.
 Ejemplo:
 const ADMINISTRADOR_API = 'servicios/privada/administradores.php';
 const ROL_API = 'servicios/privada/roles.php';
+
+-----------------------------------------------------------------------------------------------------------------------------
 
 4.Declaración de Variables:
 -Const y Let: Se utiliza const para declarar variables cuyo valor no cambiará y let para aquellas que pueden cambiar. 
@@ -62,20 +70,14 @@ Ejemplo:
 const ADMINISTRADOR_API = 'servicios/privada/administradores.php';
 let SAVE_MODAL;
 
-5.Comentarios:
--Comentarios Descriptivos: Se documenta el código utilizando comentarios descriptivos para explicar la lógica detrás 
-del código.
-Ejemplo:
-/*
-*   Función para preparar el formulario al momento de insertar un registro.
-*   Parámetros: ninguno.
-*   Retorno: ninguno.
-*/
+-----------------------------------------------------------------------------------------------------------------------------
 
-6. Evitar el Uso de Variables Globales:
+5. Evitar el Uso de Variables Globales:
 -Encapsulación: Se minimiza el uso de variables globales para prevenir colisiones de nombres y mantener la encapsulación.
 
-7. Evitar la Escritura en Línea:
+-----------------------------------------------------------------------------------------------------------------------------
+
+6. Evitar la Escritura en Línea:
 -Legibilidad: Se evita escribir múltiples declaraciones en una sola línea para mejorar la legibilidad del código.
 Ejemplo:
 if (form) {
@@ -84,7 +86,9 @@ if (form) {
     action = 'readAll';
 }
 
-8.Manejo de Errores:
+-----------------------------------------------------------------------------------------------------------------------------
+
+7.Manejo de Errores:
 -Uso de try catch: Se utilizan bloques try catch para manejar errores de manera adecuada y proporcionar mensajes significativos.
 Ejemplo:
 const openUpdate = async (id) => {
