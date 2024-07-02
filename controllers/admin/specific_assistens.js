@@ -140,7 +140,7 @@ const openUpdate = async (id) => {
             ID_ASISTENCIA.value = DATA.id;
             OBSERVACION.value = DATA.observacion;
             console.log('ID ASISTENCIA:', ID_ASISTENCIA.value);
-            console.log('OBSERVACION:', OBSERVACION.value);
+            console.log('OBSERVACION:', DATA.observacion);
         } else {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
@@ -292,7 +292,7 @@ window.onload = async function () {
         console.log('ID ASISTENCIA:', id);
         console.log('OBSERVACION:', newObservation);
         // Encuentra el objeto en el arreglo que corresponde al id dado.
-        let item = LISTA_DATOS.find(item => item.id === id);
+        let item = LISTA_DATOS.find(item => item.id == id);
         console.log('Item:', item);
         // Si se encuentra el objeto, modifica la observación.
         if (item) {
