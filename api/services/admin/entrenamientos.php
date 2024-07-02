@@ -147,9 +147,9 @@ if (isset($_GET['action'])) {
                     $result['error'] = $entrenamientos->getDataError();
                 } elseif ($entrenamientos->deleteRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'entrenamiento eliminado correctamente';
+                    $result['message'] = 'Entrenamiento eliminado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar el entrenamiento';
+                    $result['error'] = 'Ocurrió un problema al eliminar el entrenamiento. Por seguridad no puedes eliminarlo porque se esta ocupando en otros registros';
                 }
                 break;
             default:
