@@ -38,7 +38,7 @@ class EntrenamientosHandler
     public function createRow()
     {
         $sql = 'INSERT INTO entrenamientos (fecha_entrenamiento, sesion, id_jornada, id_equipo, id_categoria, id_horario)
-VALUES (?,?,?,?,?,?);';
+        VALUES (?,?,?,?,?,?);';
         $params = array(
             $this->fechaEntrenamiento,
             $this->sesion,
