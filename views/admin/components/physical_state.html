@@ -13,6 +13,9 @@
                     <button type="reset" class="btn" onclick="fillTable()">
                         <img src="../../../resources/img/svg/icons_forms/reset.svg" width="18px" height="18px">
                     </button>
+                    <button  class="btn" onclick="modalMedicalRecords()">
+                        <img src="../../../resources/img/png/medical_record.png" width="23px" height="23px">
+                    </button>
                 </form>
             </div>
 
@@ -81,6 +84,29 @@
                     <button type="submit" class="btn bg-blue-principal-color text-white ">Guardar</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<!-- Componente Modal para abrir registro medico -->
+<div class="modal fade" id="saveModal2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-principal-color text-light">
+                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                <h1 class="modal-title fs-5" id="modalTitle2"></h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+                <div class="modal-body row g-3">
+                    <div class="text-center">
+                        <img src="../../../resources/img/svg/imc.svg" class="rounded img-fluid" alt="...">
+                      </div>
+                </div>
+                <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
+                    <button type="reset" class="btn bg-red-cream-color text-white">Cancelar</button>
+                </div>
         </div>
     </div>
 </div>
