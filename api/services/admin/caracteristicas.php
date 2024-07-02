@@ -85,7 +85,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'caracterísca eliminada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar la caracterísca';
+                    $result['error'] = 'Ocurrió un problema al eliminar la caracterísca. Por seguridad no la puedes eliminar porque se ocupa en otros registros';
                 }
                 break;
             default:
