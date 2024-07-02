@@ -60,6 +60,8 @@ const openCreate = async () => {
     SAVE_MODAL.show();
     ID_PARTIDO.value = null;
     MODAL_TITLE2.textContent = 'Agregar partido';
+    LOGO1.src = `${SERVER_URL}images/equipos/default.png`;
+    LOGO2.src = `${SERVER_URL}images/rivales/default.png`;
     // Se prepara el formulario.
     SAVE_FORM.reset();
     IMAGENES_EQUIPOS = await fillSelectImage(PARTIDO_API, 'readEquipos', 'equipos');
