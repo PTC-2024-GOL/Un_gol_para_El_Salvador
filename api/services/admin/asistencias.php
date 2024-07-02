@@ -40,7 +40,7 @@ if (isset($_GET['action'])) {
     
                     if (!isset($result['error'])) {
                         $result['status'] = 1;
-                        $result['message'] = 'Asistencias creadas correctamente';
+                        $result['message'] = 'Asistencias guardadas correctamente';
                     }
                     break;
                 // Leer todos caso normal

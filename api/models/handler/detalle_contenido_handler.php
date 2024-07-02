@@ -192,8 +192,9 @@ class DetalleContenidoHandler
     public function deleteRow()
     {
 
-        $sql = 'DELETE FROM DELETE FROM detalles_contenidos WHERE id_detalle_contenido = ?;';
-        $params = array($this->idDetalleContenido);
+        $sql = 'DELETE FROM detalle_entrenamiento WHERE id_detalle_contenido = ?; 
+                DELETE FROM detalles_contenidos WHERE id_detalle_contenido = ?;';
+        $params = array($this->idDetalleContenido, $this->idDetalleContenido);
         return Database::executeRow($sql, $params);
     }
 }
