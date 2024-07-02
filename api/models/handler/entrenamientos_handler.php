@@ -9,13 +9,13 @@ class EntrenamientosHandler
     /*
      *  Declaración de atributos para el manejo de datos.
      */
-    protected $fecha_entrenamiento = null;
+    protected $fechaEntrenamiento = null;
     protected $sesion = null;
-    protected $id_jornada = null;
-    protected $id_equipo = null;
-    protected $id_categoria = null;
-    protected $id_horario = null;
-    protected $id_entrenamiento = null;
+    protected $idJornada = null;
+    protected $idEquipo = null;
+    protected $idCategoria = null;
+    protected $idHorario = null;
+    protected $idEntrenamiento = null;
 
 
     /*
@@ -40,12 +40,12 @@ class EntrenamientosHandler
         $sql = 'INSERT INTO entrenamientos (fecha_entrenamiento, sesion, id_jornada, id_equipo, id_categoria, id_horario)
 VALUES (?,?,?,?,?,?);';
         $params = array(
-            $this->fecha_entrenamiento,
+            $this->fechaEntrenamiento,
             $this->sesion,
-            $this->id_jornada,
-            $this->id_equipo,
-            $this->id_categoria,
-            $this->id_horario
+            $this->idJornada,
+            $this->idEquipo,
+            $this->idCategoria,
+            $this->idHorario
 
         );
         return Database::executeRow($sql, $params);
@@ -56,7 +56,7 @@ VALUES (?,?,?,?,?,?);';
     {
         $sql = 'SELECT id_jornada, id_entrenamiento, detalle_entrenamiento, fecha_entrenamiento 
         FROM vista_jornadas_entrenamientos WHERE id_jornada = ? ORDER BY fecha_entrenamiento DESC;';
-        $params = array($this->id_jornada);
+        $params = array($this->idJornada);
         return Database::getRows($sql, $params);
     }
 
@@ -66,7 +66,7 @@ VALUES (?,?,?,?,?,?);';
     {
         $sql = 'SELECT id_entrenamiento, contenidos FROM 
         vista_entrenamientos_contenidos WHERE id_entrenamiento = ?;';
-        $params = array($this->id_entrenamiento);
+        $params = array($this->idEntrenamiento);
         return Database::getRows($sql, $params);
     }
 
@@ -75,7 +75,7 @@ VALUES (?,?,?,?,?,?);';
     public function readOneTitulo()
     {
         $sql = 'SELECT id_jornada, titulo FROM vista_jornadas WHERE id_jornada = ?;';
-        $params = array($this->id_jornada);
+        $params = array($this->idJornada);
         return Database::getRow($sql, $params);
     }
 
@@ -93,12 +93,12 @@ VALUES (?,?,?,?,?,?);';
     {
         $sql = 'UPDATE entrenamientos SET fecha_entrenamiento = ?, sesion = ?, id_jornada = ?, id_categoria = ?, id_horario = ? WHERE id_entrenamiento = ?;';
         $params = array(
-            $this->fecha_entrenamiento,
+            $this->fechaEntrenamiento,
             $this->sesion,
-            $this->id_jornada,
-            $this->id_categoria,
-            $this->id_horario,
-            $this->id_entrenamiento
+            $this->idJornada,
+            $this->idCategoria,
+            $this->idHorario,
+            $this->idEntrenamiento
         );
         return Database::executeRow($sql, $params);
     }
@@ -108,7 +108,7 @@ VALUES (?,?,?,?,?,?);';
     public function deleteRow()
     {
         $sql = 'DELETE FROM entrenamientos WHERE id_entrenamiento = ?;';
-        $params = array($this->id_entrenamiento);
+        $params = array($this->idEntrenamiento);
         return Database::executeRow($sql, $params);
     }
 
@@ -149,7 +149,7 @@ VALUES (?,?,?,?,?,?);';
     public function readOne()
     {
         $sql = 'SELECT fecha_entrenamiento, id_entrenamiento, id_equipo, id_categoria, id_horario, sesion FROM entrenamientos WHERE id_entrenamiento = ?;';
-        $params = array($this->id_entrenamiento);
+        $params = array($this->idEntrenamiento);
         return Database::getRow($sql, $params);
     }
 

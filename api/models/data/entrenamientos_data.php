@@ -18,7 +18,7 @@ class EntrenamientosData extends EntrenamientosHandler
     public function setIdEntrenamiento($value)
     {
         if (Validator::validateNaturalNumber($value)) {
-            $this->id_entrenamiento = $value;
+            $this->idEntrenamiento = $value;
             return true;
         } else {
             $this->data_error = 'El identificador del entrenamiento es incorrecto';
@@ -29,7 +29,7 @@ class EntrenamientosData extends EntrenamientosHandler
     public function setFechaEntrenamiento($value)
     {
         if (Validator::validateDate($value)) {
-            $this->fecha_entrenamiento = $value;
+            $this->fechaEntrenamiento = $value;
             return true;
         } else {
             $this->data_error = 'La fecha del entrenamiento es valida';
@@ -53,7 +53,7 @@ class EntrenamientosData extends EntrenamientosHandler
     public function setIdJornada($value)
     {
         if (Validator::validateNaturalNumber($value)) {
-            $this->id_jornada = $value;
+            $this->idJornada = $value;
             return true;
         } else {
             $this->data_error = 'El identificador de la jornada es incorrecto';
@@ -64,7 +64,7 @@ class EntrenamientosData extends EntrenamientosHandler
     public function setIdEquipo($value)
     {
         if (Validator::validateNaturalNumber($value)) {
-            $this->id_equipo = $value;
+            $this->idEquipo = $value;
             return true;
         } else {
             $this->data_error = 'El identificador del equipo es incorrecto';
@@ -75,7 +75,7 @@ class EntrenamientosData extends EntrenamientosHandler
     public function setIdCategoria($value)
     {
         if (Validator::validateNaturalNumber($value)) {
-            $this->id_categoria = $value;
+            $this->idCategoria = $value;
             return true;
         } else {
             $this->data_error = 'El identificador de la categoria es incorrecto';
@@ -86,7 +86,7 @@ class EntrenamientosData extends EntrenamientosHandler
     public function setIdHorario($value)
     {
         if (Validator::validateNaturalNumber($value)) {
-            $this->id_horario = $value;
+            $this->idHorario = $value;
             return true;
         } else {
             $this->data_error = 'El identificador del horario es incorrecto';
