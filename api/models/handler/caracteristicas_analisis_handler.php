@@ -27,9 +27,9 @@ class CaracteristicasAnalisisHandler
         $sql = 'SELECT IDJ ,JUGADOR, 
         ROUND(AVG(NOTA), 2) AS PROMEDIO 
         FROM vista_caracteristicas_analisis 
-        WHERE IDE = ? AND IDJ LIKE ?
-        ORDER BY JUGADOR;';
-        $params = array($this->entrenamiento ,$value);
+        WHERE IDE = ? AND JUGADOR LIKE ?
+        GROUP BY IDJ, JUGADOR;';
+        $params = array($this->entrenamiento, $value);
         return Database::getRows($sql, $params);
     }
 
@@ -45,14 +45,16 @@ class CaracteristicasAnalisisHandler
         );
         return Database::executeRow($sql, $params);
     }
-    
+
     //Función para leer todas las característica.
     public function readAll()
     {
         $sql = 'SELECT IDJ ,JUGADOR, 
         ROUND(AVG(NOTA), 2) AS PROMEDIO 
-        FROM vista_caracteristicas_analisis GROUP BY JUGADOR;';
-        return Database::getRows($sql);
+        FROM vista_caracteristicas_analisis
+        WHERE IDE = ? GROUP BY IDJ, JUGADOR;';
+        $params = array($this->entrenamiento);
+        return Database::getRows($sql, $params);
     }
 
     //Función para leer una característica.
@@ -60,7 +62,7 @@ class CaracteristicasAnalisisHandler
     {
         $sql = 'SELECT JUGADOR, CARACTERISTICA, ROUND(NOTA, 0) AS NOTA, IDC FROM vista_caracteristicas_analisis 
                 WHERE IDE = ? AND IDJ = ?;';
-        $params = array($this->entrenamiento,$this->jugador);
+        $params = array($this->entrenamiento, $this->jugador);
         return Database::getRows($sql, $params);
     }
 
@@ -69,7 +71,7 @@ class CaracteristicasAnalisisHandler
     {
         $sql = 'SELECT CARACTERISTICA, NOTA FROM vista_caracteristicas_analisis 
                 WHERE IDE = ? AND IDJ = ?;';
-        $params = array($this->entrenamiento,$this->jugador);
+        $params = array($this->entrenamiento, $this->jugador);
         return Database::getRows($sql, $params);
     }
 

@@ -206,7 +206,7 @@ function mostrarJornadas(pagina) {
                     <td>${row.FECHA_FIN}</td>
                     <td>
                     <a href="trainings.html?id=${row.ID}" class="btn transparente">
-                    <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18" height="18">
+                    <img src="../../../resources/img/svg/icons_forms/training.svg" width="20" height="20">
                     </a>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
@@ -317,4 +317,9 @@ window.onload = async function () {
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
         fillTable(FORM);
     });
+
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl)
+    })
 };
