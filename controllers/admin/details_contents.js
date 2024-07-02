@@ -177,7 +177,7 @@ window.onload = async function () {
     // Agrega el HTML del encabezado
     appContainer.innerHTML = adminHtml;
     const titleElement = document.getElementById('title');
-    titleElement.textContent = 'Detalles de contenidos';
+    titleElement.textContent = 'Contenidos';
     cargarTabla();
     // Constantes para establecer los elementos del componente Modal.
 

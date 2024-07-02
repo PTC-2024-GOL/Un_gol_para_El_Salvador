@@ -37,7 +37,7 @@ if (isset($_GET['action'])) {
                     $result['error'] = $jornada->getDataError();
                 } elseif ($jornada->createRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Jornada creado correctamente';
+                    $result['message'] = 'Jornada creada correctamente';
                 } else {
                     $result['error'] = 'Ocurrió un problema al crear el jornada';
                 }
@@ -75,7 +75,7 @@ if (isset($_GET['action'])) {
                     $result['error'] = $jornada->getDataError();
                 } elseif ($jornada->updateRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Jornada modificado correctamente';
+                    $result['message'] = 'Jornada modificada correctamente';
                 } else {
                     $result['error'] = 'Ocurrió un problema al modificar la jornada';
                 }
@@ -88,7 +88,7 @@ if (isset($_GET['action'])) {
                     $result['error'] = $jornada->getDataError();
                 } elseif ($jornada->deleteRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Jornada eliminado correctamente';
+                    $result['message'] = 'Jornada eliminada correctamente';
                 } else {
                     $result['error'] = 'Ocurrió un problema al eliminar la jornada';
                 }

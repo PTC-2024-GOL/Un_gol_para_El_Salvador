@@ -163,9 +163,9 @@ if (isset($_GET['action'])) {
                     $result['error'] = $detalle->getDataError();
                 } elseif ($detalle->updateRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Detalle modificado correctamente';
+                    $result['message'] = 'Contenido modificado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al modificar el detalle';
+                    $result['error'] = 'Ocurrió un problema al modificar el contenido del jugador';
                 }
                 break;
             // Eliminar un detalle contenido
@@ -176,9 +176,9 @@ if (isset($_GET['action'])) {
                     $result['error'] = $detalle->getDataError();
                 } elseif ($detalle->deleteRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Detalle eliminado correctamente';
+                    $result['message'] = 'El contenido ha sido eliminado correctamente del jugador';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar el detalle';
+                    $result['error'] = 'Ocurrió un problema al eliminar el contenido del jugador. ';
                 }
                 break;
             default:

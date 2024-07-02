@@ -3,6 +3,7 @@ let SAVE_FORM,
     ID_JUGADOR,
     JUGADOR,
     BOTON,
+    TITLEELEMENT,
     ASISTENCIA,
     BOOLASISTENCIA,
     ID_ASISTENCIA,
@@ -95,17 +96,18 @@ const guardar = async () => {
             FORM.append('idAsistenciaBool', BOOLASISTENCIA);
             FORM.append('idEntrenamiento', ID_ENTRENAMIENTO_url);
             FORM.append('idHorario', ID_HORARIO_url);
-            FORM.append('listaDatos', JSON.stringify(LISTA_DATOS));
-            console.log(id);
+            FORM.append('arregloAsistencia', JSON.stringify(LISTA_DATOS));
             // Petición para eliminar el registro seleccionado.
-            const DATA = await fetchData(API, 'deleteRow', FORM);
-            console.log(DATA.status);
+            const DATA = await fetchData(ASISTENCIAS_API_2, 'createRow', FORM);
+            console.log(DATA);
             // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
             if (DATA.status) {
                 // Se muestra un mensaje de éxito.
                 await sweetAlert(1, DATA.message, true);
                 // Se carga nuevamente la tabla para visualizar los cambios.
-                fillTable();
+                BOTON.textContent = 'Modificar registro';
+                TITLEELEMENT.textContent = 'Asistencia del equipo - actualizar';
+                fillTable(true);
             } else {
                 sweetAlert(2, DATA.error, false);
             }
@@ -253,8 +255,8 @@ window.onload = async function () {
     // Agrega el HTML del encabezado
     appContainer.innerHTML = posicionHtml;
     //Agrega el encabezado de la pantalla
-    const titleElement = document.getElementById('title');
-    const boton = document.getElementById('tituloBoton');
+    TITLEELEMENT = document.getElementById('title');
+    BOTON = document.getElementById('tituloBoton');
     ID_URL = new URLSearchParams(window.location.search);
     ID_ENTRENAMIENTO_url = ID_URL.get('id_entrenamiento');
     const FORM = new FormData();
@@ -262,8 +264,8 @@ window.onload = async function () {
     // Petición para guardar los datos del formulario.
     const DATA = await fetchData(ASISTENCIAS_API_2, 'readOne', FORM);
     ID_HORARIO_url = DATA.dataset.id_horario;
-    (DATA.dataset.asistencia == 1) ? boton.textContent = 'Modificar registro' : boton.textContent = 'Guardar registro';
-    (DATA.dataset.asistencia == 1) ? titleElement.textContent = 'Asistencia del equipo - actualizar' : titleElement.textContent = 'Asistencia del equipo - agregar asistencia';
+    (DATA.dataset.asistencia == 1) ? BOTON.textContent = 'Modificar registro' : BOTON.textContent = 'Guardar registro';
+    (DATA.dataset.asistencia == 1) ? TITLEELEMENT.textContent = 'Asistencia del equipo - actualizar' : TITLEELEMENT.textContent = 'Asistencia del equipo - agregar asistencia';
     await fillTable(DATA.dataset.asistencia);
     console.log('ID ENTRENAMIENTO:', ID_ENTRENAMIENTO_url);
     console.log('ID HORARIO:', ID_HORARIO_url);

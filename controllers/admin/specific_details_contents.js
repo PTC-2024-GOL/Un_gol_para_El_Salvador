@@ -195,13 +195,13 @@ const openUpdate = async (id) => {
 */
 const openDelete = async (id) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar el esta asignación?');
+    const RESPONSE = await confirmAction('¿Desea eliminar esta asignación?');
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
             // Se define una constante tipo objeto con los datos del registro seleccionado.
             const FORM = new FormData();
-            FORM.append('iddetallecontenido', id);
+            FORM.append('IdDetalle', id);
             console.log(id);
             // Petición para eliminar el registro seleccionado.
             const DATA = await fetchData(SD_CONTENTS_API, 'deleteRow', FORM);
@@ -330,7 +330,7 @@ window.onload = async function () {
     appContainer.innerHTML = subcontenidosHtml;
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
-    titleElement.textContent = 'Detalles contenido especifico';
+    titleElement.textContent = 'Contenidos por entrenamientos';
     ID_URL = new URLSearchParams(window.location.search);
     ID_ENTRENAMIENTO = ID_URL.get('id_entrenamiento');
     const FORM = new FormData();

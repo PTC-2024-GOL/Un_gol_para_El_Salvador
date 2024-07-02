@@ -14,25 +14,35 @@ if (isset($_GET['action'])) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
                 // Crear
-            case 'createRow':
-                $_POST = Validator::validateForm($_POST);
-                if (
-                    !$asistencias->setIdEntrenamiento($_POST['idEntrenamiento']) or
-                    !$asistencias->setIdJugador($_POST['idJugador']) or
-                    !$asistencias->setIdHorario($_POST['idHorario']) or
-                    !$asistencias->setAsistencia($_POST['asistencia']) or
-                    !$asistencias->setIdObservacion($_POST['observacion']) or
-                    !$asistencias->setIdAsistenciaBool($_POST['idAsistencia']) or
-                    !$asistencias->setIdAsistencia($_POST['idAsistenciaBool']) 
-                ) {
-                    $result['error'] = $asistencias->getDataError();
-                } elseif ($asistencias->createRow()) {
-                    $result['status'] = 1;
-                    $result['message'] = 'Asistencias creadas correctamente';
-                } else {
-                    $result['error'] = 'Ocurrió un problema al guardar la asistencia';
-                }
-                break;
+                case 'createRow':
+                    //Se decodifica el arreglo de objetos que se envía por POST desde la petición.
+                    $arregloAsistencia = json_decode($_POST['arregloAsistencia'], true);
+                    $_POST = Validator::validateForm($_POST);
+                    
+                    // Validación y creación de cada registro en el arreglo
+                    foreach ($arregloAsistencia as $asistencia) {
+                        if (
+                            !$asistencias->setIdEntrenamiento($asistencia['id_entrenamiento']) or
+                            !$asistencias->setIdJugador($asistencia['id']) or
+                            !$asistencias->setIdHorario($_POST['idHorario']) or
+                            !$asistencias->setAsistencia($asistencia['asistencia']) or
+                            !$asistencias->setIdObservacion($asistencia['observacion']) or
+                            !$asistencias->setIdAsistenciaBool($_POST['idAsistenciaBool']) or
+                            !$asistencias->setIdAsistencia($asistencia['id_asistencia'])
+                        ) {
+                            $result['error'] = $asistencias->getDataError();
+                            break;
+                        } elseif (!$asistencias->createRow()) {
+                            $result['error'] = 'Ocurrió un problema al guardar la asistencia del jugador con ID ' . $asistencia['id'];
+                            break;
+                        }
+                    }
+    
+                    if (!isset($result['error'])) {
+                        $result['status'] = 1;
+                        $result['message'] = 'Asistencias creadas correctamente';
+                    }
+                    break;
                 // Leer todos caso normal
             case 'readAll':
                 if (!$asistencias->setIdEntrenamiento($_POST['idEntrenamiento'])) {
