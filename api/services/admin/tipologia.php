@@ -36,7 +36,7 @@ if (isset($_GET['action'])) {
                         $result['status'] = 1;
                         $result['message'] = 'Tipología creada correctamente';
                     } else {
-                        $result['error'] = 'Ocurrió un problema al crear la tipología';
+                        $result['error'] = 'No se ha podido crear tipología, porque ya ha sido creada.';
                     }
                     break;
                 // Leer todos
