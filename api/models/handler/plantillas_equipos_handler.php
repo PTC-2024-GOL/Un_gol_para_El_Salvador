@@ -10,8 +10,7 @@ class PlantillasEquiposHandler
      *  Declaración de atributos para el manejo de datos.
      */
     protected $id = null;
-    protected $id_plantilla = null;
-    protected $id_equipo = null;
+    protected $idPlantilla = null;
     protected $plantilla = null;
     protected $jugador = null;
     protected $temporada = null;
@@ -82,7 +81,7 @@ class PlantillasEquiposHandler
         WHERE 
         pe.id_plantilla = ?
         ORDER BY DORSAL ASC;';
-        $params = array($this->id_plantilla);
+        $params = array($this->idPlantilla);
         return Database::getRows($sql, $params);
     }
 
