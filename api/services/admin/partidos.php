@@ -40,7 +40,7 @@ if (isset($_GET['action'])) {
                     $result['error'] = $partido->getDataError();
                 } elseif ($partido->createRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'partiddo creado correctamente';
+                    $result['message'] = 'Partiddo creado correctamente';
                     // Se asigna el estado del archivo después de insertar.
                 } else {
                     $result['error'] = 'Ocurrió un problema al crear el partido';
@@ -134,7 +134,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Partido eliminado correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar el partido';
+                    $result['error'] = 'Ocurrió un problema al eliminar el partido. Por seguridad no puedes eliminar este partido porque esta siendo ocupado por otras tablas.';
                 }
                 break;
             case 'lastMatch':

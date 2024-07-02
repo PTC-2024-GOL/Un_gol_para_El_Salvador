@@ -39,7 +39,7 @@ if (isset($_GET['action'])) {
                         $result['error'] = $pago->getDataError();
                     } elseif ($pago->createRow()) {
                         $result['status'] = 1;
-                        $result['message'] = 'El pago fue creado correctamente';
+                        $result['message'] = 'El pago fue ingresado correctamente';
                     } else {
                         $result['error'] = 'Ocurrió un problema al crear el pago';
                     }

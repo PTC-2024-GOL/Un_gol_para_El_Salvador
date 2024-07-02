@@ -83,7 +83,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Tipología eliminada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar la tipología';
+                    $result['error'] = 'Ocurrió un problema al eliminar la tipología. Por seguridad no puedes eliminarla porque esta siendo utilizada en otros registros.';
                 }
                 break;
             default:

@@ -523,7 +523,7 @@ window.onload = async function () {
         console.log(SEARCH_FORM);
         console.log(FORM);
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
-        fillCards();
+        fillCards(FORM);
     });
 
     vanillaTextMask.maskInput({

@@ -33,9 +33,9 @@ if (isset($_GET['action'])) {
                     $result['error'] = $tipolesion->getDataError();
                 } elseif ($tipolesion->createRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'tipos de lesion creado correctamente';
+                    $result['message'] = 'Tipo de lesión ingresada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al crear el tipo de lesion';
+                    $result['error'] = 'Ocurrió un problema al crear el tipo de lesión';
                 }
                 break;
                 // Leer todos
@@ -54,7 +54,7 @@ if (isset($_GET['action'])) {
                 } elseif ($result['dataset'] = $tipolesion->readOne()) {
                     $result['status'] = 1;
                 } else {
-                    $result['error'] = 'tipo de lesion inexistente';
+                    $result['error'] = 'Tipo de lesión inexistente';
                 }
                 break;
                 // Actualizar
@@ -67,9 +67,9 @@ if (isset($_GET['action'])) {
                     $result['error'] = $tipolesion->getDataError();
                 } elseif ($tipolesion->updateRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'tipo de lesion modificado correctamente';
+                    $result['message'] = 'Tipo de lesión modificada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al modificar el tipo de lesion';
+                    $result['error'] = 'Ocurrió un problema al modificar el tipo de lesión';
                 }
                 break;
                 // Eliminar
@@ -80,9 +80,9 @@ if (isset($_GET['action'])) {
                     $result['error'] = $tipolesion->getDataError();
                 } elseif ($tipolesion->deleteRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'tipo de lesion eliminado correctamente';
+                    $result['message'] = 'Tipo de lesión eliminada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar el tipo de lesion';
+                    $result['error'] = 'Ocurrió un problema al eliminar el tipo de lesión';
                 }
                 break;
             default:

@@ -66,7 +66,7 @@ const openUpdate = async (id) => {
 */
 const openDelete = async (id) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar la temporada?');
+    const RESPONSE = await confirmAction('¿Desea eliminar el tipo de lesión?');
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
