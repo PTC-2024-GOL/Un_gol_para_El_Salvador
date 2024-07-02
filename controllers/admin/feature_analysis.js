@@ -175,7 +175,13 @@ const openCreate = async (id) => {
                 });
             }, 500); // Ajusta este tiempo según sea necesario para asegurar que los inputs estén generados
         } else {
-            sweetAlert(2, DATA.error, false);
+            // Se muestra la caja de diálogo con su título.
+            SAVE_MODAL.show();
+            MODAL_TITLE.textContent = 'Crear análisis del jugador';
+            // Se prepara el formulario.
+            SAVE_FORM.reset();
+            JUGADOR.value = id;
+            ENTRENAMIENTO.value = PARAMS.get('id');
         }
     } catch (Error) {
         console.error(Error);
@@ -262,6 +268,7 @@ async function cargarNav() {
                     input.className = 'form-control';
                     input.min = '1';
                     input.max = '10';
+                    input.step = '1'
                     input.placeholder = 'Ingrese la nota';
                     input.setAttribute('data-id-caracteristica-jugador', caracteristica.ID);
 

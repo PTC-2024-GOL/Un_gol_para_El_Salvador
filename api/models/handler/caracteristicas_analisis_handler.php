@@ -58,8 +58,8 @@ class CaracteristicasAnalisisHandler
     //Función para leer una característica.
     public function readOne()
     {
-        $sql = 'SELECT JUGADOR, CARACTERISTICA, NOTA, IDC FROM vista_caracteristicas_analisis 
-                WHERE IDE = ? AND IDJCA = ?;';
+        $sql = 'SELECT JUGADOR, CARACTERISTICA, ROUND(NOTA, 0) AS NOTA, IDC FROM vista_caracteristicas_analisis 
+                WHERE IDE = ? AND IDJ = ?;';
         $params = array($this->entrenamiento,$this->jugador);
         return Database::getRows($sql, $params);
     }
@@ -68,7 +68,7 @@ class CaracteristicasAnalisisHandler
     public function graphic()
     {
         $sql = 'SELECT CARACTERISTICA, NOTA FROM vista_caracteristicas_analisis 
-                WHERE IDE = ? AND IDJCA = ?;';
+                WHERE IDE = ? AND IDJ = ?;';
         $params = array($this->entrenamiento,$this->jugador);
         return Database::getRows($sql, $params);
     }
