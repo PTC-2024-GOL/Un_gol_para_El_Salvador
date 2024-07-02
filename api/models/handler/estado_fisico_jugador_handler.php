@@ -21,17 +21,17 @@ class EstadoFisicoJugadorHandler
     {
         $value = '%' . Validator::getSearchValue() . '%';
         $sql = "SELECT 
-                id_estado_fisico_jugador,
-                id_jugador,
-                altura_jugador,
-                peso_jugador,
-                indice_masa_corporal,
-                fecha_creacion,
-                DATE_FORMAT(fecha_creacion, '%d de %M de %Y') AS fecha_creacion_format
-                FROM estados_fisicos_jugadores
-                WHERE fecha_creacion_format LIKE ?
-                ORDER BY fecha_creacion DESC;";
-        $params = array($value);
+    id_estado_fisico_jugador,
+    id_jugador,
+    altura_jugador,
+    peso_jugador,
+    indice_masa_corporal,
+    fecha_creacion,
+    DATE_FORMAT(fecha_creacion, '%d de %M de %Y') AS fecha_creacion_format
+    FROM estados_fisicos_jugadores
+    WHERE fecha_creacion LIKE ? AND id_jugador = ?
+    ORDER BY fecha_creacion DESC;";
+        $params = array($value, $this->idJugador);
         return Database::getRows($sql, $params);
     }
 

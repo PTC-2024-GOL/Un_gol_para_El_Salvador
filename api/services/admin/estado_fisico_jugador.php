@@ -15,7 +15,10 @@ if (isset($_GET['action'])) {
         switch ($_GET['action']) {
                 // Buscar
             case 'searchRows':
-                if (!Validator::validateSearch($_POST['search'])) {
+                if (
+                    !Validator::validateSearch2($_POST['search']) or
+                    !$estadofisico->setIdJugador($_POST['idJugador'])
+                    ) {
                     $result['error'] = Validator::getSearchError();
                 } elseif ($result['dataset'] = $estadofisico->searchRows()) {
                     $result['status'] = 1;

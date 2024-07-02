@@ -161,7 +161,7 @@ async function fillTable(form = null) {
                 const tablaHtml = `
                 <tr>
                     <td>${row.fecha_creacion_format}</td>
-                    <td>${row.altura_jugador} mts</td>
+                    <td>${row.altura_jugador} ctm</td>
                     <td>${row.peso_jugador} lbs</td>
                     <td>${row.indice_masa_corporal}</td>
                     <td>
@@ -175,7 +175,9 @@ async function fillTable(form = null) {
                 </tr>
                 `
                 nombreJugador = row.nombre_jugador;
-                titleElement.textContent = 'Estado fisico del jugador ' + nombreJugador;
+                if (!(nombreJugador === undefined)) {
+                    titleElement.textContent = 'Estado fisico del jugador ' + nombreJugador;
+                }
                 cargarTabla.innerHTML += tablaHtml;
             });
 
@@ -275,6 +277,7 @@ window.onload = async function () {
         event.preventDefault();
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SEARCH_FORM);
+        FORM.append('idJugador', JUGADOR);
         console.log(SEARCH_FORM);
         console.log(FORM);
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.

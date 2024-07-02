@@ -40,29 +40,29 @@ class EstadoFisicoJugadorData extends EstadoFisicoJugadorHandler
 
 
     // Validación y asignación del peso
-    public function setPeso($value)
+    public function setPeso($value, $min = 75, $max = 300)
     {
-        if (Validator::validatePositiveDecimal($value)) {
+        if ((Validator::validateNaturalNumber($value)) && ($value > $min && $value < $max)) {
+            $this->altura = $value;
             $this->peso = $value;
             return true;
         } else {
-            $this->data_error = 'El peso no es un numero decimal positivo'; 
+            $this->data_error = 'El peso tiene datos irreales de, verifique que sea ' . $min . ' como minimo y ' . $max . ' como máximo'; 
             return false;
         }
     }
 
     // Validación y asignación de la altura
-    public function setAltura($value)
+    public function setAltura($value, $min = 100, $max = 210)
     {
-        if (Validator::validatePositiveDecimal($value)) {
+        if ((Validator::validateNaturalNumber($value)) && ($value > $min && $value < $max)) {
             $this->altura = $value;
             return true;
         } else {
-            $this->data_error = 'La altura no es un numero decimal positivo'; 
+            $this->data_error = 'La altura tiene datos irreales de, verifique que sea ' . $min . ' como minimo y ' . $max . ' como máximo'; 
             return false;
         }
     }
-
     // Método para obtener el error de los datos.
     public function getDataError()
     {
