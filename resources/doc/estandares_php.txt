@@ -2,7 +2,7 @@ Estándares de programación utilizados del lado del servidor (PHP)
 
 Justificación:
 El presente documento fue creado con el objetivo de describir los estandares de programación utilizados para PHP
-que se aplicaron al proyecto de Hamacoteca, hecho por los desarrolladores: 
+que se aplicaron al proyecto de OneGoal, hecho por los desarrolladores: 
 -Juan Pablo Flores Díaz.
 -Xochilt Gabriela López Pineda. 
 -Joel Omar Mena Domínguez.

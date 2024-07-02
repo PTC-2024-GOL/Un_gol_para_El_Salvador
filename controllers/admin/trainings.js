@@ -343,6 +343,10 @@ const openDelete = async (id) => {
 
 }
 
+const goToAssists = async (id) => {
+    window.location.href = `../pages/specific_assistens.html?id_entrenamiento=${id}`;
+}
+
 //Crea un comentario que describa la función que esta debajo
 /*
 *   Función asíncrona para cargar la tabla de detalles de contenidos.
@@ -443,6 +447,11 @@ async function cargarTabla(form = null) {
                     <td class="justify-content-center">
                         <button type="button" class="btn transparente" onclick="openPag(${row.id_entrenamiento})">
                         <img src="../../../resources/img/svg/icons_forms/stadistic.png" width="30" height="30">
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn transparente" onclick="goToAssists(${row.id_entrenamiento})">
+                        <img src="../../../resources/img/svg/icons_forms/assists.svg" width="28" height="28">
                         </button>
                     </td>
                     <td>
