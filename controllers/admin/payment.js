@@ -279,7 +279,7 @@ function mostrarPago(pagina) {
                 <td>${row.NOMBRE}</td>
                 <td>${row.FECHA}</td>
                 <td>${row.MES}</td>
-                <td>$${row.CANTIDAD}</td>
+                <td>${row.CANTIDAD}</td>
                 <td>
                     <button type="button" class="btn transparente"">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="${estadoColor}" class="bi bi-clock-history" viewBox="0 0 16 16">
@@ -289,7 +289,7 @@ function mostrarPago(pagina) {
                         </svg>
                     </button>
                 </td>
-                <td>$${row.MORA}</td>
+                <td>${row.MORA}</td>
                 <td>${row.TOTAL}</td>
                 <td>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
