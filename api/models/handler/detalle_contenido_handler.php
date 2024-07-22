@@ -51,9 +51,9 @@ class DetalleContenidoHandler
                 nombre_jugador,
                 nombre_tarea
                 FROM vista_detalle_entrenamiento
-                WHERE nombre_jugador LIKE ?
+                WHERE nombre_jugador LIKE ? OR nombre_subtema LIKE ?
                 ORDER BY nombre_jugador;";
-        $params = array($value);
+        $params = array($value, $value);
         return Database::getRows($sql, $params);
     }
 

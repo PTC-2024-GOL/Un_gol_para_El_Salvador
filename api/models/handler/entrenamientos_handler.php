@@ -64,7 +64,7 @@ class EntrenamientosHandler
 
     public function readOneDetalles()
     {
-        $sql = 'SELECT id_entrenamiento, contenidos FROM 
+        $sql = 'SELECT id_entrenamiento, contenidos, sub_tema_contenido FROM 
         vista_entrenamientos_contenidos WHERE id_entrenamiento = ?;';
         $params = array($this->idEntrenamiento);
         return Database::getRows($sql, $params);

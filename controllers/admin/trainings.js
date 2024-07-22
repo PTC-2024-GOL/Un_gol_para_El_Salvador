@@ -163,19 +163,32 @@ async function loadComponent(path) {
 }
 
 const fillContents = (data, action, selectId) => {
+    console.log('Esto es lo que trae data: ',data);
+    console.log('Llego a la función fillContents');
     const ulElement = document.getElementById(selectId);
 
     // Limpiar la lista de contenidos previos
     ulElement.innerHTML = '';
 
-    // Iterar sobre los datos proporcionados y crear un elemento li por cada contenido
+    // Inicializar una variable para construir la cadena HTML
+    let htmlContent = '';
+
+    // Iterar sobre los datos proporcionados y crear una cadena HTML por cada contenido
     data.forEach(item => {
-        const liElement = document.createElement('li');
-        liElement.classList.add('list-group-item', 'list-group-item-info', 'px-3');
-        liElement.textContent = item.contenidos; // Asignar el texto del contenido al elemento li
-        ulElement.appendChild(liElement); // Agregar el elemento li a la lista ul
+        htmlContent += `
+            <li class="list-group-item list-group-item-info px-3">
+                ${item.contenidos}
+                <button type="button" class="btn transparente"  onclick="openContenidos(${item.id_entrenamiento}, '${item.sub_tema_contenido}')">
+                        <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                        </button>
+            </li>
+        `;
     });
+
+    // Asignar la cadena HTML generada al contenedor
+    ulElement.innerHTML = htmlContent;
 };
+
 
 // Función para poblar un combobox (select) con opciones
 const fillSelected = (data, action, selectId, selectedValue = null) => {
@@ -345,6 +358,12 @@ const openDelete = async (id) => {
 
 const goToAssists = async (id) => {
     window.location.href = `../pages/specific_assistens.html?id_entrenamiento=${id}`;
+}
+
+const openContenidos = async (id, text) => {
+    console.log(id);
+    console.log(text);
+    window.location.href = `../pages/specific_details_contents.html?id_entrenamiento=${id}&sub_tema=${text}`;
 }
 
 //Crea un comentario que describa la función que esta debajo

@@ -508,6 +508,10 @@ window.onload = async function () {
 
         if (selectedValue == 'Pendiente') {
             RESULTADO_PARTIDO.value = '0-0';
+            RESULTADO_PARTIDO.disabled = true;
+        }
+        else {
+            RESULTADO_PARTIDO.disabled = false;
         }
 
     });

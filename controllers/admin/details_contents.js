@@ -46,7 +46,7 @@ const openPag = () => {
     const id_entrenamiento = HORARIO.value;
     if (!(id_entrenamiento == '0' || id_entrenamiento == '')) {
         console.log('Entrenamiento seleccionado:', id_entrenamiento, ' ', HORARIO.value);
-        window.location.href = `../pages/specific_details_contents.html?id_entrenamiento=${id_entrenamiento}`;
+        window.location.href = `../pages/specific_details_contents.html?id_entrenamiento=${id_entrenamiento}&sub_tema=${'0'}`;
         return;
     }
     sweetAlert(3, 'Seleccione un horario para continuar', false);
