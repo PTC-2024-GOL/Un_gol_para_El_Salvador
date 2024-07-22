@@ -774,22 +774,31 @@ window.onload = async function () {
         FORM.append('idJugador', idPlayer);
         FORM.append('idPartido', idPartido);
 
-        // Petición para guardar los datos del formulario.
-        const DATA = await fetchData(PARTICIPACION_API, action, FORM);
-        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-        if (DATA.status) {
-            // Se cierra la caja de diálogo.
-            SAVE_MODAL.hide();
-            // Se muestra un mensaje de éxito.
-            await sweetAlert(1, DATA.message, false);
-            // Se carga nuevamente la tabla para visualizar los cambios.
-            await cargarTabla();
+        const minutos = parseInt(MINUTOS.value);
+        const asistencias = parseInt(ASISTENCIAS.value);
+
+        // Validación de los minutos jugados.
+        if (minutos >= 116) {
+            await sweetAlert(2, 'Los minutos jugados no pueden superar los 90 min.', false);
+        } else if(asistencias >= 10) {
+            await sweetAlert(2, 'El máximo de asistencias por jugador no puede ser más de 10.', false);
         } else {
-            await sweetAlert(2, DATA.error, false);
-            console.error(DATA.exception);
+            // Petición para guardar los datos del formulario.
+            const DATA = await fetchData(PARTICIPACION_API, action, FORM);
+            // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+            if (DATA.status) {
+                // Se cierra la caja de diálogo.
+                SAVE_MODAL.hide();
+                // Se muestra un mensaje de éxito.
+                await sweetAlert(1, DATA.message, false);
+                // Se carga nuevamente la tabla para visualizar los cambios.
+                await cargarTabla();
+            } else {
+                await sweetAlert(2, DATA.error, false);
+                console.error(DATA.exception);
+            }
         }
     });
-
 
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_GOL_FORM.addEventListener('submit', async (event) => {
