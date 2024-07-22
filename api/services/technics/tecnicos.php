@@ -22,6 +22,7 @@ if (isset($_GET['action'])) {
                     $result['username'] = $_SESSION['aliasTecnico'];
                     $result['foto'] = $_SESSION['fotoTecnico'];
                     $result['nombre'] = $_SESSION['nombreTecnico'];
+                    $result['apellido'] = $_SESSION['apellidoTecnico'];
                 } else {
                     $result['error'] = 'Alias de Tecnico indefinido';
                 }
@@ -66,10 +67,19 @@ if (isset($_GET['action'])) {
     } else {
         // Se compara la acción a realizar cuando el cliente no ha iniciado sesión.
         switch ($_GET['action']) {
+            // Leer usuarios para verificar que hayan en la base de datos
+            case 'readUsers':
+                if ($tecnico->readAll()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Debe autenticarse para ingresar';
+                } else {
+                    $result['error'] = 'Debe crear un administrador para comenzar';
+                }
+                break;
             case 'logIn':
                 $_POST = Validator::validateForm($_POST);
                 if (!$tecnico->checkUser($_POST['correo'], $_POST['clave'])) {
-                    $result['error'] = 'Datos incorrectos';
+                    $result['error'] = 'Credenciales incorrectas';
                 } elseif ($tecnico->checkStatus()) {
                     $result['status'] = 1;
                     $result['message'] = 'Autenticación correcta';

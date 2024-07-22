@@ -4,7 +4,7 @@
 */
 
 // Constante para completar la ruta de la API.
-const USER_API = 'services/admin/administrador.php';
+const USER_API = 'services/technics/tecnicos.php';
 // Constante para establecer el elemento del contenido principal.
 const MAIN = document.querySelector('main');
 MAIN.style.paddingTop = '50px';
@@ -40,7 +40,9 @@ MAIN.insertAdjacentHTML('beforebegin', `
                         </div>
                     </div>
                     <div class="col">
-                        <img src="../../../resources/img/svg/avatar.svg" class="rounded-circle" alt="">
+                        <a class="nav-link" href="#">
+                        <img src="../../../resources/img/svg/avatar.svg" id="imagen" class="rounded-circle" width="55px" height="55px">
+                        </a>
                     </div>
                 </div>
             </div>
@@ -178,7 +180,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                 </li>
                                 <!-- Etiqueta para log out -->
                                 <li class="nav-item">
-                                    <a class="nav-link active text-light" aria-current="page" href="#">
+                                    <a class="nav-link active text-light" aria-current="page" onclick="logOut()">
                                         <img src="../../../resources/img/svg/icons_menu/log_out.svg" class="me-3" alt="">
                                         Cerrar sesión</a>
                                 </li>
@@ -193,7 +195,26 @@ MAIN.insertAdjacentHTML('beforebegin', `
 </header>
 `);
 
-const userName = document.getElementById('name');
-userName.textContent = 'Susan Castillo';
+const DATA = await fetchData(USER_API, 'getUser');
+// Se verifica si el usuario está autenticado, de lo contrario se envía a iniciar sesión.
+if (DATA.session){
+    if (DATA.status){
+        // Obtenemos los elementos del html
+        const userName = document.getElementById('name');
+        const img = document.getElementById('imagen');
+
+        //Asignamos los datos traidos de la api a nuestro elementos html.
+        userName.textContent = DATA.nombre.split(' ')[0] + ' ' + DATA.apellido.split(' ')[0] // Split nos sirve para cortar un string y que solo aparezca en este caso el primer nombre y primer apellido.
+        img.src = `${SERVER_URL}images/tecnicos/${DATA.foto}`;
+    } else {
+        await sweetAlert(3, DATA.error, false, 'index.html')
+    }
+}else{
+    if(location.pathname.endsWith('index.html')){
+        console.log('index.html');
+    } else{
+        location.href = 'index.html';
+    }
+}
 
 }
