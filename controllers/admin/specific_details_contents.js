@@ -12,7 +12,8 @@ let SAVE_FORM,
     ID_URL,
     ID_ENTRENAMIENTO,
     ID_EQUIPO,
-    ADD_JUGADOR
+    ADD_JUGADOR,
+    BUSCADOR
     ;
 
 let SEARCH_FORM;
@@ -333,12 +334,21 @@ window.onload = async function () {
     titleElement.textContent = 'Contenidos por entrenamientos';
     ID_URL = new URLSearchParams(window.location.search);
     ID_ENTRENAMIENTO = ID_URL.get('id_entrenamiento');
+    BUSCADOR = ID_URL.get('sub_tema');
     const FORM = new FormData();
     FORM.append('idEntrenamiento', ID_ENTRENAMIENTO);
+    console.log(ID_ENTRENAMIENTO);
     const DATA = await fetchData(SD_CONTENTS_API, 'readOneEquipo', FORM);
+    console.log('Esto es lo que devuelve data', DATA);
     ID_EQUIPO = DATA.dataset.id_equipo;
     console.log('Este es el idequipo que trae el windowsOnload', ID_EQUIPO);
+    if (BUSCADOR == '0') {
     fillTable();
+    } else {
+        const FORM = new FormData();
+        FORM.append('search', BUSCADOR);
+        fillTable(FORM, 1);
+    }
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');

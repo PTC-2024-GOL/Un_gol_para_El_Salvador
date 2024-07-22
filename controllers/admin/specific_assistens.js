@@ -9,9 +9,9 @@ let SAVE_FORM,
     ID_ASISTENCIA,
     OBSERVACION;
 let SEARCH_FORM,
-ID_URL,
-ID_ENTRENAMIENTO_url,
-ID_HORARIO_url;
+    ID_URL,
+    ID_ENTRENAMIENTO_url,
+    ID_HORARIO_url;
 
 let LISTA_DATOS = [];
 
@@ -186,7 +186,7 @@ async function createSelect(identificador, selectedValue) {
     } catch (error) {
         console.error('Error al crear el combobox:', error);
     }
-} 
+}
 
 
 
@@ -264,6 +264,29 @@ window.onload = async function () {
     FORM.append('idEntrenamiento', ID_ENTRENAMIENTO_url);
     // Petición para guardar los datos del formulario.
     const DATA = await fetchData(ASISTENCIAS_API_2, 'readOne', FORM);
+    //Crea un condicional en que si Data.dataset.fecha_entrenamiento es menor que la fecha actual, se deshabilite el boton de guardar
+    const fechaEntrenamiento = new Date(DATA.dataset.fecha_entrenamiento);
+    const fechaActual = new Date();
+    // Quiero que les pongas las horas en 00:00:00 para que no haya problemas con la comparación
+    fechaEntrenamiento.setHours(1, 0, 0, 0);
+    fechaActual.setHours(1, 0, 0, 0);
+    console.log('Fecha entrenamiento:', fechaEntrenamiento);
+    console.log('Fecha actual:', fechaActual);
+    
+    if (((fechaActual < fechaEntrenamiento) && (DATA.dataset.asistencia == 0))) {
+         if (!(fechaEntrenamiento == fechaActual)) {
+            console.log('Fecha entrenamiento:', fechaEntrenamiento);
+            console.log('Fecha actual:', fechaActual);
+            console.log('No puedes crear esta asistencia porque el entrenamiento aún no ocurre');
+            sweetAlert(3, 'No puedes crear esta asistencia porque el entrenamiento aún no ocurre', true, '../pages/assists.html');
+         }
+         else {
+            console.log('Fecha entrenamiento:', fechaEntrenamiento);
+            console.log('Fecha actual:', fechaActual);
+            console.log('Entre en el else o sea que fecha entrenamiento es igual a fecha actual');
+         }
+    }
+
     ID_HORARIO_url = DATA.dataset.id_horario;
     (DATA.dataset.asistencia == 1) ? BOTON.textContent = 'Modificar registro' : BOTON.textContent = 'Guardar registro';
     (DATA.dataset.asistencia == 1) ? TITLEELEMENT.textContent = 'Asistencia del equipo - Actualizar' : TITLEELEMENT.textContent = 'Asistencia del equipo - agregar asistencia';
