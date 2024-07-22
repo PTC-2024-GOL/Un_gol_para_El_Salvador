@@ -50,6 +50,24 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Ocurrio un error';
                 }
                 break;
+            case 'readTarjetaRojas':
+                if (!$detalleAmonestacion->setIdParticipacion($_POST['idParticipacion'])) {
+                    $result['error'] = $detalleAmonestacion->getDataError();
+                } elseif ($result['dataset'] = $detalleAmonestacion->readRedCard()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Ocurrio un error';
+                }
+                break;
+            case 'readTarjetaAmarillas':
+                if (!$detalleAmonestacion->setIdParticipacion($_POST['idParticipacion'])) {
+                    $result['error'] = $detalleAmonestacion->getDataError();
+                } elseif ($result['dataset'] = $detalleAmonestacion->readYellowCard()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Ocurrio un error';
+                }
+                break;
             // Actualizar
             case 'updateRow':
                 $_POST = Validator::validateForm($_POST);

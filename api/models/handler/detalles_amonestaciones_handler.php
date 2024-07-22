@@ -48,6 +48,20 @@ class detallesAmonestacionesHandler
         return Database::getRow($sql, $params);
     }
 
+    public function readYellowCard()
+    {
+        $sql = 'SELECT SUM(numero_amonestacion) AS totalAmarillas from detalles_amonestaciones WHERE amonestacion = "Tarjeta amarilla" AND id_participacion = ?';
+        $params = array($this->idParticipacion);
+        return Database::getRow($sql, $params);
+    }
+
+    public function readRedCard()
+    {
+        $sql = 'SELECT SUM(numero_amonestacion) AS totalRojas from detalles_amonestaciones WHERE amonestacion = "Tarjeta roja" AND id_participacion = ?';
+        $params = array($this->idParticipacion);
+        return Database::getRow($sql, $params);
+    }
+
     //Función para actualizar las amonestaciones de una participacion.
     public function updateRow()
     {

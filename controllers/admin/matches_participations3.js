@@ -100,7 +100,7 @@ const openCreateAmonestacion = () => {
     // Cerramos el modal que estaba anteriormete
     SEE_AMONESTACION_MODAL.hide();
     SAVE_AMONESTACION_MODAL.show();
-    MODAL_TITLE_AMONESTACION2.textContent = 'Agregar amonestación';
+    MODAL_TITLE_AMONESTACION1.textContent = 'Agregar amonestación';
     SAVE_AMONESTACION_FORM.reset();
 }
 
@@ -552,7 +552,37 @@ async function cargarGolTarjetas(idParticipacion) {
     }
 }
 
+let total_rojas;
+let total_amarillas;
+
 async function cargarAmonestacionTarjetas(idParticipacion) {
+
+    // SE CUENTAN LA CANTIDAD DE TARJETAS ROJAS Y AMARILLAS DEL JUGADOR.
+    //Tarjetas rojas
+    const form = new FormData();
+    form.append('idParticipacion', idParticipacion);
+    const DATA1 = await fetchData(AMONESTACIONES_API, 'readTarjetaRojas', form);
+
+    if (DATA1.status) {
+        total_rojas = DATA1.dataset.totalRojas;
+        console.log(total_rojas);
+    } else {
+        console.log('No tiene tarjetas rojas')
+    }
+
+    //Tarjetas amarillas
+    const form1 = new FormData();
+    form1.append('idParticipacion', idParticipacion);
+    const DATA2 = await fetchData(AMONESTACIONES_API, 'readTarjetaAmarillas', form1);
+
+    if (DATA2.status) {
+        total_amarillas = DATA2.dataset.totalAmarillas;
+        console.log(total_amarillas);
+    } else {
+        console.log('No tiene tarjetas amarillas')
+    }
+    ///////////////////////////////////////////////////////////////////////////////////
+
     MESSAGE_AMONESTACION.classList.add('d-none');
 
     const cargarAmonestacion = document.getElementById('amonestacion_card');
@@ -876,24 +906,55 @@ window.onload = async function () {
 
         FORM.append('idParticipacion', idParticipation);
 
-        // Petición para guardar los datos del formulario.
-        const DATA = await fetchData(AMONESTACIONES_API, action, FORM);
-        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-        if (DATA.status) {
-            // Se cierra la caja de diálogo.
-            SAVE_AMONESTACION_MODAL.hide();
-            SEE_AMONESTACION_MODAL.show();
-            // Se muestra un mensaje de éxito.
-            await sweetAlert(1, DATA.message, true);
-            // Se carga nuevamente la tabla para visualizar los cambios.
-            await cargarAmonestacionTarjetas(idParticipation);
+        // Validación para tarjetas amarillas
+        if (total_amarillas >= 2) {
+            // Si el jugador ya tiene dos tarjetas amarillas, muestra mensaje y bloquea la adición de más amarillas
+            await sweetAlert(2, 'El jugador seleccionado ya tiene dos tarjetas amarillas, por lo que es necesario asignarle tarjeta roja', false);
+
+            // Si el jugador no tiene una tarjeta roja, permitir agregar una roja
+            if (total_rojas === 0) {
+                const confirmRedCard = await sweetAlert(2, 'Asignar una tarjeta roja al jugador.', true);
+                if (confirmRedCard) {
+                    // Aquí puedes manejar la lógica para asignar la tarjeta roja
+                    const DATA = await fetchData(AMONESTACIONES_API, action, FORM);
+                    // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+                    if (DATA.status) {
+                        // Se cierra la caja de diálogo.
+                        SAVE_AMONESTACION_MODAL.hide();
+                        SEE_AMONESTACION_MODAL.show();
+                        // Se muestra un mensaje de éxito.
+                        await sweetAlert(1, DATA.message, true);
+                        // Se carga nuevamente la tabla para visualizar los cambios.
+                        await cargarAmonestacionTarjetas(idParticipation);
+                    } else {
+                        await sweetAlert(2, DATA.error, false);
+                        console.error(DATA.exception);
+                    }
+                }
+            } else {
+                await sweetAlert(2, 'El jugador seleccionado ya tiene una tarjeta roja asignada', false);
+            }
+        } else if (total_rojas >= 1) {
+            // Validación de tarjetas rojas
+            await sweetAlert(2, 'El jugador seleccionado ya tiene una tarjeta roja asignada', false);
         } else {
-            await sweetAlert(2, DATA.error, false);
-            console.error(DATA.exception);
+            // Aquí puedes manejar la lógica para asignar una tarjeta amarilla o roja si las condiciones anteriores no se cumplen
+            const DATA = await fetchData(AMONESTACIONES_API, action, FORM);
+            // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+            if (DATA.status) {
+                // Se cierra la caja de diálogo.
+                SAVE_AMONESTACION_MODAL.hide();
+                SEE_AMONESTACION_MODAL.show();
+                // Se muestra un mensaje de éxito.
+                await sweetAlert(1, DATA.message, true);
+                // Se carga nuevamente la tabla para visualizar los cambios.
+                await cargarAmonestacionTarjetas(idParticipation);
+            } else {
+                await sweetAlert(2, DATA.error, false);
+                console.error(DATA.exception);
+            }
         }
     });
-
-
 
     SEARCH_FORM = document.getElementById('searchForm');
 
