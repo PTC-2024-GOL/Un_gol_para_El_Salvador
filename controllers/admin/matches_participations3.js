@@ -60,6 +60,7 @@ const PARTICIPACION_API = 'services/admin/participaciones_partidos.php';
 const GOLES_API = 'services/admin/detalles_goles.php';
 const AMONESTACIONES_API = 'services/admin/detalles_amonestaciones.php';
 const TIPO_GOL_API = 'services/admin/tipos_goles.php';
+const PARTIDO_API = 'services/admin/partidos.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -506,7 +507,7 @@ async function nextPage(newPage) {
 async function cargarGolTarjetas(idParticipacion) {
     MESAGGE_GOL.classList.add('d-none');
     const cargarGoles = document.getElementById('gol_card');
-
+    let totalGoles = 0;
     try {
         cargarGoles.innerHTML = '';
         const form = new FormData();
@@ -538,7 +539,9 @@ async function cargarGolTarjetas(idParticipacion) {
             </div>
                 `;
                 cargarGoles.innerHTML += tarjetasGoles;
+                //totalGoles += parseInt(row.cantidad_tipo_gol, 10);
             });
+            //cantidadGoles += totalGoles;
         } else {
             MESAGGE_GOL.classList.remove('d-none');
             MESAGGE_GOL.textContent = DATA.error;
@@ -548,7 +551,6 @@ async function cargarGolTarjetas(idParticipacion) {
         console.error('Error al obtener datos de la API:', error);
     }
 }
-
 
 async function cargarAmonestacionTarjetas(idParticipacion) {
     MESSAGE_AMONESTACION.classList.add('d-none');
@@ -800,6 +802,26 @@ window.onload = async function () {
         }
     });
 
+    ////////////// Consulta el resultado del partido /////////////////////////////////
+    let resultado_partido;
+    let splitResultado;
+
+    // Se verifica la acción a realizar.
+    const formResult = new FormData();
+    formResult.append('idPartido', idPartido);
+    const DATA = await fetchData(PARTIDO_API, 'readOne', formResult);
+
+    if (DATA.status) {
+        resultado_partido = DATA.dataset.resultado_partido;
+        splitResultado = parseInt(resultado_partido.split('-', 1));
+    } else {
+        console.log('No vino nada')
+    }
+    ///////////////////////////////////////////////////////////////////////////////////
+
+
+    let totalGoles = 0;
+
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_GOL_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
@@ -813,20 +835,33 @@ window.onload = async function () {
 
         FORM.append('idParticipacion', idParticipation);
 
-        // Petición para guardar los datos del formulario.
-        const DATA = await fetchData(GOLES_API, action, FORM);
-        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-        if (DATA.status) {
-            // Se cierra la caja de diálogo.
-            SAVE_MODAL_GOLES.hide();
-            SEE_GOLES_MODAL.show();
-            // Se muestra un mensaje de éxito.
-            await sweetAlert(1, DATA.message, true);
-            // Se carga nuevamente la tabla para visualizar los cambios.
-            await cargarGolTarjetas(idParticipation)
-        } else {
-            await sweetAlert(2, DATA.error, false);
-            console.error(DATA.exception);
+        const cantidadGol = parseInt(CANTIDAD_GOLES.value);
+
+        let sumaTotalGoles = totalGoles + cantidadGol;
+
+        if (sumaTotalGoles > splitResultado) {
+            await sweetAlert(2, `La cantidad de goles que hubieron en el partido fueron ${splitResultado}, por lo que no puedes exceder de este resultado.`, false)
+        }else if (cantidadGol > splitResultado) {
+            await sweetAlert(2, `La cantidad de goles que hubieron en el partido fueron ${splitResultado}, por lo que no puedes exceder de este resultado.`, false)
+        }
+        else{
+            // Petición para guardar los datos del formulario.
+            const DATA = await fetchData(GOLES_API, action, FORM);
+            // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+            if (DATA.status) {
+                totalGoles = sumaTotalGoles;
+
+                SAVE_MODAL_GOLES.hide();
+                SEE_GOLES_MODAL.show();
+                // Se muestra un mensaje de éxito.
+                await sweetAlert(1, DATA.message, true);
+                // Se carga nuevamente la tabla para visualizar los cambios.
+                await cargarGolTarjetas(idParticipation);
+                console.log('Goles totales:', totalGoles);
+            } else {
+                await sweetAlert(2, DATA.error, false);
+                console.error(DATA.exception);
+            }
         }
     });
 
