@@ -5,7 +5,7 @@
             <div class="col-sm-12 col-md-6">
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
-                        name="search" placeholder="Buscar" required>
+                        name="search" placeholder="Buscar la característica por el nombre" required>
                     <button type="submit"
                         class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
@@ -29,7 +29,7 @@
     <hr>
     <!-- Tabla para mostrar los registros existentes -->
     <div class="table-responsive">
-        <table class="table table align-middle table-striped table-borderless text-center">
+        <table class="table table align-middle table-striped table-borderless">
             <!-- Cabeza de la tabla para mostrar la cantidad de registros y los títulos de las columnas -->
             <thead>
                 <tr>
@@ -44,6 +44,11 @@
             <tbody id="tabla_caracteristica_jugador"></tbody>
         </table>
     </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <!-- Aquí se insertarán los elementos de la paginación -->
+        </ul>
+    </nav>
 </div>
 <!-- Componente Modal para guardar un registro -->
 <div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -60,19 +65,19 @@
             <form id="saveForm">
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input type="hidden" id="idCaracteristica" name="idCaracteristica">
+                    <input type="number" class="d-none" id="idCaracteristica" name="idCaracteristica">
                     <div class="col-sm-12 col-md-6">
                         <label for="caracteristicaJugador" class="form-label fw-semibold">Nombre de la
                             característica</label>
                         <input id="caracteristicaJugador" type="text" name="caracteristicaJugador" class="form-control"
-                            placeholder="Escribe el nombre de la característica" required>
+                            placeholder="Escribe el nombre de la característica" required autocomplete="off">
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="clasificacionCaracteristica" class="form-label fw-semibold">Seleccionar
-                            clasificación de la
+                        <label for="caracteristicaJugador" class="form-label fw-semibold">Clasificación de la
                             característica</label>
-                        <select id="clasificacionCaracteristica" type="text" name="clasificacionCaracteristica"
-                            class="form-select" required></select>
+                        <select id="clasificacionCaracteristica" name="clasificacionCaracteristica" class="form-select"
+                            required>
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
