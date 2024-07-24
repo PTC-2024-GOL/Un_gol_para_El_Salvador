@@ -211,6 +211,7 @@ function actualizarPaginacion() {
     const paginacion = document.querySelector('.pagination');
     paginacion.innerHTML = '';
 
+    //costantes 
     const totalPaginas = Math.ceil(caracteristica.length / caracteristicaJugadorPorPagina);
 
     if (paginaActual > 1) {
