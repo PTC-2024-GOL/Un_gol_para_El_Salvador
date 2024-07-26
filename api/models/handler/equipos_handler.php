@@ -120,4 +120,33 @@ class EquiposHandler
         $params = array($this->id);
         return Database::getRow($sql, $params);
     }
+
+    /// TECNICOS ////////////////////////////////////////////
+    public function readAllByIdTecnico()
+    {
+        $sql = 'SELECT * FROM vista_equipos_tecnicos WHERE id_tecnico = ? ORDER BY nombre_categoria ASC;';
+        $params = array($_SESSION['idTecnico']);
+        return Database::getRows($sql, $params);
+    }
+
+    //Funcion para mostrar todos los equipos por genero
+    public function readAllByGenderTecnicos()
+    {
+        $sql = 'SELECT * FROM vista_equipos_tecnicos
+                WHERE id_tecnico =? AND  genero_equipo = ? ORDER BY nombre_categoria ASC';
+        $params = array($_SESSION['idTecnico'], $this->generoEquipo);
+        return Database::getRows($sql, $params);
+    }
+
+    //Función para buscar un equipo.
+    public function searchRowsTecnicos()
+    {
+        $value = '%' . Validator::getSearchValue() . '%';
+        $sql = 'SELECT * FROM vista_equipos_tecnicos
+        WHERE id_tecnico =? AND nombre_equipo LIKE ?
+        ORDER BY nombre_categoria ASC ;';
+        $params = array($_SESSION['idTecnico'], $value);
+        return Database::getRows($sql, $params);
+    }
+
 }

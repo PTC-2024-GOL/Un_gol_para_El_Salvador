@@ -1,18 +1,12 @@
 let SEE_MODAL,
     MODAL_TITLE1;
 
-let SAVE_FORM,
-    ID_EQUIPO,
-    NOMBRE_EQUIPO,
-    TELEFONO_EQUIPO,
-    ID_CUERPO_TECNICO,
-    ID_ADMINISTRADOR,
-    ID_CATEGORIA,
-    LOGO_EQUIPO
 let SEARCH_FORM;
+let CUERPO_TECNICO;
+let SELECT;
 
 // Constantes para completar las rutas de la API.
-const EQUIPO_API = '';
+const EQUIPO_API = 'services/technics/equipos.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -22,97 +16,129 @@ async function loadComponent(path) {
 
 // Funcion para preparar el formulario al momento de abrirlo
 
-const seeModal = () => {
+const seeModal = async (id)  => {
+    CUERPO_TECNICO.innerHTML = '';
     SEE_MODAL.show();
     MODAL_TITLE1.textContent = 'Cuerpo Técnico del equipo';
+    const FORM = new FormData();
+    FORM.append('idEquipo', id);
+    const DATA = await fetchData(EQUIPO_API, 'readAllStaff', FORM);
+    if (DATA.status) {
+        DATA.dataset.forEach(ROW => {
+            const completeName = ROW.nombre_tecnico + ' ' + ROW.apellido_tecnico;
+            const tablaHtml = `
+                <div class="col-sm-12 col-md-6 mb-3 text-center">
+                    <div class="shadow rounded-3 p-3">
+                        <img src="${SERVER_URL}images/tecnicos/${ROW.foto_tecnico}" height="60" width="65" class="circulo">
+                        <p class="fw-semibold mb-2 mt-2">${ROW.nombre_rol_tecnico}</p>
+                        <hr/>
+                        <p class="mb-0">${completeName}</p>
+                        <small class="fw-light">${ROW.correo_tecnico}</small>
+                    </div>
+                <div/>
+                `;
+            CUERPO_TECNICO.innerHTML += tablaHtml;
+        })
+    } else {
+        await sweetAlert(3, DATA.error, true);
+    }
+}
+
+
+// Manejo para la paginacion
+const soccerTeamByPage = 10;
+let currentPage = 1;
+let soccerTeam = [];
+
+function showSoccerTeam(page) {
+    const start = (page - 1) * soccerTeamByPage;
+    const end = start + soccerTeamByPage;
+    const soccerTeamsPage = soccerTeam.slice(start, end);
+
+    const fillTable = document.getElementById('tabla_equipos');
+    fillTable.innerHTML = '';
+    soccerTeamsPage.forEach(row => {
+        const tablaHtml = `
+                <tr>
+                    <td><img src="${SERVER_URL}images/tecnicos/${row.logo_equipo}" height="50" width="50" class="circulo"></td>
+                    <td>${row.nombre_equipo}</td>
+                    <td>${row.telefono_contacto}</td>
+                    <td>${row.nombre_categoria}</td>
+                    <td>${row.genero_equipo}</td>
+                    <td>
+                        <button type="button" class="btn btn-warnig" onclick="seeModal(${row.id_cuerpo_tecnico})">
+                        <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
+                        </button>
+                    </td>
+                </tr>
+                `;
+        fillTable.innerHTML += tablaHtml;
+    });
+
+    updatePaginate();
 }
 
 async function cargarTabla(form = null) {
-    const lista_datos = [
-        {
-            imagen: '../../../../resources/img/svg/avatar.svg',
-            nombre: 'Gol',
-            telefono: '2243-2312',
-            categoria: '16',
-            cuerpo_técnico: 1,
-            id: 1,
-        },
-        {
-            imagen: '../../../../resources/img/svg/avatar.svg',
-            nombre: 'Monaco',
-            telefono: '1234-5678',
-            categoria: '17',
-            cuerpo_técnico: 1,
-            id: 2,
-        },
-        {
-            imagen: '../../../../resources/img/svg/avatar.svg',
-            nombre: 'Selecta',
-            telefono: '1234-5678',
-            categoria: '28',
-            cuerpo_técnico: 1,
-            id: 3,
-        },
-        {
-            imagen: '../../../../resources/img/svg/avatar.svg',
-            nombre: 'Software',
-            telefono: '1234-5678',
-            categoria: '17',
-            cuerpo_técnico: 1,
-            id: 4,
-        }
-    ];
     const cargarTabla = document.getElementById('tabla_equipos');
 
     try {
         cargarTabla.innerHTML = '';
         // Se verifica la acción a realizar.
         (form) ? action = 'searchRows' : action = 'readAll';
-        console.log(form);
         // Petición para obtener los registros disponibles.
         const DATA = await fetchData(EQUIPO_API, action, form);
-        console.log(DATA);
 
         if (DATA.status) {
-            // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-                const tablaHtml = `
-                <tr>
-                    <td><img src="${SERVER_URL}images/admin/${row.IMAGEN}" height="50" width="50" class="circulo"></td>
-                    <td>${row.NOMBRE}</td>
-                    <td>${row.TELEFONO}</td>
-                    <td>${row.ID_CATEGORIA}</td>
-                    <td>
-                        <button type="button" class="btn btn-warnig" onclick="seeModal(${row.ID_CUERPO_TECNICO})">
-                        <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
-                        </button>
-                    </td>
-                </tr>
-                `;
-                cargarTabla.innerHTML += tablaHtml;
-            });
+            SELECT.value = 'Filtrar por género';
+            soccerTeam = DATA.dataset;
+            showSoccerTeam(currentPage);
         } else {
-            sweetAlert(4, DATA.error, true);
+            await sweetAlert(3, DATA.error, true);
         }
     } catch (error) {
         console.error('Error al obtener datos de la API:', error);
-        // Mostrar materiales de respaldo
-        lista_datos.forEach(row => {
-            const tablaHtml = `
-            <tr>
-                <td><img src="${row.imagen}" height="50" width="50" class="circulo"></td>
-                <td>${row.nombre}</td>
-                <td>${row.telefono}</td>
-                <td>${row.categoria}</td>
-                <td>
-                    <button type="button" class="btn transparente" onclick="seeModal(${row.cuerpo_técnico})">
-                    <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18px" height="18px">
-                    </button>
-                </td>
-            </tr>
-            `;
-            cargarTabla.innerHTML += tablaHtml;
-        });
+    }
+}
+
+// Función para actualizar los contlesiones de paginación
+function updatePaginate() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
+
+    const totalPaginas = Math.ceil(soccerTeam.length / soccerTeamByPage);
+
+    if (currentPage > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="nextPage(${currentPage - 1})">Anterior</a></li>`;
+    }
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link text-light" href="#" onclick="nextPage(${i})">${i}</a></li>`;
+    }
+
+    if (currentPage < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="nextPage(${currentPage + 1})">Siguiente</a></li>`;
+    }
+}
+
+// Función para cambiar de página
+function nextPage(newPage) {
+    currentPage = newPage;
+    showSoccerTeam(currentPage);
+}
+
+//Funcion que permite filtrar a los jugadores por su genero.
+const FilterByGender = async () => {
+
+    const FORM = new FormData();
+    FORM.append('generoEquipo', SELECT.value);
+
+    const DATA = await fetchData(EQUIPO_API, 'readAllByGender', FORM);
+
+    if (DATA.status) {
+        soccerTeam = DATA.dataset;
+        showSoccerTeam(currentPage);
+    } else {
+        console.log('Elige otra opción de filtrado')
     }
 }
 
@@ -124,58 +150,34 @@ window.onload = async function () {
     const equiposHtml = await loadComponent('../components/soccer_team.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
+
     // Agrega el HTML del encabezado
     appContainer.innerHTML = equiposHtml;
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Equipos';
-    cargarTabla();
 
+    //Select para el filtrado por generos
+    SELECT = document.getElementById('select');
+
+    await cargarTabla();
     SEE_MODAL = new bootstrap.Modal('#seeModal'),
         MODAL_TITLE1 = document.getElementById('modalTitle1')
 
-    // Constantes para establecer los elementos del formulario de guardar.
-    SAVE_FORM = document.getElementById('saveForm'),
-        ID_ADMINISTRADOR = document.getElementById('idEquipo'),
-        NOMBRE_EQUIPO = document.getElementById('nombreEquipo'),
-        TELEFONO_EQUIPO = document.getElementById('telefonoEquipo'),
-        ID_CATEGORIA = document.getElementById('categoriaEquipo'),
-        ID_CUERPO_TECNICO = document.getElementById('cuerpoTecnico'),
-    // Método del evento para cuando se envía el formulario de guardar.
-    SAVE_FORM.addEventListener('submit', async (event) => {
-        // Se evita recargar la página web después de enviar el formulario.
-        event.preventDefault();
-        // Se verifica la acción a realizar.
-        (ID_EQUIPO.value) ? action = 'updateRow' : action = 'createRow';
-        // Constante tipo objeto con los datos del formulario.
-        const FORM = new FormData(SAVE_FORM);
-        // Petición para guardar los datos del formulario.
-        const DATA = await fetchData(EQUIPO_API, action, FORM);
-        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-        if (DATA.status) {
-            // Se cierra la caja de diálogo.
-            SAVE_MODAL.hide();
-            // Se muestra un mensaje de éxito.
-            sweetAlert(1, DATA.message, true);
-            // Se carga nuevamente la tabla para visualizar los cambios.
-            cargarTabla();
-        } else {
-            sweetAlert(2, DATA.error, false);
-            console.error(DATA.exception);
-        }
-    });
+    // Constantes para ver los miembros del cuerpo tecnico
+    CUERPO_TECNICO = document.getElementById('cuerpoTecnicoEquipo');
+
+
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');
-    // Verificar si SEARCH_FORM está seleccionado correctamente
-    console.log(SEARCH_FORM)
+
     // Método del evento para cuando se envía el formulario de buscar.
     SEARCH_FORM.addEventListener('submit', (event) => {
         // Se evita recargar la página web después de enviar el formulario.
         event.preventDefault();
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SEARCH_FORM);
-        console.log(SEARCH_FORM);
-        console.log(FORM);
+
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
         cargarTabla(FORM);
     });

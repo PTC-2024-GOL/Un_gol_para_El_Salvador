@@ -5,12 +5,12 @@
             <div class="col-sm-12 col-md-6">
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
-                        name="search" placeholder="Buscar" required>
+                           name="search" placeholder="Buscar por nombre del equipo" required>
                     <button type="submit"
-                        class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
+                            class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
                     </button>
-                    <button type="reset" class="btn" onclick="fillTable()">
+                    <button type="reset" class="btn" onclick="cargarTabla()">
                         <img src="../../../resources/img/svg/icons_forms/reset.svg" width="18px" height="18px">
                     </button>
                 </form>
@@ -19,9 +19,13 @@
     </div>
     <hr>
 
-    <label for="inputPassword" class="form-label fw-semibold">Selecciona el genéro de los equipos</label>
+    <label for="select" class="form-label fw-semibold">Selecciona el género de los equipos</label>
     <div class="col-sm-6">
-        <select type="password" class="form-select rounded-3 shadow" id="inputPassword"></select>
+        <select type="password" class="form-select rounded-3 shadow" id="select" onchange="FilterByGender()">
+            <option>Filtrar por género</option>
+            <option>Masculino</option>
+            <option>Femenino</option>
+        </select>
     </div>
 
     <!-- Tabla para mostrar los registros existentes -->
@@ -30,13 +34,14 @@
             <!-- Cabeza de la tabla para mostrar la cantidad de registros y los títulos de las columnas -->
             <thead>
                 <tr>
-                    <td colspan="5" id="rowsFound"></td>
+                    <td colspan="6" id="rowsFound"></td>
                 </tr>
                 <tr>
                     <th class="fw-semibold">Imagen</th>
                     <th class="fw-semibold">Nombre del equipo</th>
                     <th class="fw-semibold">Teléfono de contacto</th>
                     <th class="fw-semibold">Categoría</th>
+                    <th class="fw-semibold">Género</th>
                     <th class="fw-semibold">Cuerpo técnico</th>
                 </tr>
             </thead>
@@ -44,107 +49,31 @@
             <tbody id="tabla_equipos"></tbody>
         </table>
     </div>
-</div>
-
-<!-- Componente Modal para guardar un registro -->
-<div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="modalTitle" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-blue-principal-color text-light">
-                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
-                <h1 class="modal-title fs-5" id="modalTitle"></h1>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-            </div>
-            <!-- Formulario para crear o actualizar un registro -->
-            <form id="saveForm">
-                <div class="modal-body row g-3">
-                    <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input type="hidden" id="idAdministrador" name="idAdministrador">
-                    <div class="container text-center text-md-start text-lg-start">
-                        <div class="row align-items-center justify-content-center gy-3 mt-3 mb-2">
-                            <div class="col-sm-12 col-md-auto">
-                                <img class="circulo" id="img_equipo" src="../../../resources/img/svg/avatar.svg"
-                                    width="120px">
-                            </div>
-                            <div class="col-sm-12 text-center">
-                                <!-- Botón para cargar imagen -->
-                                <input type="file" class="form-control" id="imagenEquipo" hidden>
-                                <!-- Para que tenga el mismo funcionamiento del input file le ponemos el for y le agregamos el id del input file -->
-                                <label class="btn bg-blue-secondary-color rounded-4 text-light" for="imagenEquipo">Elige
-                                    la
-                                    imagen</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 mb-3">
-                        <label for="nombreEquipo" class="form-label fw-semibold">Nombre del equipo</label>
-                        <input id="nombreEquipo" type="text" name="nombreAdministrador" class="form-control"
-                            placeholder="Ingresa el nombre del equipo" required>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <label for="telefonoEquipo" class="form-label fw-semibold">Teléfono de contacto</label>
-                        <input id="telefonoEquipo" type="text" name="apellidoAdministrador" class="form-control"
-                            placeholder="Ingresa el teléfono de contacto" required>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <label for="GeneroEquipo" class="form-label fw-semibold">Genéro del equipo</label>
-                        <select id="GeneroEquipo" type="text" name="Genero" class="form-select" required></select>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <label for="categoriaEquipo" class="form-label fw-semibold">Selecciona la categoría</label>
-                        <select id="categoriaEquipo" type="text" name="areaJuego" class="form-select" required></select>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <label for="cuerpoTecnico" class="form-label fw-semibold">Selecciona el cuerpo técnico</label>
-                        <select id="cuerpoTecnico" type="text" name="areaJuego" class="form-select" required></select>
-                    </div>
-                </div>
-                <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
-                    <button type="reset" class="btn bg-red-cream-color text-white">Cancelar</button>
-                    <button type="submit" class="btn bg-blue-principal-color text-white ">Guardar</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <!-- Aquí se insertarán los elementos de la paginación -->
+        </ul>
+    </nav>
 </div>
 
 <!-- Componente Modal para ver el cuerpo técnico -->
 <div class="modal fade" id="seeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="modalTitle1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+     aria-labelledby="modalTitle1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header bg-blue-principal-color text-light">
                 <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
                 <h1 class="modal-title fs-5" id="modalTitle1"></h1>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
+                        aria-label="Close"></button>
             </div>
             <!-- Formulario para crear o actualizar un registro -->
             <form id="SeeForm">
-                <div class="modal-body row g-3">
+                <div class="modal-body row g-3 justify-content-center">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input type="hidden" id="idAdministrador" name="idAdministrador">
-                    <div class="col-sm-12 col-md-6 mb-3">
-                        <label for="nombreAdministrador" class="form-label fw-semibold">Primer técnico</label>
-                        <input id="nombreAdministrador" type="text" name="nombreAdministrador" class="form-control"
-                            disabled>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <label for="apellidoAdministrador" class="form-label fw-semibold">Segundo técnico</label>
-                        <input id="apellidoAdministrador" type="text" name="apellidoAdministrador" class="form-control"
-                            disabled>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <label for="areaJuego" class="form-label fw-semibold">Preparador físico</label>
-                        <input id="apellidoAdministrador" type="text" name="apellidoAdministrador" class="form-control"
-                            disabled>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <label for="areaJuego" class="form-label fw-semibold">Delegado</label>
-                        <input id="apellidoAdministrador" type="text" name="apellidoAdministrador" class="form-control"
-                            disabled>
+                    <input type="hidden" id="idCuerpoTecnico" name="idEquipo">
+                    <div class="row mt-4 py-1" id="cuerpoTecnicoEquipo">
+
                     </div>
                 </div>
             </form>
