@@ -5,7 +5,7 @@
             <div class="col-sm-12 col-md-6">
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
-                        name="search" placeholder="Buscar" required>
+                        name="search" placeholder="Busca el horario por su nombre o por el día" required>
                     <button type="submit"
                         class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
@@ -29,13 +29,14 @@
     <hr>
     <!-- Tabla para mostrar los registros existentes -->
     <div class="table-responsive">
-        <table class="table table align-middle table-striped table-borderless text-center">
+        <table class="table table align-middle table-striped table-borderless">
             <!-- Cabeza de la tabla para mostrar la cantidad de registros y los títulos de las columnas -->
             <thead>
                 <tr>
                     <td colspan="6" id="rowsFound"></td>
                 </tr>
                 <tr>
+                    <th>Nombre</th>
                     <th>Día</th>
                     <th>Hora inicial</th>
                     <th>Hora final</th>
@@ -46,6 +47,11 @@
             <tbody id="tabla_horarios"></tbody>
         </table>
     </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <!-- Aquí se insertarán los elementos de la paginación -->
+        </ul>
+    </nav>
 </div>
 
 <!-- Componente Modal para guardar un registro -->
@@ -63,7 +69,12 @@
             <form id="saveForm">
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input type="hidden" id="idHorario" name="idHorario">
+                    <input type="number" class="d-none" id="idHorario" name="idHorario">
+                    <div class="col-sm-12 col-md-6">
+                        <label for="nombreHora" class="form-label fw-semibold">Nombre del horario</label>
+                        <input id="nombreHora" type="text" name="nombreHora" class="form-control"
+                            placeholder="Escribe el nombre del horario" required>
+                    </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="diaEntreno" class="form-label fw-semibold">Selecciona el día de
                             entrenamiento</label>
