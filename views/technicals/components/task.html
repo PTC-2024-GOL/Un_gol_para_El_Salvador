@@ -41,6 +41,11 @@
             <tbody id="tabla_tareas"></tbody>
         </table>
     </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <!-- Aquí se insertarán los elementos de la paginación -->
+        </ul>
+    </nav>
 </div>
 
 <!-- Componente Modal para guardar un registro -->
@@ -59,8 +64,8 @@
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
                     <input type="hidden" id="idTarea" name="idTarea">
                     <div class="col-sm-12 col-md-6">
-                        <label for="tarea" class="form-label">Tarea</label>
-                        <input id="tarea" type="text" name="tarea" class="form-control"
+                        <label for="nombreTarea" class="form-label">Tarea</label>
+                        <input id="nombreTarea" type="text" name="nombreTarea" class="form-control"
                             placeholder="Escribe la tarea a realizar" required>
                     </div>
                 </div>

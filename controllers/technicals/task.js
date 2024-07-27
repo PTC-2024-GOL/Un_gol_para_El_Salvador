@@ -180,6 +180,7 @@ function cambiarPagina(nuevaPagina) {
     mostrarTareas(paginaActual);
 }
 
+
 // window.onload
 window.onload = async function () {
     // Obtiene el contenedor principal
@@ -193,6 +194,7 @@ window.onload = async function () {
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Tareas';
+    ROWS_FOUND = document.getElementById('rowsFound');
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
@@ -201,7 +203,7 @@ window.onload = async function () {
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
         ID_TAREA = document.getElementById('idTarea'),
-        NOMBRE_TAREA = document.getElementById('tarea');
+        NOMBRE_TAREA = document.getElementById('nombreTarea');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
@@ -220,9 +222,10 @@ window.onload = async function () {
             sweetAlert(1, DATA.message, true);
             // Se carga nuevamente la tabla para visualizar los cambios.
             fillTable();
-        } else {
+        } else if (!DATA.exception) {
             sweetAlert(2, DATA.error, false);
-            console.error(DATA.exception);
+        } else {
+            sweetAlert(2, DATA.exception, false);
         }
     });
     // Constante para establecer el formulario de buscar.
