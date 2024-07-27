@@ -1,8 +1,7 @@
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
-const API = '';
-const TEMPORADA_API = '';
+const API = 'services/technics/jornadas.php';
 /* 
 Para cargar una lista con la api en php, se hara referencia al metodo ReadAll, del archivo de la api con el cual se quiera
 cargar la lista, en este caso en especifico, API se ocuparia para referenciar el link de la api que contenga todos los metodos
@@ -65,175 +64,96 @@ const fillSelected = (data, action,selectId, selectedValue = null) => {
 };
 
 
-const openCreate = () => {
-        // Se muestra la caja de diálogo con su título.
-        SAVE_MODAL.show();
-        MODAL_TITLE.textContent = 'Agregar una jornada';
-        // Se prepara el formulario.
-        SAVE_FORM.reset();
-        // Se carga la lista utilizando el metodo ReadAll de la api de temporada.
-        fillSelect(TEMPORADA_API, 'readAll', 'plantilla');
-        fillSelected(lista_select, 'readAll', 'plantilla');
-        
-}
-/*
-*   Función asíncrona para preparar el formulario al momento de actualizar un registro.
-*   Parámetros: id (identificador del registro seleccionado).
-*   Retorno: ninguno.
-*/
-const openUpdate = async (id) => {
-    try {
-        // Se define un objeto con los datos del registro seleccionado.
-        const FORM = new FormData();
-        FORM.append('idJornada', id);
-        // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(API, 'readOne', FORM);
-        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-        if (DATA.status) {
-            // Se muestra la caja de diálogo con su título.
-            SAVE_MODAL.show();
-            MODAL_TITLE.textContent = 'Actualizar la jornada';
-            // Se prepara el formulario.
-            SAVE_FORM.reset();
-            // Se inicializan los campos con los datos.
-            const ROW = DATA.dataset;
-            ID_JORNADA.value = ROW.ID;
-            NUMERO_JORNADA.value = ROW.NUMERO;
-            fillSelect(TEMPORADA_API, 'readAll', 'temporada', ROW.TEMPORADA);
-            FECHA_INICIO.value = ROW.INICIO;
-            FECHA_FINAL.value = ROW.FINAL;
-        } else {
-            sweetAlert(2, DATA.error, false);
-        }
-    } catch (Error) {
-        console.log(Error);
-        SAVE_MODAL.show();
-        MODAL_TITLE.textContent = 'Actualizar la jornada';
-        fillSelected(lista_select, 'readAll', 'plantilla');
-    }
+// Variables y constantes para la paginación
+const jornadasPorPagina = 10;
+let paginaActual = 1;
+let jornadas = [];
 
-}
-/*
-*   Función asíncrona para eliminar un registro.
-*   Parámetros: id (identificador del registro seleccionado).
-*   Retorno: ninguno.
-*/
-const openDelete = async (id) => {
-    // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar la jornada?');
-    try {
-        // Se verifica la respuesta del mensaje.
-        if (RESPONSE) {
-            // Se define una constante tipo objeto con los datos del registro seleccionado.
-            const FORM = new FormData();
-            FORM.append('idJornada', id);
-            console.log(id);
-            // Petición para eliminar el registro seleccionado.
-            const DATA = await fetchData(API, 'deleteRow', FORM);
-            console.log(DATA.status);
-            // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-            if (DATA.status) {
-                // Se muestra un mensaje de éxito.
-                await sweetAlert(1, DATA.message, true);
-                // Se carga nuevamente la tabla para visualizar los cambios.
-                fillTable();
-            } else {
-                sweetAlert(2, DATA.error, false);
-            }
-        }
-    }
-    catch (Error) {
-        console.log(Error + ' Error al cargar el mensaje');
-    }
-
-}
-
-
+// Función para cargar tabla de técnicos con paginación
 async function fillTable(form = null) {
-    const lista_datos = [
-        {
-            jornada: 1,
-            temporada: 2024,
-            fecha_inicio: "2024-01-31",
-            fecha_final: "2024-02-06",
-            id: 1,
-        },
-        {
-            jornada: 2,
-            temporada: 2024,
-            fecha_inicio: "2024-02-07",
-            fecha_final: "2024-02-14",
-            id: 2,
-        },
-        {
-            jornada: 3,
-            temporada: 2024,
-            fecha_inicio: "2024-02-15",
-            fecha_final: "2024-02-22",
-            id: 3,
-        },
-        {
-            jornada: 4,
-            temporada: 2024,
-            fecha_inicio: "2024-02-23",
-            fecha_final: "2024-02-30",
-            id: 4,
-        }
-    ];
     const cargarTabla = document.getElementById('tabla_jornadas');
-
     try {
         cargarTabla.innerHTML = '';
-        // Se verifica la acción a realizar.
-        (form) ? action = 'searchRows' : action = 'readAll';
-        console.log(form);
         // Petición para obtener los registros disponibles.
+        let action;
+        form ? action = 'searchRows' : action = 'readAll';
+        console.log(form);
         const DATA = await fetchData(API, action, form);
         console.log(DATA);
 
         if (DATA.status) {
-            // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-                const tablaHtml = `
-                <tr class="text-end">
-                    <td>${row.NUMERO}</td>
-                    <td>${row.TEMPORADA}</td>
-                    <td>${row.INICIO}</td>
-                    <td>${row.FINAL}</td>
-                    <td>
-                        <a href="trainings.html?id=${row.ID}" class="btn btn-primary">
-                        <img src="../../recursos/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
-                        </a>
-                    </td>
-                </tr>
-                `;
-                cargarTabla.innerHTML += tablaHtml;
-            });
+            jornadas = DATA.dataset;
+            mostrarJornadas(paginaActual);
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = DATA.message;
         } else {
-            sweetAlert(4, DATA.error, true);
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = "Existen 0 coincidencias";
         }
     } catch (error) {
         console.error('Error al obtener datos de la API:', error);
-        // Mostrar materiales de respaldo
-        lista_datos.forEach(row => {
-            const tablaHtml = `
-            <tr>
-                <td>${row.jornada}</td>
-                <td>${row.temporada}</td>
-                <td>${row.fecha_inicio}</td>
-                <td>${row.fecha_final}</td>
-                <td>
-                    <a href="trainings.html?id=${row.id}" class="btn transparente">
-                    <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18" height="18">
-                    </a>
-                </td>
-            </tr>
-            `;
-            cargarTabla.innerHTML += tablaHtml;
-        });
     }
 }
 
+// Función para mostrar técnicos en una página específica
+function mostrarJornadas(pagina) {
+    const inicio = (pagina - 1) * jornadasPorPagina;
+    const fin = inicio + jornadasPorPagina;
+    const jornadasPagina = jornadas.slice(inicio, fin);
+
+    const cargarTabla = document.getElementById('tabla_jornadas');
+    cargarTabla.innerHTML = '';
+    jornadasPagina.forEach(row => {
+        const tablaHtml = `
+                <tr>
+                    <td>${row.NUMERO}</td>
+                    <td>${row.NOMBRE}</td>
+                    <td>${row.FECHA_INICIO}</td>
+                    <td>${row.FECHA_FIN}</td>
+                    <td>
+                    <a href="trainings.html?id=${row.ID}" class="btn transparente">
+                    <img src="../../../resources/img/svg/icons_forms/training.svg" width="20" height="20">
+                    </a>
+                    <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
+                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                    </button>
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.ID})">
+                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                    </button>
+                    </td>
+                </tr>
+        `;
+        cargarTabla.innerHTML += tablaHtml;
+    });
+
+    actualizarPaginacion();
+}
+
+// Función para actualizar los controles de paginación
+function actualizarPaginacion() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
+
+    const totalPaginas = Math.ceil(jornadas.length / jornadasPorPagina);
+
+    if (paginaActual > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-light" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
+    }
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-light" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
+    }
+
+    if (paginaActual < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-light" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
+    }
+}
+
+// Función para cambiar de página
+function cambiarPagina(nuevaPagina) {
+    paginaActual = nuevaPagina;
+    mostrarJornadas(paginaActual);
+}
 // window.onload
 window.onload = async function () {
     // Obtiene el contenedor principal
