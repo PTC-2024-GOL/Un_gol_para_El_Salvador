@@ -1,4 +1,5 @@
 let SEARCH_FORM;
+let ROWS_FOUND;
 
 // Constantes para completar las rutas de la API.
 const API = 'services/technics/jornadas.php';
@@ -114,12 +115,6 @@ function mostrarJornadas(pagina) {
                     <a href="trainings.html?id=${row.ID}" class="btn transparente">
                     <img src="../../../resources/img/svg/icons_forms/training.svg" width="20" height="20">
                     </a>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                    </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.ID})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
                     </td>
                 </tr>
         `;
@@ -167,6 +162,7 @@ window.onload = async function () {
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Jornadas';
+    ROWS_FOUND = document.getElementById('rowsFound');
     fillTable();
 
     // Constante para establecer el formulario de buscar.

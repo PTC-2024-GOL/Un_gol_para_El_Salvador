@@ -3,9 +3,11 @@ let SAVE_FORM,
     ID_TAREA,
     NOMBRE_TAREA;
 let SEARCH_FORM;
+let ROWS_FOUND;
+
 
 // Constantes para completar las rutas de la API.
-const API = '';
+const API = 'services/technics/tareas.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -93,77 +95,89 @@ const openDelete = async (id) => {
 }
 
 
-async function fillTable(form = null) {
-    const lista_datos = [
-        {
-            tarea: "Disparos a puerta",
-            id: 1,
-        },
-        {
-            tarea: "Uno contra uno",
-            id: 2,
-        },
-        {
-            tarea: "Mano a mano contra el portero",
-            id: 3,
-        },
-        {
-            tarea: "Practica de tiros libres",
-            id: 4,
-        }
-    ];
-    const cargarTabla = document.getElementById('tabla_tareas');
+// Variables y constantes para la paginación
+const tareasPorPagina = 10;
+let paginaActual = 1;
+let tareas = [];
 
+// Función para cargar tabla de técnicos con paginación
+async function fillTable(form = null) {
+    const cargarTabla = document.getElementById('tabla_tareas');
     try {
         cargarTabla.innerHTML = '';
-        // Se verifica la acción a realizar.
-        (form) ? action = 'searchRows' : action = 'readAll';
-        console.log(form);
         // Petición para obtener los registros disponibles.
+        let action;
+        form ? action = 'searchRows' : action = 'readAll';
+        console.log(form);
         const DATA = await fetchData(API, action, form);
         console.log(DATA);
 
         if (DATA.status) {
-            // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-                const tablaHtml = `
-                <tr class="text-end">
-                    <td>${row.TAREA}</td>
-                    <td>
-                        <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
-                        <img src="../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" onclick="openDelete(${row.ID})">
-                            <i class="bi bi-trash-fill"></i>
-                        </button>
-                    </td>
-                </tr>
-                `;
-                cargarTabla.innerHTML += tablaHtml;
-            });
+            tareas = DATA.dataset;
+            mostrarTareas(paginaActual);
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = DATA.message;
         } else {
-            sweetAlert(4, DATA.error, true);
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = "Existen 0 coincidencias";
         }
     } catch (error) {
         console.error('Error al obtener datos de la API:', error);
-        // Mostrar materiales de respaldo
-        lista_datos.forEach(row => {
-            const tablaHtml = `
-            <tr>
-                <td class="text-center">${row.tarea}</td>
-                <td class="text-end">
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                    </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
-                </td>
-            </tr>
-            `;
-            cargarTabla.innerHTML += tablaHtml;
-        });
     }
+}
+
+// Función para mostrar técnicos en una página específica
+function mostrarTareas(pagina) {
+    const inicio = (pagina - 1) * tareasPorPagina;
+    const fin = inicio + tareasPorPagina;
+    const tareasPagina = tareas.slice(inicio, fin);
+
+    const cargarTabla = document.getElementById('tabla_tareas');
+    cargarTabla.innerHTML = '';
+    tareasPagina.forEach(row => {
+        const tablaHtml = `
+                <tr class="text-center">
+                    <td>${row.NOMBRE}</td>
+                    <td>
+                    <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
+                        <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                    </button>
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.ID})">
+                        <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                    </button>
+                    </td>
+                </tr>
+        `;
+        cargarTabla.innerHTML += tablaHtml;
+    });
+
+    actualizarPaginacion();
+}
+
+// Función para actualizar los conttareas de paginación
+function actualizarPaginacion() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
+
+    const totalPaginas = Math.ceil(tareas.length / tareasPorPagina);
+
+    if (paginaActual > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
+    }
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-light" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
+    }
+
+    if (paginaActual < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
+    }
+}
+
+// Función para cambiar de página
+function cambiarPagina(nuevaPagina) {
+    paginaActual = nuevaPagina;
+    mostrarTareas(paginaActual);
 }
 
 // window.onload
