@@ -49,6 +49,11 @@
             <tbody id="tabla_registro_medico"></tbody>
         </table>
     </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <!-- Aquí se insertarán los elementos de la paginación -->
+        </ul>
+    </nav>
 </div>
 
 <!-- Componente Modal para guardar un registro -->
@@ -66,7 +71,7 @@
             <form id="saveForm">
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input type="hidden" id="idMedico" name="idMedico">
+                    <input type="number" class="d-none" id="idMedico" name="idMedico">
                     <div class="col-sm-12 col-md-6">
                         <label for="jugador" class="form-label fw-semibold">Selecciona al jugador</label>
                         <select id="jugador" type="text" name="jugador" class="form-select" required></select>
@@ -75,11 +80,6 @@
                         <label for="fechaLesion" class="form-label fw-semibold">Fecha en que se hizo la
                             lesión</label>
                         <input id="fechaLesion" type="date" name="fechaLesion" class="form-control" required>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <label for="fechaRegistro" class="form-label fw-semibold">Fecha en que se registró
-                            la lesión</label>
-                        <input id="fechaRegistro" type="date" name="fechaRegistro" class="form-control" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="diasLesionado" class="form-label fw-semibold">Días lesionado</label>
@@ -98,7 +98,7 @@
                     <div class="col-sm-12 col-md-6">
                         <label for="retornoPartido" class="form-label fw-semibold">Fecha de retorno a
                             partidos</label>
-                        <select id="retornoPartido" type="date" name="retornoPartido" class="form-select" required>
+                        <select id="retornoPartido" type="text" name="retornoPartido" class="form-select"></select>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
