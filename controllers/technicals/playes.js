@@ -1,9 +1,25 @@
-let SEE_MODAL,
-    MODAL_TITLE;
+let SAVE_MODAL;
+let SAVE_FORM,
+    ID_JUGADOR,
+    NOMBRE_JUGADOR,
+    APELLIDO_JUGADOR,
+    DORSAL_JUGADOR,
+    NACIMIENTO_JUGADOR,
+    PERFIL_JUGADOR,
+    ALIAS,
+    ESTATUS_JUGADOR,
+    BECADO,
+    GENERO_JUGADOR,
+    IMAGEN_JUGADOR;
 let SEARCH_FORM;
+let IMAGEN;
+let SELECT_GENER0;
+
+let BOX_ALIAS;
 
 // Constantes para completar las rutas de la API.
-const JUGADOR_API = '';
+const JUGADOR_API = 'services/technics/jugadores.php';
+const POSICIONES_API = 'services/technics/posiciones.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -20,20 +36,31 @@ const seeModal = async (id) => {
         const DATA = await fetchData(JUGADOR_API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
-            // Se muestra la caja de diálogo con su título.
             SEE_MODAL.show();
-            MODAL_TITLE.textContent = 'Información del jugador';;
+            MODAL_TITLE.textContent = 'Información del jugador';
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
             ID_JUGADOR.value = ROW.ID;
+            NOMBRE_JUGADOR.value = ROW.nombre_jugador;
+            APELLIDO_JUGADOR.value = ROW.apellido_jugador;
+            ESTATUS_JUGADOR.value = ROW.estatus_jugador;
+            NACIMIENTO_JUGADOR.value = ROW.fecha_nacimiento_jugador;
+            PERFIL_JUGADOR.value = ROW.perfil_jugador;
+            await fillSelect(POSICIONES_API, 'readAll', 'posicionPrincipal', ROW.id_posicion_principal);
+            await fillSelect(POSICIONES_API, 'readAll', 'posicionSecundaria', ROW.id_posicion_secundaria);
+            DORSAL_JUGADOR.value = ROW.dorsal_jugador;
+            ALIAS.value = ROW.alias_jugador;
+            ESTATUS_JUGADOR.value = ROW.estatus_jugador;
+            IMAGEN.src = SERVER_URL + 'images/jugadores/' + ROW.foto_jugador;
+            GENERO_JUGADOR.value = ROW.genero_jugador;
+            BECADO.value = ROW.becado;
         } else {
-            sweetAlert(2, DATA.error, false);
+            await sweetAlert(2, DATA.error, false);
         }
     } catch (Error) {
         console.log(Error);
         SEE_MODAL.show();
         MODAL_TITLE.textContent = 'Información del jugador';
-        SEE_FORM.reset();
     }
 }
 
@@ -44,119 +71,112 @@ const seeModal = async (id) => {
 */
 const openPage = (id) => {
     // Cuando se haga clic en el botón, se redirigirá a la página de estado fisica específicas.
-    console.log(id);
-    window.location.href = '../pages/physical_states.html';
+    window.location.href = `../pages/physical_states.html?id=${id}`;
 }
-/*
-*   Función asíncrona para preparar el formulario al momento de actualizar un registro.
-*   Parámetros: id (identificador del registro seleccionado).
-*   Retorno: ninguno.
-*/
 
-async function fillTable(form = null) {
-    const lista_datos = [
-        {
-            imagen: '../../../../resources/img/svg/avatar.svg',
-            nombre: 'Angel',
-            apellido: 'Presidente',
-            dorsal: '14',
-            posicion_principal: 'Delantero',
-            fecha: '2000-02-09',
-            id: 1,
-        },
-        {
-            imagen: '../../../../resources/img/svg/avatar.svg',
-            nombre: 'Angel',
-            apellido: 'Presidente',
-            dorsal: '14',
-            posicion_principal: 'Delantero',
-            fecha: '2000-02-09',
-            id: 1,
-        },
-        {
-            imagen: '../../../../resources/img/svg/avatar.svg',
-            nombre: 'Angel',
-            apellido: 'Presidente',
-            dorsal: '14',
-            posicion_principal: 'Delantero',
-            fecha: '2000-02-09',
-            id: 1,
-        },
-        {
-            imagen: '../../../../resources/img/svg/avatar.svg',
-            nombre: 'Angel',
-            apellido: 'Presidente',
-            dorsal: '14',
-            posicion_principal: 'Delantero',
-            fecha: '2000-02-09',
-            id: 1,
-        }
-    ];
-    const cargarTabla = document.getElementById('tabla_jugadores');
 
-    try {
-        cargarTabla.innerHTML = '';
-        // Se verifica la acción a realizar.
-        (form) ? action = 'searchRows' : action = 'readAll';
-        console.log(form);
-        // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(JUGADOR_API, action, form);
-        console.log(DATA);
 
-        if (DATA.status) {
-            // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-                const tablaHtml = `
+// Manejo para la paginacion
+const playerSoccerByPage = 10;
+let currentPage = 1;
+let playerSoccers = [];
+
+function showPlayerSoccers(page) {
+    const start = (page - 1) * playerSoccerByPage;
+    const end = start + playerSoccerByPage;
+    const playerSoccersPage = playerSoccers.slice(start, end);
+
+    const fillTable = document.getElementById('tabla_jugadores');
+    fillTable.innerHTML = '';
+    playerSoccersPage.forEach(row => {
+        const tablaHtml = `
                 <tr>
-                    <td><img src="${SERVER_URL}images/admin/${row.IMAGEN}" height="50" width="50" class="circulo"></td>
-                    <td>${row.NOMBRE}</td>
-                    <td>${row.APELLIDO}</td>
-                    <td>${row.DORSAL}</td>
-                    <td>${row.POSICION_PRINCIPAL}</td>
-                    <td>${row.NACIMIENTO}</td>
+                    <td><img src="${SERVER_URL}images/jugadores/${row.foto_jugador}" height="50" width="50" class="circulo"></td>
+                    <td>${row.nombre_jugador}</td>
+                    <td>${row.apellido_jugador}</td>
+                    <td>${row.dorsal_jugador}</td>
+                    <td>${row.posicionPrincipal}</td>
+                    <td>${row.fecha_creacion}</td>
                     <td>
-                <button type="button" class="btn transparente" onclick="openPage(${row.ID})">
+                <button type="button" class="btn transparente" onclick="openPage(${row.id_jugador})">
                     <img src="../../../resources/img/svg/icons_forms/heart.svg" width="18" height="18">
                     </button>
                 </td>
                     <td>
-                    <button type="button" class="btn transparente" onclick="seeModal(${row.ID})">
+                    <button type="button" class="btn transparente" onclick="seeModal(${row.id_jugador})">
                     <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18" height="18">
                     </button>
                     </td>
                 </tr>
                 `;
-                cargarTabla.innerHTML += tablaHtml;
-            });
+        fillTable.innerHTML += tablaHtml;
+    });
+
+    updatePaginate();
+}
+
+
+
+async function fillTable(form = null) {
+    const cargarTabla = document.getElementById('tabla_jugadores');
+    try {
+        cargarTabla.innerHTML = '';
+        // Se verifica la acción a realizar.
+        (form) ? action = 'searchRows' : action = 'readAll';
+        // Petición para obtener los registros disponibles.
+        const DATA = await fetchData(JUGADOR_API, action, form);
+
+        if (DATA.status) {
+            SELECT_GENER0.value = 'Filtrar por género';
+            playerSoccers = DATA.dataset;
+            showPlayerSoccers(currentPage);
         } else {
-            sweetAlert(4, DATA.error, true);
+            await sweetAlert(3, DATA.error, true);
         }
     } catch (error) {
         console.error('Error al obtener datos de la API:', error);
-        // Mostrar materiales de respaldo
-        lista_datos.forEach(row => {
-            const tablaHtml = `
-            <tr>
-                <td><img src="${row.imagen}" height="50" width="50" class="circulo"></td>
-                <td>${row.nombre}</td>
-                <td>${row.apellido}</td>
-                <td>${row.dorsal}</td>
-                <td>${row.posicion_principal}</td>
-                <td>${row.fecha}</td>
-                <td>
-                <button type="button" class="btn transparente" onclick="openPage(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/heart.svg" width="18" height="18">
-                    </button>
-                </td>
-                <td>
-                    <button type="button" class="btn transparente" onclick="seeModal(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18" height="18">
-                    </button>
-                </td>
-            </tr>
-            `;
-            cargarTabla.innerHTML += tablaHtml;
-        });
+    }
+}
+
+// Función para actualizar los contlesiones de paginación
+function updatePaginate() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
+
+    const totalPaginas = Math.ceil(playerSoccers.length / playerSoccerByPage);
+
+    if (currentPage > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-light" href="#" onclick="nextPage(${currentPage - 1})">Anterior</a></li>`;
+    }
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link text-light" href="#" onclick="nextPage(${i})">${i}</a></li>`;
+    }
+
+    if (currentPage < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-light" href="#" onclick="nextPage(${currentPage + 1})">Siguiente</a></li>`;
+    }
+}
+
+// Función para cambiar de página
+function nextPage(newPage) {
+    currentPage = newPage;
+    showPlayerSoccers(currentPage);
+}
+
+//Funcion que permite filtrar a los jugadores por su genero.
+const FilterByGender = async () => {
+
+    const FORM = new FormData();
+    FORM.append('genero', SELECT_GENER0.value);
+
+    const DATA = await fetchData(JUGADOR_API, 'readAllByGender', FORM);
+
+    if (DATA.status) {
+        playerSoccers = DATA.dataset;
+        showPlayerSoccers(currentPage);
+    } else {
+        console.log('Elige otra opción de filtrado')
     }
 }
 
@@ -168,58 +188,37 @@ window.onload = async function () {
     const playersHtml = await loadComponent('../components/players.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
+
     // Agrega el HTML del encabezado
     appContainer.innerHTML = playersHtml;
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Jugadores';
+
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
-        SEE_MODAL = new bootstrap.Modal('#seeModal'),
-        MODAL_TITLE = document.getElementById('modalTitle');
+    SEE_MODAL = new bootstrap.Modal('#seeModal'),
+    MODAL_TITLE = document.getElementById('modalTitle');
 
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
         ID_JUGADOR = document.getElementById('idJugador'),
         NOMBRE_JUGADOR = document.getElementById('nombreJugador'),
         APELLIDO_JUGADOR = document.getElementById('apellidoJugador'),
-        ALIAS_JUGADOR = document.getElementById('aliasJugador'),
         NACIMIENTO_JUGADOR = document.getElementById('fechaNacimientoJugador'),
         PERFIL_JUGADOR = document.getElementById('perfilJugador'),
-        ID_POSICION_PRINCIPAL = document.getElementById('posicionPrincipal'),
-        ID_POSICION_SECUNDARIA = document.getElementById('posicionSecundaria'),
-        ALTURA_JUGADOR = document.getElementById('alturaJugador'),
-        PESO_JUGADOR = document.getElementById('pesoJugador');
-    MASA_CORPORAL = document.getElementById('masaCorporal');
-    DORSAL_JUGADOR = document.getElementById('dorsal');
-    ESTATUS_JUGADOR = document.getElementById('estadoJugador');
-    CLAVE_JUGADOR = document.getElementById('claveJugador');
-    REPETIR_CLAVE = document.getElementById('repetirclaveJugador');
-    IMAGEN_JUGADOR = document.getElementById('imagenAdministrador');
+        DORSAL_JUGADOR = document.getElementById('Dorsal'),
+        BECADO = document.getElementById('beca'),
+        ESTATUS_JUGADOR = document.getElementById('estadoJugador');
+    GENERO_JUGADOR = document.getElementById('generoJugador'),
+        IMAGEN_JUGADOR = document.getElementById('imagen_jugador'),
+        IMAGEN = document.getElementById('imagenJugador'),
+    ALIAS = document.getElementById('alias');
 
-    // Método del evento para cuando se envía el formulario de guardar.
-    SAVE_FORM.addEventListener('submit', async (event) => {
-        // Se evita recargar la página web después de enviar el formulario.
-        event.preventDefault();
-        // Se verifica la acción a realizar.
-        (ID_ADMINISTRADOR.value) ? action = 'updateRow' : action = 'createRow';
-        // Constante tipo objeto con los datos del formulario.
-        const FORM = new FormData(SAVE_FORM);
-        // Petición para guardar los datos del formulario.
-        const DATA = await fetchData(JUGADOR_API, action, FORM);
-        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-        if (DATA.status) {
-            // Se cierra la caja de diálogo.
-            SAVE_MODAL.hide();
-            // Se muestra un mensaje de éxito.
-            sweetAlert(1, DATA.message, true);
-            // Se carga nuevamente la tabla para visualizar los cambios.
-            fillTable();
-        } else {
-            sweetAlert(2, DATA.error, false);
-            console.error(DATA.exception);
-        }
-    });
+    SELECT_GENER0 = document.getElementById('selectGenero');
+
+    BOX_ALIAS = document.getElementById('boxAlias');
+
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');
     // Verificar si SEARCH_FORM está seleccionado correctamente
@@ -230,8 +229,7 @@ window.onload = async function () {
         event.preventDefault();
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SEARCH_FORM);
-        console.log(SEARCH_FORM);
-        console.log(FORM);
+
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
         fillTable(FORM);
     });

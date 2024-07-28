@@ -35,8 +35,8 @@ class JugadoresHandler
     public function searchRows()
     {
         $value = '%' . Validator::getSearchValue() . '%';
-        $sql = 'SELECT * FROM jugadores
-        WHERE jugadores.nombre_jugador LIKE ? OR jugadores.apellido_jugador LIKE ?
+        $sql = 'SELECT * FROM vista_jugadores
+        WHERE nombre_jugador LIKE ? OR apellido_jugador LIKE ?
         ORDER BY fecha_creacion;';
         $params = array($value, $value);
         return Database::getRows($sql, $params);

@@ -5,7 +5,7 @@
             <div class="col-sm-12 col-md-6">
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
-                        name="search" placeholder="Buscar" required>
+                        name="search" placeholder="Busca al jugador por su nombre o apellido" required>
                     <button type="submit"
                         class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
@@ -20,9 +20,13 @@
     </div>
     <hr>
 
-    <label for="inputPassword" class="form-label">Selecciona el genéro de los jugadores</label>
+    <label for="selectGenero" class="form-label">Selecciona el género de los jugadores</label>
     <div class="col-sm-6">
-        <select type="password" class="form-select rounded-3 shadow" id="inputPassword"></select>
+        <select type="password" class="form-select rounded-3 shadow" id="selectGenero" onchange="FilterByGender()">
+            <option>Filtrar por género</option>
+            <option>Masculino</option>
+            <option>Femenino</option>
+        </select>
     </div>
 
     <!-- Tabla para mostrar los registros existentes -->
@@ -47,6 +51,11 @@
             <tbody id="tabla_jugadores"></tbody>
         </table>
     </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <!-- Aquí se insertarán los elementos de la paginación -->
+        </ul>
+    </nav>
 </div>
 
 <!-- Componente Modal para guardar un registro -->
@@ -68,51 +77,65 @@
                     <div class="container text-center text-md-start text-lg-start">
                         <div class="row align-items-center justify-content-center gy-3 mt-3 mb-2">
                             <div class="col-sm-12 col-md-auto">
-                                <img class="circulo" id="img_admin" src="../../../resources/img/svg/avatar.svg"
-                                    width="120px">
+                                <img class="circulo" id="imagenJugador" src="../../../resources/img/png/default.jpg"
+                                     width="130px" height="130px">
+                            </div>
+                            <div class="col-sm-12 text-center">
+                                <!-- Botón para cargar imagen -->
+                                <input type="file" class="form-control" id="imagen_jugador" name="imagen" hidden>
+                                <!-- Para que tenga el mismo funcionamiento del input file le ponemos el for y le agregamos el id del input file -->
+                                <label class="btn bg-blue-secondary-color rounded-4 text-light"
+                                       for="imagen_jugador">Cargar
+                                    imagen</label>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="nombreJugador" class="form-label fw-semibold">Nombre</label>
-                        <input id="nombreJugador" type="text" name="nombreJugador" class="form-control" disabled>
+                        <input id="nombreJugador" type="text" name="nombre" class="form-control"
+                               disabled>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="apellidoJugador" class="form-label fw-semibold">Apellido</label>
-                        <input id="apellidoJugador" type="text" name="apellidoJugador" class="form-control" disabled>
+                        <input id="apellidoJugador" type="text" name="apellido" class="form-control" disabled>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="fechaNacimientoJugador" class="form-label fw-semibold">Fecha de nacimiento</label>
-                        <input id="fechaNacimientoJugador" type="date" name="fechaNacimientoJugador"
-                            class="form-control" disabled>
+                        <input id="fechaNacimientoJugador" type="date" name="nacimiento" class="form-control"
+                               disabled required>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
-                        <label for="generoJugador" class="form-label fw-semibold">Genéro del jugador</label>
-                        <select id="generoJugador" name="generoJugador" class="form-select" disabled></select>
+                        <label for="generoJugador" class="form-label fw-semibold">Género del jugador</label>
+                        <input id="generoJugador" name="genero" class="form-control" disabled>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="perfilJugador" class="form-label fw-semibold">Perfil del jugador</label>
-                        <select id="perfilJugador" name="perfilJugador" class="form-select" disabled></select>
+                        <input id="perfilJugador" name="perfil" class="form-control" disabled>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="posicionPrincipal" class="form-label fw-semibold">Posición principal</label>
-                        <select id="posicionPrincipal" name="posicionPrincipal" class="form-select" disabled></select>
+                        <select id="posicionPrincipal" name="posicion1" class="form-control" disabled></select>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="posicionSecundaria" class="form-label fw-semibold">Posición secundaria</label>
-                        <select id="posicionSecundaria" name="posicionSecundaria" class="form-select" disabled></select>
+                        <select id="posicionSecundaria" name="posicion2" class="form-control" disabled></select>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
-                        <label for="dorsal" class="form-label fw-semibold">Dorsal</label>
-                        <input id="dorsal" type="number" name="dorsal" max="99" min="1" class="form-control" disabled>
+                        <label for="Dorsal" class="form-label fw-semibold">Dorsal</label>
+                        <input id="Dorsal" type="number" name="dorsal"
+                               min="1" class="form-control" disabled>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="estadoJugador" class="form-label fw-semibold">Estado del jugador</label>
-                        <select id="estadoJugador" name="estadoJugador" class="form-select" disabled></select>
+                        <input id="estadoJugador" name="estado" class="form-control" disabled>
+                    </div>
+                    <div class="col-sm-12 col-md-6 mb-2" id="boxAlias">
+                        <label for="alias" class="form-label fw-semibold">Alías del jugador</label>
+                        <input id="alias" name="alias_jugador" class="form-control" disabled>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
-                        <label for="beca" class="form-label fw-semibold">Beca del jugador</label>
-                        <select id="beca" name="beca" class="form-select" disabled></select>
+                        <label for="beca" class="form-label fw-semibold">Selecciona la beca del jugador</label>
+                        <input id="beca" name="beca" class="form-control" disabled>
                     </div>
                 </div>
             </form>
