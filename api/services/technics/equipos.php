@@ -13,7 +13,7 @@ if (isset($_GET['action'])) {
     if (isset($_SESSION['idTecnico']) /*and Validator::validateSessionTime()*/) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
-            // Buscar
+                // Buscar
             case 'searchRows':
                 if (!Validator::validateSearch($_POST['search'])) {
                     $result['error'] = Validator::getSearchError();
@@ -24,7 +24,7 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'No hay coincidencias';
                 }
                 break;
-            // Leer todos
+                // Leer todos
             case 'readAll':
                 if ($result['dataset'] = $equipo->readAllByIdTecnico()) {
                     $result['status'] = 1;
@@ -33,7 +33,16 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'No existen equipos registrados';
                 }
                 break;
-            // Leer cuerpo tecnico del equipo
+                // Leer todos
+            case 'readAllSelect':
+                if ($result['dataset'] = $equipo->readAll()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
+                } else {
+                    $result['error'] = 'No existen equipos registrados';
+                }
+                break;
+                // Leer cuerpo tecnico del equipo
             case 'readAllStaff':
                 if (!$equipo->setId($_POST['idEquipo'])) {
                     $result['error'] = $equipo->getDataError();
@@ -43,7 +52,7 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Equipo inexistente';
                 }
                 break;
-            // Leer todos los equipos filtrados por genero
+                // Leer todos los equipos filtrados por genero
             case 'readAllByGender':
                 if (!$equipo->setGeneroEquipo($_POST['generoEquipo'])) {
                     $result['error'] = $equipo->getDataError();
