@@ -70,29 +70,17 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                         alt="">Dashboard</a>
                             </li>
                             <!-- Etiqueta para el usuario -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-light" href="#" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="../../../resources/img/svg/icons_menu/users.svg" class="me-3" alt="">
-                                    Usuarios
-                                </a>
-                                <ul class="dropdown-menu bg-transparent">
-                                    <li><a class="dropdown-item text-light" href="players.html">Jugadores</a></li>
-                                    <li><a class="dropdown-item text-light" href="technicals.html">Técnicos</a></li>
-                                    <li><a class="dropdown-item text-light" href="admins.html">Administradores</a></li>
-                                </ul>
+                            <li class="nav-item">
+                                <a class="nav-link active text-light" aria-current="page" href="players.html">
+                                    <img src="../../../resources/img/svg/icons_menu/users.svg" class="me-3"
+                                        alt="">Jugadores</a>
                             </li>
                             <!-- Etiqueta para el estadisticas -->
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-light" href="#" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link active text-light" href="journeys.html" aria-current="page">
                                     <img src="../../../resources/img/svg/icons_menu/estadisticas.svg" class="me-3" alt="">
-                                    Estadísticas
+                                    Jornadas
                                 </a>
-                                <ul class="dropdown-menu bg-transparent">
-                                    <li><a class="dropdown-item text-light" href="journeys.html">Jornadas</a></li>
-                                    <li><a class="dropdown-item text-light" href="seasons.html">Temporadas</a></li>
-                                </ul>
                             </li>
                             <!-- Etiqueta para el entrenamientos -->
                             <li class="nav-item dropdown">
@@ -135,33 +123,12 @@ MAIN.insertAdjacentHTML('beforebegin', `
                             </li>
                             <!-- Etiqueta para el registro medico -->
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-light" href="#" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link text-light" href="medical_records.html" aria-current="page">
                                     <img src="../../../resources/img/svg/icons_menu/registro_medico.svg" class="me-3"
                                         alt="">
                                     Registro médico
                                 </a>
                             </a>
-                            <ul class="dropdown-menu bg-transparent">
-                                <li><a class="dropdown-item text-light" href="medical_records.html">Registro médico</a></li>
-                                <li><a class="dropdown-item text-light" href="types_injuries.html">Tipos de lesiones</a></li>
-                                <li><a class="dropdown-item text-light" href="typologies.html">Tipologías</a></li>
-                                <li><a class="dropdown-item text-light" href="sub_typologies.html">Sub Tipologías</a></li>
-                                <li><a class="dropdown-item text-light" href="injuries.html">Lesiones</a></li>
-                            </ul>
-                            </li>
-                            <!-- Etiqueta para pagos -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-light" href="#" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="../../../resources/img/svg/icons_menu/pay.svg" class="me-3" alt="">
-                                    Pagos
-                                </a>
-                            </a>
-                            <ul class="dropdown-menu bg-transparent">
-                                <li><a class="dropdown-item text-light" href="payments.html">Pagos</a></li>
-                                <li><a class="dropdown-item text-light" href="earnings.html">Ingresos</a></li>
-                            </ul>
                             </li>
 
                             <div class="contenedor p-3 rounded-3">
