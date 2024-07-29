@@ -106,7 +106,6 @@ const openCreate = async () => {
     ID_EQUIPO.disabled = false;
     UP_FORM.reset();
     await fillSelect(ENTRENAMIENTOS_API, 'readOneCategoria', 'idCategoriaa');
-    await fillSelect(ENTRENAMIENTOS_API, 'readOneHorario', 'idHorario');
     await fillSelect(ENTRENAMIENTOS_API, 'readJornadas', 'idJornada', ID_JORNADA_URL);
     await fillSelect(ENTRENAMIENTOS_API, 'readEquipos', 'idEquipo');
 }
@@ -134,8 +133,7 @@ const openUpdate = async (id) => {
             const ROW = DATA.dataset;
             ID_ENTRENAMIENTO.value = ROW.id_entrenamiento;
             FECHAx.value = ROW.fecha_entrenamiento
-            await fillSelect(ENTRENAMIENTOS_API, 'readOneCategoria', 'idCategoriaa', ROW.id_categoria);
-            await fillSelect(ENTRENAMIENTOS_API, 'readOneHorario', 'idHorario', ROW.id_horario);
+            await fillSelect(ENTRENAMIENTOS_API, 'readOneCategoria', 'idCategoriaa', ROW.id_horario_categoria);
             await fillSelect(ENTRENAMIENTOS_API, 'readJornadas', 'idJornada', ID_JORNADA_URL);
             await fillSelect(ENTRENAMIENTOS_API, 'readEquipos', 'idEquipo', ROW.id_equipo);
             ID_EQUIPO.disabled = true;
@@ -624,7 +622,6 @@ window.onload = async function () {
         ID_JORNADAx = document.getElementById('idJornada'),
         FECHAx = document.getElementById('fecha'),
         ID_CATEGORIA = document.getElementById('idCategoriaa'),
-        ID_HORARIO = document.getElementById('idHorario'),
         SESION = document.getElementById('sesion'),
         ID_EQUIPO = document.getElementById('idEquipo'),
         DIV_EQUIPO = document.getElementById('equipos');

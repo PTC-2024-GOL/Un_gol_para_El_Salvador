@@ -32,7 +32,6 @@ if (isset($_GET['action'])) {
                     !$entrenamientos->setSesion($_POST['sesion']) or
                     !$entrenamientos->setIdEquipo($_POST['idEquipo']) or
                     !$entrenamientos->setIdCategoria($_POST['idCategoria']) or
-                    !$entrenamientos->setIdHorario($_POST['idHorario']) or
                     !$entrenamientos->setIdJornada($_POST['idJornada']) 
                 ) {
                     $result['error'] = $entrenamientos->getDataError();
@@ -81,8 +80,7 @@ if (isset($_GET['action'])) {
                     !$entrenamientos->setSesion($_POST['sesion']) or
                     !$entrenamientos->setIdJornada($_POST['idJornada']) or
                     !$entrenamientos->setIdEntrenamiento($_POST['idEntrenamiento']) or
-                    !$entrenamientos->setIdCategoria($_POST['idCategoria']) or
-                    !$entrenamientos->setIdHorario($_POST['idHorario'])
+                    !$entrenamientos->setIdCategoria($_POST['idCategoria']) 
                 ) {
                     $result['error'] = $entrenamientos->getDataError();
                 } elseif ($entrenamientos->updateRow()) {
