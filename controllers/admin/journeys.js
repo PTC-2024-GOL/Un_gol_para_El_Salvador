@@ -202,10 +202,10 @@ function mostrarJornadas(pagina) {
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <p class="card-title fw-bolder">${row.NOMBRE}</p>
-                        <p class="card-text fst-italic">${row.PLANTILLA}</p>
-                        <p class="card-text fst-italic">${row.FECHA_INICIO}</p>
-                        <p class="card-text fst-italic">${row.FECHA_FIN}</p>
+                        <p class="card-title fw-bold">${row.NOMBRE}</p>
+                        <p class="card-text fst-normal">${row.PLANTILLA}</p>
+                        <p class="card-text fst-normal">Del ${row.FECHA_INICIO}</p>
+                        <p class="card-text fst-normal">A ${row.FECHA_FIN}</p>
                     </div>
                     <div class="card-footer"> 
                         <a href="trainings.html?id=${row.ID}" class="btn botones rounded-5 m-2">
