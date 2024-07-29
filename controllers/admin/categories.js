@@ -349,10 +349,10 @@ async function cargarCarrouselParaCategoria(id) {
                         <div class="col-lg-4 col-md-4 col-sm-12 text-center">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">${category.nombre_horario}</h5>
-                                    <p class="card-text">Día: ${category.dia}</p>
-                                    <p class="card-text">Hora de inicio: ${category.hora_inicial}</p>
-                                    <p class="card-text">Hora final: ${category.hora_final}</p>
+                                    <h5 class="card-title fw-bold">${category.nombre_horario}</h5>
+                                    <p class="card-text"><span class="fw-bold">Día:</span> ${category.dia}</p>
+                                    <p class="card-text"><span class="fw-bold">Hora de inicio:</span> ${category.hora_inicial}</p>
+                                    <p class="card-text"><span class="fw-bold">Hora final:</span> ${category.hora_final}</p>
                                 </div>
                                 <div class="card-footer p-3">  
                                    <button type="button" class="btn botones me-3" onclick="openUpdateHc(${category.id_horario_categoria})">
