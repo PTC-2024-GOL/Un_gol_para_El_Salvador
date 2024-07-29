@@ -37,15 +37,14 @@ class EntrenamientosHandler
 
     public function createRow()
     {
-        $sql = 'INSERT INTO entrenamientos (fecha_entrenamiento, sesion, id_jornada, id_equipo, id_categoria, id_horario)
-        VALUES (?,?,?,?,?,?);';
+        $sql = 'INSERT INTO entrenamientos (fecha_entrenamiento, sesion, id_jornada, id_equipo, id_horario_categoria)
+        VALUES (?,?,?,?,?);';
         $params = array(
             $this->fechaEntrenamiento,
             $this->sesion,
             $this->idJornada,
             $this->idEquipo,
-            $this->idCategoria,
-            $this->idHorario
+            $this->idCategoria
 
         );
         return Database::executeRow($sql, $params);
@@ -91,13 +90,12 @@ class EntrenamientosHandler
 
     public function updateRow()
     {
-        $sql = 'UPDATE entrenamientos SET fecha_entrenamiento = ?, sesion = ?, id_jornada = ?, id_categoria = ?, id_horario = ? WHERE id_entrenamiento = ?;';
+        $sql = 'UPDATE entrenamientos SET fecha_entrenamiento = ?, sesion = ?, id_jornada = ?, id_horario_categoria = ? WHERE id_entrenamiento = ?;';
         $params = array(
             $this->fechaEntrenamiento,
             $this->sesion,
             $this->idJornada,
             $this->idCategoria,
-            $this->idHorario,
             $this->idEntrenamiento
         );
         return Database::executeRow($sql, $params);
@@ -130,17 +128,9 @@ class EntrenamientosHandler
 
     //Función para leer una jornada o varios. 
     
-    public function readOneHorario()
-    {
-        $sql = "SELECT id_horario, nombre_horario FROM horarios;";
-        return Database::getRows($sql);
-    }
-
-    //Función para leer una jornada o varios. 
-    
     public function readOneCategoria()
     {
-        $sql = "SELECT id_categoria, nombre_categoria FROM categorias;";
+        $sql = "SELECT id_categoria, nombre_categoria FROM vista_entrenamientos_horario_categorias;";
         return Database::getRows($sql);
     }
 
@@ -148,7 +138,7 @@ class EntrenamientosHandler
     
     public function readOne()
     {
-        $sql = 'SELECT fecha_entrenamiento, id_entrenamiento, id_equipo, id_categoria, id_horario, sesion FROM entrenamientos WHERE id_entrenamiento = ?;';
+        $sql = 'SELECT fecha_entrenamiento, id_entrenamiento, id_equipo, id_horario_categoria, sesion FROM entrenamientos WHERE id_entrenamiento = ?;';
         $params = array($this->idEntrenamiento);
         return Database::getRow($sql, $params);
     }
