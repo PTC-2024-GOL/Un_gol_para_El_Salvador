@@ -127,12 +127,6 @@ MAIN.insertAdjacentHTML('beforebegin', `
                             </li>
 
                             <div class="contenedor p-3 rounded-3">
-                                <!-- Etiqueta para el Ayuda -->
-                                <li class="nav-item">
-                                    <a class="nav-link active text-light" aria-current="page" href="#">
-                                        <img src="../../../resources/img/svg/icons_menu/help.svg" class="me-3" alt="">
-                                        Ayuda</a>
-                                </li>
                                 <!-- Etiqueta para contactanos -->
                                 <li class="nav-item">
                                     <a class="nav-link active text-light" aria-current="page" href="#">
