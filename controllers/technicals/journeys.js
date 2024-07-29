@@ -1,5 +1,6 @@
 let SEARCH_FORM;
 let ROWS_FOUND;
+let NUMERO;
 
 // Constantes para completar las rutas de la API.
 const API = 'services/technics/jornadas.php';
@@ -64,9 +65,8 @@ const fillSelected = (data, action,selectId, selectedValue = null) => {
     }
 };
 
-
 // Variables y constantes para la paginación
-const jornadasPorPagina = 10;
+let jornadasPorPagina = 5;
 let paginaActual = 1;
 let jornadas = [];
 
@@ -95,35 +95,7 @@ async function fillTable(form = null) {
         console.error('Error al obtener datos de la API:', error);
     }
 }
-/*
-// Función para mostrar técnicos en una página específica
-function mostrarJornadas(pagina) {
-    const inicio = (pagina - 1) * jornadasPorPagina;
-    const fin = inicio + jornadasPorPagina;
-    const jornadasPagina = jornadas.slice(inicio, fin);
 
-    const cargarTabla = document.getElementById('tabla_jornadas');
-    cargarTabla.innerHTML = '';
-    jornadasPagina.forEach(row => {
-        const tablaHtml = `
-                <tr>
-                    <td>${row.NUMERO}</td>
-                    <td>${row.NOMBRE}</td>
-                    <td>${row.FECHA_INICIO}</td>
-                    <td>${row.FECHA_FIN}</td>
-                    <td>
-                    <a href="trainings.html?id=${row.ID}" class="btn transparente">
-                    <img src="../../../resources/img/svg/icons_forms/training.svg" width="20" height="20">
-                    </a>
-                    </td>
-                </tr>
-        `;
-        cargarTabla.innerHTML += tablaHtml;
-    });
-
-    actualizarPaginacion();
-}
-*/
 // Función para mostrar técnicos en una página específica
 function mostrarJornadas(pagina) {
     const inicio = (pagina - 1) * jornadasPorPagina;
@@ -165,15 +137,15 @@ function actualizarPaginacion() {
     const totalPaginas = Math.ceil(jornadas.length / jornadasPorPagina);
 
     if (paginaActual > 1) {
-        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-light" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
     }
 
     for (let i = 1; i <= totalPaginas; i++) {
-        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-light" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
+        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
     }
 
     if (paginaActual < totalPaginas) {
-        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-light" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
     }
 }
 
@@ -182,6 +154,14 @@ function cambiarPagina(nuevaPagina) {
     paginaActual = nuevaPagina;
     mostrarJornadas(paginaActual);
 }
+
+// Función para actualizar el número de registros por página
+function updateJornadasPorPagina() {
+    jornadasPorPagina = parseInt(document.getElementById('paginas').value);
+    paginaActual = 1; // Resetear a la primera página cada vez que se cambia el número de registros por página
+    mostrarJornadas(paginaActual);
+}
+
 // window.onload
 window.onload = async function () {
     // Obtiene el contenedor principal
@@ -196,6 +176,7 @@ window.onload = async function () {
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Jornadas';
     ROWS_FOUND = document.getElementById('rowsFound');
+    NUMERO = document.getElementById('paginas');
     fillTable();
 
     // Constante para establecer el formulario de buscar.

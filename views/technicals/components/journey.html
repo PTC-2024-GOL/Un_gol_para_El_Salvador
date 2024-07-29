@@ -15,28 +15,18 @@
                     </button>
                 </form>
             </div>
+            <div class="col-6">
+                <select class="form-select" name="paginas" id="paginas" onchange="updateJornadasPorPagina()">
+                    <option value="5">Filtrar por 5 registros</option>
+                    <option value="10">Filtrar por 10 registros</option>
+                    <option value="20">Filtrar por 20 registros</option>
+                    <option value="25">Filtrar por 25 registros</option>
+                </select>
+            </div>
         </div>
     </div>
     <hr>
-    <!-- 
-    <div class="table-responsive">
-        <table class="table table align-middle table-striped table-borderless">
-            <thead class="text-center">
-                <tr>
-                    <td colspan="6" id="rowsFound"></td>
-                </tr>
-                <tr>
-                    <th>Número de jornada</th>
-                    <th>Nombre de la jorndada</th>
-                    <th>Fecha de inicio de la jornada</th>
-                    <th>Fecha final de la jornada</th>
-                    <th>Ver entrenamientos</th>
-                </tr>
-            </thead>
-            <tbody class="text-center" id="tabla_jornadas"></tbody>
-        </table>
-    </div> 
-    -->
+    <h5 colspan="6" id="rowsFound" class="pt-3 pb-3"></h5>
     <div class="row row-cols-1 row-cols-md-3 g-4 mb-4" id="tabla_jornadas">
 
     </div>
