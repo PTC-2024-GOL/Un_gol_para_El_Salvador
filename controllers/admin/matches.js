@@ -427,6 +427,7 @@ window.onload = async function () {
         // Se evita recargar la página web después de enviar el formulario.
         event.preventDefault();
         // Se verifica que el resultado partido tenga sentido con el tipo de resultado
+        RESULTADO_PARTIDO.disabled = false;
         const str = RESULTADO_PARTIDO.value;
         const parts = str.split("-");
         const equipo = parts[0];

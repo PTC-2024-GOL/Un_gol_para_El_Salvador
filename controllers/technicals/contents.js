@@ -5,7 +5,7 @@ let SAVE_FORM,
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
-const API = '';
+const API = 'services/admin/contenidos.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -45,8 +45,8 @@ const openUpdate = async (id) => {
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
-            ID_CONTENIDO.value = ROW.ID;
-            NOMBRE_CONTENIDO.value = ROW.NOMBRE;
+            ID_CONTENIDO.value = ROW.id_tema_contenido;
+            NOMBRE_CONTENIDO.value = ROW.nombre_tema_contenido;
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -131,18 +131,18 @@ async function fillTable(form = null) {
             // Mostrar elementos obtenidos de la API
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
-                <tr class="text-end">
-                    <td>${row.CONTENIDO}</td>
-                    <td>
-                        <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
-                        <img src="../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" onclick="openDelete(${row.ID})">
-                            <i class="bi bi-trash-fill"></i>
-                        </button>
-                    </td>
-                </tr>
-                `;
+                <tr>
+                <td class="text-center">${row.nombre_tema_contenido}</td>
+                <td class="text-end">
+                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id_tema_contenido})">
+                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                    </button>
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_tema_contenido})">
+                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                    </button>
+                </td>
+            </tr>
+            `;
                 cargarTabla.innerHTML += tablaHtml;
             });
         } else {
