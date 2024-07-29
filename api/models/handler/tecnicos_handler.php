@@ -284,4 +284,66 @@ class TecnicosHandler
         $params = array($this->alias);
         return Database::executeRow($sql, $params);
     }
+
+    //leer una linea en el perfil
+    public function readOneProfile()
+    {
+        $sql = 'SELECT id_tecnico AS ID,
+                nombre_tecnico AS NOMBRE,
+                apellido_tecnico AS APELLIDO,
+                correo_tecnico AS CORREO,
+                telefono_tecnico AS TELÉFONO,
+                dui_tecnico AS DUI,
+                fecha_nacimiento_tecnico AS NACIMIENTO,
+                clave_tecnico AS CLAVE,
+                foto_tecnico AS IMAGEN
+                FROM tecnicos
+                WHERE id_tecnico LIKE ?';
+        $params = array($_SESSION['idTecnico']);
+        return Database::getRow($sql, $params);
+    }
+
+    //mostrar perfil
+    public function readProfile()
+    {
+        $sql = 'SELECT id_tecnico AS ID,
+                foto_tecnico AS IMAGEN, 
+                CONCAT(nombre_tecnico, " ", apellido_tecnico) AS NOMBRE,
+                correo_tecnico AS CORREO, 
+                telefono_tecnico AS TELÉFONO,
+                dui_tecnico AS DUI,
+                fecha_nacimiento_tecnico AS NACIMIENTO,
+                estado_tecnico  AS ESTADO
+                FROM tecnicos
+                WHERE id_tecnico = ?';
+        $params = array($_SESSION['idTecnico']);
+        return Database::getRow($sql, $params);
+    }
+
+    public function updateRowProfile()
+    {
+        $sql = 'CALL actualizar_tecnico_validado(?,?,?,?,?,?,?,?);';
+        $params = array(
+            $_SESSION['idTecnico'],
+            $this->nombre,
+            $this->apellido,
+            $this->correo,
+            $this->telefono,
+            $this->dui,
+            $this->nacimiento,
+            $this->imagen
+        );
+        $_SESSION['fotoTecnico'] = $this->imagen;
+        return Database::executeRow($sql, $params);
+    }
+
+    // Leer la imagen del administrador que ha iniciado sesion.
+    public function readFilenameProfile()
+    {
+        $sql = 'SELECT IMAGEN
+                FROM vista_tabla_tecnicos
+                WHERE ID = ?';
+        $params = array($_SESSION['idTecnico'],);
+        return Database::getRow($sql, $params);
+    }
 }

@@ -1,5 +1,3 @@
-
-
 let SAVE_MODAL,
     MODAL_TITLE;
 let GRAPHIC_MODAL,
@@ -7,32 +5,16 @@ let GRAPHIC_MODAL,
 let SAVE_FORM,
     ID_ANALISIS,
     JUGADOR,
-    FUERZA,
-    RESISTENCIA,
-    VELOCIDAD,
-    AGILIDAD,
-    PASE_CORTO,
-    PASE_MEDIO,
-    PASE_LARGO,
-    CONDUCCION,
-    RECEPCION,
-    CABECEO,
-    REGATE,
-    DEFINICION,
-    DECISIONES,
-    OFENSIVOS,
-    DEFENSIVOS,
-    INTERPRETACION,
-    CONCENTRACION,
-    AUTOCONFIANZA,
-    SACRICIO,
-    AUTOCONTROL;
+    ENTRENAMIENTO;
 let SEARCH_FORM;
-let ESTADO_INICIAL_SAVE_FORM;
-let ESTADO_INICIAL_VIEW_FORM;
 
 // Constantes para completar las rutas de la API.
-const EQUIPO_API = '';
+const API = 'services/technics/caracteristicas_analisis.php';
+const JUGADOR_API = 'services/technics/jugadores.php';
+const CARACTERISTICAS_API = 'services/technics/caracteristicas.php';
+
+// Constante tipo objeto para obtener los parámetros disponibles en la URL.
+let PARAMS = new URLSearchParams(location.search);
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -44,56 +26,77 @@ async function loadComponent(path) {
 *   Parámetros: ninguno.
 *   Retorno: ninguno.
 */
-const openCreate = () => {
+const openCreate1 = (id) => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
     MODAL_TITLE.textContent = 'Crear análisis del jugador';
     // Se prepara el formulario.
     SAVE_FORM.reset();
-    restaurarFormulario(23.75);
+    JUGADOR.value = id;
+    ENTRENAMIENTO.value = PARAMS.get('id');
 }
+
+
+let estado_inicial = document.getElementById('analisis');
+let chartInstance = null;
 
 /*
 *   Función para abrir la gráfica al momento.
 *   Parámetros: ninguno.
 *   Retorno: ninguno.
 */
-const openGraphic = () => {
+const openGraphic = (id) => {
     // Se muestra la caja de diálogo con su título.
     GRAPHIC_MODAL.show();
     MODAL_TITLE2.textContent = 'Gráfica de análisis del jugador';
-    // Se prepara el formulario.
-    SAVE_FORM.reset();
-    graficoBarrasAnalisis();
+    const FORM = new FormData();
+    FORM.append('idJugador', id);
+    FORM.append('idEntrenamiento', PARAMS.get('id'));
+    graficoBarrasAnalisis(FORM);
 }
 
+/*
+*   Función asíncrona para mostrar un gráfico de radar con las notas del analísis de las características de los jugadores.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
+const graficoBarrasAnalisis = async (FORM) => {
+    try {
+        // Petición para obtener los datos del gráfico.
+        let DATA = await fetchData(API, 'graphic', FORM);
 
-// Ocultar el primer form-step y mostrar el segundo
-function updateSteps(currentStep, nextStep) {
-    // Ocultar el form-step actual y mostrar el siguiente
-    const currentFormStep = document.getElementById(`step${currentStep}`);
-    const nextFormStep = document.getElementById(`step${nextStep}`);
-    currentFormStep.remove();
-    nextFormStep.classList.add('form-step-active');
+        // Se comprueba si la respuesta es satisfactoria, de lo contrario se remueve la etiqueta canvas.
+        if (DATA.status) {
+            // Se declaran los arreglos para guardar los datos a graficar.
+            let caracteristicas = [];
+            let notas = [];
 
-    // Ocultar el progress-step actual y mostrar el siguiente
-    const currentProgressStep = document.getElementById(`progress-step${currentStep}`);
-    const nextProgressStep = document.getElementById(`progress-step${nextStep}`);
-    currentProgressStep.remove();
-    nextProgressStep.classList.add('progress-step-active');
+            // Se recorre el conjunto de registros fila por fila a través del objeto row.
+            DATA.dataset.forEach(row => {
+                // Se agregan los datos a los arreglos.
+                caracteristicas.push(row.CARACTERISTICA);
+                notas.push(row.NOTA);
+            });
 
-    const form = document.getElementById('saveForm');
-    const formInputs = form.querySelectorAll("input");
-    formInputs.forEach((input) => {
-        input.disabled = true;
-    });
-    const deletePast = document.getElementById(`past`);
-    deletePast.remove();
-    const deleteSave = document.getElementById(`guardar`);
-    deleteSave.remove();
+            // Destruir la instancia existente del gráfico si existe
+            if (chartInstance) {
+                chartInstance.destroy();
+                chartInstance = null; // Asegúrate de restablecer la referencia
+            }
 
+            // Restablecer el canvas en caso de que sea necesario
+            const canvasContainer = document.getElementById('analisis').parentElement;
+            canvasContainer.innerHTML = '<canvas id="analisis"></canvas>';
+
+            // Llamada a la función para generar y mostrar un gráfico de radar.
+            chartInstance = radarGraph('analisis', caracteristicas, notas, 'Caracteristicas', 'Análisis');
+        } else {
+            console.log(DATA.error);
+        }
+    } catch (error) {
+        console.log(error);
+    }
 }
-
 
 // Funcion para preparar el formulario al momento de abrirlo
 
@@ -103,7 +106,7 @@ const seeModal = async (id) => {
         const FORM = new FormData();
         FORM.append('idAnalisis', id);
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(EQUIPO_API, 'readOne', FORM);
+        const DATA = await fetchData(API, 'readOne', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
@@ -127,9 +130,6 @@ const seeModal = async (id) => {
         SAVE_MODAL.show();
         MODAL_TITLE.textContent = 'Análisis del jugador';
         SAVE_FORM.reset();
-        restaurarFormulario(31.16);
-        // Ejemplo de uso: actualizar del paso 1 al paso 2
-        updateSteps(1, 2);
 
     }
 }
@@ -140,77 +140,198 @@ const seeModal = async (id) => {
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const openUpdate = async (id) => {
+const openCreate = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
-        FORM.append('idAnalisis', id);
+        FORM.append('idJugador', id);
+        FORM.append('idEntrenamiento', PARAMS.get('id'));
+
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(EQUIPO_API, 'readOne', FORM);
+        const DATA = await fetchData(API, 'readOne', FORM);
+
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
             MODAL_TITLE.textContent = 'Actualizar análisis del jugador';
+
             // Se prepara el formulario.
             SAVE_FORM.reset();
-            // Se inicializan los campos con los datos.
-            const ROW = DATA.dataset;
-            ID_EQUIPO.value = ROW.ID;
-            NOMBRE_EQUIPO.value = ROW.NOMBRE;
-            TELEFONO_EQUIPO.value = ROW.TELEFONO;
-            ID_CUERPO_TECNICO.value = ROW.ID_CUERPO_TECNICO;
-            ID_ADMINISTRADOR.value = ROW.ID_ADMINISTRADOR;
-            ID_CATEGORIA.value = ROW.ID_CATEGORIA;
-            LOGO_EQUIPO.value = ROW.LOGO;
+
+            // Cargar las características
+            await cargarNav();
+
+            JUGADOR.value = id;
+            ENTRENAMIENTO.value = PARAMS.get('id');
+            // Esperar a que los inputs se hayan generado en el DOM
+            setTimeout(() => {
+                const caracteristicas = DATA.dataset;
+
+                // Recorrer los inputs del formulario y asignar valores
+                caracteristicas.forEach(caracteristica => {
+                    const input = document.querySelector(`input[data-id-caracteristica-jugador="${caracteristica.IDC}"]`);
+                    if (input) {
+                        input.value = caracteristica.NOTA;
+                    }
+                });
+            }, 500); // Ajusta este tiempo según sea necesario para asegurar que los inputs estén generados
         } else {
-            sweetAlert(2, DATA.error, false);
+            // Se muestra la caja de diálogo con su título.
+            SAVE_MODAL.show();
+            MODAL_TITLE.textContent = 'Crear análisis del jugador';
+            // Se prepara el formulario.
+            SAVE_FORM.reset();
+            JUGADOR.value = id;
+            ENTRENAMIENTO.value = PARAMS.get('id');
         }
     } catch (Error) {
-        console.log(Error);
-        SAVE_MODAL.show();
-        MODAL_TITLE.textContent = 'Actualizar análisis del jugador';
-        restaurarFormulario(23.75);
+        console.error(Error);
+        sweetAlert(2, 'Ocurrió un error al cargar los datos', false);
     }
+};
 
-}
-/*
-*   Función asíncrona para eliminar un registro.
-*   Parámetros: id (identificador del registro seleccionado).
-*   Retorno: ninguno.
-*/
-const openDelete = async (id) => {
-    // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar el análisis?');
+
+async function cargarNav() {
     try {
-        // Se verifica la respuesta del mensaje.
-        if (RESPONSE) {
-            // Se define una constante tipo objeto con los datos del registro seleccionado.
-            const FORM = new FormData();
-            FORM.append('idAnalisis', id);
-            console.log(id);
-            // Petición para eliminar el registro seleccionado.
-            const DATA = await fetchData(EQUIPO_API, 'deleteRow', FORM);
-            console.log(DATA.status);
-            // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-            if (DATA.status) {
-                // Se muestra un mensaje de éxito.
-                await sweetAlert(1, DATA.message, true);
-                // Se carga nuevamente la tabla para visualizar los cambios.
-                cargarTabla();
-            } else {
-                sweetAlert(2, DATA.error, false);
-            }
-        }
-    }
-    catch (Error) {
-        console.log(Error + ' Error al cargar el mensaje');
-    }
+        // Petición para obtener las características usando fetchData
+        const data = await fetchData(CARACTERISTICAS_API, 'readAll');
 
+        if (data.status) {
+            const caracteristicas = data.dataset;
+
+            // Agrupar las características por clasificación
+            const grupos = caracteristicas.reduce((acc, caracteristica) => {
+                const { CLASIFICACION } = caracteristica;
+                if (!acc[CLASIFICACION]) {
+                    acc[CLASIFICACION] = [];
+                }
+                acc[CLASIFICACION].push(caracteristica);
+                return acc;
+            }, {});
+
+            // Crear la estructura de las tabs
+            const navTabs = document.createElement('ul');
+            navTabs.className = 'nav nav-tabs mt-4 justify-content-center';
+            navTabs.id = 'classificationTabs';
+            navTabs.role = 'tablist';
+
+            const tabContent = document.createElement('div');
+            tabContent.className = 'tab-content';
+            tabContent.id = 'classificationTabsContent';
+
+            let first = true;
+            for (const clasificacion in grupos) {
+                const tabId = `tab-${clasificacion.toLowerCase()}`;
+                const tabPaneId = `pane-${clasificacion.toLowerCase()}`;
+
+                // Crear el tab
+                const li = document.createElement('li');
+                li.className = 'nav-item';
+                li.role = 'presentation';
+
+                const button = document.createElement('button');
+                button.className = `nav-link ${first ? 'active' : ''} text-dark`;
+                button.id = `${tabId}`;
+                button.setAttribute('data-bs-toggle', 'tab');
+                button.setAttribute('data-bs-target', `#${tabPaneId}`);
+                button.type = 'button';
+                button.role = 'tab';
+                button.setAttribute('aria-controls', `${tabPaneId}`);
+                button.setAttribute('aria-selected', `${first}`);
+                button.innerText = clasificacion;
+
+                li.appendChild(button);
+                navTabs.appendChild(li);
+
+                // Crear el contenido del tab
+                const tabPane = document.createElement('div');
+                tabPane.className = `tab-pane fade ${first ? 'show active' : ''}`;
+                tabPane.id = `${tabPaneId}`;
+                tabPane.role = 'tabpanel';
+                tabPane.setAttribute('aria-labelledby', `${tabId}`);
+
+                const row = document.createElement('div');
+                row.className = 'row';
+
+                grupos[clasificacion].forEach(caracteristica => {
+                    const col = document.createElement('div');
+                    col.className = 'col-sm-12 col-md-6 mb-3 mt-2';
+
+                    const label = document.createElement('label');
+                    label.className = 'form-label';
+                    label.setAttribute('for', caracteristica.NOMBRE);
+                    label.innerText = caracteristica.NOMBRE;
+
+                    const input = document.createElement('input');
+                    input.id = caracteristica.NOMBRE;
+                    input.type = 'number';
+                    input.name = caracteristica.NOMBRE;
+                    input.className = 'form-control';
+                    input.min = '1';
+                    input.max = '10';
+                    input.step = '1'
+                    input.placeholder = 'Ingrese la nota';
+                    input.setAttribute('data-id-caracteristica-jugador', caracteristica.ID);
+
+                    col.appendChild(label);
+                    col.appendChild(input);
+                    row.appendChild(col);
+                });
+
+                tabPane.appendChild(row);
+                tabContent.appendChild(tabPane);
+
+                first = false;
+            }
+
+            const navSteps = document.getElementById('navSteps');
+            navSteps.innerHTML = ''; // Limpiar el contenido previo
+            navSteps.appendChild(navTabs);
+            navSteps.appendChild(tabContent);
+        }
+    } catch (error) {
+        console.error('Error al cargar las características:', error);
+    }
+}
+async function buscarAnalisis(FORM) {
+    const cargarTabla = document.getElementById('tabla_analisis');
+
+    cargarTabla.innerHTML = '';
+    // Se define un objeto con los datos de la categoría seleccionada.
+    FORM.append('idEntrenamiento', PARAMS.get('id'));
+    console.log(FORM);
+    // Petición para obtener los registros disponibles.
+    const DATA = await fetchData(API, "searchRows", FORM);
+    console.log(DATA);
+
+    if (DATA.status) {
+        // Mostrar elementos obtenidos de la API
+        DATA.dataset.forEach(row => {
+            const tablaHtml = `
+            <tr>
+                <td>${row.PROMEDIO}</td>
+                <td>${row.JUGADOR}</td>
+                <td>
+                    <button type="button" class="btn transparente" onclick="openCreate(${row.IDJ})">
+                    <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18px" height="18px">
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn transparente" onclick="openGraphic(${row.IDJ})">
+                    <img src="../../../resources/img/svg/icons_forms/Frame.svg" width="18" height="18">
+                    </button>
+                </td>
+            </tr>
+                `;
+            cargarTabla.innerHTML += tablaHtml;
+        });
+    } else {
+        sweetAlert(4, DATA.error, true);
+    }
 }
 
-
-async function cargarTabla(form = null) {
+async function cargarTabla() {
     const lista_datos = [
         {
             promedio: 7.45,
@@ -241,35 +362,32 @@ async function cargarTabla(form = null) {
 
     try {
         cargarTabla.innerHTML = '';
-        // Se verifica la acción a realizar.
-        (form) ? action = 'searchRows' : action = 'readAll';
-        console.log(form);
+        // Se define un objeto con los datos de la categoría seleccionada.
+        const FORM = new FormData();
+        FORM.append('idEntrenamiento', PARAMS.get('id'));
+        console.log(FORM);
         // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(EQUIPO_API, action, form);
+        const DATA = await fetchData(API, "readAll", FORM);
         console.log(DATA);
 
         if (DATA.status) {
             // Mostrar elementos obtenidos de la API
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
-                <tr>
-                    <td>${row.NOMBRE}</td>
-                    <td>${row.TELEFONO}</td>
-                    <td>${row.ID_CATEGORIA}</td>
-                    <td>
-                        <button type="button" class="btn btn-warnig" onclick="seeModal()">
-                        <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
-                        </button>
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-outline-success" onclick="openUpdate(${row.ID})">
-                        <img src="../../../recursos/img/svg/icons_forms/pen 1.svg" width="30" height="30">
-                        </button>
-                        <button type="button" class="btn btn-outline-danger" onclick="openDelete(${row.ID})">
-                            <i class="bi bi-trash-fill"></i>
-                        </button>
-                    </td>
-                </tr>
+            <tr>
+                <td>${row.PROMEDIO}</td>
+                <td>${row.JUGADOR}</td>
+                <td>
+                    <button type="button" class="btn transparente" onclick="openCreate(${row.IDJ})">
+                    <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18px" height="18px">
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn transparente" onclick="openGraphic(${row.IDJ})">
+                    <img src="../../../resources/img/svg/icons_forms/Frame.svg" width="18" height="18">
+                    </button>
+                </td>
+            </tr>
                 `;
                 cargarTabla.innerHTML += tablaHtml;
             });
@@ -293,11 +411,6 @@ async function cargarTabla(form = null) {
                     <button type="button" class="btn transparente" onclick="openGraphic(${row.id})">
                     <img src="../../../resources/img/svg/icons_forms/Frame.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                    </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
                 </td>
             </tr>
@@ -307,103 +420,102 @@ async function cargarTabla(form = null) {
     }
 }
 
-/*
-*   Función asíncrona para mostrar un gráfico de barras con la cantidad de productos por categoría.
-*   Parámetros: ninguno.
-*   Retorno: ninguno.
-*/
-const graficoBarrasAnalisis = async () => {
-    /*
-*   Lista de datos de ejemplo en caso de error al obtener los datos reales.
-*/
-    const datosEjemplo = [
-        {
-            caracteristica: 'Fuerza',
-            nota: 7
-        },
-        {
-            caracteristica: 'Resistencia',
-            nota: 5
-        },
-        {
-            caracteristica: 'Agilidad',
-            nota: 7
-        },
-        {
-            caracteristica: 'Velocidad',
-            nota: 2
-        }
-    ];
 
-    let caracteristicas = [];
-    let notas = [];
-    datosEjemplo.forEach(filter => {
-        caracteristicas.push(filter.caracteristica);
-        notas.push(filter.nota);
-    });
-    // Si ocurre un error, se utilizan los datos de ejemplo definidos arriba.
-    barGraph('analisis', caracteristicas, notas, 'Análisis de características');
-
+async function cargarSearch() {
+    try {
+        fillSelect(JUGADOR_API, 'readAll', 'search');
+    } catch {
+        console.log('No se pudo cargar el select de esta forma.')
+    }
 }
 
-// Función para restaurar el formulario guardar
-const restaurarFormulario = async (num = null) => {
-    document.getElementById('saveForm').innerHTML = ESTADO_INICIAL_SAVE_FORM;
+// Variables y constantes para la paginación
+const analisisPorPagina = 10;
+let paginaActual = 1;
+let analisis = [];
 
-    const prevBtns = document.querySelectorAll(".btn-prev");
-    const nextBtns = document.querySelectorAll(".btn-next");
-    const progress = document.getElementById("progress");
-    const formSteps = document.querySelectorAll(".form-step");
-    const progressSteps = document.querySelectorAll(".progress-step");
+// Función para cargar tabla de técnicos con paginación
+async function fillTable(form = null) {
+    const cargarTabla = document.getElementById('tabla_analisis');
+    try {
+        cargarTabla.innerHTML = '';
+        // Petición para obtener los registros disponibles.
+        let action;
+        form ? action = 'searchRows' : action = 'readAll';
+        console.log(form);
+        const DATA = await fetchData(API, action, form);
+        console.log(DATA);
 
-    let formStepsNum = 0;
-    updateFormSteps(); // Asegurar que el primer paso esté activo al cargar el formulario
-    updateProgressbar(); // Asegurar que la barra de progreso se llene correctamente al cargar el formulario
+        if (DATA.status) {
+            analisis = DATA.dataset;
+            mostrarAnalisis(paginaActual);
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = DATA.message;
+        } else {
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = "Existen 0 coincidencias";
+            await sweetAlert(3, DATA.error, true);
+        }
+    } catch (error) {
+        console.error('Error al obtener datos de la API:', error);
+    }
+}
 
+// Función para mostrar técnicos en una página específica
+function mostrarAnalisis(pagina) {
+    const inicio = (pagina - 1) * analisisPorPagina;
+    const fin = inicio + analisisPorPagina;
+    const analisisPagina = analisis.slice(inicio, fin);
 
-    nextBtns.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            formStepsNum++;
-            updateFormSteps();
-            updateProgressbar();
-        });
+    const cargarTabla = document.getElementById('tabla_analisis');
+    cargarTabla.innerHTML = '';
+    analisisPagina.forEach(row => {
+        const tablaHtml = `
+                <tr>
+                    <td>${row.PROMEDIO}</td>
+                    <td>${row.JUGADOR}</td>
+                    <td>
+                        <button type="button" class="btn transparente" onclick="openCreate(${row.IDJ})">
+                        <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18px" height="18px">
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn transparente" onclick="openGraphic(${row.IDJ})">
+                        <img src="../../../resources/img/svg/icons_forms/Frame.svg" width="18" height="18">
+                        </button>
+                    </td>
+                </tr>
+        `;
+        cargarTabla.innerHTML += tablaHtml;
     });
 
-    prevBtns.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            formStepsNum--;
-            updateFormSteps();
-            updateProgressbar();
-        });
-    });
+    actualizarPaginacion();
+}
 
-    function updateFormSteps() {
-        formSteps.forEach((formStep) => {
-            formStep.classList.contains("form-step-active") &&
-                formStep.classList.remove("form-step-active");
-        });
+// Función para actualizar los controles de paginación
+function actualizarPaginacion() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
 
-        formSteps[formStepsNum].classList.add("form-step-active");
+    const totalPaginas = Math.ceil(analisis.length / analisisPorPagina);
+
+    if (paginaActual > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-light" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
     }
 
-    function updateProgressbar() {
-        progressSteps.forEach((progressStep, idx) => {
-            if (idx < formStepsNum + 1) {
-                progressStep.classList.add("progress-step-active");
-            } else {
-                progressStep.classList.remove("progress-step-active");
-            }
-        });
-    
-        const progressActive = document.querySelectorAll(".progress-step-active");
-        const widthIncrement = num; // Porcentaje de incremento deseado
-    
-        // Calculamos el nuevo ancho de la barra de progreso
-        let widthPercentage = (progressActive.length - 1) * widthIncrement;
-    
-        // Asignamos el nuevo ancho a la barra de progreso
-        progress.style.width = widthPercentage + "%";
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-light" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
     }
+
+    if (paginaActual < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-light" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
+    }
+}
+
+// Función para cambiar de página
+function cambiarPagina(nuevaPagina) {
+    paginaActual = nuevaPagina;
+    mostrarAnalisis(paginaActual);
 }
 
 // window.onload
@@ -411,7 +523,7 @@ window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
     // Carga los components de manera síncrona
-    const equiposHtml = await loadComponent('../components/feature_analysis.html');
+    const equiposHtml = await loadComponent('../components/feaute_analysis.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
     // Agrega el HTML del encabezado
@@ -419,7 +531,9 @@ window.onload = async function () {
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Análisis de las características';
+    ROWS_FOUND = document.getElementById('rowsFound');
     cargarTabla();
+    cargarSearch();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
@@ -431,50 +545,54 @@ window.onload = async function () {
     SAVE_FORM = document.getElementById('saveForm'),
         ID_ANALISIS = document.getElementById('idAnalisis'),
         JUGADOR = document.getElementById('jugador'),
-        FUERZA = document.getElementById('fuerza'),
-        RESISTENCIA = document.getElementById('resistencia'),
-        VELOCIDAD = document.getElementById('velocidad'),
-        AGILIDAD = document.getElementById('agilidad'),
-        PASE_CORTO = document.getElementById('paseCorto'),
-        PASE_MEDIO = document.getElementById('paseMedio'),
-        PASE_LARGO = document.getElementById('paseLargo'),
-        CONDUCCION = document.getElementById('conduccion'),
-        RECEPCION = document.getElementById('recepcion'),
-        CABECEO = document.getElementById('cabeceo'),
-        REGATE = document.getElementById('regate'),
-        DEFINICION = document.getElementById('definicionGol'),
-        DECISIONES = document.getElementById('tomaDecisiones'),
-        OFENSIVOS = document.getElementById('conceptosOfensivos'),
-        DEFENSIVOS = document.getElementById('conceptosDefensivos'),
-        INTERPRETACION = document.getElementById('interpretacion'),
-        CONCENTRACION = document.getElementById('concentracion'),
-        AUTOCONFIANZA = document.getElementById('autoconfianza'),
-        SACRICIO = document.getElementById('sacrificio'),
-        AUTOCONTROL = document.getElementById('autocontrol');
+        ENTRENAMIENTO = document.getElementById('entrenamiento');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
-        // Se evita recargar la página web después de enviar el formulario.
+        // Evitar recargar la página al enviar el formulario
         event.preventDefault();
-        // Se verifica la acción a realizar.
-        (ID_ANALISIS.value) ? action = 'updateRow' : action = 'createRow';
-        // Constante tipo objeto con los datos del formulario.
-        const FORM = new FormData(SAVE_FORM);
-        // Petición para guardar los datos del formulario.
-        const DATA = await fetchData(EQUIPO_API, action, FORM);
-        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+
+        // Determinar la acción a realizar (crear o actualizar)
+        const action = (ID_ANALISIS.value) ? 'updateRow' : 'createRow';
+
+        // Crear un objeto FormData con los datos del formulario
+        const formData = new FormData(SAVE_FORM);
+
+        // Crear un arreglo para las características
+        const caracteristicas = [];
+
+        // Recorrer los inputs del formulario y agregar las características válidas
+        SAVE_FORM.querySelectorAll('input[type="number"]').forEach(input => {
+            const idCaracteristicaJugador = input.getAttribute('data-id-caracteristica-jugador');
+            const notaCaracteristicaAnalisis = input.value;
+
+            if (idCaracteristicaJugador && notaCaracteristicaAnalisis) {
+                caracteristicas.push({
+                    id_caracteristica_jugador: idCaracteristicaJugador,
+                    nota_caracteristica_analisis: notaCaracteristicaAnalisis
+                });
+            }
+        });
+
+        // Agregar los datos adicionales al FormData
+        formData.append('caracteristicas', JSON.stringify(caracteristicas));
+        console.log(JSON.stringify(caracteristicas));
+        // Enviar la solicitud para guardar los datos
+        const DATA = await fetchData(API, action, formData);
+
+        // Comprobar si la respuesta es satisfactoria
         if (DATA.status) {
-            // Se cierra la caja de diálogo.
+            // Cerrar la caja de diálogo
             SAVE_MODAL.hide();
-            // Se muestra un mensaje de éxito.
+            // Mostrar un mensaje de éxito
             sweetAlert(1, DATA.message, true);
-            // Se carga nuevamente la tabla para visualizar los cambios.
+            // Recargar la tabla para visualizar los cambios
             cargarTabla();
         } else {
             sweetAlert(2, DATA.error, false);
             console.error(DATA.exception);
         }
     });
-    ESTADO_INICIAL_SAVE_FORM = document.getElementById('saveForm').innerHTML;
+
 
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');
@@ -489,7 +607,8 @@ window.onload = async function () {
         console.log(SEARCH_FORM);
         console.log(FORM);
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
-        cargarTabla(FORM);
+        buscarAnalisis(FORM);
     });
+    cargarNav();
 };
 

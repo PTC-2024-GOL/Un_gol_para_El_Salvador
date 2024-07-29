@@ -416,3 +416,46 @@ const DoughnutGraph = (canvas, legends, values, title) => {
     });
 }
 
+/*
+*   Función para generar un gráfico de radar. Requiere la librería chart.js para funcionar.
+*   Parámetros: canvas (identificador de la etiqueta canvas), labels (etiquetas para el gráfico), data (valores de los datos), legend (etiqueta para los datos), title (título del gráfico), options (opciones adicionales para la configuración del gráfico).
+*   Retorno: instancia del gráfico.
+*/
+const radarGraph = (canvas, labels, data, legend, title, options = {}) => {
+    // Configuración por defecto para el gráfico de radar.
+    const defaultOptions = {
+        type: 'radar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: legend,
+                data: data
+            }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: title
+                },
+                legend: {
+                    display: true
+                }
+            }
+        }
+    };
+
+    // Fusiona las opciones por defecto con las opciones adicionales.
+    const config = {
+        ...defaultOptions,
+        ...options,
+        options: {
+            ...defaultOptions.options,
+            ...options.options
+        }
+    };
+
+    // Crea y retorna la instancia del gráfico.
+    return new Chart(document.getElementById(canvas), config);
+}
+

@@ -176,6 +176,18 @@ class TecnicosData extends TecnicosHandler
         }
     }
 
+    
+    public function setFilenameProfile()
+    {
+        if ($data = $this->readFilenameProfile()) {
+            $this->filename = $data['IMAGEN'];
+            return true;
+        } else {
+            $this->data_error = 'Imagen inexistente';
+            return false;
+        }
+    }
+
     // Asignación del nombre del archivo de imagen del administrador.
     public function setFilename()
     {

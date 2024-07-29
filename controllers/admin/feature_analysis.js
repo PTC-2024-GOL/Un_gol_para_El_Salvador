@@ -56,7 +56,7 @@ const openGraphic = (id) => {
 }
 
 /*
-*   Función asíncrona para mostrar un gráfico de barras con la cantidad de productos por categoría.
+*   Función asíncrona para mostrar un gráfico de radar con las notas del analísis de las características de los jugadores.
 *   Parámetros: ninguno.
 *   Retorno: ninguno.
 */
@@ -64,11 +64,13 @@ const graficoBarrasAnalisis = async (FORM) => {
     try {
         // Petición para obtener los datos del gráfico.
         let DATA = await fetchData(API, 'graphic', FORM);
+
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se remueve la etiqueta canvas.
         if (DATA.status) {
             // Se declaran los arreglos para guardar los datos a graficar.
             let caracteristicas = [];
             let notas = [];
+
             // Se recorre el conjunto de registros fila por fila a través del objeto row.
             DATA.dataset.forEach(row => {
                 // Se agregan los datos a los arreglos.
@@ -86,8 +88,8 @@ const graficoBarrasAnalisis = async (FORM) => {
             const canvasContainer = document.getElementById('analisis').parentElement;
             canvasContainer.innerHTML = '<canvas id="analisis"></canvas>';
 
-            // Llamada a la función para generar y mostrar un gráfico de barras. Se encuentra en el archivo components.js
-            chartInstance = barGraph('analisis', caracteristicas, notas, 'Análisis de características');
+            // Llamada a la función para generar y mostrar un gráfico de radar.
+            chartInstance = radarGraph('analisis', caracteristicas, notas, 'Caracteristicas', 'Análisis');
         } else {
             console.log(DATA.error);
         }
