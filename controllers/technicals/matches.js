@@ -40,7 +40,7 @@ let SAVE_FORM,
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
-const PARTIDO_API = 'services/admin/partidos.php';
+const PARTIDO_API = 'services/technics/partidos.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);

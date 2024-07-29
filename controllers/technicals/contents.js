@@ -5,7 +5,7 @@ let SAVE_FORM,
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
-const API = 'services/admin/contenidos.php';
+const API = 'services/technics/contenidos.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
