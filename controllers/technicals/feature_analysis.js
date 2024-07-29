@@ -523,7 +523,7 @@ window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
     // Carga los components de manera síncrona
-    const equiposHtml = await loadComponent('../components/feaute_analysis.html');
+    const equiposHtml = await loadComponent('../components/feature_analysis.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
     // Agrega el HTML del encabezado
