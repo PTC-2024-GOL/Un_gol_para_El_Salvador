@@ -1,0 +1,141 @@
+<section class="acerca-de m-4">
+    <div class="col-10 mx-auto">
+        <div class="contenedor-perfil p-4 mb-5">
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-borde-azul bg-color-azul-principal text-white mb-2 margin" onclick="openEdit()">
+                    <i class="bi bi-pencil-square"></i>
+                </button>
+                <button class="btn btn-borde-azul bg-color-azul-principal text-white mb-2" onclick="openPassword()">
+                    <i class="bi bi-lock-fill"></i>
+                </button>
+            </div>
+            <div class="text-center">
+                <div class="cabecera-perfil">
+                    <img src="your-image-url-here" id="foto" alt="Foto de Perfil"
+                        class="imagen-perfil img-fluid rounded-circle mb-3">
+                </div>
+            </div>
+
+        </div>
+        <div class="text-center margen-custom">
+            <h2 class="user-name" id="nombre">Joel Mena</h2>
+            <p class="user-email" id="email">joel@gmail.com</p>
+            <p class="user-email" id="phone"></p>
+        </div>
+    </div>
+</section>
+
+
+<!-- Componente Modal para cambiar contraseña -->
+<div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-principal-color">
+                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                <h1 class="modal-title fs-5 text-white" id="modalTitle"></h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <!-- Formulario para actualizar la contraseña -->
+            <form id="saveForm">
+                <div class="modal-body row g-3">
+                    <div class="col-sm-12 col-md-12">
+                        <div class="col-sm-12 col-md-12 mb-3">
+                            <label for="claveActual" class="form-label fw-semibold">Contraseña actual</label>
+                            <input id="claveActual" type="password" name="claveActual" class="form-control"
+                                placeholder="Ingresa su clave actual" autocomplete="off" required>
+                        </div>
+                        <div class="col-sm-12 col-md-12 mb-3">
+                            <label for="claveAdministrador" class="form-label fw-semibold">Contraseña nueva</label>
+                            <input id="claveAdministrador" type="password" name="claveAdministrador"
+                                class="form-control" placeholder="Ingresa la clave nueva" autocomplete="off" required>
+                        </div>
+                        <div class="col-sm-12 col-md-12">
+                            <label for="repetirclaveAdministrador" class="form-label fw-semibold">Repetir
+                                contraseña</label>
+                            <input id="repetirclaveAdministrador" type="password" name="repetirclaveAdministrador"
+                                class="form-control" placeholder="Confirme la clave" autocomplete="off" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
+                        <button type="reset" class="btn btn-outline-dark">Cancelar</button>
+                        <button type="submit" class="btn btn-outline-primary">Guardar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Componente Modal para guardar un registro -->
+<div class="modal fade" id="editModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-principal-color">
+                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                <h1 class="modal-title fs-5 text-white" id="modalTitleEdit"></h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <!-- Formulario para crear o actualizar un registro -->
+            <form id="editForm">
+                <div class="modal-body row g-3">
+                    <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                    <input type="number" class="d-none" id="idAdministrador" name="idAdministrador">
+                    <div class="container text-center text-md-start text-lg-start">
+                        <div class="row align-items-center justify-content-center gy-3 mt-3 mb-2">
+                            <div class="col-sm-12 col-md-auto">
+                                <img class="circulo" id="imagenJugador" src="../../../resources/img/png/default.jpg"
+                                    width="130px" height="130px">
+                            </div>
+                            <div class="col-sm-12 text-center ">
+                                <!-- Botón para cargar imagen -->
+                                <input type="file" class="form-control" id="imagen_jugador" name="imagen" hidden>
+                                <!-- Para que tenga el mismo funcionamiento del input file le ponemos el for y le agregamos el id del input file -->
+                                <label class="btn bg-blue-secondary-color rounded-4 text-light"
+                                    for="imagen_jugador">Cargar
+                                    imagen</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="nombrePerfil" class="form-label fw-semibold">Nombre</label>
+                        <input id="nombrePerfil" type="text" name="nombrePerfil" class="form-control"
+                            placeholder="Ingresa el nombre del administrador" autocomplete="off" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="apellidoPerfil" class="form-label fw-semibold">Apellido</label>
+                        <input id="apellidoPerfil" type="text" name="apellidoPerfil" class="form-control"
+                            placeholder="Ingresa el apellido del administrador" autocomplete="off" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="correoPerfil" class="form-label fw-semibold">Correo</label>
+                        <input id="correoPerfil" type="email" name="correoPerfil" class="form-control"
+                            placeholder="Ingresa el correo de administrador" autocomplete="off" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="telefonoPerfil" class="form-label fw-semibold">Teléfono</label>
+                        <input id="telefonoPerfil" type="text" name="telefonoPerfil" class="form-control"
+                            placeholder="0000-0000" autocomplete="off" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="duiPerfil" class="form-label fw-semibold">DUI</label>
+                        <input id="duiPerfil" type="text" name="duiPerfil" class="form-control" placeholder="00000000-0"
+                            autocomplete="off" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="fechanacimientoPerfil" class="form-label fw-semibold">Fecha de nacimiento</label>
+                        <input id="fechanacimientoPerfil" type="date" name="fechanacimientoPerfil" class="form-control"
+                            placeholder="Ingresa la fecha de nacimiento del administrador" autocomplete="off" required>
+                    </div>
+                </div>
+                <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
+                    <button type="reset" class="btn bg-red-cream-color text-white">Cancelar</button>
+                    <button type="submit" class="btn bg-blue-principal-color text-white ">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -27,6 +27,22 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Alias de Tecnico indefinido';
                 }
                 break;
+                //leer perfil
+            case 'readProfile':
+                    if ($result['dataset'] = $tecnico->readProfile()) {
+                        $result['status'] = 1;
+                    } else {
+                        $result['error'] = 'Ocurrió un problema al leer el perfil';
+                        }
+                break;
+                // Ver uno en perfil
+            case 'readOneProfile':
+                if ($result['dataset'] = $tecnico->readOneProfile()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Perfil inexistente';
+                }
+                break;
                 // Ver uno
             case 'readOne':
                 if ($result['dataset'] = $tecnico->readOne()) {
@@ -51,6 +67,31 @@ if (isset($_GET['action'])) {
                     $result['message'] = 'Contraseña cambiada correctamente';
                 } else {
                     $result['error'] = 'Ocurrió un problema al cambiar la contraseña';
+                }
+                break;
+             // Actualizar perfil
+            case 'updateRowProfile':
+                $_POST = Validator::validateForm($_POST);
+                if (
+                    !$tecnico->setNombre($_POST['nombrePerfil']) or
+                    !$tecnico->setApellido($_POST['apellidoPerfil']) or
+                    !$tecnico->setFilenameProfile() or
+                    !$tecnico->setCorreo($_POST['correoPerfil']) or
+                    !$tecnico->setTelefono($_POST['telefonoPerfil']) or
+                    !$tecnico->setDUI($_POST['duiPerfil']) or
+                    !$tecnico->setNacimiento($_POST['fechanacimientoPerfil']) or
+                    !$tecnico->setImagen($_FILES['imagen'], $tecnico->getFilename())
+                ) {
+                    $result['error'] = $tecnico->getDataError();
+                } elseif ($tecnico->updateRowProfile()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Perfil modificado correctamente';
+                    // Se asigna el estado del archivo después de actualizar.
+                    $result['fileStatus'] = Validator::changeFile($_FILES['imagen'], $tecnico::RUTA_IMAGEN, $tecnico->getFilename());
+                    $_SESSION['nombreTecnico'] = $_POST['nombrePerfil'];
+                    $_SESSION['apellidoTecnico'] = $_POST['apellidoPerfil'];
+                } else {
+                    $result['error'] = 'Ocurrió un problema al modificar el perfil';
                 }
                 break;
             case 'logOut':
