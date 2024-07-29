@@ -148,21 +148,21 @@ window.onload = async function () {
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');
 
-    // Método del evento para cuando se envía el formulario de buscar.
-    SEARCH_FORM.addEventListener('submit', async (event) => {
-        // Se evita recargar la página web después de enviar el formulario.
-        event.preventDefault();
-
-        const FORM = new FormData(SEARCH_FORM);
-
-        // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(PARTIDO_API, 'searchRows', FORM);
-
-        if (DATA.status) {
-            matches = DATA.dataset;
-            showMatches(currentPage);
-        } else {
-            await sweetAlert(3, DATA.error, true);
-        }
-    });
+    // // Método del evento para cuando se envía el formulario de buscar.
+    // SEARCH_FORM.addEventListener('submit', async (event) => {
+    //     // Se evita recargar la página web después de enviar el formulario.
+    //     event.preventDefault();
+    //
+    //     const FORM = new FormData(SEARCH_FORM);
+    //
+    //     // Petición para obtener los registros disponibles.
+    //     const DATA = await fetchData(PARTIDO_API, 'searchRows', FORM);
+    //
+    //     if (DATA.status) {
+    //         matches = DATA.dataset;
+    //         showMatches(currentPage);
+    //     } else {
+    //         await sweetAlert(3, DATA.error, true);
+    //     }
+    // });
 }

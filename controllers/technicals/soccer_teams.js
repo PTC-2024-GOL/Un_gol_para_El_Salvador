@@ -60,7 +60,7 @@ function showSoccerTeam(page) {
     soccerTeamsPage.forEach(row => {
         const tablaHtml = `
                 <tr>
-                    <td><img src="${SERVER_URL}images/tecnicos/${row.logo_equipo}" height="50" width="50" class="circulo"></td>
+                    <td><img src="${SERVER_URL}images/equipos/${row.logo_equipo}" height="50" width="50" class="circulo"></td>
                     <td>${row.nombre_equipo}</td>
                     <td>${row.telefono_contacto}</td>
                     <td>${row.nombre_categoria}</td>

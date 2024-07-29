@@ -10,13 +10,43 @@
         <!-- Segunda col -->
         <div class="col">
             <h5 class="mt-2">Seleccionar el equipo:</h5>
+            <p>Selecciona el equipo del que quieres agregar participaciones</p>
         </div>
     </div>
+
+    <div class="row mb-4 mt-3">
+        <div class="col-md-6">
+            <form id="searchForm" class="d-flex">
+                <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow" name="search"
+                       placeholder="Busca el nombre del equipo" required>
+                <button type="submit"
+                        class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
+                    <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
+                </button>
+                <button type="reset" class="btn" onclick="fillCards()">
+                    <img src="../../../resources/img/svg/icons_forms/reset.svg" width="18px" height="18px">
+                </button>
+            </form>
+        </div>
+    </div>
+
     <hr>
+
     <!-- Contenedor que cargara todos los partidos -->
     <div class="container mt-5">
         <div class="row d-flex text-center gy-4" id="cards">
 
+        </div>
+    </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination mt-3">
+            <!-- Aquí se insertarán los elementos de la paginación -->
+        </ul>
+    </nav>
+
+    <div class="row text-center d-none" id="hiddenElement">
+        <div class="col-md-12">
+            <p class="text-danger">Aún no hay equipos registrados</p>
         </div>
     </div>
 </div>
