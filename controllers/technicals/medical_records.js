@@ -14,7 +14,7 @@ let ROWS_FOUND;
 // Constantes para completar las rutas de la API.
 const API = 'services/technics/registros_medicos.php';
 const JUGADOR_API = 'services/technics/jugadores.php';
-const LESION_API = 'services/admin/lesiones.php';
+const LESION_API = 'services/technics/lesiones.php';
 const PARTIDO_API = 'services/technics/partidos.php';
 
 async function loadComponent(path) {
@@ -248,7 +248,7 @@ window.onload = async function () {
         // Se evita recargar la página web después de enviar el formulario.
         event.preventDefault();
         // Se verifica la acción a realizar.
-        (ID_CATEGORIAS.value) ? action = 'updateRow' : action = 'createRow';
+        (ID_REGISTRO_MEDICO.value) ? action = 'updateRow' : action = 'createRow';
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SAVE_FORM);
         // Petición para guardar los datos del formulario.
