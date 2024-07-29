@@ -4,95 +4,95 @@ let SAVE_FORM,
     HORARIO,
     CATEGORIA;
 let SEARCH_FORM;
+let ROWS_FOUND;
 
 // Constantes para completar las rutas de la API.
-const API = '';
+const API = 'services/technics/horarios_categoria.php';
+const CATEGORIA_API = 'services/technics/categorias.php';
+const HORARIO_API = 'services/technics/horarios.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
     const text = await response.text();
     return text;
 }
-/*
-*   Función para preparar el formulario al momento de insertar un registro.
-*   Parámetros: ninguno.
-*   Retorno: ninguno.
-*/
-/*
-*   Función asíncrona para preparar el formulario al momento de actualizar un registro.
-*   Parámetros: id (identificador del registro seleccionado).
-*   Retorno: ninguno.
-*/
 
-/*
-*   Función asíncrona para eliminar un registro.
-*   Parámetros: id (identificador del registro seleccionado).
-*   Retorno: ninguno.
-*/
+// Variables y constantes para la paginación
+const horariosCatPorPagina = 10;
+let paginaActual = 1;
+let horariosCate = [];
 
-
+// Función para cargar tabla de técnicos con paginación
 async function fillTable(form = null) {
-    const lista_datos = [
-        {
-            horario: 'Horario lunes 1',
-            categoria: 'Nivel 1',
-            id: 1,
-        },
-        {
-            horario: 'Horario martes 1',
-            categoria: 'Nivel 1',
-            id: 2,
-        },
-        {
-            horario: 'Horario miércoles 1',
-            categoria: 'Nivel 1',
-            id: 3,
-        },
-        {
-            horario: 'Horario jueves 1',
-            categoria: 'Nivel 1',
-            id: 4,
-        }
-    ];
     const cargarTabla = document.getElementById('tabla_horarios_cat');
-
     try {
         cargarTabla.innerHTML = '';
-        // Se verifica la acción a realizar.
-        (form) ? action = 'searchRows' : action = 'readAll';
-        console.log(form);
         // Petición para obtener los registros disponibles.
+        let action;
+        form ? action = 'searchRows' : action = 'readAll';
+        console.log(form);
         const DATA = await fetchData(API, action, form);
         console.log(DATA);
 
         if (DATA.status) {
-            // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-                const tablaHtml = `
-                <tr>
-                    <td>${row.HORARIO}</td>
-                    <td>${row.CATEGORIA}</td>
-                </tr>
-                `;
-                cargarTabla.innerHTML += tablaHtml;
-            });
+            horariosCate = DATA.dataset;
+            mostrarHorariosCate(paginaActual);
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = DATA.message;
         } else {
-            sweetAlert(4, DATA.error, true);
+            // Se muestra un mensaje de acuerdo con el resultado.
+            ROWS_FOUND.textContent = "Existen 0 coincidencias";
         }
     } catch (error) {
         console.error('Error al obtener datos de la API:', error);
-        // Mostrar materiales de respaldo
-        lista_datos.forEach(row => {
-            const tablaHtml = `
-            <tr>
-                    <td>${row.horario}</td>
-                    <td>${row.categoria}</td>
-                    <td>
-                </tr>
-            `;
-            cargarTabla.innerHTML += tablaHtml;
-        });
     }
+}
+
+// Función para mostrar técnicos en una página específica
+function mostrarHorariosCate(pagina) {
+    const inicio = (pagina - 1) * horariosCatPorPagina;
+    const fin = inicio + horariosCatPorPagina;
+    const horariosCatPagina = horariosCate.slice(inicio, fin);
+
+    const cargarTabla = document.getElementById('tabla_horarios_cat');
+    cargarTabla.innerHTML = '';
+    horariosCatPagina.forEach(row => {
+        const tablaHtml = `
+                <tr>
+                    <td>${row.nombre_categoria}</td>
+                    <td>${row.nombre_horario}</td>
+                </tr>
+        `;
+        cargarTabla.innerHTML += tablaHtml;
+    });
+
+    actualizarPaginacion();
+}
+
+// Función para actualizar los controles de paginación
+function actualizarPaginacion() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
+
+    const totalPaginas = Math.ceil(horariosCate.length / horariosCatPorPagina);
+
+    if (paginaActual > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-light" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
+    }
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-light" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
+    }
+
+    if (paginaActual < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-light" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
+    }
+}
+
+// Función para cambiar de página
+function cambiarPagina(nuevaPagina) {
+    paginaActual = nuevaPagina;
+    mostrarHorariosCate(paginaActual);
 }
 
 // window.onload
@@ -108,6 +108,7 @@ window.onload = async function () {
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Horarios de las categorías';
+    ROWS_FOUND = document.getElementById('rowsFound');
     fillTable();
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');

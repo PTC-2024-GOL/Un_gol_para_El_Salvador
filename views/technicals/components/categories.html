@@ -5,7 +5,7 @@
             <div class="col-sm-12 col-md-6">
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
-                        name="search" placeholder="Buscar" required>
+                        name="search" placeholder="Buscar por el nombre de la categoría" required>
                     <button type="submit"
                         class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
@@ -15,20 +15,12 @@
                     </button>
                 </form>
             </div>
-
-            <div class="col-sm-12 col-md-12">
-                <!-- Botón ver plantillas a detalle -->
-                <a href="category_schedules.html"
-                    class="btn btn-outline-secondary  borde-transparente btn-sm rounded-3">
-                    Ver horarios de las categorías a detalle
-                </a>
-            </div>
         </div>
     </div>
     <hr>
     <!-- Tabla para mostrar los registros existentes -->
     <div class="table-responsive">
-        <table class="table table align-middle table-striped table-borderless">
+        <table class="table table align-middle table-striped table-borderless text-start">
             <!-- Cabeza de la tabla para mostrar la cantidad de registros y los títulos de las columnas -->
             <thead>
                 <tr>
@@ -36,15 +28,64 @@
                 </tr>
                 <tr>
                     <th>Nombre de la categoría</th>
-                    <th>Edad mínima</th>
-                    <th>Edad máxima</th>
-                    <th>Temporada</th>
-                    <th>Horario</th>
+                    <th>Edad mínima permitida</th>
+                    <th>Edad máxima permitida</th>
+                    <th>Temporada de la categoría</th>
                 </tr>
             </thead>
             <!-- Cuerpo de la tabla para mostrar un registro por fila -->
             <tbody id="tabla_categorias"></tbody>
         </table>
+    </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <!-- Aquí se insertarán los elementos de la paginación -->
+        </ul>
+    </nav>
+</div>
+
+<!-- Componente Modal para guardar un registro -->
+<div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-principal-color">
+                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                <h1 class="modal-title fs-5 text-white" id="modalTitle"></h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <!-- Formulario para crear o actualizar un registro -->
+            <form id="saveForm">
+                <div class="modal-body row g-3">
+                    <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                    <input type="number" class="d-none" id="idCategoria" name="idCategoria">
+                    <div class="col-sm-12 col-md-6">
+                        <label for="nombreCategoria" class="form-label fw-semibold">Nombre de la categoría</label>
+                        <input id="nombreCategoria" type="text" name="nombreCategoria" class="form-control"
+                            placeholder="Escribe el nombre de la categoría" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="edadMin" class="form-label fw-semibold">Edad mínima</label>
+                        <input id="edadMin" type="number" min="1" step="1" name="edadMin" class="form-control"
+                            placeholder="Escribe la edad mínima permitida" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="edadMax" class="form-label fw-semibold">Edad máxima</label>
+                        <input id="edadMax" type="number" min="1" step="1" name="edadMax" class="form-control"
+                            placeholder="Escribe la edad máxima permitida" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="temporada" class="form-label fw-semibold">Selecciona la temporada</label>
+                        <select id="temporada" type="text" name="temporada" class="form-select" required></select>
+                    </div>
+                </div>
+                <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
+                    <button type="reset" class="btn bg-red-cream-color text-white">Cancelar</button>
+                    <button type="submit" class="btn bg-blue-principal-color text-white ">Guardar</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -62,26 +103,20 @@
             <form id="seeForm">
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input type="hidden" id="idHorario" name="idHorario">
-                    <div class="table-responsive">
-                        <table class="table table align-middle table-striped table-borderless">
-                            <!-- Cabeza de la tabla para mostrar la cantidad de registros y los títulos de las columnas -->
-                            <thead>
-                                <tr>
-                                    <td colspan="6" id="rowsFound"></td>
-                                </tr>
-                                <tr>
-                                    <th>Nombre del Horario</th>
-                                    <th>Día</th>
-                                    <th>Campo de entrenamiento</th>
-                                    <th>Hora inicial</th>
-                                    <th>Hora final</th>
-                                </tr>
-                            </thead>
-                            <!-- Cuerpo de la tabla para mostrar un registro por fila -->
-                            <tbody id="tabla_horarios"></tbody>
-                        </table>
+                    <input type="number" class="d-none" id="idHorarioCate" name="idHorarioCate">
+                    <div class="col-sm-12 col-md-12">
+                        <label for="horarioCat" class="form-label fw-semibold">Seleccione el horario</label>
+                        <select id="horarioCat" type="text" name="horarioCat" class="form-select" required></select>
                     </div>
+                    <div class="col-sm-12 col-md-6 d-none">
+                        <label for="categoriaHora" class="form-label fw-semibold">Selecciona la categoría</label>
+                        <select id="categoriaHora" type="text" name="categoriaHora" class="form-select"
+                            required></select>
+                    </div>
+                </div>
+                <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
+                    <button type="reset" class="btn bg-red-cream-color text-white">Cancelar</button>
+                    <button type="submit" class="btn bg-blue-principal-color text-white ">Guardar</button>
                 </div>
             </form>
         </div>
