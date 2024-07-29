@@ -5,9 +5,9 @@
             <div class="col-sm-12 col-md-6">
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
-                        name="search" placeholder="Buscar" required>
+                           name="search" placeholder="Buscar por el nombre o apellido del jugador" required>
                     <button type="submit"
-                        class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
+                            class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
                     </button>
                     <button type="reset" class="btn" onclick="cargarTabla()">
@@ -15,59 +15,55 @@
                     </button>
                 </form>
             </div>
-
-            <div class="col-sm-12 col-md-6">
-                <!-- Botón Agregar -->
-                <button
-                    class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
-                    type="submit" onclick="openCreate()">
-                    <span class="fs-5 me-2">+</span> Agregar participación
-                </button>
-            </div>
         </div>
     </div>
     <hr>
-    <div class="d-flex align-items-center mb-3">
+    <div class="d-flex align-items-center mb-4 mt-2">
         <img src="../../../resources/img/svg/icons_forms/info.svg" class="img-fluid me-2" alt="">
         Recuerda agregar los goles y amonestaciones que el jugador tuvo en el partido
     </div>
 
-    <!-- Tabla para mostrar los registros existentes -->
-    <div class="table-responsive">
-        <table class="table table align-middle table-striped table-borderless text-center">
-            <!-- Cabeza de la tabla para mostrar la cantidad de registros y los títulos de las columnas -->
-            <thead>
-                <tr>
-                    <td colspan="6" id="rowsFound"></td>
-                </tr>
-                <tr>
-                    <th class="fw-semibold">Imagen</th>
-                    <th class="fw-semibold">Nombre</th>
-                    <th class="fw-semibold">Apellido</th>
-                    <th class="fw-semibold">Minutos jugados</th>
-                    <th class="fw-semibold">Goles</th>
-                    <th class="fw-semibold">Amonestaciones</th>
-                </tr>
-            </thead>
-            <!-- Cuerpo de la tabla para mostrar un registro por fila -->
-            <tbody id="tabla_participacion"></tbody>
-        </table>
+
+
+    <div class="row">
+        <div class="col-md-auto col-sm-12">
+            <button class="btn btn btn-outline-primary rounded-5  btn-style"
+                    onclick="filtroAreaJuego(event)">Ofensiva</button>
+        </div>
+        <div class="col-md-auto col-sm-12">
+            <button class="btn  btn-outline-primary rounded-5  btn-style"
+                    onclick="filtroAreaJuego(event)">Defensiva</button>
+        </div>
+        <div class="col-md-auto col-sm-12">
+            <button class="btn btn-outline-primary rounded-5 btn-style" onclick="filtroAreaJuego(event)">Ofensiva y
+                defensiva</button>
+        </div>
     </div>
+
+    <div class="row align-items-center mt-1 mb-4 g-4" id="participationCards">
+
+    </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <!-- Aquí se insertarán los elementos de la paginación -->
+        </ul>
+    </nav>
 </div>
 
-<!-- Componente Modal para guardar un registro -->
+<!-- Componente Modal para guardar o actualizar un registro de participacion-->
 <div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="modalTitle" aria-hidden="true">
+     aria-labelledby="modalTitle" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-blue-principal-color text-light">
                 <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
                 <h1 class="modal-title fs-5" id="modalTitle"></h1>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
+                        aria-label="Close"></button>
             </div>
             <!-- Formulario para crear o actualizar un registro -->
             <form class="form px-4" id="saveForm">
+                <input class="d-none" id="idParticipacion" name="idParticipacion">
                 <div class="row py-4">
                     <div class="col-sm-12 col-md-6 mb-3">
                         <div class="row">
@@ -76,8 +72,8 @@
                             </div>
                             <div class="col-4">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch"
-                                        id="flexSwitchCheckChecked" checked>
+                                    <input class="form-check-input" type="checkbox" role="switch" id="switchTitular"
+                                           name="titular" checked>
                                 </div>
                             </div>
                         </div>
@@ -90,37 +86,37 @@
                             </div>
                             <div class="col-4">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch"
-                                        id="flexSwitchCheckChecked" checked>
+                                    <input class="form-check-input" type="checkbox" role="switch" id="switchSustitucion"
+                                           name="sustitucion" checked>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-sm-12 col-md-6 mb-3">
-                        <label for="jugador" class="form-label fw-semibold">Jugador</label>
-                        <select id="jugador" name="jugador" class="form-select"></select>
-                    </div>
+                    <!--                    <div class="col-sm-12 col-md-6 mb-3">-->
+                    <!--                        <label for="jugador" class="form-label fw-semibold">Jugador</label>-->
+                    <!--                        <input type="number" id="jugador" name="idJugador" class="form-control"></input>-->
+                    <!--                    </div>-->
 
                     <div class="col-sm-12 col-md-6 mb-3">
-                        <label for="min_jugados" class="form-label fw-semibold">Minutos jugados</label>
-                        <input id="min_jugados" type="number" name="min_jugados" class="form-control" min="0" step="1"
-                            placeholder="Escriba la cantidad de minutos jugados" required>
+                        <label for="minutos" class="form-label fw-semibold">Minutos jugados</label>
+                        <input id="minutos" type="number" min="0" step="1" name="minutos" class="form-control"
+                               placeholder="Escriba la cantidad de minutos jugados" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6 mb-3 d-none" id="golesDiv">
+                        <label for="goles" class="form-label fw-semibold">Total de goles</label>
+                        <input id="goles" name="goles" class="form-control" disabled>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-3">
                         <label for="asistencias" class="form-label fw-semibold">Asistencias</label>
-                        <input id="asistencias" type="number" name="asistencias" class="form-control" min="0" max="10" step="1"
-                            placeholder="Escriba la cantidad de asistencias del jugador" required>
+                        <input id="asistencias" type="number" min="0" step="1" name="asistencia" class="form-control"
+                               placeholder="Escriba la cantidad de asistencias del jugador" required>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-3">
                         <label for="puntuacion" class="form-label fw-semibold">Puntuación</label>
-                        <input id="puntuacion" type="number" name="puntuacion" class="form-control" min="0" step=".1"
-                            placeholder="Escribe la puntuación del jugador en este partido" required>
-                    </div>
-                    <div class="col-sm-12 col-md-6 mb-3">
-                        <label for="goles" class="form-label fw-semibold">Goles</label>
-                        <input id="goles" type="number" name="goles" class="form-control" min="0" step="1"
-                            placeholder="Escribe la cantidad de goles en este partido" required> 
+                        <input id="puntuacion" type="number" min="0" max="10" step=".1" name="puntuacion"
+                               class="form-control" placeholder="Escribe la puntuación del jugador en este partido"
+                               required>
                     </div>
                 </div>
 
@@ -132,119 +128,26 @@
                         <p class="fw-light small">Selecciona el estado de ánimo del jugador</p>
                     </div>
 
-                    <div class="row d-flex align-items-center justify-content-center text-center">
-                        <div class="col-sm-12 col-md-2">
+                    <div class="row d-flex align-items-center justify-content-evenly text-center">
+                        <div class="col-sm-12 col-md-2 estado-btn" onclick="estadoAnimo(event)">
                             <img src="../../../resources/img/svg/status_icon/energetico.svg" alt="">
-                            <p>Energético</p>
+                            <p id="energetico">Energético</p>
                         </div>
-                        <div class="col-sm-12 col-md-2">
+                        <div class="col-sm-12 col-md-2 estado-btn" onclick="estadoAnimo(event)">
                             <img src="../../../resources/img/svg/status_icon/satisfecho.svg" alt="">
-                            <p>satisfecho</p>
+                            <p id="satisfecho">satisfecho</p>
                         </div>
-                        <div class="col-sm-12 col-md-2">
+                        <div class="col-sm-12 col-md-2 estado-btn" onclick="estadoAnimo(event)">
                             <img src="../../../resources/img/svg/status_icon/normal.svg" alt="">
-                            <p>Normal</p>
+                            <p id="normal">Normal</p>
                         </div>
-                        <div class="col-sm-12 col-md-2">
+                        <div class="col-sm-12 col-md-2 estado-btn" onclick="estadoAnimo(event)">
                             <img src="../../../resources/img/svg/status_icon/agotado.svg" alt="">
-                            <p>Agotado</p>
+                            <p id="agotado">Agotado</p>
                         </div>
-                        <div class="col-sm-12 col-md-2">
+                        <div class="col-sm-12 col-md-2 estado-btn" onclick="estadoAnimo(event)">
                             <img src="../../../resources/img/svg/status_icon/desanimado.svg" alt="">
-                            <p>Desanimado</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center mt-5">
-                    <button type="reset" class="btn bg-red-cream-color text-white">Cancelar</button>
-                    <button type="submit" class="btn bg-blue-principal-color text-white ">Guardar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Componente Modal para ver un registro -->
-<div class="modal fade" id="seeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="modalTitle1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-blue-principal-color text-light">
-                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
-                <h1 class="modal-title fs-5" id="modalTitle1"></h1>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-            </div>
-            <!-- Formulario para crear o actualizar un registro -->
-            <form class="form px-4" id="saveForm">
-                <div class="row py-4">
-                    <div class="col-sm-12 col-md-6 mb-3">
-                        <div class="row">
-                            <div class="col-8">
-                                <p class="fw-semibold">Titular</p>
-                            </div>
-                            <div class="col-4">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch"
-                                        id="flexSwitchCheckChecked" checked disabled>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-12 col-md-6 mb-3">
-                        <div class="row">
-                            <div class="col-8">
-                                <p class="fw-semibold">Sustitución</p>
-                            </div>
-                            <div class="col-4">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch"
-                                        id="flexSwitchCheckChecked" checked disabled>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-12 col-md-6 mb-3">
-                        <label for="jugador" class="form-label fw-semibold">Jugador</label>
-                        <select id="jugador" name="jugador" class="form-select" disabled></select>
-                    </div>
-
-                    <div class="col-sm-12 col-md-6 mb-3">
-                        <label for="min_jugados" class="form-label fw-semibold">Minutos jugados</label>
-                        <input id="min_jugados" type="number" name="min_jugados" class="form-control" min="0" step="1"
-                            placeholder="Escriba la cantidad de minutos jugados" disabled>
-                    </div>
-                    <div class="col-sm-12 col-md-6 mb-3">
-                        <label for="asistencias" class="form-label fw-semibold">Asistencias</label>
-                        <input id="asistencias" type="number" name="asistencias" class="form-control" min="0" step="1"
-                            placeholder="Escriba la cantidad de asistencias del jugador" disabled>
-                    </div>
-                    <div class="col-sm-12 col-md-6 mb-3">
-                        <label for="puntuacion" class="form-label fw-semibold">Puntuación</label>
-                        <input id="puntuacion" type="number" name="puntuacion" class="form-control" min="0" step=".1"
-                            placeholder="Escribe la puntuación del jugador en este partido" disabled>
-                    </div>
-                    <div class="col-sm-12 col-md-6 mb-3">
-                        <label for="goles" class="form-label fw-semibold">Goles</label>
-                        <input id="goles" type="number" name="goles" class="form-control" min="0" step="1"
-                            placeholder="Escribe la cantidad de goles en este partido" disabled> 
-                    </div>
-                </div>
-
-                <p class="fw-semibold mb-4">¿Cómo se sintió el jugador en este partido?</p>
-
-                <div class="container bg-skyBlue-pastel-color p-2 rounded-3">
-                    <div class="container text-center mb-4">
-                        <p class="fw-semibold mb-0">Estado de ánimo</p>
-                    </div>
-
-                    <div class="row d-flex align-items-center justify-content-center text-center">
-                        <div class="col-sm-12 col-md-2">
-                            <img src="../../../resources/img/svg/status_icon/desanimado.svg" alt="">
-                            <p>Desanimado</p>
+                            <p id="desanimado">Desanimado</p>
                         </div>
                     </div>
                 </div>
@@ -259,54 +162,96 @@
 </div>
 
 
-<!-- Componente Modal para ver los goles -->
-<div class="modal fade" id="golesModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="modalTitle1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-blue-principal-color text-light">
-                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
-                <h1 class="modal-title fs-5" id="modalTitle3"></h1>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-            </div>
-            <div class="container">
-                <div class="row p-4 d-flex align-items-center justify-content-center text-center" id="gol_card">
-
-
-                </div>
-                <div class="modal-footer col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center mt-5">
-                    <button type="submit" class="btn bg-blue-principal-color text-white "
-                        onclick="openCreateGol()">Agregar gol al jugador</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Componente Modal para guardar registro de goles-->
+<!-- Componente Modal para guardar o actualizar registro de goles-->
 <div class="modal fade" id="saveGolModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="modalTitle4" aria-hidden="true">
+     aria-labelledby="modalTitle4" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-blue-principal-color text-light">
                 <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
                 <h1 class="modal-title fs-5" id="modalTitle4"></h1>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
+                        aria-label="Close"></button>
             </div>
             <!-- Formulario para crear o actualizar un registro -->
             <form class="form px-4" id="saveGolForm">
-                <input type="hidden" id="idGol" name="idDetalleGol">
+                <input class="d-none" id="idGol" name="idDetalleGol">
                 <div class="row py-4">
                     <div class="col-sm-12 col-md-6">
-                        <label for="cantidadGoles" class="form-label fw-semibold">Cantidad de goles</label> 
-                        <input id="cantidadGoles" type="number" name="cantidadGol" class="form-control" min="0"
-                            placeholder="Escribe la cantidad de goles" required>
+                        <label for="cantidadGol" class="form-label fw-semibold">Cantidad de goles</label>
+                        <input id="cantidadGol" type="number" min="0" step="1" name="cantidadGol" class="form-control"
+                               placeholder="Escribe la cantidad de goles" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="tipoGoles" class="form-label fw-semibold">Tipo de goles</label>
-                        <select id="tipoGoles" name="tipoGol" class="form-select"></select>
+                        <label for="tipoGol" class="form-label fw-semibold">Tipo de goles</label>
+                        <select id="tipoGol" name="tipoGol" class="form-select" required></select>
+                    </div>
+                </div>
+                <div class="modal-footer col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center">
+                    <button type="reset" class="btn bg-red-cream-color text-white">Cancelar</button>
+                    <button type="submit" class="btn bg-blue-principal-color text-white ">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Componente Modal para ver los goles -->
+<div class="modal fade" id="SeeGolesModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="modalTitle1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-principal-color text-light">
+                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                <h1 class="modal-title fs-5" id="modalTitle3"></h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="container">
+                <div class="row p-4 d-flex align-items-center justify-content-center text-center" id="gol_card">
+
+
+                </div>
+                <div class="container text-center">
+                    <p id="messageGol" class="bg-blue-light-color p-3 rounded-3 fw-semibold"></p>
+                </div>
+                <div class="modal-footer col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center mt-5">
+                    <button type="submit" class="btn bg-blue-principal-color text-white "
+                            onclick="openCreateGol()">Agregar gol al jugador</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Componente Modal para guardar o actualizar registro de amonestaciones-->
+<div class="modal fade" id="saveAmonestacionModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="modalTitle4" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-principal-color text-light">
+                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                <h1 class="modal-title fs-5" id="modalTitle6"></h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <!-- Formulario para crear o actualizar un registro -->
+            <form class="form px-4" id="saveAmonestacionForm">
+                <input class="d-none" id="idAmonestacion" name="idDetalleAmonestacion">
+                <div class="row py-4">
+                    <div class="col-sm-12 col-md-6">
+                        <label for="cantidadAmonestacion" class="form-label fw-semibold">Cantidad de
+                            amonestación</label>
+                        <input id="cantidadAmonestacion" type="number" min="0" step="1" name="numeroAmonestacion"
+                               class="form-control" placeholder="Escribe la cantidad de amonestaciones" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="tipoAmonestacion" class="form-label fw-semibold">Tipo de amonestación</label>
+                        <select id="tipoAmonestacion" name="amonestacion" class="form-select" required>
+                            <option>Selecciona una opción</option>
+                            <option>Tarjeta roja</option>
+                            <option>Tarjeta amarilla</option>
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center">
@@ -320,63 +265,30 @@
 
 
 <!-- Componente Modal para ver las amonestaciones -->
-<div class="modal fade" id="amonestacionModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="modalTitle1" aria-hidden="true">
+<div class="modal fade" id="SeeAmonestacionModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="modalTitle1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-blue-principal-color text-light">
                 <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
                 <h1 class="modal-title fs-5" id="modalTitle5"></h1>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
+                        aria-label="Close"></button>
             </div>
             <div class="container">
                 <div class="row p-4 d-flex align-items-center justify-content-center text-center"
-                    id="amonestacion_card">
+                     id="amonestacion_card">
 
 
+                </div>
+                <div class="container text-center">
+                    <p id="messageAmonestacion" class="bg-blue-light-color p-3 rounded-3 fw-semibold"></p>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center mt-5">
                     <button type="submit" class="btn bg-blue-principal-color text-white "
-                        onclick="openCreateAmonestacion()">Agregar amonestación al jugador</button>
+                            onclick="openCreateAmonestacion()">Agregar amonestación al jugador</button>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-
-
-<!-- Componente Modal para guardar registro de amonestaciones-->
-<div class="modal fade" id="saveAmonestacionModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="modalTitle4" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-blue-principal-color text-light">
-                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
-                <h1 class="modal-title fs-5" id="modalTitle6"></h1>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-            </div>
-            <!-- Formulario para crear o actualizar un registro -->
-            <form class="form px-4" id="saveAmonestacionForm">
-                <input type="hidden" id="idAmonestacion" name="idAmonestacion">
-                <div class="row py-4">
-                    <div class="col-sm-12 col-md-6">
-                        <label for="cantidadAmonestacion" class="form-label fw-semibold">Cantidad de
-                            amonestación</label>
-                        <input id="cantidadAmonestacion" type="number" name="cantidadAmonestacion" class="form-control" min="0" max="1" readonly step="1"
-                            placeholder="Escribe la cantidad de amonestaciones" required>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <label for="tipoAmonestacion" class="form-label fw-semibold">Tipo de amonestación</label>
-                        <select id="tipoAmonestacion" name="tipoAmonestacion" class="form-select"></select>
-                    </div>
-                </div>
-                <div class="modal-footer col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center">
-                    <button type="reset" class="btn bg-red-cream-color text-white">Cancelar</button>
-                    <button type="submit" class="btn bg-blue-principal-color text-white ">Guardar</button>
-                </div>
-            </form>
         </div>
     </div>
 </div>

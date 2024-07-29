@@ -374,11 +374,15 @@ async function showParticipation(page) {
 
     if (DATA2.status) {
         DATA2.dataset.forEach(row => {
-            if (row.id_partido === parseInt(idPartido)) {
+            if (parseInt(row.id_partido) === parseInt(idPartido)) {
+                console.log('Entre aqui')
                 participacionMap.set(row.id_jugador, row.id_participacion);
+            }else{
+                console.log('Cai en el else')
             }
         });
     }
+
     participationPage.forEach(row => {
         const idParticipacion = participacionMap.get(row.id_jugador) || 0;
 
@@ -439,6 +443,8 @@ async function showParticipation(page) {
         const btnOpenAmonestacion = document.getElementById(`btnOpenAmonestacion_${row.id_jugador}`);
         const btnOpenDelete = document.getElementById(`btnOpenDelete_${row.id_jugador}`);
 
+        //Si el id de la participacion es mayor a 0, entonces significa que ya existe registrada la participacion para el jugador
+        //por lo que botones para eliminar, actualizar, goles y tarjetas amarillas se mostraran.
         if (idParticipacion > 0) {
             btnUpdate.classList.remove('d-none');
             btnOpenGol.classList.remove('d-none');
