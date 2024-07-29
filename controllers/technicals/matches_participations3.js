@@ -76,7 +76,7 @@ async function loadComponent(path) {
 const openCreate = (idJugador) => {
     idPlayer = '';
     //ID_PARTICIPACION = '';
-
+    fillSelect(POSICIONES_API, 'readAll', 'posicionPrincipal');
     resetEstadoAnimo();
     golesDiv.classList.add('d-none');
     // Se muestra la caja de diálogo con su título.
