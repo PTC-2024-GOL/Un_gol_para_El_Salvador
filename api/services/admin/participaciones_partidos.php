@@ -32,6 +32,7 @@ if (isset($_GET['action'])) {
                 if (
                     !$participacion->setIdPartido($_POST['idPartido']) or
                     !$participacion->setIdJugador($_POST['idJugador']) or
+                    !$participacion->setIdPosicion($_POST['idPosicion']) or
                     !$participacion->setTitularidad($_POST['titular']) or
                     !$participacion->setSustitucion($_POST['sustitucion']) or
                     !$participacion->setMinutosJugados($_POST['minutos']) or
@@ -98,6 +99,7 @@ if (isset($_GET['action'])) {
                     !$participacion->setAsistencias($_POST['asistencia']) or
                     !$participacion->setEstadoAnimo($_POST['animo']) or
                     !$participacion->setPuntuacion($_POST['puntuacion']) or
+                    !$participacion->setIdPosicion($_POST['idPosicion']) or
                     !$participacion->setIdParticipacion($_POST['idParticipacion'])
                 ) {
                     $result['error'] = $participacion->getDataError();

@@ -56,11 +56,12 @@ let MESAGGE_GOL;
 let MESSAGE_AMONESTACION;
 
 // Constantes para completar las rutas de la API.
-const PARTICIPACION_API = 'services/admin/participaciones_partidos.php';
-const GOLES_API = 'services/admin/detalles_goles.php';
-const AMONESTACIONES_API = 'services/admin/detalles_amonestaciones.php';
-const TIPO_GOL_API = 'services/admin/tipos_goles.php';
-const PARTIDO_API = 'services/admin/partidos.php';
+const PARTICIPACION_API = 'services/technics/participaciones_partidos.php';
+const GOLES_API = 'services/technics/detalles_goles.php';
+const AMONESTACIONES_API = 'services/technics/detalles_amonestaciones.php';
+const TIPO_GOL_API = 'services/technics/tipos_goles.php';
+const PARTIDO_API = 'services/technics/partidos.php';
+const POSICIONES_API = 'services/technics/posiciones.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -164,12 +165,13 @@ const openUpdate = async (id, idJugador) => {
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
-            const switchtTitularChecked = (ROW.titular === 1) ? 'checked' : '';
-            const switchtSustitucionChecked = (ROW.sustitucion === 1) ? 'checked' : '';
+            const switchtTitularChecked = (ROW.titular === '1') ? 'checked' : '';
+            const switchtSustitucionChecked = (ROW.sustitucion === '1') ? 'checked' : '';
             ID_PARTICIPACION.value = ROW.id_participacion;
             TITULAR.checked = switchtTitularChecked;
             SUSTITUCION.checked = switchtSustitucionChecked;
             MINUTOS.value = ROW.minutos_jugados;
+            await fillSelect(POSICIONES_API, 'readAll', 'posicionPrincipal', ROW.id_posicion);
             golesDiv.classList.remove('d-none');
             GOLES.value = ROW.goles;
             ASISTENCIAS.value = ROW.asistencias;
@@ -818,8 +820,8 @@ window.onload = async function () {
         // Validación de los minutos jugados.
         if (minutos >= 116) {
             await sweetAlert(2, 'Los minutos jugados no pueden superar los 90 min.', false);
-        } else if(asistencias >= 10) {
-            await sweetAlert(2, 'El máximo de asistencias por jugador no puede ser más de 10.', false);
+        } else if(asistencias > splitResultado) {
+            await sweetAlert(2, `El resultado del partido es ${splitResultado}. El máximo de asistencias por jugador no puede ser más que el resultado del partido.`, false);
         } else {
             // Petición para guardar los datos del formulario.
             const DATA = await fetchData(PARTICIPACION_API, action, FORM);

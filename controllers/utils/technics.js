@@ -109,6 +109,7 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                 </a>
                                 <ul class="dropdown-menu bg-transparent">
                                     <li><a class="dropdown-item text-light" href="soccer_team.html">Equipos</a></li>
+                                    <li><a class="dropdown-item text-light" href="rivals.html">Rivales</a></li>
                                     <li><a class="dropdown-item text-light" href="templates_name.html">Plantillas</a></li>
                                     <li><a class="dropdown-item text-light" href="matches_participations1.html">Participaciones</a></li>
                                     <li><a class="dropdown-item text-light" href="categories.html">Categorías</a></li>

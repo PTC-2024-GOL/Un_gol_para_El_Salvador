@@ -51,6 +51,17 @@ class ParticipacionesPartidosData extends ParticipacionesPartidosHandler
         }
     }
 
+    public function setIdPosicion($value)
+    {
+        if (Validator::validateNaturalNumber($value)) {
+            $this->idPosicion = $value;
+            return true;
+        } else {
+            $this->data_error = 'El identificador de la posición es incorrecto';
+            return false;
+        }
+    }
+
     public function setIdJugador($value)
     {
         if (Validator::validateNaturalNumber($value)) {
