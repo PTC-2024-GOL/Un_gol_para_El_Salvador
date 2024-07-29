@@ -321,14 +321,6 @@ async function mostrarPlantillas(pagina) {
                                     <div class="col text-start">
                                         <p class="mb-0">${row.NOMBRE}</p>
                                     </div>
-                                    <div class="col-auto d-flex gap-2">
-                                        <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
-                                            <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                                        </button>
-                                        <button type="button" class="btn transparente" onclick="openDelete(${row.ID})">
-                                            <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                                        </button>
-                                    </div>
                                 </div>
                             </div>
                         </h2>
@@ -452,19 +444,19 @@ function actualizarPaginacion() {
     const totalPaginas = Math.ceil(plantillas.length / plantillasPorPagina);
 
     if (paginaActual > 1) {
-        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-bs-dark" href="#"
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#"
                 onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
     }
 
     for (let i = 1; i <= totalPaginas; i++) {
         paginacion.innerHTML += `<li
-            class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-bs-dark" href="#"
+            class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-dark" href="#"
                 onclick="cambiarPagina(${i})">${i}</a></li>`;
     }
 
     if (paginaActual < totalPaginas) {
         paginacion.innerHTML += `<li class="page-item"><a
-                    class="page-link text-bs-dark" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>
+                    class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>
                 `;
     }
 }

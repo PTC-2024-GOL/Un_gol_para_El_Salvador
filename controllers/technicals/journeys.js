@@ -1,6 +1,6 @@
+
 let SEARCH_FORM;
 let ROWS_FOUND;
-let NUMERO;
 
 // Constantes para completar las rutas de la API.
 const API = 'services/technics/jornadas.php';
@@ -116,6 +116,7 @@ function mostrarJornadas(pagina) {
                     </div>
                     <div class="card-footer"> 
                         <a href="trainings.html?id=${row.ID}" class="btn botones">
+                            Ver entrenamientos
                             <img src="../../../resources/img/svg/icons_forms/training.svg" width="20" height="20">
                         </a>
                     </div>
@@ -137,15 +138,15 @@ function actualizarPaginacion() {
     const totalPaginas = Math.ceil(jornadas.length / jornadasPorPagina);
 
     if (paginaActual > 1) {
-        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-bs-dark" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual - 1})">Anterior</a></li>`;
     }
 
     for (let i = 1; i <= totalPaginas; i++) {
-        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-bs-dark" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
+        paginacion.innerHTML += `<li class="page-item ${i === paginaActual ? 'active' : ''}"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${i})">${i}</a></li>`;
     }
 
     if (paginaActual < totalPaginas) {
-        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-bs-dark" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-dark" href="#" onclick="cambiarPagina(${paginaActual + 1})">Siguiente</a></li>`;
     }
 }
 
@@ -176,7 +177,6 @@ window.onload = async function () {
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Jornadas';
     ROWS_FOUND = document.getElementById('rowsFound');
-    NUMERO = document.getElementById('paginas');
     fillTable();
 
     // Constante para establecer el formulario de buscar.

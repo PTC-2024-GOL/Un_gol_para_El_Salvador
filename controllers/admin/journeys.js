@@ -159,7 +159,7 @@ const openDelete = async (id) => {
 
 
 // Variables y constantes para la paginación
-const jornadasPorPagina = 10;
+let jornadasPorPagina = 5;
 let paginaActual = 1;
 let jornadas = [];
 
@@ -199,23 +199,28 @@ function mostrarJornadas(pagina) {
     cargarTabla.innerHTML = '';
     jornadasPagina.forEach(row => {
         const tablaHtml = `
-                <tr>
-                    <td>${row.NUMERO}</td>
-                    <td>${row.NOMBRE}</td>
-                    <td>${row.FECHA_INICIO}</td>
-                    <td>${row.FECHA_FIN}</td>
-                    <td>
-                    <a href="trainings.html?id=${row.ID}" class="btn transparente">
-                    <img src="../../../resources/img/svg/icons_forms/training.svg" width="20" height="20">
-                    </a>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                    </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.ID})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
-                    </td>
-                </tr>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title fw-bolder">${row.NOMBRE}</p>
+                        <p class="card-text fst-italic">${row.PLANTILLA}</p>
+                        <p class="card-text fst-italic">${row.FECHA_INICIO}</p>
+                        <p class="card-text fst-italic">${row.FECHA_FIN}</p>
+                    </div>
+                    <div class="card-footer"> 
+                        <a href="trainings.html?id=${row.ID}" class="btn botones rounded-5 m-2">
+                            Ver entrenamientos
+                            <img src="../../../resources/img/svg/icons_forms/training.svg" width="20" height="20">
+                        </a>
+                        <button type="button" class="btn botones rounded-5 m-2" onclick="openUpdate(${row.ID})">
+                            <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                        </button>
+                        <button type="button" class="btn botones rounded-5 m-2" onclick="openDelete(${row.ID})">
+                            <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                        </button>
+                    </div>
+                </div>
+            </div>
         `;
         cargarTabla.innerHTML += tablaHtml;
     });
@@ -249,6 +254,12 @@ function cambiarPagina(nuevaPagina) {
     mostrarJornadas(paginaActual);
 }
 
+// Función para actualizar el número de registros por página
+function updateJornadasPorPagina() {
+    jornadasPorPagina = parseInt(document.getElementById('paginas').value);
+    paginaActual = 1; // Resetear a la primera página cada vez que se cambia el número de registros por página
+    mostrarJornadas(paginaActual);
+}
 // window.onload
 window.onload = async function () {
     // Obtiene el contenedor principal
