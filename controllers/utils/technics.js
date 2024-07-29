@@ -93,11 +93,10 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                 <ul class="dropdown-menu bg-transparent">
                                     <li><a class="dropdown-item text-light" href="schedules.html">Horarios</a></li>
                                     <li><a class="dropdown-item text-light" href="contents.html">Contenidos</a></li>
-                                    <li><a class="dropdown-item text-light" href="sub_contents.html">Sub contenidos</a></li>
+                                    <li><a class="dropdown-item text-light" href="sub_contents.html">Subcontenidos</a></li>
                                     <li><a class="dropdown-item text-light" href="tasks.html">Tareas</a></li>
-                                    <li><a class="dropdown-item text-light" href="details_contents.html">Detalles</a></li>
+                                    <li><a class="dropdown-item text-light" href="details_contents.html">Contenidos por entrenamientos</a></li>
                                     <li><a class="dropdown-item text-light" href="player_characteristics.html">Características de jugadores</a></li>
-                                    <li><a class="dropdown-item text-light" href="feature_analysis.html">Análisis de características</a></li>
                                     <li><a class="dropdown-item text-light" href="assists.html">Asistencia</a></li>
                                 </ul>
                             </li>
@@ -109,15 +108,9 @@ MAIN.insertAdjacentHTML('beforebegin', `
                                     Equipos
                                 </a>
                                 <ul class="dropdown-menu bg-transparent">
-                                    <li><a class="dropdown-item text-light" href="technical_roles.html">Roles de los técnicos</a></li>
-                                    <li><a class="dropdown-item text-light" href="coachings_staffs.html">Cuerpos técnicos</a></li>
                                     <li><a class="dropdown-item text-light" href="soccer_team.html">Equipos</a></li>
                                     <li><a class="dropdown-item text-light" href="templates_name.html">Plantillas</a></li>
-                                    <li><a class="dropdown-item text-light" href="types_plays.html">Tipos de jugada</a></li>
-                                    <li><a class="dropdown-item text-light" href="types_goals.html">Tipos de goles</a></li>
                                     <li><a class="dropdown-item text-light" href="matches_participations1.html">Participaciones</a></li>
-                                    <li><a class="dropdown-item text-light" href="positions.html">Posiciones</a></li>
-                                    <li><a class="dropdown-item text-light" href="categories.html">Categorías</a></li>
                                     <li><a class="dropdown-item text-light" href="matches.html">Partidos</a></li>
                                 </ul>
                             </li>
