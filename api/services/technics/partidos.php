@@ -138,7 +138,7 @@ if (isset($_GET['action'])) {
                 }
                 break;
             case 'lastMatch':
-                if ($result['dataset'] = $partido->lastMatch()) {
+                if ($result['dataset'] = $partido->lastMatchTecnics()) {
                     $result['status'] = 1;
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
