@@ -89,7 +89,7 @@ const graficoBarrasAnalisis = async (FORM) => {
             canvasContainer.innerHTML = '<canvas id="analisis"></canvas>';
 
             // Llamada a la función para generar y mostrar un gráfico de radar.
-            chartInstance = radarGraph('analisis', caracteristicas, notas, 'Análisis de características', 'Análisis de características');
+            chartInstance = radarGraph('analisis', caracteristicas, notas, 'Caracteristicas', 'Análisis');
         } else {
             console.log(DATA.error);
         }
