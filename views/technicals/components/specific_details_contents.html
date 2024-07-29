@@ -5,7 +5,7 @@
             <div class="col-sm-12 col-md-6">
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
-                        name="search" placeholder="Buscar" required>
+                        name="search" placeholder="Buscar por el nombre del jugador" required>
                     <button type="submit"
                         class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
@@ -21,7 +21,7 @@
                 <button
                     class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
                     type="submit" onclick="openCreate()">
-                    <span class="fs-5 me-2">+</span> Agregar detalle
+                    <span class="fs-5 me-2">+</span> Agregar contenidos para los jugadores
                 </button>
             </div>
         </div>
@@ -62,37 +62,36 @@
             <form id="saveForm">
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input type="hidden" id="iddetallecontenido" name="iddetallecontenido">
+                    <input type="hidden" id="iddetallecontenido" name="idDetalle">
                     <div class="col-sm-12 col-md-6">
                         <label for="subcontenido" class="form-label fw-semibold">Sub contenido</label>
-                        <select id="subcontenido" type="text" name="subcontenido" class="form-select" required></select>
+                        <select id="subcontenido" type="text" name="idSubContenido" class="form-select"
+                            required></select>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="tarea" class="form-label fw-semibold">Tarea</label>
-                        <select id="tarea" type="text" name="tarea" class="form-select" required></select>
+                        <select id="tarea" type="text" name="IdTarea" class="form-select" required></select>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-3">
-                        <label for="cantidadEquipo" class="form-label fw-semibold">Cantidad del contenido</label>
-                        <input id="cantidadEquipo" type="number" name="cantidadEquipo" class="form-control" min="1"
-                            placeholder="Ingresa los minutos del contenido" required>
+                        <label for="cantidadEquipo" class="form-label fw-semibold">Minutos del contenido</label>
+                        <input id="cantidadEquipo" type="number" name="CantidadSubContenido" class="form-control"
+                            min="1" max="600" placeholder="Ingresa los minutos del contenido" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="minutostarea" class="form-label fw-semibold">Minutos tarea</label>
-                        <input id="minutostarea" type="number" name="minutostarea" class="form-control" min="1"
-                            placeholder="Ingresa los minutos de la tarea" required>
+                        <input id="minutostarea" type="number" name="CantidadTarea" class="form-control" min="1"
+                            max="600" placeholder="Ingresa los minutos de la tarea" required>
                     </div>
                     <div class="col-sm-12 col-md-12">
-                        <form id="searchForm" class="d-flex">
-                            <label for="telefonoEquipo" class="form-label fw-semibold">Jugador/ Jugadores</label>
-                            <div class="row">
-                                <div class="col-sm-12 col-md-10">
-                                    <select class="form-select me-3 borde-transparente campo rounded-3 shadow"
-                                        name="search" id="generador" required>
-                                        <option value="">Selecciona a quién se asignará</option>
-                                    </select>
-                                </div>
+                        <label for="telefonoEquipo" class="form-label fw-semibold">Jugador/ Jugadores</label>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-10">
+                                <select class="form-select me-3 borde-transparente campo rounded-3 shadow"
+                                    id="generador">
+                                    <option value="">Selecciona a quién se asignará</option>
+                                </select>
                             </div>
-                        </form>
+                        </div>
                     </div>
                     <div class="col-sm-12 col-md-12" id="nombresDeLosJugadores">
 

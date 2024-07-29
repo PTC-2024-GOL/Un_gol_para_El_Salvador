@@ -4,6 +4,8 @@ let GRAPHIC_MODAL,
     SAVE_MODAL,
     SAVE_FORM;
 let CONT_FORM,
+    ID_JORNADA_URL,
+    ID_URL,
     ID_JORNADA,
     FECHA,
     N,
@@ -36,13 +38,23 @@ let CONT_FORM,
     AUTOCONFIANZA,
     SACRICIO,
     AUTOCONTROL,
+    UP_MODAL,
+    UP_FORM,
+    MODAL_TITLE_UP,
+    ID_ENTRENAMIENTO,
+    ID_JORNADAx,
+    FECHAx,
+    ID_CATEGORIA,
+    ID_HORARIO,
+    SESION,
+    ID_EQUIPO,
+    DIV_EQUIPO,
     SEE_FORM;
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
-const ENTRENAMIENTOS_API = '';
-const HORARIOS_API = '';
-
+const ENTRENAMIENTOS_API = 'services/technics/entrenamientos.php';
+const EQUIPO_API = 'services/technics/equipos.php';
 
 // Lista de datos para mostrar en la tabla de horarios
 const lista_datos_horario = [
@@ -80,7 +92,67 @@ const lista_datos_contenidos = [
     }
 ];
 
+/*
+*   Función para preparar el formulario al momento de insertar un registro.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
+const openCreate = async () => {
+    // Se muestra la caja de diálogo con su título.
+    UP_MODAL.show();
+    MODAL_TITLE_UP.textContent = 'Agregar entrenamiento';
+    // Se prepara el formulario.
+    ID_ENTRENAMIENTO.value = null;
+    ID_EQUIPO.disabled = false;
+    UP_FORM.reset();
+    await fillSelect(ENTRENAMIENTOS_API, 'readOneCategoria', 'idCategoriaa');
+    await fillSelect(ENTRENAMIENTOS_API, 'readJornadas', 'idJornada', ID_JORNADA_URL);
+    await fillSelect(EQUIPO_API, 'readAll', 'idEquipo');
+}
 
+/*
+*   Función asíncrona para preparar el formulario al momento de actualizar un registro.
+*   Parámetros: id (identificador del registro seleccionado).
+*   Retorno: ninguno.
+*/
+const openUpdate = async (id) => {
+    try {
+        // Se define un objeto con los datos del registro seleccionado.
+        const FORM = new FormData();
+        FORM.append('idEntrenamiento', id);
+        // Petición para obtener los datos del registro solicitado.
+        const DATA = await fetchData(ENTRENAMIENTOS_API, 'readOne', FORM);
+        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+        if (DATA.status) {
+            // Se muestra la caja de diálogo con su título.
+            UP_MODAL.show();
+            MODAL_TITLE_UP.textContent = 'Actualizar entrenamieno';
+            // Se prepara el formulario.
+            UP_FORM.reset();
+            // Se inicializan los campos con los datos.
+            const ROW = DATA.dataset;
+            ID_ENTRENAMIENTO.value = ROW.id_entrenamiento;
+            FECHAx.value = ROW.fecha_entrenamiento
+            await fillSelect(ENTRENAMIENTOS_API, 'readOneCategoria', 'idCategoriaa', ROW.id_horario_categoria);
+            await fillSelect(ENTRENAMIENTOS_API, 'readJornadas', 'idJornada', ID_JORNADA_URL);
+            await fillSelect(ENTRENAMIENTOS_API, 'readEquipos', 'idEquipo', ROW.id_equipo);
+            ID_EQUIPO.disabled = true;
+            for (let option of SESION.options) {
+                if (option.value === ROW.sesion) {
+                    option.selected = true;
+                    break;  // Terminar el bucle una vez encontrado el valor
+                }
+            }
+        } else {
+            sweetAlert(2, DATA.error, false);
+        }
+    } catch (Error) {
+        console.log(Error);
+        UP_MODAL.show();
+        MODAL_TITLE_UP.textContent = 'Actualizar sub-Contenido';
+    }
+
+}
 //Función asíncrona para cargar un componente HTML.
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -89,19 +161,32 @@ async function loadComponent(path) {
 }
 
 const fillContents = (data, action, selectId) => {
+    console.log('Esto es lo que trae data: ',data);
+    console.log('Llego a la función fillContents');
     const ulElement = document.getElementById(selectId);
 
     // Limpiar la lista de contenidos previos
     ulElement.innerHTML = '';
 
-    // Iterar sobre los datos proporcionados y crear un elemento li por cada contenido
+    // Inicializar una variable para construir la cadena HTML
+    let htmlContent = '';
+
+    // Iterar sobre los datos proporcionados y crear una cadena HTML por cada contenido
     data.forEach(item => {
-        const liElement = document.createElement('li');
-        liElement.classList.add('list-group-item', 'list-group-item-info', 'px-3');
-        liElement.textContent = item.contenidos; // Asignar el texto del contenido al elemento li
-        ulElement.appendChild(liElement); // Agregar el elemento li a la lista ul
+        htmlContent += `
+            <li class="list-group-item list-group-item-info px-3">
+                ${item.contenidos}
+                <button type="button" class="btn transparente"  onclick="openContenidos(${item.id_entrenamiento}, '${item.sub_tema_contenido}')">
+                        <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                        </button>
+            </li>
+        `;
     });
+
+    // Asignar la cadena HTML generada al contenedor
+    ulElement.innerHTML = htmlContent;
 };
+
 
 // Función para poblar un combobox (select) con opciones
 const fillSelected = (data, action, selectId, selectedValue = null) => {
@@ -234,6 +319,51 @@ const seeModal = async (id) => {
     }
 }
 
+/*
+*   Función asíncrona para eliminar un registro.
+*   Parámetros: id (identificador del registro seleccionado).
+*   Retorno: ninguno.
+*/
+const openDelete = async (id) => {
+    // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
+    const RESPONSE = await confirmAction('¿Desea eliminar el entrenamiento?');
+    try {
+        // Se verifica la respuesta del mensaje.
+        if (RESPONSE) {
+            // Se define una constante tipo objeto con los datos del registro seleccionado.
+            const FORM = new FormData();
+            FORM.append('idEntrenamiento', id);
+            console.log(id);
+            // Petición para eliminar el registro seleccionado.
+            const DATA = await fetchData(ENTRENAMIENTOS_API, 'deleteRow', FORM);
+            console.log(DATA.status);
+            // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+            if (DATA.status) {
+                // Se muestra un mensaje de éxito.
+                await sweetAlert(1, DATA.message, true);
+                // Se carga nuevamente la tabla para visualizar los cambios.
+                cargarTabla();
+            } else {
+                sweetAlert(2, DATA.error, false);
+            }
+        }
+    }
+    catch (Error) {
+        console.log(Error + ' Error al cargar el mensaje');
+    }
+
+}
+
+const goToAssists = async (id) => {
+    window.location.href = `../pages/specific_assistens.html?id_entrenamiento=${id}`;
+}
+
+const openContenidos = async (id, text) => {
+    console.log(id);
+    console.log(text);
+    window.location.href = `../pages/specific_details_contents.html?id_entrenamiento=${id}&sub_tema=${text}`;
+}
+
 //Crea un comentario que describa la función que esta debajo
 /*
 *   Función asíncrona para cargar la tabla de detalles de contenidos.
@@ -245,22 +375,20 @@ const seeCont = async (id) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
-        FORM.append('idJornada', id);
+        FORM.append('idEntrenamiento', id);
         // Petición para obtener los datos del registro solicitado.
-        const DATA = await fetchData(PARTIDO_API, 'readOne', FORM);
+        const DATA = await fetchData(ENTRENAMIENTOS_API, 'readOneDetalles', FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             CONT_MODAL.show();
             MODAL_TITLE1.textContent = 'Ver contenidos';
-            // Se prepara el formulario.
-            CONT_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
-            ID_JORNADA.value = ROW.ID;
-            CONTENIDO.value = ROW.CONTENIDO;
+            // Llamar a la función fillContents con la lista de datos de contenidos y el id del ul
+            fillContents(ROW, null, 'lista_contenidos');
         } else {
-            sweetAlert(2, DATA.error, false);
+            sweetAlert(4, DATA.error, false, `../pages/specific_details_contents.html?id_entrenamiento=${id}&sub_tema=${'0'}`);
         }
     } catch (Error) {
         console.log(Error);
@@ -268,6 +396,17 @@ const seeCont = async (id) => {
         MODAL_TITLE1.textContent = 'Ver contenidos';
         CONT_FORM.reset();
     }
+}
+
+/*
+*   Función para abrir la página de detalles específicos.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
+//
+// Función para abrir la página de detalles específicos.
+const openPag = (id_entrenamiento) => {
+        window.location.href = `../pages/feature_analysis.html?id=${id_entrenamiento}`;   
 }
 
 //Crea un comentario que describa la función que esta debajo
@@ -306,6 +445,12 @@ async function cargarTabla(form = null) {
         // Se verifica la acción a realizar.
         (form) ? action = 'searchRows' : action = 'readAll';
         console.log(form);
+        console.log(action);
+        console.log(ID_JORNADA_URL);
+        if (action == 'readAll') {
+            form = new FormData();
+            form.append('idJornada', ID_JORNADA_URL);
+        }
         // Petición para obtener los registros disponibles.
         const DATA = await fetchData(ENTRENAMIENTOS_API, action, form);
         console.log(DATA);
@@ -315,17 +460,29 @@ async function cargarTabla(form = null) {
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
                 <tr>
-                    <td>${row.N}</td>
-                    <td>${row.FECHA}</td>
+                    <td>${row.detalle_entrenamiento}</td>
                     <td class="justify-content-center">
-                        <button type="button" class="btn transparente" onclick="seeModal(${row.ID})">
+                        <button type="button" class="btn transparente" onclick="openPag(${row.id_entrenamiento})">
                         <img src="../../../resources/img/svg/icons_forms/stadistic.png" width="30" height="30">
                         </button>
                     </td>
                     <td>
-                        <button type="button" class="btn transparente" onclick="seeCont(${row.ID})">
+                        <button type="button" class="btn transparente" onclick="goToAssists(${row.id_entrenamiento})">
+                        <img src="../../../resources/img/svg/icons_forms/assists.svg" width="28" height="28">
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn transparente" onclick="seeCont(${row.id_entrenamiento})">
                         <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
                         </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn transparente" onclick="openUpdate(${row.id_entrenamiento})">
+                        <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                        </button>
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_entrenamiento})">
+                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                    </button>
                     </td>
                 </tr>
                 `;
@@ -351,6 +508,14 @@ async function cargarTabla(form = null) {
                         <button type="button" class="btn transparente" onclick="seeCont(${row.id})">
                         <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="|8" height="18">
                         </button>
+                    </td>
+                    <td>
+                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id_detalle_contenido})">
+                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                    </button>
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_detalle_contenido})">
+                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                    </button>
                     </td>
                 </tr>
             `;
@@ -428,49 +593,60 @@ window.onload = async function () {
     loadTemplate();
     // Agrega el HTML del encabezado
     appContainer.innerHTML = adminHtml;
-
+    ID_URL = new URLSearchParams(window.location.search);
+    ID_JORNADA_URL = ID_URL.get('id');
+    const FORME = new FormData();
+    FORME.append('idJornada', ID_JORNADA_URL);
+    // Petición para guardar los datos del formulario.
+    const DATAE = await fetchData(ENTRENAMIENTOS_API, 'readOneTitulo', FORME);
     const titleElement = document.getElementById('title');
-    titleElement.textContent = 'Entrenamiento Jornada del 3 de julio - 29 de agosto';
-    // Llamar a la función fillContents con la lista de datos de contenidos y el id del ul
-    fillContents(lista_datos_contenidos, null, 'lista_contenidos');
+    titleElement.textContent = DATAE.dataset.titulo;
 
-    fillSelected(lista_datos_horario, 'readAll', 'horario');
     cargarTabla();
     // Constantes para establecer los elementos del componente Modal.
     SEE_MODAL2 = new bootstrap.Modal('#saveModal'),
-        MODAL_TITLE2 = document.getElementById('modalTitle')
+        MODAL_TITLE2 = document.getElementById('modalTitle');
 
     CONT_MODAL = new bootstrap.Modal('#contModal'),
-        MODAL_TITLE1 = document.getElementById('modalTitle1')
+        MODAL_TITLE1 = document.getElementById('modalTitle1');
 
     SAVE_FORM = document.getElementById('contForm');
 
     SEE_MODAL = new bootstrap.Modal('#seeModal'),
-        MODAL_TITLE = document.getElementById('modalTitle2')
+        MODAL_TITLE = document.getElementById('modalTitle2');
+
+    UP_MODAL = new bootstrap.Modal('#upModal'),
+        UP_FORM = document.getElementById('upForm'),
+        MODAL_TITLE_UP = document.getElementById('modalTitleUp'),
+        ID_ENTRENAMIENTO = document.getElementById('idEntrenamiento'),
+        ID_JORNADAx = document.getElementById('idJornada'),
+        FECHAx = document.getElementById('fecha'),
+        ID_CATEGORIA = document.getElementById('idCategoriaa'),
+        SESION = document.getElementById('sesion'),
+        ID_EQUIPO = document.getElementById('idEquipo'),
+        DIV_EQUIPO = document.getElementById('equipos');
 
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('seeForm'),
         ID_JORNADA = document.getElementById('idCategoria'),
         HORARIO = document.getElementById('horario');
     // Método del evento para cuando se envía el formulario de guardar.
-    SAVE_FORM.addEventListener('submit', async (event) => {
+    UP_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
         event.preventDefault();
         // Se verifica la acción a realizar.
-        (ID_JORNADA.value) ? action = 'select' : action = 'createRow';
+        (ID_ENTRENAMIENTO.value) ? action = 'updateRow' : action = 'createRow';
         // Constante tipo objeto con los datos del formulario.
-        const FORM = new FormData(SAVE_FORM);
+        const FORM = new FormData(UP_FORM);
+        console.log(FORM);
+        console.log(action);
         // Petición para guardar los datos del formulario.
         const DATA = await fetchData(ENTRENAMIENTOS_API, action, FORM);
-        //Aqui debo hacer la lógica de lo que sucederá cuando se le dé click a seleccionar horario.
-        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-        //Pondré el metodo para abrir la siguiente pantalla antes del if, luego deberé ponerla
-        // Redirige a una nueva página en la misma ventana del navegador
 
-
+        console.log(DATA);
         if (DATA.status) {
             // Se cierra la caja de diálogo.
-            SAVE_MODAL.hide();
+            UP_MODAL.hide();
             // Se muestra un mensaje de éxito.
             sweetAlert(1, DATA.message, true);
             // Se carga nuevamente la tabla para visualizar los cambios.
