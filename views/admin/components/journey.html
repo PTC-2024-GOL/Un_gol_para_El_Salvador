@@ -27,27 +27,19 @@
                     <span class="fs-5 me-2">+</span> Agregar jornada
                 </button>
             </div>
+            <div class="col-6">
+                <select class="form-select" name="paginas" id="paginas" onchange="updateJornadasPorPagina()">
+                    <option value="5">Filtrar por 5 registros</option>
+                    <option value="10">Filtrar por 10 registros</option>
+                    <option value="20">Filtrar por 20 registros</option>
+                    <option value="25">Filtrar por 25 registros</option>
+                </select>
+            </div>
         </div>
     </div>
-    <hr>
-    <!-- Tabla para mostrar los registros existentes -->
-    <div class="table-responsive">
-        <table class="table table align-middle table-striped table-borderless ">
-            <!-- Cabeza de la tabla para mostrar la cantidad de registros y los títulos de las columnas -->
-            <thead>
-                <tr>
-                    <td colspan="6" id="rowsFound"></td>
-                </tr>
-                <tr>
-                    <th>Número de jornada</th>
-                    <th>Nombre de jornada</th>
-                    <th>Fecha de inicio de la jornada</th>
-                    <th>Fecha final de la jornada</th>
-                </tr>
-            </thead>
-            <!-- Cuerpo de la tabla para mostrar un registro por fila -->
-            <tbody id="tabla_jornadas"></tbody>
-        </table>
+    <h5 colspan="6" id="rowsFound" class="pt-3 pb-3"></h5>
+    <div class="row row-cols-1 row-cols-md-3 g-4 mb-4" id="tabla_jornadas">
+
     </div>
     <nav aria-label="Page navigation example">
         <ul class="pagination">
