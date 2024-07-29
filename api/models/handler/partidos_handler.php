@@ -144,6 +144,14 @@ class PartidosHandler
         return Database::getRow($sql);
     }
 
+    public function lastMatchTecnics()
+    {
+        $sql = 'SELECT * FROM vista_detalle_partidos_tecnicos WHERE id_tecnico = ? ORDER BY fecha ASC LIMIT 1';
+        $params = array($_SESSION['idTecnico']);
+        return Database::getRow($sql, $params);
+    }
+
+
     public function matchesResult()
     {
 
