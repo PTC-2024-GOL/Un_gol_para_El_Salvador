@@ -95,7 +95,7 @@ async function fillTable(form = null) {
         console.error('Error al obtener datos de la API:', error);
     }
 }
-
+/*
 // Función para mostrar técnicos en una página específica
 function mostrarJornadas(pagina) {
     const inicio = (pagina - 1) * jornadasPorPagina;
@@ -123,6 +123,39 @@ function mostrarJornadas(pagina) {
 
     actualizarPaginacion();
 }
+*/
+// Función para mostrar técnicos en una página específica
+function mostrarJornadas(pagina) {
+    const inicio = (pagina - 1) * jornadasPorPagina;
+    const fin = inicio + jornadasPorPagina;
+    const jornadasPagina = jornadas.slice(inicio, fin);
+
+    const cargarTabla = document.getElementById('tabla_jornadas');
+    cargarTabla.innerHTML = '';
+    jornadasPagina.forEach(row => {
+        const tablaHtml = `
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">${row.NOMBRE}</h5>
+                        <p class="card-text">${row.PLANTILLA}</p>
+                        <p class="card-text">${row.FECHA_INICIO}</p>
+                        <p class="card-text">${row.FECHA_FIN}</p>
+                    </div>
+                    <div class="card-footer"> 
+                        <a href="trainings.html?id=${row.ID}" class="btn botones">
+                            <img src="../../../resources/img/svg/icons_forms/training.svg" width="20" height="20">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        `;
+        cargarTabla.innerHTML += tablaHtml;
+    });
+
+    actualizarPaginacion();
+}
+
 
 // Función para actualizar los controles de paginación
 function actualizarPaginacion() {

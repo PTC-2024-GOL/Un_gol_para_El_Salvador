@@ -4,16 +4,33 @@ let SAVE_FORM,
     PESO,
     ALTURA,
     IMC,
-    FECHA;
+    ID_JUGADOR,
+    FECHA,
+    titleElement;
+    let SAVE_MODAL2;
+    let titleElement2;
 let SEARCH_FORM;
+const PARAMS = new URLSearchParams(window.location.search);
+//Guarda en una variable el parametro obtenido
+const JUGADOR = PARAMS.get("id");
 
 // Constantes para completar las rutas de la API.
-const ESTADO_API = '';
+const ESTADO_API = 'services/technics/estado_fisico_jugador.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
     const text = await response.text();
     return text;
+}
+/*
+*   Función para preparar el clasificacion de IMC.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
+const modalMedicalRecords = () => {
+    // Se muestra la caja de diálogo con su título.
+    SAVE_MODAL2.show();
+    MODAL_TITLE2.textContent = 'Clasificación de IMC';
 }
 /*
 *   Función para preparar el formulario al momento de insertar un registro.
@@ -26,6 +43,8 @@ const openCreate = () => {
     MODAL_TITLE.textContent = 'Agregar registro';
     // Se prepara el formulario.
     SAVE_FORM.reset();
+    ID_JUGADOR.value = JUGADOR;
+    ID_ESTADO.value = null;
 }
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
@@ -48,9 +67,10 @@ const openUpdate = async (id) => {
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
-            ID_ESTADO.value = ROW.IDESTADO;
-            PESO.value = ROW.PESOO;
-            ALTURA.value = ROW.ALTURAA;
+            ID_ESTADO.value = ROW.id_estado_fisico_jugador;
+            ID_JUGADOR.value = ROW.id_jugador;
+            PESO.value = ROW.peso_jugador;
+            ALTURA.value = ROW.altura_jugador;
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -102,62 +122,68 @@ const openDelete = async (id) => {
 *   Retorno: ninguno.
 */
 async function fillTable(form = null) {
-    const lista_datos = [
-        {
-            fecha: 'Domingo 14 de abril',
-            peso: 151.2,
-            altura: 175.0,
-            id: 1,
-        },
-        {
-            fecha: 'Domingo 14 de abril',
-            peso: 151.2,
-            altura: 175.0,
-            id: 2,
-        },
-        {
-            fecha: 'Domingo 14 de abril',
-            peso: 151.2,
-            altura: 175.0,
-            id: 3,
-        },
-        {
-            fecha: 'Domingo 14 de abril',
-            peso: 151.2,
-            altura: 175.0,
-            id: 4,
-        }
-    ];
+    const lista_datos = [];
     const cargarTabla = document.getElementById('tabla_estado');
 
     try {
         cargarTabla.innerHTML = '';
-        // Se verifica la acción a realizar.
-        (form) ? action = 'searchRows' : action = 'readAll';
-        console.log(form);
+        let action = (form) ? 'searchRows' : 'readAll';
+        console.log('form antes del parametro' + form + ' y el action es ' + action);
+        console.log('El parametro de URL contiene esto ' + JUGADOR);
+        const FORM = new FormData();
+        if (action === 'readAll') {
+            FORM.append('idJugador', JUGADOR);
+            form = FORM;
+            console.log('entré al parametro de readAll ');
+        }
+        console.log('form despues del parametro' + FORM);
+        
         // Petición para obtener los registros disponibles.
         const DATA = await fetchData(ESTADO_API, action, form);
-        console.log(DATA);
-
+        console.log('Esto contiene la consulta ' + DATA);
+        let nombreJugador;
         if (DATA.status) {
             // Mostrar elementos obtenidos de la API
             DATA.dataset.forEach(row => {
+                let color;
+                let imc = parseFloat(row.indice_masa_corporal);
+
+                // Determinar el color basado en el IMC
+                if (imc < 18.5) {
+                    color = 'gray';
+                } else if (imc >= 18.5 && imc <= 24.9) {
+                    color = 'green';
+                } else if (imc >= 25 && imc <= 29.9) {
+                    color = 'blue';
+                } else if (imc >= 30 && imc <= 34.9) {
+                    color = 'pink';
+                } else if (imc >= 35 && imc <= 39.9) {
+                    color = 'orangered';
+                } else {
+                    color = 'darkred';
+                }
+                console.log('Esto contiene el color ' + color);
+
                 const tablaHtml = `
                 <tr>
-                    <td>${row.FECHA}</td>
-                    <td>${row.ALTURA}</td>
-                    <td>${row.PESO}</td>
-                    <td>${row.IMC}</td>
+                    <td>${row.fecha_creacion_format}</td>
+                    <td>${row.altura_jugador} ctm</td>
+                    <td>${row.peso_jugador} lbs</td>
+                    <td style="color: ${color};">${row.indice_masa_corporal}</td>
                     <td>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.ID_LESION})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                    </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.ID_LESION})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
+                        <button type="button" class="btn transparente" onclick="openUpdate(${row.id_estado_fisico_jugador})">
+                            <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                        </button>
+                        <button type="button" class="btn transparente" onclick="openDelete(${row.id_estado_fisico_jugador})">
+                            <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                        </button>
                     </td>
                 </tr>
                 `;
+                nombreJugador = row.nombre_jugador;
+                if (nombreJugador !== undefined) {
+                    titleElement.textContent = 'Estado fisico del jugador ' + nombreJugador;
+                }
                 cargarTabla.innerHTML += tablaHtml;
             });
         } else {
@@ -181,10 +207,10 @@ async function fillTable(form = null) {
                 <td>${imc.toFixed(2)}</td>
                 <td>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                        <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
                     <button type="button" class="btn transparente" onclick="openDelete(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                        <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
                 </td>
             </tr>
@@ -193,6 +219,7 @@ async function fillTable(form = null) {
         });
     }
 }
+
 
 // window.onload
 window.onload = async function () {
@@ -204,31 +231,38 @@ window.onload = async function () {
     loadTemplate();
     // Agrega el HTML del encabezado
     appContainer.innerHTML = lesionHtml;
+    titleElement = document.getElementById('title');
+    titleElement.textContent = 'Estado fisico del jugador';
     //Agrega el encabezado de la pantalla
-    const titleElement = document.getElementById('title');
-    titleElement.textContent = 'Estado físico de Eduardo Cubias';
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
 
+    SAVE_MODAL2 = new bootstrap.Modal('#saveModal2'),
+        MODAL_TITLE2 = document.getElementById('modalTitle2');
+
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
-        ID_ESTADO = document.getElementById('idEtsado'),
+        ID_ESTADO = document.getElementById('idEstado'),
         PESO = document.getElementById('peso'),
+        ID_JUGADOR = document.getElementById('idJugador'),
         ALTURA = document.getElementById('altura'),
         // Método del evento para cuando se envía el formulario de guardar.
         SAVE_FORM.addEventListener('submit', async (event) => {
             // Se evita recargar la página web después de enviar el formulario.
             event.preventDefault();
             // Se verifica la acción a realizar.
-            (ID_ADMINISTRADOR.value) ? action = 'updateRow' : action = 'createRow';
+            (ID_ESTADO.value) ? action = 'updateRow' : action = 'createRow';
+            console.log('El valor de la acción es ' + action);
+            console.log('Esto contiene el estado' + ID_ESTADO.value);
             // Constante tipo objeto con los datos del formulario.
             const FORM = new FormData(SAVE_FORM);
             // Petición para guardar los datos del formulario.
             const DATA = await fetchData(ESTADO_API, action, FORM);
             // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
             if (DATA.status) {
+                console.log('Entré al if de que se agrego el coso ' + DATA);
                 // Se cierra la caja de diálogo.
                 SAVE_MODAL.hide();
                 // Se muestra un mensaje de éxito.
@@ -236,6 +270,7 @@ window.onload = async function () {
                 // Se carga nuevamente la tabla para visualizar los cambios.
                 fillTable();
             } else {
+                console.log('Esto contiene el parametro ID_JUGADOR ' + ID_JUGADOR.value);
                 sweetAlert(2, DATA.error, false);
                 console.error(DATA.exception);
             }
@@ -250,6 +285,7 @@ window.onload = async function () {
         event.preventDefault();
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SEARCH_FORM);
+        FORM.append('idJugador', JUGADOR);
         console.log(SEARCH_FORM);
         console.log(FORM);
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
