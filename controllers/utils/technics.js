@@ -129,10 +129,10 @@ MAIN.insertAdjacentHTML('beforebegin', `
                             <div class="contenedor p-3 rounded-3">
                                 <!-- Etiqueta para contactanos -->
                                 <li class="nav-item">
-                                    <a class="nav-link active text-light" aria-current="page" href="#">
+                                    <a class="nav-link active text-light" aria-current="page" href="contact_us.html">
                                         <img src="../../../resources/img/svg/icons_menu/contactanos.svg" class="me-3"
                                             alt="">
-                                        contáctanos</a>
+                                        Contáctanos</a>
                                 </li>
                                 <!-- Etiqueta para log out -->
                                 <li class="nav-item">
