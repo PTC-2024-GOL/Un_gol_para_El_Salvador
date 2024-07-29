@@ -24,6 +24,29 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'No hay coincidencias';
                 }
                 break;
+            // Crear
+            case 'createRow':
+                $_POST = Validator::validateForm($_POST);
+                if (
+                    !$participacion->setIdPartido($_POST['idPartido']) or
+                    !$participacion->setIdJugador($_POST['idJugador']) or
+                    !$participacion->setIdPosicion($_POST['idPosicion']) or
+                    !$participacion->setTitularidad($_POST['titular']) or
+                    !$participacion->setSustitucion($_POST['sustitucion']) or
+                    !$participacion->setMinutosJugados($_POST['minutos']) or
+                    !$participacion->setAsistencias($_POST['asistencia']) or
+                    !$participacion->setEstadoAnimo($_POST['animo']) or
+                    !$participacion->setPuntuacion($_POST['puntuacion'])
+                ) {
+                    $result['error'] = $participacion->getDataError();
+                } elseif ($participacion->createRow()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Participación creada correctamente';
+                } else {
+                    $result['error'] = 'Ocurrió un problema al crear la participación';
+                }
+                break;
+            // Leer todos
             case 'readAll':
                 if ($result['dataset'] = $participacion->readAll()) {
                     $result['status'] = 1;
@@ -62,6 +85,40 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                 } else {
                     $result['error'] = 'Aún no hay jugadores ingresados en esta área de juego';
+                }
+                break;
+            // Actualizar
+            case 'updateRow':
+                $_POST = Validator::validateForm($_POST);
+                if (
+                    !$participacion->setTitularidad($_POST['titular']) or
+                    !$participacion->setSustitucion($_POST['sustitucion']) or
+                    !$participacion->setMinutosJugados($_POST['minutos']) or
+                    !$participacion->setAsistencias($_POST['asistencia']) or
+                    !$participacion->setEstadoAnimo($_POST['animo']) or
+                    !$participacion->setPuntuacion($_POST['puntuacion']) or
+                    !$participacion->setIdPosicion($_POST['idPosicion']) or
+                    !$participacion->setIdParticipacion($_POST['idParticipacion'])
+                ) {
+                    $result['error'] = $participacion->getDataError();
+                } elseif ($participacion->updateRow()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Participación modificada correctamente';
+                } else {
+                    $result['error'] = 'Aún no has ingresado la participación del jugador. Ingresa su participación de este partido';
+                }
+                break;
+            // Eliminar
+            case 'deleteRow':
+                if (
+                    !$participacion->setIdParticipacion($_POST['idParticipacion'])
+                ) {
+                    $result['error'] = $participacion->getDataError();
+                } elseif ($participacion->deleteRow()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Participación eliminada correctamente';
+                } else {
+                    $result['error'] = 'Ocurrió un problema al eliminar la participación. Si ya tienes goles o amonestaciones creadas, tienes que eliminarlas antes.';
                 }
                 break;
             default:

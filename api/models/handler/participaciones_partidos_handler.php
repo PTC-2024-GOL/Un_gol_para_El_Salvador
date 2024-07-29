@@ -23,6 +23,7 @@ class ParticipacionesPartidosHandler
     protected $puntuacion = null;
     protected $idEquipo = null;
     protected $areaJuego = null;
+    protected $idPosicion = null;
 
 
     /*
@@ -41,7 +42,7 @@ class ParticipacionesPartidosHandler
     //Función para insertar una participacion.
     public function createRow()
     {
-        $sql = 'INSERT INTO participaciones_partidos(id_partido, id_jugador, titular, sustitucion, minutos_jugados, asistencias, estado_animo, puntuacion) VALUE (?,?,?,?,?,?,?,?)';
+        $sql = 'INSERT INTO participaciones_partidos(id_partido, id_jugador, id_posicion, titular, sustitucion, minutos_jugados, asistencias, estado_animo, puntuacion) VALUE (?,?,?,?,?,?,?,?)';
         $params = array(
             $this->idPartido,
             $this->idJugador,
@@ -51,6 +52,7 @@ class ParticipacionesPartidosHandler
             $this->asistencias,
             $this->estadoAnimo,
             $this->puntuacion,
+            $this->idPosicion
         );
         return Database::executeRow($sql, $params);
     }
@@ -93,7 +95,7 @@ class ParticipacionesPartidosHandler
     public function updateRow()
     {
         $sql = 'UPDATE participaciones_partidos
-        SET titular = ?, sustitucion = ?, minutos_jugados =?, asistencias = ?, estado_animo = ?, puntuacion = ?
+        SET titular = ?, sustitucion = ?, minutos_jugados =?, asistencias = ?, estado_animo = ?, puntuacion = ?, id_posicion = ?
         WHERE id_participacion = ?';
         $params = array(
             $this->titular,
@@ -102,7 +104,8 @@ class ParticipacionesPartidosHandler
             $this->asistencias,
             $this->estadoAnimo,
             $this->puntuacion,
-            $this->idParticipacion,
+            $this->idPosicion,
+            $this->idParticipacion
         );
         return Database::executeRow($sql, $params);
     }
