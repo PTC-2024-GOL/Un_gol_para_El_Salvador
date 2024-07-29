@@ -10,6 +10,10 @@
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s, box-shadow 0.3s;
+    background-size: 60%;
+    background-image: url('../../resources/img/svg/logo_opaco.svg'); /* Ruta de la imagen */
+    background-repeat: no-repeat;
+    background-position: right top;
 }
 
 .card:hover {
