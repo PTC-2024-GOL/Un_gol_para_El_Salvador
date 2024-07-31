@@ -42,8 +42,10 @@ class CalendarioData extends CalendarioHandler
     {
         if(!Validator::validateDateTime($value)){
             $this->data_error = 'La fecha ingresada no esta en el formato correcto';
+            return false;
         } else {
             $this->fechaInicio = $value;
+            return true;
         }
     }
 
@@ -51,8 +53,10 @@ class CalendarioData extends CalendarioHandler
     {
         if(!Validator::validateDateTime($value)){
             $this->data_error = 'La fecha ingresada no esta en el formato correcto';
+            return false;
         } else {
             $this->fechaFinal = $value;
+            return true;
         }
     }
 

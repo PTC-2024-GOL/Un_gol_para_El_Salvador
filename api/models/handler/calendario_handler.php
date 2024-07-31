@@ -41,12 +41,13 @@ class CalendarioHandler
     public function updateRow()
     {
         $sql = 'UPDATE calendario
-        SET titulo = ?, fecha_inicio = ?, fecha_final = ? , color = ?';
+        SET titulo = ?, fecha_inicio = ?, fecha_final = ? , color = ? WHERE id_calendario = ?';
         $params = array(
             $this->titulo,
             $this->fechaInicio,
             $this->fechaFinal,
-            $this->color
+            $this->color,
+            $this->idCalendario
         );
         return Database::executeRow($sql, $params);
     }
