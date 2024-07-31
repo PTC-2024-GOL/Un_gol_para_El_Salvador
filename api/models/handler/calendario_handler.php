@@ -38,6 +38,14 @@ class CalendarioHandler
         return Database::getRows($sql);
     }
 
+    public function readOne()
+    {
+        $sql = "SELECT *
+        FROM calendario WHERE id_calendario = ?;";
+        $params = array($this->idCalendario);
+        return Database::getRow($sql, $params);
+    }
+
     public function updateRow()
     {
         $sql = 'UPDATE calendario

@@ -40,6 +40,15 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'No existen eventos registrados';
                 }
                 break;
+            case 'readOne':
+                if (!$calendario->setIdCalendario($_POST['idCalendario'])) {
+                    $result['error'] = $calendario->getDataError();
+                } elseif ($result['dataset'] = $calendario->readOne()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Ocurrio un error al ver este evento';
+                }
+                break;
             // Actualizar
             case 'updateRow':
                 $_POST = Validator::validateForm($_POST);
