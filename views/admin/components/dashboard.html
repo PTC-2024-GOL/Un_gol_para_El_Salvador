@@ -130,3 +130,80 @@
             </div>
         </div>
     </div>
+
+
+    <!-- Componente Modal para seleccionar una opcion -->
+    <div class="modal fade" id="selectModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-blue-principal-color">
+                    <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                    <h1 class="modal-title fs-5 text-white" id="modalTitle1"></h1>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="text-center p-4 mx-4">
+                    <div class="row">
+                        <button type="submit" class="btn bg-blue-principal-color text-white" id="updateEvent">Actualizar evento</button>
+                        <button type="submit" class="btn bg-red-cream-color text-white mt-2" id="deleteEvent">Eliminar evento</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Componente Modal para guardar un registro -->
+    <div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-blue-principal-color">
+                    <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                    <h1 class="modal-title fs-5 text-white" id="modalTitle"></h1>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <!-- Formulario para crear o actualizar un registro -->
+                <form id="saveForm">
+                    <div class="modal-body row g-3">
+                        <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                        <input type="number" class="d-none" id="idCalendario" name="idCalendario">
+                        <div class="col-sm-12 col-md-12">
+                            <label for="titulo" class="form-label fw-semibold">Título del evento</label>
+                            <input id="titulo" type="text" name="titulo" class="form-control"
+                                   placeholder="Escribe el título del evento" required>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="fechaI" class="form-label fw-semibold">Fecha y hora inicial del evento</label>
+                            <input id="fechaI" type="datetime-local" name="fechaInicial" class="form-control"
+                                   placeholder="Selecciona la fecha de inicio" required>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="fechaF" class="form-label fw-semibold">Fecha y hora final del evento</label>
+                            <input id="fechaF" type="datetime-local" name="fechaFinal" class="form-control"
+                                   placeholder="Selecciona la fecha final" required>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="color" class="form-label fw-semibold">Color</label>
+                            <div class="d-flex justify-content-evenly mt-2">
+                                <div id="color1" class="color-circle"></div>
+                                <div id="color2" class="color-circle"></div>
+                                <div id="color3" class="color-circle"></div>
+                                <div id="color4" class="color-circle"></div>
+                                <div id="color5" class="color-circle"></div>
+                                <div id="color6" class="color-circle"></div>
+                                <div id="color7" class="color-circle"></div>
+                            </div>
+                            <input id="color" type="text" name="color" class="form-control form-control-sm mt-4 col-2" readonly>
+                        </div>
+                    </div>
+                    <div class="modal-footer col-sm-12 col-md-12 col-lg-12 justify-content-center">
+                        <button type="reset" class="btn bg-red-cream-color text-white">Cancelar</button>
+                        <button type="submit" class="btn bg-blue-principal-color text-white ">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>

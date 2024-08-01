@@ -21,7 +21,6 @@ let TEAMS;
 //VARIABLES PARA EL ULTIMO PARTIDO
 let MATCH;
 
-
 // Variables para los modals y form
 let SELECT_MODAL;
 

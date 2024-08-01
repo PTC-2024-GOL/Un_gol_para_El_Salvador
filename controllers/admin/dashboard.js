@@ -21,8 +21,33 @@ let TEAMS;
 //VARIABLES PARA EL ULTIMO PARTIDO
 let MATCH;
 
+// Variables para los modals y form
+let SELECT_MODAL;
+
+let SAVE_MODAL;
+let SAVE_FORM,
+    ID_CALENDARIO,
+    TITULO,
+    FECHA_INICIO,
+    FECHA_FINAL,
+    COLOR;
+
+//Variables para los botones del modal
+let UPDATE_BUTTON;
+let DELETE_BUTTON;
+
+//Variables de colores
+let COLOR_1;
+let COLOR_2;
+let COLOR_3;
+let COLOR_4;
+let COLOR_5;
+let COLOR_6;
+let COLOR_7;
+
 let API_SOCCER = 'services/admin/equipos.php';
 let MATCHES_API = 'services/admin/partidos.php';
+let CALENDAR_API = 'services/technics/calendario.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -154,81 +179,178 @@ const getUser = async () => {
     }
 }
 
-let title;
-let eventIdCounter = 1;
+
+let calendarInstance;
 
 const calendar = async () => {
-
+    const initialLocaleCode = 'es';
     const calendarEl = document.getElementById('calendar');
-    const calendar = new FullCalendar.Calendar(calendarEl, {
+    calendarInstance = new FullCalendar.Calendar(calendarEl, {
+        height: 600,
         initialView: 'dayGridMonth',
         selectable: true,
         headerToolbar: {
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            right: 'dayGridMonth,timeGridDay'
+        },
+        footerToolbar: {
+            left: 'addEventButton'
+        },
+        //Cambio de idioma
+        locale: initialLocaleCode,
+
+        //Para ver todos los eventos creados desde la api y se agregan al calendario
+        events: async (fetchInfo, successCallback) => {
+            const DATA = await fetchData(CALENDAR_API, 'readAll');
+
+            if(DATA.status) {
+                const events = DATA.dataset.map(event => ({
+                    title: event.titulo,
+                    start: event.fecha_inicio,
+                    end: event.fecha_final,
+                    backgroundColor: event.color,
+                    borderColor: event.color,
+                    id: event.id_calendario
+                }));
+
+                // Pasa los eventos al calendario
+                successCallback(events);
+            } else {
+                throw new Error(DATA.error);
+            }
         },
 
-        //Evento que se activa cuando se da clic a una fecha del calendario
-        dateClick: function(info) {
-            title = prompt('Escribe un titulo para la fecha');
-            if (title) {
-                const dateStr = prompt('Escribe la hora para el evento en formato HH:MM (24 horas)', '12:00');
-
-                // Validar la hora ingresada
-                const timePattern = /^([01]\d|2[0-3]):([0-5]\d)$/;
-                if (!timePattern.test(dateStr)) {
-                    alert('Hora no válida. Por favor, use el formato HH:MM.');
-                    return;
+        //Agregar evento al calendario
+        customButtons: {
+            today: {
+                text: 'Hoy',
+                click: function() {
+                    calendarInstance.today();
                 }
+            },
+            dayGridMonth: {
+                text: 'Mes',
+                click: function() {
+                    calendarInstance.changeView('dayGridMonth');
+                }
+            },
+            timeGridDay: {
+                text: 'Día',
+                click: function() {
+                    calendarInstance.changeView('timeGridDay');
+                }
+            },
+            //Boton para agregar un nuevo evento
+            addEventButton: {
+                text: 'Agregar evento',
+                click: async function() {
+                    SAVE_FORM.reset();
+                    SAVE_MODAL.show();
+                    MODAL_TITLE.textContent = 'Agregar evento'
 
-                const dateTimeStr = `${info.dateStr}T${dateStr}:00`; // Formato ISO 8601
-                const endDateTimeStr = `${info.dateStr}T${dateStr}:59`;
-
-                const color = prompt('Escribe un color para el evento (por ejemplo, "#ff0000" para rojo)');
-                calendar.addEvent({
-                    title: title,
-                    id: eventIdCounter++,
-                    start: dateTimeStr,
-                    end: endDateTimeStr,
-                    backgroundColor: color,
-                    borderColor: color,
-                });
+                    await addOrUpdateEvent();
+                }
             }
-            alert('clicked ' + info.dateStr);
         },
 
         //Evento que se activa cuando se hace clic a un evento en el calendario - Para eliminar o editar.
         eventClick: function(info) {
-            const action = prompt('¿Qué acción deseas realizar? Escribe "editar" o "eliminar".');
+            SELECT_MODAL.show();
+            MODAL_TITLE1.textContent = 'Acción'
 
-            if (action === 'editar') {
-                let newTitle = prompt('Actualizar título:', info.event.title);
-                if (newTitle) {
-                    let newColor = prompt('Actualizar color:', info.event.backgroundColor);
+            //Actualizar el evento
+            UPDATE_BUTTON.addEventListener('click', async function() {
+                SELECT_MODAL.hide();
+                const FORM = new FormData();
+                FORM.append('idCalendario', info.event.id);
 
-                    // Actualizar el evento con el nuevo título y color
-                    calendar.getEventById(info.event.id).setProp('title', newTitle);
-                    calendar.getEventById(info.event.id).setProp('backgroundColor', newColor);
+                const DATA = await fetchData(CALENDAR_API, 'readOne', FORM);
+                if(DATA.status){
+                    SAVE_MODAL.show();
+                    MODAL_TITLE.textContent = 'Actualizar evento';
+                    SAVE_FORM.reset();
+                    const ROW = DATA.dataset;
+                    ID_CALENDARIO.value = ROW.id_calendario;
+                    TITULO.value = ROW.titulo;
+                    FECHA_INICIO.value = ROW.fecha_inicio;
+                    FECHA_FINAL.value = ROW.fecha_final;
+                    COLOR.value = ROW.color;
 
-                    alert(`Evento actualizado: ${newTitle}`);
+                    await addOrUpdateEvent();
+                } else {
+                    await sweetAlert(2, DATA.error, true);
                 }
-            } else if (action === 'eliminar') {
-                if (confirm(`¿Seguro que quieres eliminar el evento "${info.event.title}"?`)) {
-                    info.event.remove(); // Eliminar el evento del calendario
-                    alert(`Evento "${info.event.title}" eliminado.`);
+
+            });
+
+            //Eliminar el evento
+            DELETE_BUTTON.addEventListener('click', async function() {
+                SELECT_MODAL.hide();
+                const RESPONSE = await confirmAction('¿Seguro que quieres eliminar este evento?');
+
+                // Se verifica la respuesta del mensaje.
+                if (RESPONSE) {
+                    // Se define una constante tipo objeto con los datos del registro seleccionado.
+                    const FORM = new FormData();
+                    FORM.append('idCalendario', info.event.id);
+                    // Petición para eliminar el registro seleccionado.
+                    const DATA = await fetchData(CALENDAR_API, 'deleteRow', FORM);
+                    // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+                    if (DATA.status) {
+                        // Se muestra un mensaje de éxito.
+                        await sweetAlert(1, DATA.message, true);
+                        // Se carga nuevamente la tabla para visualizar los cambios.
+                        info.event.remove();
+                    } else {
+                        await sweetAlert(2, DATA.error, false);
+                    }
                 }
-            } else {
-                alert('Acción no válida.');
-            }
-        },
-        select: function(info) {
-            alert('selected ' + info.startStr + ' to ' + info.endStr);
-        },
-        events: []
+            });
+        }
     });
-    calendar.render();
+    calendarInstance.render();
+}
 
+//Funcion para actualizar o agregar eventos al calendario
+const addOrUpdateEvent = async () => {
+    // Creación y actualización del evento
+    SAVE_FORM.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const FORM = new FormData(SAVE_FORM);
+        let action = (ID_CALENDARIO.value) ? 'updateRow' : 'createRow';
+        const DATA = await fetchData(CALENDAR_API, action, FORM);
+
+        if (DATA.status) {
+            SAVE_MODAL.hide();
+            await sweetAlert(1, DATA.message, true);
+
+            // Si la acción fue crear un nuevo evento, lo agregamos al calendario
+            if (action === 'createRow') {
+                calendarInstance.addEvent({
+                    id: DATA.dataset.idCalendario,
+                    title: TITULO.value,
+                    start: FECHA_INICIO.value,
+                    end: FECHA_FINAL.value,
+                    backgroundColor: COLOR.value,
+                    borderColor: COLOR.value,
+                });
+            } else {
+                // Si la acción fue actualizar, buscamos y actualizamos el evento en el calendario
+                let existingEvent = calendarInstance.getEventById(ID_CALENDARIO.value);
+                if (existingEvent) {
+                    existingEvent.setProp('title', TITULO.value);
+                    existingEvent.setStart(FECHA_INICIO.value);
+                    existingEvent.setEnd(FECHA_FINAL.value);
+                    existingEvent.setProp('backgroundColor', COLOR.value);
+                    existingEvent.setProp('borderColor', COLOR.value);
+                }
+            }
+
+        } else {
+            await sweetAlert(2, DATA.error, true);
+        }
+    });
 }
 
 window.onload = async function () {
@@ -270,4 +392,50 @@ window.onload = async function () {
     await lastMatch();
 
     await fillSelect(API_SOCCER, 'readAll', 'equipos');
+
+    SAVE_MODAL = new bootstrap.Modal('#saveModal'),
+        MODAL_TITLE = document.getElementById('modalTitle');
+
+    SELECT_MODAL = new bootstrap.Modal('#selectModal'),
+        MODAL_TITLE1 = document.getElementById('modalTitle1');
+
+    SAVE_FORM = document.getElementById('saveForm'),
+        ID_CALENDARIO = document.getElementById('idCalendario'),
+        TITULO = document.getElementById('titulo'),
+        FECHA_INICIO = document.getElementById('fechaI'),
+        FECHA_FINAL = document.getElementById('fechaF'),
+        COLOR = document.getElementById('color');
+
+    UPDATE_BUTTON = document.getElementById('updateEvent');
+    DELETE_BUTTON = document.getElementById('deleteEvent');
+
+    COLOR_1 = document.getElementById('color1');
+    COLOR_2 = document.getElementById('color2');
+    COLOR_3 = document.getElementById('color3');
+    COLOR_4 = document.getElementById('color4');
+    COLOR_5 = document.getElementById('color5');
+    COLOR_6 = document.getElementById('color6');
+    COLOR_7 = document.getElementById('color7');
+
+    COLOR_1.addEventListener('click', async function() {
+        COLOR.value = '#0b5ed7';
+    });
+    COLOR_2.addEventListener('click', async function() {
+        COLOR.value = '#d70b2a';
+    });
+    COLOR_3.addEventListener('click', async function() {
+        COLOR.value = '#0bd734';
+    });
+    COLOR_4.addEventListener('click', async function() {
+        COLOR.value = '#f5e00d';
+    });
+    COLOR_5.addEventListener('click', async function() {
+        COLOR.value = '#8c0bd7';
+    });
+    COLOR_6.addEventListener('click', async function() {
+        COLOR.value = '#d70b90';
+    });
+    COLOR_7.addEventListener('click', async function() {
+        COLOR.value = '#2a9cef';
+    });
 }
