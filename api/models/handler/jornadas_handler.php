@@ -32,6 +32,35 @@ class JornadasHandler
         return Database::getRows($sql, $params);
     }
 
+    //Función para buscar un cuerpo técnico o varias.
+    public function searchRowsTechnics()
+    {
+        $value = '%' . Validator::getSearchValue() . '%';
+        $sql = 'SELECT 
+        j.id_jornada AS ID,
+        j.nombre_jornada AS NOMBRE,
+        j.numero_jornada AS NUMERO,
+        p.nombre_plantilla AS PLANTILLA,
+        j.id_plantilla AS ID_PLANTILLA,
+        j.fecha_inicio_jornada AS FECHA_INICIO,
+        j.fecha_fin_jornada AS FECHA_FIN
+        FROM 
+        jornadas j
+        INNER JOIN 
+        plantillas p ON j.id_plantilla = p.id_plantilla
+        INNER JOIN 
+        plantillas_equipos pe ON p.id_plantilla = pe.id_plantilla
+        INNER JOIN 
+        equipos e ON pe.id_equipo = e.id_equipo
+        INNER JOIN 
+        detalles_cuerpos_tecnicos dct ON e.id_cuerpo_tecnico = dct.id_cuerpo_tecnico
+        WHERE 
+        dct.id_tecnico = ? AND (nombre_jornada LIKE ? OR numero_jornada LIKE ? OR nombre_plantilla LIKE ? OR fecha_inicio_jornada LIKE ? OR fecha_fin_jornada LIKE ?)
+        ORDER BY NOMBRE;';
+        $params = array($_SESSION['idTecnico'], $value, $value, $value, $value, $value);
+        return Database::getRows($sql, $params);
+    }
+
     //Función para insertar una cuerpo técnico.
     public function createRow()
     {
@@ -46,12 +75,40 @@ class JornadasHandler
         return Database::executeRow($sql, $params);
     }
 
-    //Función para leer todas las cuerpo técnico.
+    //Función para leer todas las jornadas.
     public function readAll()
     {
         $sql = 'SELECT * FROM vw_jornadas
         ORDER BY NOMBRE;';
         return Database::getRows($sql);
+    }
+
+    //Función para leer todas las jornadas disponibles para el técnico.
+    public function readAllTechnics()
+    {
+        $sql = 'SELECT 
+        j.id_jornada AS ID,
+        j.nombre_jornada AS NOMBRE,
+        j.numero_jornada AS NUMERO,
+        p.nombre_plantilla AS PLANTILLA,
+        j.id_plantilla AS ID_PLANTILLA,
+        j.fecha_inicio_jornada AS FECHA_INICIO,
+        j.fecha_fin_jornada AS FECHA_FIN
+        FROM 
+        jornadas j
+        INNER JOIN 
+        plantillas p ON j.id_plantilla = p.id_plantilla
+        INNER JOIN 
+        plantillas_equipos pe ON p.id_plantilla = pe.id_plantilla
+        INNER JOIN 
+        equipos e ON pe.id_equipo = e.id_equipo
+        INNER JOIN 
+        detalles_cuerpos_tecnicos dct ON e.id_cuerpo_tecnico = dct.id_cuerpo_tecnico
+        WHERE 
+        dct.id_tecnico = ?
+        ORDER BY NOMBRE;';
+        $params = array($_SESSION['idTecnico']);
+        return Database::getRows($sql, $params);
     }
 
     //Función para leer una cuerpo técnico.
