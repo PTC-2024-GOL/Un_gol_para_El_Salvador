@@ -75,7 +75,7 @@ if (isset($_GET['action'])) {
 
             // Leer todos los horarios
             case 'readAllHorario':
-                if ($result['dataset'] = $detalle->readAllHorario()) {
+                if ($result['dataset'] = $detalle->readAllHorarioTenico()) {
                     $result['status'] = 1;
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {

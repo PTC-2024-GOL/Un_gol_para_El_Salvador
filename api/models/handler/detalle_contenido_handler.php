@@ -83,6 +83,18 @@ class DetalleContenidoHandler
                 FROM vista_equipos_categorias;";
         return Database::getRows($sql);
     }
+        //Función para leer todos los equipos o varios. Esta función es para "elegir horario" 
+        public function readAllHorarioTenico()
+        {
+            $sql = "SELECT 
+                    id_equipo,
+                    nombre_categoria,
+                    nombre_equipo,
+                    id_tecnico
+                    FROM vista_equipos_categorias_tecnico where id_tecnico = ?;";
+            $params = array($_SESSION['idTecnico']);
+            return Database::getRows($sql, $params);
+        }
     //Función para rellenar la opcion del combobox con horarios de subcontenidos, 
     //Función para leer todos los subcontenidos disponibles. Esta función es para "Detalle Contenido" 
     public function readAllSubContenidos()
