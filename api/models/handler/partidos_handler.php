@@ -64,6 +64,13 @@ class PartidosHandler
         return Database::getRows($sql);
     }
 
+    public function readAll2()
+    {
+        $sql = 'SELECT * FROM vista_detalle_partidos_tecnicos WHERE id_tecnico = ?';
+        $params = array($_SESSION['idTecnico']);
+        return Database::getRows($sql, $params);
+    }
+
     //Función para leer los partidos por el idEquipo
 
     public function readAllByIdEquipo()
@@ -164,6 +171,15 @@ class PartidosHandler
     {
         $sql = 'CALL analisisEntrenamientos(?);';
         $params = array($this->idEquipo);
+        return Database::getRows($sql, $params);
+    }
+
+    //Función para leer una equipo o varios. 
+    
+    public function readOneEquiposTecnico()
+    {
+        $sql = "SELECT id_equipo,  nombre_equipo, logo_equipo, id_tecnico FROM vista_select_equipos_con_imagen WHERE id_tecnico = ?;";
+        $params = array($_SESSION['idTecnico']);
         return Database::getRows($sql, $params);
     }
 }

@@ -139,11 +139,13 @@ const seeModal = async (id) => {
 */
 const openUpdate = async (id) => {
     try {
+        console.log(id, 'Estoy aqui en openUpdate, este es el id que se le mandara a la api');
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
         FORM.append('idPartido', id);
         // Petición para obtener los datos del registro solicitado.
         const DATA = await fetchData(PARTIDO_API, 'readOne', FORM);
+        console.log(DATA, + ' Estoy aqui en openUpdate');
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
@@ -160,6 +162,7 @@ const openUpdate = async (id) => {
             RESULTADO_PARTIDO.value = ROW.resultado_partido;
             LOCALIDAD.value = ROW.localidad_partido;
             TIPO_RESULTADO_PARTIDO.value = ROW.tipo_resultado_partido;
+            console.log(ROW.id_equipo);
             IMAGENES_EQUIPOS = await fillSelectImage(PARTIDO_API, 'readEquipos', 'equipos', ROW.id_equipo);
             IMAGENES_RIVALES = await fillSelectImage(PARTIDO_API, 'readRivales', 'rival', ROW.id_rival);
             await fillSelect(PARTIDO_API, 'readJornadas', 'jornada', ROW.id_jornada);
@@ -272,7 +275,7 @@ async function fillCards(form = null) {
     try {
         cargarCartas.innerHTML = '';
         // Se verifica la acción a realizar.
-        (form) ? action = 'searchRows' : action = 'readAll';
+        (form) ? action = 'searchRows' : action = 'readAll2';
         console.log(form);
         // Petición para obtener los registros disponibles.
         const DATA = await fetchData(PARTIDO_API, action, form);

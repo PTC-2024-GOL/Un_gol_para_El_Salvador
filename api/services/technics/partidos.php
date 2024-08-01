@@ -55,6 +55,15 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'No existen partidos registrados';
                 }
                 break;
+                // Leer todos
+            case 'readAll2':
+                if ($result['dataset'] = $partido->readAll2()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
+                } else {
+                    $result['error'] = 'No existen partidos registrados';
+                }
+                break;
             // Leer uno
             case 'readAllByIdEquipos':
                 if (!$partido->setIdEquipo($_POST['idEquipo'])) {
@@ -95,7 +104,7 @@ if (isset($_GET['action'])) {
                     break;
                 // Leer equipos
             case 'readEquipos':
-                if ($result['dataset'] = $partido->readOneEquipos()) {
+                if ($result['dataset'] = $partido->readOneEquiposTecnico()) {
                     $result['status'] = 1;
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
