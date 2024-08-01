@@ -37,6 +37,15 @@ let SAVE_FORM,
 let UPDATE_BUTTON;
 let DELETE_BUTTON;
 
+//Variables de colores
+let COLOR_1;
+let COLOR_2;
+let COLOR_3;
+let COLOR_4;
+let COLOR_5;
+let COLOR_6;
+let COLOR_7;
+
 let API_SOCCER = 'services/technics/equipos.php';
 let MATCHES_API = 'services/technics/partidos.php';
 let CALENDAR_API = 'services/technics/calendario.php';
@@ -214,6 +223,25 @@ const calendar = async () => {
 
         //Agregar evento al calendario
         customButtons: {
+            today: {
+                text: 'Hoy',
+                click: function() {
+                    calendarInstance.today();
+                }
+            },
+            dayGridMonth: {
+                text: 'Mes',
+                click: function() {
+                    calendarInstance.changeView('dayGridMonth');
+                }
+            },
+            timeGridDay: {
+                text: 'Día',
+                click: function() {
+                    calendarInstance.changeView('timeGridDay');
+                }
+            },
+            //Boton para agregar un nuevo evento
             addEventButton: {
                 text: 'Agregar evento',
                 click: async function() {
@@ -226,12 +254,12 @@ const calendar = async () => {
             }
         },
 
-
         //Evento que se activa cuando se hace clic a un evento en el calendario - Para eliminar o editar.
         eventClick: function(info) {
             SELECT_MODAL.show();
             MODAL_TITLE1.textContent = 'Acción'
 
+            //Actualizar el evento
             UPDATE_BUTTON.addEventListener('click', async function() {
                 SELECT_MODAL.hide();
                 const FORM = new FormData();
@@ -256,6 +284,7 @@ const calendar = async () => {
 
             });
 
+            //Eliminar el evento
             DELETE_BUTTON.addEventListener('click', async function() {
                 SELECT_MODAL.hide();
                 const RESPONSE = await confirmAction('¿Seguro que quieres eliminar este evento?');
@@ -281,7 +310,6 @@ const calendar = async () => {
         }
     });
     calendarInstance.render();
-
 }
 
 //Funcion para actualizar o agregar eventos al calendario
@@ -380,4 +408,34 @@ window.onload = async function () {
 
     UPDATE_BUTTON = document.getElementById('updateEvent');
     DELETE_BUTTON = document.getElementById('deleteEvent');
+
+    COLOR_1 = document.getElementById('color1');
+    COLOR_2 = document.getElementById('color2');
+    COLOR_3 = document.getElementById('color3');
+    COLOR_4 = document.getElementById('color4');
+    COLOR_5 = document.getElementById('color5');
+    COLOR_6 = document.getElementById('color6');
+    COLOR_7 = document.getElementById('color7');
+
+    COLOR_1.addEventListener('click', async function() {
+        COLOR.value = '#0b5ed7';
+    });
+    COLOR_2.addEventListener('click', async function() {
+        COLOR.value = '#d70b2a';
+    });
+    COLOR_3.addEventListener('click', async function() {
+        COLOR.value = '#0bd734';
+    });
+    COLOR_4.addEventListener('click', async function() {
+        COLOR.value = '#f5e00d';
+    });
+    COLOR_5.addEventListener('click', async function() {
+        COLOR.value = '#8c0bd7';
+    });
+    COLOR_6.addEventListener('click', async function() {
+        COLOR.value = '#d70b90';
+    });
+    COLOR_7.addEventListener('click', async function() {
+        COLOR.value = '#2a9cef';
+    });
 }

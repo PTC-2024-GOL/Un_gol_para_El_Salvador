@@ -228,4 +228,58 @@ a{
     border-radius: 20px;
 }
 
+#color1 {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #0b5ed7;
+}
+
+#color2 {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #d70b2a;
+}
+
+#color3 {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #0bd734;
+}
+
+#color4 {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #f5e00d;
+}
+
+#color5 {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #8c0bd7;
+}
+
+#color6 {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #d70b90;
+}
+
+#color7 {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #2a9cef;
+}
+
+.color-circle:hover{
+    transform: scale(1.2);
+}
+
+
 
