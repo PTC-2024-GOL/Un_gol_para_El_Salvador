@@ -24,11 +24,15 @@ if (isset($_GET['action'])) {
                     !$calendario->setColor($_POST['color'])
                 ) {
                     $result['error'] = $calendario->getDataError();
-                } elseif ($calendario->createRow()) {
-                    $result['status'] = 1;
-                    $result['message'] = 'Evento creado exitosamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al crear el evento';
+                    $newEventId = $calendario->createRow();
+                    if($newEventId){
+                        $result['status'] = 1;
+                        $result['message'] = 'Evento creado exitosamente';
+                        $result['dataset'] = ['idCalendario' => $newEventId];
+                    } else {
+                        $result['error'] = 'Ocurrió un problema al crear el evento';
+                    }
                 }
                 break;
             // Leer todos

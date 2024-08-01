@@ -29,7 +29,11 @@ class CalendarioHandler
             $this->fechaFinal,
             $this->color
         );
-        return Database::executeRow($sql, $params);
+        if (Database::executeRow($sql, $params)) {
+            return Database::getLastRowId();
+        } else {
+            return false;
+        }
     }
 
     public function readAll()

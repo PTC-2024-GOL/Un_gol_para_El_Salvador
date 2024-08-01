@@ -21,7 +21,9 @@ let TEAMS;
 //VARIABLES PARA EL ULTIMO PARTIDO
 let MATCH;
 
-let SELECT_MODA;
+
+// Variables para los modals y form
+let SELECT_MODAL;
 
 let SAVE_MODAL;
 let SAVE_FORM,
@@ -30,6 +32,10 @@ let SAVE_FORM,
     FECHA_INICIO,
     FECHA_FINAL,
     COLOR;
+
+//Variables para los botones del modal
+let UPDATE_BUTTON;
+let DELETE_BUTTON;
 
 let API_SOCCER = 'services/technics/equipos.php';
 let MATCHES_API = 'services/technics/partidos.php';
@@ -165,13 +171,13 @@ const getUser = async () => {
     }
 }
 
-let title;
 let calendarInstance;
 
 const calendar = async () => {
     const initialLocaleCode = 'es';
     const calendarEl = document.getElementById('calendar');
     calendarInstance = new FullCalendar.Calendar(calendarEl, {
+        height: 600,
         initialView: 'dayGridMonth',
         selectable: true,
         headerToolbar: {
@@ -199,7 +205,7 @@ const calendar = async () => {
                         id: event.id_calendario
                     }));
 
-                    // Pasar los eventos al calendario
+                    // Pasa los eventos al calendario
                     successCallback(events);
                 } else {
                     throw new Error(DATA.error);
@@ -211,6 +217,7 @@ const calendar = async () => {
             addEventButton: {
                 text: 'Agregar evento',
                 click: async function() {
+                    SAVE_FORM.reset();
                     SAVE_MODAL.show();
                     MODAL_TITLE.textContent = 'Agregar evento'
 
@@ -222,27 +229,55 @@ const calendar = async () => {
 
         //Evento que se activa cuando se hace clic a un evento en el calendario - Para eliminar o editar.
         eventClick: function(info) {
-            const action = prompt('¿Qué acción deseas realizar? Escribe "editar" o "eliminar".');
+            SELECT_MODAL.show();
+            MODAL_TITLE1.textContent = 'Acción'
 
-            if (action === 'editar') {
-                let newTitle = prompt('Actualizar título:', info.event.title);
-                if (newTitle) {
-                    let newColor = prompt('Actualizar color:', info.event.backgroundColor);
+            UPDATE_BUTTON.addEventListener('click', async function() {
+                SELECT_MODAL.hide();
+                const FORM = new FormData();
+                FORM.append('idCalendario', info.event.id);
 
-                    // Actualizar el evento con el nuevo título y color
-                    calendarInstance.getEventById(info.event.id).setProp('title', newTitle);
-                    calendarInstance.getEventById(info.event.id).setProp('backgroundColor', newColor);
+                const DATA = await fetchData(CALENDAR_API, 'readOne', FORM);
+                if(DATA.status){
+                    SAVE_MODAL.show();
+                    MODAL_TITLE.textContent = 'Actualizar evento';
+                    SAVE_FORM.reset();
+                    const ROW = DATA.dataset;
+                    ID_CALENDARIO.value = ROW.id_calendario;
+                    TITULO.value = ROW.titulo;
+                    FECHA_INICIO.value = ROW.fecha_inicio;
+                    FECHA_FINAL.value = ROW.fecha_final;
+                    COLOR.value = ROW.color;
 
-                    alert(`Evento actualizado: ${newTitle}`);
+                    await addOrUpdateEvent();
+                } else {
+                    await sweetAlert(2, DATA.error, true);
                 }
-            } else if (action === 'eliminar') {
-                if (confirm(`¿Seguro que quieres eliminar el evento "${info.event.title}"?`)) {
-                    info.event.remove(); // Eliminar el evento del calendario
-                    alert(`Evento "${info.event.title}" eliminado.`);
+
+            });
+
+            DELETE_BUTTON.addEventListener('click', async function() {
+                SELECT_MODAL.hide();
+                const RESPONSE = await confirmAction('¿Seguro que quieres eliminar este evento?');
+
+                // Se verifica la respuesta del mensaje.
+                if (RESPONSE) {
+                    // Se define una constante tipo objeto con los datos del registro seleccionado.
+                    const FORM = new FormData();
+                    FORM.append('idCalendario', info.event.id);
+                    // Petición para eliminar el registro seleccionado.
+                    const DATA = await fetchData(CALENDAR_API, 'deleteRow', FORM);
+                    // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+                    if (DATA.status) {
+                        // Se muestra un mensaje de éxito.
+                        await sweetAlert(1, DATA.message, true);
+                        // Se carga nuevamente la tabla para visualizar los cambios.
+                        info.event.remove();
+                    } else {
+                        await sweetAlert(2, DATA.error, false);
+                    }
                 }
-            } else {
-                alert('Acción no válida.');
-            }
+            });
         }
     });
     calendarInstance.render();
@@ -265,6 +300,7 @@ const addOrUpdateEvent = async () => {
             // Si la acción fue crear un nuevo evento, lo agregamos al calendario
             if (action === 'createRow') {
                 calendarInstance.addEvent({
+                    id: DATA.dataset.idCalendario,
                     title: TITULO.value,
                     start: FECHA_INICIO.value,
                     end: FECHA_FINAL.value,
@@ -332,10 +368,16 @@ window.onload = async function () {
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
 
+    SELECT_MODAL = new bootstrap.Modal('#selectModal'),
+        MODAL_TITLE1 = document.getElementById('modalTitle1');
+
     SAVE_FORM = document.getElementById('saveForm'),
         ID_CALENDARIO = document.getElementById('idCalendario'),
         TITULO = document.getElementById('titulo'),
         FECHA_INICIO = document.getElementById('fechaI'),
         FECHA_FINAL = document.getElementById('fechaF'),
         COLOR = document.getElementById('color');
+
+    UPDATE_BUTTON = document.getElementById('updateEvent');
+    DELETE_BUTTON = document.getElementById('deleteEvent');
 }

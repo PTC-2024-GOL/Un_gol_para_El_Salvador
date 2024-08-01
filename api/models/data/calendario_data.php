@@ -26,14 +26,11 @@ class CalendarioData extends CalendarioHandler
 
     public function setTitulo($value, $min = 5, $max = 50)
     {
-        if (!Validator::validateAlphanumeric($value)) {
-            $this->data_error = 'El nombre debe ser un valor alfanumerico';
-            return false;
-        } elseif (Validator::validateLength($value, $min, $max)) {
+        if(Validator::validateLength($value, $min, $max)) {
             $this->titulo = $value;
             return true;
         } else {
-            $this->data_error = 'El nombre debe tener una longitud entre ' . $min . ' y ' . $max;
+            $this->data_error = 'El título debe tener una longitud entre ' . $min . ' y ' . $max;
             return false;
         }
     }

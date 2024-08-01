@@ -49,6 +49,11 @@ class Database
         return $id;
     }
 
+    public static function getLastRowId()
+    {
+        return self::$connection->lastInsertId();
+    }
+
     /*
      *   Método para obtener un registro de una sentencia SQL tipo SELECT.
      *   Parámetros: $query (sentencia SQL) y $values (arreglo opcional con los valores para la sentencia SQL).
