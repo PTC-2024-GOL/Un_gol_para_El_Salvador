@@ -143,4 +143,11 @@ class EntrenamientosHandler
         return Database::getRow($sql, $params);
     }
 
+    public function readAll2()
+    {
+        $sql = 'SELECT id_jornada, id_entrenamiento, detalle_entrenamiento, fecha_entrenamiento, id_tecnico 
+        FROM vista_jornadas_entrenamientos_tecnico WHERE id_jornada = ? AND id_tecnico = ? ORDER BY fecha_entrenamiento DESC;';
+        $params = array($this->idJornada, $_SESSION['idTecnico']);
+        return Database::getRows($sql, $params);
+    }
 }
