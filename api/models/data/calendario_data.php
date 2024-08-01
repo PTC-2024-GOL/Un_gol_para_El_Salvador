@@ -62,10 +62,7 @@ class CalendarioData extends CalendarioHandler
 
     public function setColor($value, $min = 5, $max = 50)
     {
-        if (!Validator::validateAlphanumeric($value)) {
-            $this->data_error = 'El nombre del color debe ser un valor alfanumerico';
-            return false;
-        } elseif (Validator::validateLength($value, $min, $max)) {
+        if (Validator::validateLength($value, $min, $max)) {
             $this->color = $value;
             return true;
         } else {

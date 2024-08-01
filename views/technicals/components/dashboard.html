@@ -124,3 +124,69 @@
             </div>
         </div>
     </div>
+
+
+    <!-- Componente Modal para seleccionar una opcion -->
+    <div class="modal fade" id="selectModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-blue-principal-color">
+                    <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                    <h1 class="modal-title fs-5 text-white" id="modalTitle1"></h1>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                    <div class="modal-body row g-3">
+                        <button type="reset" class="btn bg-red-cream-color text-white">Agregar evento</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Componente Modal para guardar un registro -->
+    <div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-blue-principal-color">
+                    <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                    <h1 class="modal-title fs-5 text-white" id="modalTitle"></h1>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <!-- Formulario para crear o actualizar un registro -->
+                <form id="saveForm">
+                    <div class="modal-body row g-3">
+                        <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                        <input type="number" class="d-none" id="idCalendario" name="idCalendario">
+                        <div class="col-sm-12 col-md-12">
+                            <label for="titulo" class="form-label fw-semibold">Título del evento</label>
+                            <input id="titulo" type="text" name="titulo" class="form-control"
+                                   placeholder="Escribe el titulo del evento" required>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="fechaI" class="form-label fw-semibold">Fecha inicial del evento</label>
+                            <input id="fechaI" type="datetime-local" name="fechaInicial" class="form-control"
+                                   placeholder="Selecciona la fecha de inicio" required>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="fechaF" class="form-label fw-semibold">Fecha final del evento</label>
+                            <input id="fechaF" type="datetime-local" name="fechaFinal" class="form-control"
+                                   placeholder="Selecciona la fecha final" required>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="color" class="form-label fw-semibold">Color</label>
+                            <input id="color" type="text" name="color" class="form-control"
+                                   placeholder="Selecciona un color" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
+                        <button type="reset" class="btn bg-red-cream-color text-white">Cancelar</button>
+                        <button type="submit" class="btn bg-blue-principal-color text-white ">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
