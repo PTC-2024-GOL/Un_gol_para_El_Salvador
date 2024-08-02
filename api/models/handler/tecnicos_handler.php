@@ -307,7 +307,9 @@ class TecnicosHandler
     public function readProfile()
     {
         $sql = 'SELECT id_tecnico AS ID,
-                foto_tecnico AS IMAGEN, 
+                foto_tecnico AS IMAGEN,
+                nombre_tecnico AS NOMBRETEC,
+                apellido_tecnico AS APELLIDO, 
                 CONCAT(nombre_tecnico, " ", apellido_tecnico) AS NOMBRE,
                 correo_tecnico AS CORREO, 
                 telefono_tecnico AS TELÉFONO,
