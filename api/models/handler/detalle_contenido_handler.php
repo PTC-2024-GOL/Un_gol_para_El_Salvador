@@ -130,6 +130,27 @@ class DetalleContenidoHandler
         $params = array($this->idEquipo);
         return Database::getRows($sql, $params);
     }
+
+    //Función para rellenar la opcion del combobox con horarios de un equipo y para ver solo los entrenamientos sin asistencias 
+    //visualmente se usarán id_entrenamiento como value y horario como text.  Esta función es para "elegir horario"
+    public function readOneHorarioMovil()
+    {
+        $sql = "SELECT 
+                id_entrenamiento,
+                horario,
+                fecha_entrenamiento,
+                id_equipo
+                FROM vista_horarios_equipos_movil vhem
+                WHERE vhem.id_equipo = ?
+                AND NOT EXISTS (
+                SELECT 1
+                FROM asistencias a
+                WHERE a.id_entrenamiento = vhem.id_entrenamiento
+                )
+                ORDER BY fecha_entrenamiento DESC;";
+        $params = array($this->idEquipo);
+        return Database::getRows($sql, $params);
+    }
     // Función para leer un detalle contenido. (UPDATE) Esta función es para "Detalle Contenido"
     public function readOneDetalleContenido()
     {

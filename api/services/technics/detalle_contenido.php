@@ -122,6 +122,16 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Horario inexistente';
                 }
                 break;
+            // Leer horarios para movil, y para ver solo los entrenamientos sin asistencias en base al idequipo 
+            case 'readOneHorarioMovil':
+                if (!$detalle->setIdEquipo($_POST['idEquipo'])) {
+                    $result['error'] = $detalle->getDataError();
+                } elseif ($result['dataset'] = $detalle->readOneHorario()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Horario inexistente';
+                }
+                break;
             // Leer todos los subcontenidos
             case 'readAllSubContenidos':
                 if ($result['dataset'] = $detalle->readAllSubContenidos()) {
