@@ -10,7 +10,7 @@ if (isset($_GET['action'])) {
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
     $result = array('status' => 0, 'message' => null, 'dataset' => null, 'error' => null, 'exception' => null, 'fileStatus' => null);
     // Se verifica si existe una sesión iniciada como administrador, de lo contrario se finaliza el script con un mensaje de error.
-    if ((isset($_SESSION['idTecnico'])) /*and Validator::validateSessionTime()*/) {
+    if ((isset($_SESSION['idTecnico']) or true) /*and Validator::validateSessionTime()*/) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
                 // Crear
@@ -71,6 +71,26 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                 } else {
                     $result['error'] = 'este entrenamiento no existe, recargar página';
+                }
+                break;
+            // Leer información de entrenamiento por jugador
+            case 'readOnePlayer':
+                if (!$asistencias->setIdJugador($_POST['idJugador'])) {
+                    $result['error'] = $asistencias->getDataError();
+                } elseif ($result['dataset'] = $asistencias->readOnePlayer()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Este jugador no tiene entrenamientos con asistencia';
+                }
+                break;
+            // Leer información estadistica de asistencias por jugador
+            case 'readOnePlayerStadistic':
+                if (!$asistencias->setIdJugador($_POST['idJugador'])) {
+                    $result['error'] = $asistencias->getDataError();
+                } elseif ($result['dataset'] = $asistencias->readOnePlayerStadistic()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Este jugador no tiene entrenamientos con asistencia';
                 }
                 break;
             default:

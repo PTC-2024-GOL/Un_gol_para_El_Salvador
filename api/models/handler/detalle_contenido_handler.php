@@ -139,7 +139,8 @@ class DetalleContenidoHandler
                 id_entrenamiento,
                 horario,
                 fecha_entrenamiento,
-                id_equipo
+                id_equipo,
+                id_horario
                 FROM vista_horarios_equipos_movil vhem
                 WHERE vhem.id_equipo = ?
                 AND NOT EXISTS (

@@ -62,4 +62,21 @@ class AsistenciasrHandler
         $params = array($this->idEntrenamiento);
         return Database::getRow($sql, $params);
     }
+
+    //Función para leer las asistencias de un jugador
+    public function readOnePlayer()
+    {
+        $sql = "SELECT observacion_asistencia, asistencia, fecha FROM asistencias_por_jugador WHERE id_jugador = ? ORDER BY fecha_asistencia DESC;";
+        $params = array($this->idJugador);
+        return Database::getRows($sql, $params);
+    }
+
+        //Función para leer las estadisticas de un jugador en torno a asistencias (esto pertenece a movil)
+        public function readOnePlayerStadistic()
+        {
+            $sql = "SELECT cantidad_asistencia, porcentaje_asistencia, cantidad_ausencia_injustificada, porcentaje_ausencia_injustificada, cantidad_enfermedad,
+            porcentaje_enfermedad, cantidad_otro, porcentaje_otro FROM vista_asistencias_por_jugador WHERE id_jugador = ?";
+            $params = array($this->idJugador);
+            return Database::getRow($sql, $params);
+        }
 }

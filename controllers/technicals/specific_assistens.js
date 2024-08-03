@@ -18,7 +18,7 @@ let LISTA_DATOS = [];
 // Constantes para completar las rutas de la API.
 // La lógica de esta pantalla aún no está terminada debido a que todavía me hace falta definir qué ocurrirá cuando se agregue una observación Y cuando se seleccione Una nueva opción de los ítems que contiene cada select
 // Por lo tanto guayito del futuro, Tienes la tarea de hacer que el botón de guardar asistencias capture el json de lista datos Y active la opción de post.
-// Debes verificar que cuando se seleccione una opción se actualiza el jason y que cuando se agregue una nueva observación se actualice el json tambien
+// Debes verificar que cuando se seleccione una opción se actualiza el json y que cuando se agregue una nueva observación se actualice el json tambien
 const ASISTENCIAS_API_2 = 'services/technics/asistencias.php';
 
 // Lista de datos para mostrar en la tabla de asistencias
@@ -97,6 +97,14 @@ const guardar = async () => {
             FORM.append('idEntrenamiento', ID_ENTRENAMIENTO_url);
             FORM.append('idHorario', ID_HORARIO_url);
             FORM.append('arregloAsistencia', JSON.stringify(LISTA_DATOS));
+            //Imprime los datos del formulario en la consola, imprime las variables que se van a enviar a la API, SIN USAR FORMDATA
+            console.log('Estos son los datos que se enviarán al API:');
+            console.log('ID ASISTENCIA:', ID_ASISTENCIA.value);
+            console.log('OBSERVACION:', OBSERVACION.value);
+            console.log('BOOLASISTENCIA:', BOOLASISTENCIA);
+            console.log('ID ENTRENAMIENTO:', ID_ENTRENAMIENTO_url);
+            console.log('ID HORARIO:', ID_HORARIO_url);
+            console.log('LISTA DATOS:', LISTA_DATOS);
             // Petición para eliminar el registro seleccionado.
             const DATA = await fetchData(ASISTENCIAS_API_2, 'createRow', FORM);
             console.log(DATA);
