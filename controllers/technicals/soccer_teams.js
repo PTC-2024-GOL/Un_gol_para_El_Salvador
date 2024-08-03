@@ -66,7 +66,7 @@ function showSoccerTeam(page) {
                     <td>${row.nombre_categoria}</td>
                     <td>${row.genero_equipo}</td>
                     <td>
-                        <button type="button" class="btn btn-warnig" onclick="seeModal(${row.id_cuerpo_tecnico})">
+                        <button type="button" class="btn btn-warnig" onclick="seeModal(${row.id_equipo})">
                         <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
                         </button>
                     </td>
