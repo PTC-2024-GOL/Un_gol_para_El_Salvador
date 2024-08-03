@@ -136,7 +136,15 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Entrenamiento inexistente';
                 }
                 break;
-
+                case 'readAllMobile':
+                    if (!$entrenamientos->setIdEquipo($_POST['idEquipo'])) {
+                        $result['error'] = $entrenamientos->getDataError();
+                    } elseif ($result['dataset'] = $entrenamientos->readAllMobile()) {
+                        $result['status'] = 1;
+                    } else {
+                        $result['error'] = 'Entrenamiento inexistente';
+                    }
+                    break;
             // Eliminar
             case 'deleteRow':
                 if (

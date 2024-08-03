@@ -1,6 +1,6 @@
 <?php
 // Se incluye la clase para trabajar con la base de datos.
-require_once ('../../helpers/database.php');
+require_once('../../helpers/database.php');
 /*
  *  Clase para manejar el comportamiento de los datos de la tabla Subcontenido.
  */
@@ -69,6 +69,29 @@ class EntrenamientosHandler
         return Database::getRows($sql, $params);
     }
 
+    //Función para leer los entrenamientos en movil. 
+
+    public function readAllMobile()
+    {
+        $sql = 'SELECT 
+        e.id_equipo AS IDEQ,
+        e.id_entrenamiento AS IDEN,
+        e.fecha_entrenamiento AS FECHA,
+        CONCAT(h.dia, DATE_FORMAT(e.fecha_entrenamiento, " %d de %M"), " de ", TIME_FORMAT(h.hora_inicial, "%H:%i"), " A ", TIME_FORMAT(h.hora_final, "%H:%i")) AS HORARIO,
+        (SELECT COUNT(*) 
+        FROM asistencias a
+        WHERE a.id_entrenamiento = e.id_entrenamiento AND asistencia = "Asistencia") AS JUGADORES_PRESENTES
+        FROM 
+        entrenamientos e
+        INNER JOIN 
+        horarios_categorias r ON e.id_horario_categoria = r.id_horario_categoria
+        INNER JOIN 
+        horarios h ON r.id_horario = h.id_horario
+        WHERE id_equipo = ? AND 
+        (SELECT COUNT(*) FROM asistencias a WHERE a.id_entrenamiento = e.id_entrenamiento AND asistencia = "Asistencia") > 0;';
+        $params = array($this->idEquipo);
+        return Database::getRows($sql, $params);
+    }
     //Función para leer un detalle. 
 
     public function readOneTitulo()
@@ -111,7 +134,7 @@ class EntrenamientosHandler
     }
 
     //Función para leer una equipo o varios. 
-    
+
     public function readOneEquipos()
     {
         $sql = "SELECT id_equipo,  nombre_equipo FROM equipos;";
@@ -119,7 +142,7 @@ class EntrenamientosHandler
     }
 
     //Función para leer una jornada o varios. 
-    
+
     public function readOneJornada()
     {
         $sql = "SELECT id_jornada, nombre_jornada FROM jornadas;";
@@ -127,7 +150,7 @@ class EntrenamientosHandler
     }
 
     //Función para leer una jornada o varios. 
-    
+
     public function readOneCategoria()
     {
         $sql = "SELECT id_categoria, nombre_categoria FROM vista_entrenamientos_horario_categorias;";
@@ -135,7 +158,7 @@ class EntrenamientosHandler
     }
 
     //Función para leer una jornada o varios. 
-    
+
     public function readOne()
     {
         $sql = 'SELECT fecha_entrenamiento, id_entrenamiento, id_equipo, id_horario_categoria, sesion FROM entrenamientos WHERE id_entrenamiento = ?;';
