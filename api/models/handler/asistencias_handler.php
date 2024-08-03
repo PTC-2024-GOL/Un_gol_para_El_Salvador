@@ -75,7 +75,7 @@ class AsistenciasrHandler
         public function readOnePlayerStadistic()
         {
             $sql = "SELECT cantidad_asistencia, porcentaje_asistencia, cantidad_ausencia_injustificada, porcentaje_ausencia_injustificada, cantidad_enfermedad,
-            porcentaje_enfermedad, cantidad_otro, porcentaje_otro FROM vista_asistencias_por_jugador WHERE id_jugador = ?";
+            porcentaje_enfermedad, cantidad_otro, porcentaje_otro, cantidad_estudio FROM vista_asistencias_por_jugador WHERE id_jugador = ?";
             $params = array($this->idJugador);
             return Database::getRow($sql, $params);
         }
