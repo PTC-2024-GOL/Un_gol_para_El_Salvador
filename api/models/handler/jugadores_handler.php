@@ -89,6 +89,14 @@ class JugadoresHandler
         return Database::getRow($sql, $params);
     }
 
+    public function readOneMobile()
+    {
+        $sql = 'SELECT * FROM vista_informacion_jugador
+                WHERE id_jugador= ? ORDER BY registroFisico DESC LIMIT 1';
+        $params = array($this->id);
+        return Database::getRow($sql, $params);
+    }
+
     public function readFilename()
     {
         $sql = 'SELECT foto_jugador

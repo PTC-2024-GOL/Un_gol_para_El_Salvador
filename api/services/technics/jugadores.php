@@ -42,6 +42,15 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Jugador inexistente';
                 }
                 break;
+            case 'readOneMobile':
+                if (!$jugador->setId($_POST['idJugador'])) {
+                    $result['error'] = 'Jugador incorrecto';
+                } elseif ($result['dataset'] = $jugador->readOneMobile()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Jugador inexistente';
+                }
+                break;
             // Ver uno
             case 'readAllByGender':
                 if (!$jugador->setGenero($_POST['genero'])) {
