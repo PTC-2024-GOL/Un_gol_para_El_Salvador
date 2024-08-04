@@ -970,6 +970,7 @@ window.onload = async function () {
         event.preventDefault();
 
         const FORM = new FormData(SEARCH_FORM);
+        FORM.append('idEquipo', idEquipo);
 
         const DATA = await fetchData(PARTICIPACION_API, 'searchRows', FORM);
 

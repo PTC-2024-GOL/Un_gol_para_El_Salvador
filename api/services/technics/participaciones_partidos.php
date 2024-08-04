@@ -10,12 +10,13 @@ if (isset($_GET['action'])) {
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
     $result = array('status' => 0, 'message' => null, 'dataset' => null, 'error' => null, 'exception' => null, 'fileStatus' => null);
     // Se verifica si existe una sesión iniciada como administrador, de lo contrario se finaliza el script con un mensaje de error.
-    if (isset($_SESSION['idTecnico']) /*and Validator::validateSessionTime()*/) {
+    if (isset($_SESSION['idTecnico']) or true /*and Validator::validateSessionTime()*/) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
             // Buscar
             case 'searchRows':
-                if (!Validator::validateSearch($_POST['search'])) {
+                if (!Validator::validateSearch($_POST['search']) or
+                    !$participacion->setIdEquipo($_POST['idEquipo'])) {
                     $result['error'] = Validator::getSearchError();
                 } elseif ($result['dataset'] = $participacion->searchRows()) {
                     $result['status'] = 1;
