@@ -87,9 +87,5 @@ class RecuperacionData extends RecuperacionHandler
         return $this->filename;
     }
 
-    // Método para obtener la condición del administrador.
-    public function getCondicion()
-    {
-        return $this->condicion;
-    }
+    
 }
