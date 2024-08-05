@@ -88,7 +88,7 @@ class AdministradoresData extends AdministradoresHandler
         }
     }
 
-    // Validación y asignación de la clave del administrador.
+    // Validación y asignación de laW clave del administrador.
     public function setClave($value)
     {
         if (Validator::validatePassword($value)) {
