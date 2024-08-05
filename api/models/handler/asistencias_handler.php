@@ -53,6 +53,12 @@ class AsistenciasrHandler
         $params = array($this->idEntrenamiento);
         return Database::getRows($sql, $params);
     }
+    public function readAllTeam()
+    {
+        $sql = "SELECT * FROM vista_jugadores_equipo_movil WHERE id_equipo = ?;";
+        $params = array($this->idEntrenamiento);
+        return Database::getRows($sql, $params);
+    }
 
     //Función para leer si una asistencia ya se ha registrado
     public function readOne()

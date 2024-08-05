@@ -83,6 +83,16 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Este jugador no tiene entrenamientos con asistencia';
                 }
                 break;
+            // Leer los jugadores 
+            case 'readAllMovil':
+                    if (!$asistencias->setIdEntrenamiento($_POST['idEquipo'])) {
+                        $result['error'] = $asistencias->getDataError();
+                    } elseif ($result['dataset'] = $asistencias->readAllTeam()) {
+                        $result['status'] = 1;
+                    } else {
+                        $result['error'] = 'este entrenamiento no existe, recargar página';
+                    }
+                    break;
             // Leer información estadistica de asistencias por jugador
             case 'readOnePlayerStadistic':
                 if (!$asistencias->setIdJugador($_POST['idJugador'])) {
