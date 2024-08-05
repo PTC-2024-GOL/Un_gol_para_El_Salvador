@@ -74,6 +74,17 @@ class AsistenciasData extends AsistenciasrHandler
         $this->idAsistenciaBool = $value;
         return true;
     }
+
+    public function setIdEquipo($value)
+    {
+        if (Validator::validateNaturalNumber($value)) {
+            $this->idEquipo = $value;
+            return true;
+        } else {
+            $this->data_error = 'El identificador del equipo es incorrecto o esta nulo';
+            return false;
+        }
+    }
     // Método para obtener el error de los datos.
     public function getDataError()
     {

@@ -16,6 +16,7 @@ class AsistenciasrHandler
     protected $observacion = null;
     protected $idAsistencia = null;
     protected $idAsistenciaBool = null;
+    protected $idEquipo = null;
 
     //Función para insertar las asistencias
 
@@ -77,12 +78,27 @@ class AsistenciasrHandler
         return Database::getRows($sql, $params);
     }
 
-        //Función para leer las estadisticas de un jugador en torno a asistencias (esto pertenece a movil)
-        public function readOnePlayerStadistic()
-        {
-            $sql = "SELECT cantidad_asistencia, porcentaje_asistencia, cantidad_ausencia_injustificada, porcentaje_ausencia_injustificada, cantidad_enfermedad,
+    //Función para leer las estadisticas de un jugador en torno a asistencias (esto pertenece a movil)
+    public function readOnePlayerStadistic()
+    {
+        $sql = "SELECT cantidad_asistencia, porcentaje_asistencia, cantidad_ausencia_injustificada, porcentaje_ausencia_injustificada, cantidad_enfermedad,
             porcentaje_enfermedad, cantidad_otro, porcentaje_otro, cantidad_estudio FROM vista_asistencias_por_jugador WHERE id_jugador = ?";
-            $params = array($this->idJugador);
-            return Database::getRow($sql, $params);
-        }
+        $params = array($this->idJugador);
+        return Database::getRow($sql, $params);
+    }
+
+    //Función para rellenar la opcion del combobox con horarios de un equipo, 
+    //visualmente se usarán id_entrenamiento como value y horario como text.  Esta función es para "elegir horario"
+    public function readOneHorario()
+    {
+        $sql = "SELECT 
+                id_entrenamiento,
+                horario,
+                fecha_entrenamiento,
+                id_equipo
+                FROM vista_horarios_equipos WHERE id_equipo = ? AND fecha_entrenamiento <= CURDATE()
+                ORDER BY fecha_entrenamiento DESC;";
+        $params = array($this->idEquipo);
+        return Database::getRows($sql, $params);
+    }
 }

@@ -43,6 +43,16 @@ if (isset($_GET['action'])) {
                         $result['message'] = 'Asistencias guardadas correctamente';
                     }
                     break;
+            // Leer horarios para movil, y para ver solo los entrenamientos sin asistencias en base al idequipo 
+            case 'readOneHorarioMovil':
+                if (!$asistencias->setIdEquipo($_POST['idEquipo'])) {
+                    $result['error'] = $asistencia->getDataError();
+                } elseif ($result['dataset'] = $asistencias->readOneHorario()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Horario inexistente';
+                }
+                break;
                 // Leer todos caso normal
             case 'readAll':
                 if (!$asistencias->setIdEntrenamiento($_POST['idEntrenamiento'])) {

@@ -18,8 +18,6 @@ window.onload = async function () {
             FORM.append('correo', INPUT1.value);
             FORM.append('nivel', 1);
             FORM.append('fecha', fechaActualUTC);
-            console.log('Esto contiene el correo: ' + INPUT1.value);
-            console.log('Esto contiene la fecha actual en UTC: ' + fechaActualUTC.toISOString());
             const DATA = await fetchData(API, 'envioCorreo', FORM);
             if (DATA.status) {
                 sweetAlert(1, DATA.message, true);
