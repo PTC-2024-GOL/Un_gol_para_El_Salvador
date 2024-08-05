@@ -27,6 +27,15 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Alias de Tecnico indefinido';
                 }
                 break;
+                case 'getUserMobile':
+                    if (isset($_SESSION['correoTecnico'])) {
+                        $result['status'] = 1;
+                        $result['username'] = $_SESSION['nombreTecnico'];
+                        $result['foto'] = $_SESSION['fotoTecnico'];
+                    } else {
+                        $result['error'] = 'Nombre de Tecnico indefinido';
+                    }
+                    break;
                 //leer perfil
             case 'readProfile':
                     if ($result['dataset'] = $tecnico->readProfile()) {
