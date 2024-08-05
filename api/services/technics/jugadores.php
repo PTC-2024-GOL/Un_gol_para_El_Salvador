@@ -42,15 +42,6 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Jugador inexistente';
                 }
                 break;
-            case 'readOneMobile':
-                if (!$jugador->setId($_POST['idJugador'])) {
-                    $result['error'] = 'Jugador incorrecto';
-                } elseif ($result['dataset'] = $jugador->readOneMobile()) {
-                    $result['status'] = 1;
-                } else {
-                    $result['error'] = 'Jugador inexistente';
-                }
-                break;
             // Ver uno
             case 'readAllByGender':
                 if (!$jugador->setGenero($_POST['genero'])) {
@@ -58,6 +49,33 @@ if (isset($_GET['action'])) {
                 } elseif ($result['dataset'] = $jugador->readAllByGender()) {
                     $result['status'] = 1;
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
+                } else {
+                    $result['error'] = 'Jugador inexistente';
+                }
+                break;
+            case 'matchesByPlayer':
+                if (!$jugador->setId($_POST['idJugador'])) {
+                    $result['error'] = 'Jugador incorrecto';
+                } elseif ($result['dataset'] = $jugador->matchesByPlayer()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Jugador inexistente';
+                }
+                break;
+            case 'promByPlayer':
+                if (!$jugador->setId($_POST['idJugador'])) {
+                    $result['error'] = 'Jugador incorrecto';
+                } elseif ($result['dataset'] = $jugador->promByPlayer()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Jugador inexistente';
+                }
+                break;
+            case 'notesByPlayer':
+                if (!$jugador->setId($_POST['idJugador'])) {
+                    $result['error'] = 'Jugador incorrecto';
+                } elseif ($result['dataset'] = $jugador->notesByPlayer()) {
+                    $result['status'] = 1;
                 } else {
                     $result['error'] = 'Jugador inexistente';
                 }

@@ -89,14 +89,6 @@ class JugadoresHandler
         return Database::getRow($sql, $params);
     }
 
-    public function readOneMobile()
-    {
-        $sql = 'SELECT * FROM vista_informacion_jugador
-                WHERE id_jugador= ? ORDER BY registroFisico DESC LIMIT 1';
-        $params = array($this->id);
-        return Database::getRow($sql, $params);
-    }
-
     public function readFilename()
     {
         $sql = 'SELECT foto_jugador
@@ -135,5 +127,31 @@ class JugadoresHandler
         $params = array($this->id);
         return Database::executeRow($sql, $params);
     }
+
+    ///FUNCIONES PARA MOVIL DE TECNICOS - PANTALLA DE RENDIMIENTO
+
+    public function matchesByPlayer()
+    {
+        $sql = 'SELECT COUNT(id_participacion) AS partidos FROM participaciones_partidos 
+                WHERE id_jugador = ?';
+        $params = array($this->id);
+        return Database::getRow($sql, $params);
+    }
+
+    public function promByPlayer()
+    {
+        $sql = 'SELECT round(AVG(nota_caracteristica_analisis),1) AS notaGlobal FROM caracteristicas_analisis 
+                WHERE id_jugador = ?;';
+        $params = array($this->id);
+        return Database::getRow($sql, $params);
+    }
+
+    public function notesByPlayer()
+    {
+        $sql = 'SELECT * FROM notas_por_jugador WHERE id_jugador = ?';
+        $params = array($this->id);
+        return Database::getRows($sql, $params);
+    }
+
 
 }
