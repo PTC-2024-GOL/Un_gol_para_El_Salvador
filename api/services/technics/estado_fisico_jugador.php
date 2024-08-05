@@ -63,6 +63,15 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Estado fisico inexistente';
                 }
                 break;
+            case 'readAllMobile':
+                if (!$estadofisico->setId($_POST['idJugador'])) {
+                    $result['error'] = $estadofisico->getDataError();
+                } elseif ($result['dataset'] = $estadofisico->readAllMobile()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Estado fisico inexistente';
+                }
+                break;
                 // Actualizar
             case 'updateRow':
                 $_POST = Validator::validateForm($_POST);

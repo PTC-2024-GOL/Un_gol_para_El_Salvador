@@ -88,6 +88,24 @@ class EstadoFisicoJugadorHandler
         return Database::getRow($sql, $params);
     }
 
+    public function readAllMobile()
+    {
+        $sql = "SELECT 
+        e.id_estado_fisico_jugador,
+        e.id_jugador,
+        e.altura_jugador,
+        e.peso_jugador,
+        e.indice_masa_corporal,
+        e.fecha_creacion,
+        CONCAT(j.nombre_jugador, ' ', j.apellido_jugador) AS nombre_jugador,
+        DATE_FORMAT(e.fecha_creacion, '%d de %M de %Y') AS fecha_creacion_format
+        FROM estados_fisicos_jugadores e
+        INNER JOIN
+        jugadores j ON j.id_jugador = e.id_jugador
+        WHERE e.id_jugador = ? ORDER BY fecha_creacion_format ASC LIMIT 1;";
+        $params = array($this->id);
+        return Database::getRow($sql, $params);
+    }
 
     //Función para actualizar un Subcontenido o varios. 
 

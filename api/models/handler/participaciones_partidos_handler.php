@@ -42,7 +42,7 @@ class ParticipacionesPartidosHandler
     //Función para insertar una participacion.
     public function createRow()
     {
-        $sql = 'INSERT INTO participaciones_partidos(id_partido, id_jugador, id_posicion, titular, sustitucion, minutos_jugados, asistencias, estado_animo, puntuacion) VALUE (?,?,?,?,?,?,?,?)';
+        $sql = 'INSERT INTO participaciones_partidos(id_partido, id_jugador, id_posicion, titular, sustitucion, minutos_jugados, asistencias, estado_animo, puntuacion) VALUE (?,?,?,?,?,?,?,?,?)';
         $params = array(
             $this->idPartido,
             $this->idJugador,
