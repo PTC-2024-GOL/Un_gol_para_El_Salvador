@@ -104,8 +104,14 @@ class AsistenciasrHandler
                 id_entrenamiento,
                 horario,
                 fecha_entrenamiento,
-                id_equipo
-                FROM vista_horarios_equipos WHERE id_equipo = ? AND fecha_entrenamiento <= CURDATE()
+                id_equipo,
+                id_horario
+                FROM vista_horarios_equipos_movil vhem
+                WHERE id_equipo = ? AND fecha_entrenamiento <= CURDATE() AND NOT EXISTS (
+                SELECT 1
+                FROM asistencias a
+                WHERE a.id_entrenamiento = vhem.id_entrenamiento
+                )
                 ORDER BY fecha_entrenamiento DESC;";
         $params = array($this->idEquipo);
         return Database::getRows($sql, $params);
