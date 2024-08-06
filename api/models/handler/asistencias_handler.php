@@ -61,6 +61,15 @@ class AsistenciasrHandler
         return Database::getRows($sql, $params);
     }
 
+    public function readOneHorarioMostrar()
+    {
+        $sql = "SELECT 
+                horario
+                FROM vista_horarios_equipos WHERE id_entrenamiento = ?;";
+        $params = array($this->idEntrenamiento);
+        return Database::getRows($sql, $params);
+    }
+
     //Función para leer si una asistencia ya se ha registrado
     public function readOne()
     {
@@ -101,4 +110,6 @@ class AsistenciasrHandler
         $params = array($this->idEquipo);
         return Database::getRows($sql, $params);
     }
+
+    
 }

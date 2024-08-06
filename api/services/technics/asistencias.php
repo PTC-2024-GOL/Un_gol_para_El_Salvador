@@ -53,6 +53,16 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Horario inexistente';
                 }
                 break;
+            // Leer horarios para movil, y para ver solo los entrenamientos sin asistencias en base al idEntrenamiento
+                case 'readOneHorarioMostrar':
+                    if (!$asistencias->setIdEntrenamiento($_POST['idEntrenamiento'])) {
+                        $result['error'] = $asistencia->getDataError();
+                    } elseif ($result['dataset'] = $asistencias->readOneHorarioMostrar()) {
+                        $result['status'] = 1;
+                    } else {
+                        $result['error'] = 'Hora inexistente';
+                    }
+                    break;
                 // Leer todos caso normal
             case 'readAll':
                 if (!$asistencias->setIdEntrenamiento($_POST['idEntrenamiento'])) {
