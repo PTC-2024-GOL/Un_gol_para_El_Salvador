@@ -31,6 +31,7 @@ if (isset($_GET['action'])) {
                     if (isset($_SESSION['correoTecnico'])) {
                         $result['status'] = 1;
                         $result['username'] = $_SESSION['nombreTecnico'];
+                        $result['apellido'] = $_SESSION['apellidoTecnico'];
                         $result['foto'] = $_SESSION['fotoTecnico'];
                     } else {
                         $result['error'] = 'Nombre de Tecnico indefinido';
