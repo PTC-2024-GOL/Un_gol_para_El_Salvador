@@ -88,7 +88,8 @@ class EntrenamientosHandler
         INNER JOIN 
         horarios h ON r.id_horario = h.id_horario
         WHERE id_equipo = ? AND 
-        (SELECT COUNT(*) FROM asistencias a WHERE a.id_entrenamiento = e.id_entrenamiento AND asistencia = "Asistencia") > 0;';
+        (SELECT COUNT(*) FROM asistencias a WHERE a.id_entrenamiento = e.id_entrenamiento AND asistencia = "Asistencia") > 0
+        ORDER BY fecha_entrenamiento DESC;';
         $params = array($this->idEquipo);
         return Database::getRows($sql, $params);
     }
