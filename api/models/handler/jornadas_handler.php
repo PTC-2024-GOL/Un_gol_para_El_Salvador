@@ -86,7 +86,7 @@ class JornadasHandler
     //Función para leer todas las jornadas disponibles para el técnico.
     public function readAllTechnics()
     {
-        $sql = 'SELECT 
+        $sql = 'SELECT DISTINCT
         j.id_jornada AS ID,
         j.nombre_jornada AS NOMBRE,
         j.numero_jornada AS NUMERO,
