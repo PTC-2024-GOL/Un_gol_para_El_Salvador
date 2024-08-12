@@ -84,6 +84,15 @@ window.onload = async function () {
             const DATA = await fetchData(API, 'updatePass', FORM);
             if (DATA.status) {
                 sweetAlert(1, DATA.message, true);
+                if (NIVEL == 1) {
+                    window.location.href = `../pages/index.html`;
+                }
+                else if (NIVEL == 2) {
+                    window.location.href = `../../technicals/pages/index.html`;
+                }
+                else if (NIVEL == 3) {
+                    console.log('Ni de pedo bro: ' + NIVEL);
+                }
             } else {
                 sweetAlert(2, DATA.error, false);
                 console.error(DATA.exception);
