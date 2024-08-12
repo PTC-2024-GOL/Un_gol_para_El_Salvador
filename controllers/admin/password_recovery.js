@@ -37,7 +37,7 @@ window.onload = async function () {
     // Verificar si la diferencia es mayor a 900000 milisegundos (15 minutos)
     if (diferencia > 900000) {
         PERMISO = 0;
-        sweetAlert(2, 'El tiempo se agotó, generá un nuevo link 1.', false);
+        sweetAlert(2, 'El tiempo se agotó, generá un nuevo enlace.', false);
     } else {
         const FORM2 = new FormData();
         FORM2.append('idUsuario', ID_USUARIO);
@@ -49,13 +49,19 @@ window.onload = async function () {
             console.log('Esto contiene el recovery_code: ' + resultado);
             if (resultado == HASH) {
                 PERMISO = 1;
+            }
+            else if (HASH == '0000') {
+                PERMISO = 0;
+                
+                sweetAlert(2, 'Este Link ya ha sido utilizado, genera un nuevo enlace.', false);
+                
             } else {
                 PERMISO = 0;
-                sweetAlert(2, 'El tiempo se agotó, generá un nuevo link 2.', false);
+                sweetAlert(2, 'Este enlace ya no esta disponible, ingresa al último correo recibido de recuperación de contraseña.', false);
             }
         } else {
             PERMISO = 0;
-            sweetAlert(2, 'El tiempo se agotó, generá un nuevo link 3.', false);
+            sweetAlert(2, 'Enlace corrompido', false);
         }
     }
 
@@ -65,7 +71,7 @@ window.onload = async function () {
             return false;
         }
         if (PERMISO === 0) {
-            sweetAlert(2, 'El tiempo se agotó, generá un nuevo link 4.', false);
+            sweetAlert(2, 'Enlace corrompido, generá un nuevo link', false);
             return false;
         }
         if (INPUT1.value === INPUT2.value) {
@@ -78,6 +84,15 @@ window.onload = async function () {
             const DATA = await fetchData(API, 'updatePass', FORM);
             if (DATA.status) {
                 sweetAlert(1, DATA.message, true);
+                if (NIVEL == 1) {
+                    window.location.href = `../pages/index.html`;
+                }
+                else if (NIVEL == 2) {
+                    window.location.href = `../../technicals/pages/index.html`;
+                }
+                else if (NIVEL == 3) {
+                    console.log('Ni de pedo bro: ' + NIVEL);
+                }
             } else {
                 sweetAlert(2, DATA.error, false);
                 console.error(DATA.exception);
