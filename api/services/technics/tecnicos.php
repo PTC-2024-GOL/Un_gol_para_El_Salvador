@@ -124,7 +124,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Debe autenticarse para ingresar';
                 } else {
-                    $result['error'] = 'Debe crear un administrador para comenzar';
+                    $result['error'] = 'Debe crear un técnico para comenzar';
                 }
                 break;
             case 'logIn':
