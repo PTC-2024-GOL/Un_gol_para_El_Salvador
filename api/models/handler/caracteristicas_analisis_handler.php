@@ -79,31 +79,35 @@ class CaracteristicasAnalisisHandler
     //Función para la gráfica de una característica.
     public function graphicPromedyByJourney()
     {
-        $sql = 'SELECT 
+        $sql = 'SELECT
         j.id_jugador AS IDJ,
         CONCAT(j.nombre_jugador, " ", j.apellido_jugador) AS JUGADOR,
-        CASE 
-        WHEN ca.nota_caracteristica_analisis IS NULL THEN 0
-        ELSE ca.nota_caracteristica_analisis
-        END AS NOTA,
         cj.id_caracteristica_jugador AS IDC,
         cj.nombre_caracteristica_jugador AS CARACTERISTICA,
+        CONCAT(DATE_FORMAT(e.fecha_entrenamiento, "%e de %M del %Y"), " - ", e.sesion) AS FECHA,
         cj.clasificacion_caracteristica_jugador AS TIPO,
-        COALESCE(ca.id_entrenamiento, a.id_entrenamiento) AS IDE,
-        a.asistencia AS ASISTENCIA
-	    FROM 
-	    jugadores j
-	    LEFT JOIN 
-	    asistencias a ON j.id_jugador = a.id_jugador
-	    LEFT JOIN 
-	    caracteristicas_analisis ca ON j.id_jugador = ca.id_jugador AND a.id_entrenamiento = ca.id_entrenamiento
-	    LEFT JOIN 
-	    caracteristicas_jugadores cj ON ca.id_caracteristica_jugador = cj.id_caracteristica_jugador
+        ROUND(AVG(CASE 
+            WHEN ca.nota_caracteristica_analisis IS NULL THEN 0
+            ELSE ca.nota_caracteristica_analisis
+        END), 2) AS PROMEDIO
+        FROM 
+        jugadores j
+        LEFT JOIN 
+        asistencias a ON j.id_jugador = a.id_jugador
+        LEFT JOIN 
+        caracteristicas_analisis ca ON j.id_jugador = ca.id_jugador AND a.id_entrenamiento = ca.id_entrenamiento
+        LEFT JOIN 
+        caracteristicas_jugadores cj ON ca.id_caracteristica_jugador = cj.id_caracteristica_jugador
         LEFT JOIN 
         entrenamientos e ON e.id_entrenamiento = ca.id_entrenamiento
         LEFT JOIN 
         jornadas jn ON jn.id_jornada = e.id_jornada
-	    WHERE a.asistencia = "Asistencia" AND jn.id_jornada =(SELECT id_jornada FROM entrenamientos WHERE id_entrenamiento = 7);';
+        WHERE 
+        a.asistencia = "Asistencia" 
+        AND jn.id_jornada = (SELECT id_jornada FROM entrenamientos WHERE id_entrenamiento = ?) 
+        AND a.id_jugador = ?
+        GROUP BY 
+        e.fecha_entrenamiento, e.sesion LIMIT 3;';
         $params = array($this->entrenamiento, $this->jugador);
         return Database::getRows($sql, $params);
     }
