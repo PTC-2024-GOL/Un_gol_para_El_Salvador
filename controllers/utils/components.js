@@ -306,6 +306,64 @@ const fetchData = async (filename, action, form = null) => {
     }
 }
 
+
+const stackedBarLineGraph = (canvas, xAxis, data, barLegend, title) => {
+    let barColors = [];
+    let lineColor = '#FF5733'; // Color para la línea
+
+    // Generar colores aleatorios para las barras
+    xAxis.forEach(() => {
+        barColors.push('#' + (Math.random().toString(16)).substring(2, 8));
+    });
+
+    new Chart(document.getElementById(canvas), {
+        type: 'bar', // Tipo de gráfico principal
+        data: {
+            labels: xAxis,
+            datasets: [
+                {
+                    type: 'bar', // Dataset para las barras
+                    label: barLegend,
+                    data: data,
+                    backgroundColor: barColors,
+                    stack: 'stack1' // Apilar barras
+                },
+                {
+                    type: 'line', // Dataset para la línea
+                    label: 'Línea',
+                    data: data,
+                    borderColor: lineColor,
+                    backgroundColor: 'rgba(255, 87, 51, 0.2)', // Color de fondo para la línea (transparente)
+                    fill: false, // La línea no estará rellena
+                    tension: 0.1 // Para suavizar la línea
+                }
+            ]
+        },
+        options: {
+            scales: {
+                x: {
+                    stacked: true // Apilar barras en el eje X
+                },
+                y: {
+                    stacked: true // Apilar barras en el eje Y
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: title
+                },
+                legend: {
+                    display: true
+                }
+            }
+        }
+    });
+}
+
+
+
+
 /*
 *   Función para generar un gráfico de barras verticales. Requiere la librería chart.js para funcionar.
 *   Parámetros: canvas (identificador de la etiqueta canvas), xAxis (datos para el eje X), yAxis (datos para el eje Y), legend (etiqueta para los datos) y title (título del gráfico).

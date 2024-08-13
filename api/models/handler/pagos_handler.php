@@ -144,4 +144,14 @@ class PagoHandler
         $sql = 'SELECT COUNT(becado) AS becado FROM jugadores WHERE becado = "Beca completa"';
         return Database::getRow($sql);
     }
+
+     //Función para la gráfica.
+     public function graphic()
+     {
+         $sql = 'SELECT mes_pago AS MES, COUNT(DISTINCT id_jugador) AS NUM_JUGADOR
+                 FROM pagos
+                 WHERE YEAR(fecha_pago) = YEAR(CURDATE())
+                 GROUP BY mes_pago';
+         return Database::getRows($sql);
+     }
 }

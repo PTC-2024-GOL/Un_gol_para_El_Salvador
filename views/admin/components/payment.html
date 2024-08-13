@@ -16,10 +16,16 @@
                     </button>
                 </form>
             </div>
-            <div class="col-sm-12 col-md-6">
+            <div class="col-sm-12 col-md-6 text-end">
+                <!-- Botón grafica-->
+                <button class="btn transparente" onclick="openGraphic()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="dark" class="bi bi-graph-up" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07"/>
+                      </svg>
+                </button>
                 <!-- Botón Agregar -->
                 <button
-                    class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
+                    class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-sm-left btn-sm rounded-3 "
                     type="submit" onclick="openCreate()">
                     <span class="fs-5 me-2">+</span> Agregar pago
                 </button>
@@ -55,6 +61,28 @@
         </ul>
     </nav>
 </div>
+
+<!-- Componente Modal para ver la gráfica de barras -->
+<div class="modal fade" id="graphicModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modalTitleGraphic" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalTitleGraphic"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="row justify-content-center">
+                <!-- Contenedor de la gráfica -->
+                <div class="col-md-9 col-sm-9">
+                    <div class="container-fluid">
+                        <canvas id="analisis"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Componente Modal para guardar un registro -->
 <div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="modalTitle" aria-hidden="true">
