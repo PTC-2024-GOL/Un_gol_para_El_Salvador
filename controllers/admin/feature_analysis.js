@@ -9,7 +9,7 @@ let SAVE_FORM,
     JUGADOR,
     ENTRENAMIENTO;
 let SEARCH_FORM;
-
+let errorContainer;
 // Constantes para completar las rutas de la API.
 const API = 'services/admin/caracteristicas_analisis.php';
 const JUGADOR_API = 'services/admin/jugadores.php';
@@ -124,9 +124,11 @@ const graficoLinealPromedioJugadores = async (FORM) => {
         if (DATA.status) {
             let fecha = [];
             let promedios = [];
+            let fechas = [];
             DATA.dataset.forEach(row => {
-                fecha.push(row.FECHA);
+                fecha.push(row.SESION);
                 promedios.push(row.PROMEDIO);
+                fechas.push(row.FECHAS);
             });
 
             // Destruir la instancia existente del gráfico si existe
@@ -137,13 +139,40 @@ const graficoLinealPromedioJugadores = async (FORM) => {
 
             // Restablecer el canvas en caso de que sea necesario
             const canvasContainer = document.getElementById('promedios').parentElement;
-            canvasContainer.innerHTML = '<canvas id="promedios"></canvas>';
+            canvasContainer.innerHTML = '<canvas id="promedios"></canvas> <div id="error"></div>';
 
+            errorContainer.innerHTML = '';
             // Llamada a la función para generar y mostrar un gráfico lineal.
-            chartInstance2 = lineGraphWithFill('promedios', fecha, promedios, 'Promedio por sesión', 'Gráfica de promedios durante las 3 sesiones del entrenamiento');
+            chartInstance2 = lineGraphWithFill('promedios', fecha, promedios, 'Promedio por sesión', 'Gráfica de promedios durante las sesiones del día ' + fechas[0]);
         } else {
-            document.getElementById('promedios').remove();
             console.log(DATA.error);
+            // Destruir la instancia existente del gráfico si existe
+            if (chartInstance2) {
+                chartInstance2.destroy();
+                chartInstance2 = null; // Asegúrate de restablecer la referencia
+            }
+            // Restablecer el canvas en caso de que sea necesario
+            const canvasContainer = document.getElementById('promedios').parentElement;
+            canvasContainer.innerHTML = ' <div id="error"></div> <canvas id="promedios"></canvas>';
+            
+            // Restablecer o crear el contenedor
+            errorContainer = document.getElementById('error');
+            errorContainer.innerHTML += '';
+            const tablaHtml = `
+            <div class="col-md-12">
+                <div class="card mb-4 shadow-sm">
+                    <img src="../../../resources/img/svg/errores/404.jpg"
+                        class="card-img-top img-thumbnail" alt="Imagen de ejemplo"">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-center align-items-center">
+                           <p class="text-danger">${DATA.error} </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+            errorContainer.innerHTML += tablaHtml;
+            chartInstance2 = null;
         }
     } catch (error) {
         console.log('Error:', error);
@@ -476,14 +505,6 @@ async function cargarTabla() {
 }
 
 
-async function cargarSearch() {
-    try {
-        fillSelect(JUGADOR_API, 'readAll', 'search');
-    } catch {
-        console.log('No se pudo cargar el select de esta forma.')
-    }
-}
-
 // Variables y constantes para la paginación
 const analisisPorPagina = 10;
 let paginaActual = 1;
@@ -588,7 +609,6 @@ window.onload = async function () {
     titleElement.textContent = 'Análisis de las características';
     ROWS_FOUND = document.getElementById('rowsFound');
     cargarTabla();
-    cargarSearch();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
@@ -668,5 +688,8 @@ window.onload = async function () {
         buscarAnalisis(FORM);
     });
     cargarNav();
+    
+    // Contenedor de error.
+    errorContainer = document.getElementById('error');
 };
 

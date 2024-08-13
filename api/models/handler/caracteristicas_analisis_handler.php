@@ -85,6 +85,8 @@ class CaracteristicasAnalisisHandler
         cj.id_caracteristica_jugador AS IDC,
         cj.nombre_caracteristica_jugador AS CARACTERISTICA,
         CONCAT(DATE_FORMAT(e.fecha_entrenamiento, "%e de %M del %Y"), " - ", e.sesion) AS FECHA,
+        CONCAT(DATE_FORMAT(e.fecha_entrenamiento, "%e de %M del %Y")) AS FECHAS,
+        e.sesion AS SESION,
         cj.clasificacion_caracteristica_jugador AS TIPO,
         ROUND(AVG(CASE 
             WHEN ca.nota_caracteristica_analisis IS NULL THEN 0
@@ -104,7 +106,7 @@ class CaracteristicasAnalisisHandler
         jornadas jn ON jn.id_jornada = e.id_jornada
         WHERE 
         a.asistencia = "Asistencia" 
-        AND jn.id_jornada = (SELECT id_jornada FROM entrenamientos WHERE id_entrenamiento = ?) 
+        AND e.fecha_entrenamiento = (SELECT fecha_entrenamiento FROM entrenamientos WHERE id_entrenamiento = ?) 
         AND a.id_jugador = ?
         GROUP BY 
         e.fecha_entrenamiento, e.sesion LIMIT 3;';
