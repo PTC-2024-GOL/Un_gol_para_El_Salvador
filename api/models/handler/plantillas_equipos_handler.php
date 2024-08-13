@@ -70,7 +70,6 @@ class PlantillasEquiposHandler
         pe.id_equipo AS ID_EQUIPO,
         e.logo_equipo AS LOGO,
         e.nombre_equipo AS NOMBRE_EQUIPO,
-        e.logo_equipo AS LOGO,
         j.foto_jugador AS IMAGEN
         FROM 
         plantillas_equipos pe JOIN 

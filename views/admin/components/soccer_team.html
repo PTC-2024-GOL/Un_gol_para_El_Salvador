@@ -30,11 +30,20 @@
 
     <label for="select" class="form-label fw-semibold">Selecciona el género de los equipos</label>
     <div class="col-sm-6">
-        <select type="password" class="form-select rounded-3 shadow" id="select" onchange="FilterByGender()">
-            <option>Filtrar por género</option>
-            <option>Masculino</option>
-            <option>Femenino</option>
-        </select>
+        <div class="row">
+            <div class="col-8">
+                <select type="password" class="form-select rounded-3 shadow" id="select" onchange="FilterByGender()">
+                    <option>Filtrar por género</option>
+                    <option>Masculino</option>
+                    <option>Femenino</option>
+                </select>
+            </div>
+            <div class="col-4">
+                <button class="btn btn-outline-blue-color" onclick="openGraphic()">Generar gráfica
+                    <img src="../../../resources/img/png/graphic.png" width="20" height="20" class="ms-2">
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- Tabla para mostrar los registros existentes -->
@@ -154,6 +163,46 @@
                     </div>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Componente Modal para ver la grafica -->
+<div class="modal fade" id="seeGraphic" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="modalTitle1" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen modal-dialog-scrollable bg-white p-3">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-principal-color text-light">
+                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                <h1 class="modal-title fs-5" id="modalTitleGraphic"></h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <!-- Espacio para poner la grafica -->
+            <h3 class="mt-5 text-center">Equipos por subcategorías</h3>
+            <small class="text-center">En este apartado podrás encontrar a través de una gráfica de barras todos los equipos de una categoría en específico</small>
+
+            <hr>
+
+            <div class="p-4 mt-2 ms-2 d-flex justify-content-center">
+                <div class="col-6 rounded-3">
+                    <small class="fw-semibold">Elige la subcategoría de la que quieres ver su gráfica</small>
+                    <div class="row align-items-center border border-dark-subtle rounded-3 p-2 me-0 mt-2">
+                        <div class="col-1 d-flex text-center">
+                            <img src="../../../resources/img/png/filter.png" width="20" height="20">
+                            <img src="../../../resources/img/png/filter2.png" width="20" height="20">
+                        </div>
+                        <div class="col-11">
+                            <select type="password" class="form-select rounded-3" id="select" onchange="FilterByGender()">
+                                <option>Filtrar por género</option>
+                                <option>Masculino</option>
+                                <option>Femenino</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
