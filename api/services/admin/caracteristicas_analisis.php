@@ -98,6 +98,19 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Gráfica inexistente';
                 }
                 break;
+                // Gráfica de lineas 
+            case 'graphicPromedyByJourney':
+                if (
+                    !$caracteristica->setEntrenamiento($_POST['idEntrenamiento']) or
+                    !$caracteristica->setJugador($_POST['idJugador'])
+                ) {
+                    $result['error'] = $caracteristica->getDataError();
+                } elseif ($result['dataset'] = $caracteristica->graphicPromedyByJourney()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Gráfica inexistente';
+                }
+                break;
                 // Actualizar
             case 'updateRow':
                 $_POST = Validator::validateForm($_POST);
