@@ -10,6 +10,10 @@ let SAVE_FORM,
     GENERO_EQUIPO,
     TELEFONO_EQUIPO,
     LOGO_EQUIPO
+
+let SEE_GRAPHIC,
+    MODAL_TITLE_GRAPHIC
+
 let SEARCH_FORM;
 
 let IMAGEN;
@@ -252,6 +256,10 @@ const FilterByGender = async () => {
     }
 }
 
+const openGraphic = async () => {
+    SEE_GRAPHIC.show();
+    MODAL_TITLE_GRAPHIC.textContent = 'Gráfico'
+}
 
 // window.onload
 window.onload = async function () {
@@ -287,6 +295,9 @@ window.onload = async function () {
         LOGO_EQUIPO = document.getElementById('imagenEquipo'),
         GENERO_EQUIPO = document.getElementById('generoEquipo'),
         IMAGEN = document.getElementById('img');
+
+    SEE_GRAPHIC = new bootstrap.Modal('#seeGraphic'),
+        MODAL_TITLE_GRAPHIC = document.getElementById('modalTitleGraphic');
 
     // Constantes para ver los miembros del cuerpo tecnico
     CUERPO_TECNICO = document.getElementById('cuerpoTecnicoEquipo');
