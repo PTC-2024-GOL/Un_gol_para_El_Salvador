@@ -58,12 +58,13 @@ const graficoBarrasLineasAnalisis = async () => {
         if (DATA.status) {
             // Se declaran los arreglos para guardar los datos a graficar.
             let mes = [];
-            let numJugador = []; // Datos combinados para barras y línea
+            let numJugador = [];
             
             // Se recorre el conjunto de registros fila por fila a través del objeto row.
             DATA.dataset.forEach(row => {
+                // Se agregan los datos a los arreglos.
                 mes.push(row.MES);
-                numJugador.push(row.NUM_JUGADOR); // Usamos un solo campo para datos combinados
+                numJugador.push(row.NUM_JUGADOR); // Datos para las barras
             });
 
             // Destruir la instancia existente del gráfico si existe
@@ -77,7 +78,7 @@ const graficoBarrasLineasAnalisis = async () => {
             canvasContainer.innerHTML = '<canvas id="analisis"></canvas>';
 
             // Llamada a la función para generar y mostrar un gráfico combinado de barras apiladas y líneas
-            chartInstance = stackedBarLineGraph('analisis', mes, numJugador, 'Números de jugadores');
+            chartInstance = lineGraph('analisis', mes, numJugador, 'Número de jugadores que han pagado');
         } else {
             console.log(DATA.error);
         }
@@ -85,6 +86,7 @@ const graficoBarrasLineasAnalisis = async () => {
         console.log(error);
     }
 }
+
 
 
 

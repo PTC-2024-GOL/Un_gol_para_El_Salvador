@@ -145,13 +145,24 @@ class PagoHandler
         return Database::getRow($sql);
     }
 
-     //Función para la gráfica.
-     public function graphic()
-     {
-         $sql = 'SELECT mes_pago AS MES, COUNT(DISTINCT id_jugador) AS NUM_JUGADOR
-                 FROM pagos
-                 WHERE YEAR(fecha_pago) = YEAR(CURDATE())
-                 GROUP BY mes_pago';
-         return Database::getRows($sql);
-     }
+     //Función para la gráfica Barra.
+    public function graphic()
+    {
+        $sql = 'SELECT mes_pago AS MES, COUNT(DISTINCT id_jugador) AS NUM_JUGADOR, AVG(cantidad_pago) AS CANTIDAD
+                FROM pagos
+                WHERE YEAR(fecha_pago) = YEAR(CURDATE())
+                GROUP BY mes_pago;';
+        return Database::getRows($sql);
+    }
+
+    //Función para la gráfica lineal.
+    public function graphicLine()
+    {
+        $sql = 'SELECT mes_pago AS MES, AVG(cantidad_pago) AS PRO_PAGO
+                FROM pagos
+                WHERE YEAR(fecha_pago) = YEAR(CURDATE())
+                GROUP BY mes_pago;';
+        return Database::getRows($sql);
+    }
+
 }

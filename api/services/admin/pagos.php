@@ -96,7 +96,7 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Ocurrió un problema al eliminar el pago. Por seguridad no puedes eliminar este jugador porque esta siendo utilizado en otras tablas.';
                 }
                 break;
-                // Gráfica
+                // Gráfica Barra
             case 'graphic':
                 if ($result['dataset'] = $pago->graphic()) {
                    $result['status'] = 1;
