@@ -45,7 +45,7 @@ if (isset($_GET['action'])) {
                 break;
             // Leer todos
             case 'readAll':
-                if ($result['dataset'] = $registro->readAll()) {
+                if ($result['dataset'] = $registro->readAllTechnics()) {
                     $result['status'] = 1;
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
