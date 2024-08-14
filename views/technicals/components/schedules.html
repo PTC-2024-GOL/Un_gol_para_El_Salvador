@@ -15,15 +15,6 @@
                     </button>
                 </form>
             </div>
-
-            <div class="col-sm-12 col-md-6">
-                <!-- Botón Agregar -->
-                <button
-                    class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
-                    type="submit" onclick="openCreate()">
-                    <span class="fs-5 me-2">+</span> Agregar horario
-                </button>
-            </div>
         </div>
     </div>
     <hr>
@@ -52,56 +43,4 @@
             <!-- Aquí se insertarán los elementos de la paginación -->
         </ul>
     </nav>
-</div>
-
-<!-- Componente Modal para guardar un registro -->
-<div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="modalTitle" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-blue-principal-color">
-                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
-                <h1 class="modal-title fs-5 text-white" id="modalTitle"></h1>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-            </div>
-            <!-- Formulario para crear o actualizar un registro -->
-            <form id="saveForm">
-                <div class="modal-body row g-3">
-                    <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input type="number" class="d-none" id="idHorario" name="idHorario">
-                    <div class="col-sm-12 col-md-6">
-                        <label for="nombreHora" class="form-label fw-semibold">Nombre del horario</label>
-                        <input id="nombreHora" type="text" name="nombreHora" class="form-control"
-                            placeholder="Escribe el nombre del horario" required>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <label for="diaEntreno" class="form-label fw-semibold">Selecciona el día de
-                            entrenamiento</label>
-                        <select id="diaEntreno" type="text" name="diaEntreno" class="form-select" required></select>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <label for="campoEntreno" class="form-label fw-semibold">Campo de entrenamiento</label>
-                        <input id="campoEntreno" type="text" name="campoEntreno" class="form-control"
-                            placeholder="Escribe el campo de entrenamiento" required>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <label for="horarioInicial" class="form-label fw-semibold">Horario inicial del
-                            entrenamiento</label>
-                        <input id="horarioInicial" type="time" name="horarioInicial" class="form-control"
-                            required></input>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <label for="horarioFinal" class="form-label fw-semibold">Horario final del
-                            entrenamiento</label>
-                        <input id="horarioFinal" type="time" name="horarioFinal" class="form-control" required></input>
-                    </div>
-                </div>
-                <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
-                    <button type="reset" class="btn bg-red-cream-color text-white">Cancelar</button>
-                    <button type="submit" class="btn bg-blue-principal-color text-white ">Guardar</button>
-                </div>
-            </form>
-        </div>
-    </div>
 </div>
