@@ -510,6 +510,64 @@ const DoughnutGraph = (canvas, legends, values, title) => {
 }
 
 /*
+*   Función para generar un gráfico de polar. Requiere la librería chart.js para funcionar.
+*   Parámetros: canvas (identificador de la etiqueta canvas), legends (valores para las etiquetas), values (valores de los datos) y title (título del gráfico).
+*   Retorno: ninguno.
+*/
+
+const PolarAreaGraph = (canvas, legends, values, title) => {
+    // Se declara un arreglo para guardar códigos de colores en formato hexadecimal.
+    let colors = [];
+    // Se generan códigos hexadecimales de 6 cifras de acuerdo con el número de datos a mostrar y se agregan al arreglo.
+    values.forEach(() => {
+        colors.push('#' + (Math.random().toString(16)).substring(2, 8));
+    });
+
+    // Verifica si la variable graph cuenta con una gráfica previamente creada, si es así, entonces la va a destruir.
+    if (graph) {
+        graph.destroy();
+    }
+
+    // Se crea una instancia para generar el gráfico con los datos recibidos.
+    graph = new Chart(document.getElementById(canvas), {
+        type: 'polarArea',
+        data: {
+            labels: legends,
+            datasets: [{
+                data: values,
+                backgroundColor: colors,
+                borderColor: 'rgba(0,0,0,0.1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                r: {
+                    pointLabels: {
+                        display: true,
+                        centerPointLabels: true,
+                        font: {
+                            size: 18
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top'
+                },
+                title: {
+                    display: true,
+                    text: title
+                }
+            }
+        }
+    });
+}
+
+
+/*
 *   Función para generar un gráfico de radar. Requiere la librería chart.js para funcionar.
 *   Parámetros: canvas (identificador de la etiqueta canvas), labels (etiquetas para el gráfico), data (valores de los datos), legend (etiqueta para los datos), title (título del gráfico), options (opciones adicionales para la configuración del gráfico).
 *   Retorno: instancia del gráfico.
