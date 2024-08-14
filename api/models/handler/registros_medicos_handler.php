@@ -34,6 +34,49 @@ class RegistrosHandler{
         return Database::getRows($sql, $params);
     }
 
+    //Función para buscar un registro médico.
+    public function searchRowsTechnics()
+    {
+        $value = '%' . Validator::getSearchValue() . '%';
+        $sql = 'SELECT DISTINCT
+        rm.id_registro_medico,
+        rm.id_jugador,
+        CONCAT(j.nombre_jugador, " " , j.apellido_jugador) AS nombre_completo_jugador,
+        rm.fecha_lesion,
+        rm.fecha_registro,
+        rm.dias_lesionado,
+        rm.id_lesion,
+        l.id_tipo_lesion,
+        l.id_sub_tipologia,
+        st.nombre_sub_tipologia,
+        rm.retorno_entreno,
+        rm.retorno_partido,
+        p.fecha_partido
+        FROM 
+        registros_medicos rm
+        INNER JOIN 
+        jugadores j ON rm.id_jugador = j.id_jugador
+        INNER JOIN 
+        lesiones l ON rm.id_lesion = l.id_lesion
+        INNER JOIN 
+        sub_tipologias st ON l.id_sub_tipologia = st.id_sub_tipologia
+        LEFT JOIN 
+        partidos p ON rm.retorno_partido = p.id_partido
+        RIGHT JOIN 
+        plantillas_equipos pe ON pe.id_jugador = j.id_jugador
+        RIGHT JOIN 
+        equipos e ON pe.id_equipo = e.id_equipo
+        RIGHT JOIN 
+        cuerpos_tecnicos ct ON ct.id_cuerpo_tecnico = e.id_cuerpo_tecnico 
+        LEFT JOIN 
+        detalles_cuerpos_tecnicos dct ON ct.id_cuerpo_tecnico = dct.id_cuerpo_tecnico
+        WHERE 
+        dct.id_tecnico = ? AND (j.nombre_jugador LIKE ? OR j.apellido_jugador LIKE ?)
+        ORDER BY j.nombre_jugador, j.apellido_jugador;';
+        $params = array($_SESSION['idTecnico'], $value, $value);
+        return Database::getRows($sql, $params);
+    }
+
     //Función para insertar un registro médico.
     public function createRow()
     {
@@ -61,6 +104,48 @@ class RegistrosHandler{
         return Database::getRows($sql);
     }
 
+       //Función para leer todas los registros médicos.
+       public function readAllTechnics()
+       {
+           $sql = 'SELECT DISTINCT
+           rm.id_registro_medico,
+           rm.id_jugador,
+           CONCAT(j.nombre_jugador, " " , j.apellido_jugador) AS nombre_completo_jugador,
+           rm.fecha_lesion,
+           rm.fecha_registro,
+           rm.dias_lesionado,
+           rm.id_lesion,
+           l.id_tipo_lesion,
+           l.id_sub_tipologia,
+           st.nombre_sub_tipologia,
+           rm.retorno_entreno,
+           rm.retorno_partido,
+           p.fecha_partido
+           FROM 
+           registros_medicos rm
+           INNER JOIN 
+           jugadores j ON rm.id_jugador = j.id_jugador
+           INNER JOIN 
+           lesiones l ON rm.id_lesion = l.id_lesion
+           INNER JOIN 
+           sub_tipologias st ON l.id_sub_tipologia = st.id_sub_tipologia
+           LEFT JOIN 
+           partidos p ON rm.retorno_partido = p.id_partido
+           RIGHT JOIN 
+           plantillas_equipos pe ON pe.id_jugador = j.id_jugador
+           RIGHT JOIN 
+           equipos e ON pe.id_equipo = e.id_equipo
+           RIGHT JOIN 
+           cuerpos_tecnicos ct ON ct.id_cuerpo_tecnico = e.id_cuerpo_tecnico 
+           LEFT JOIN 
+           detalles_cuerpos_tecnicos dct ON ct.id_cuerpo_tecnico = dct.id_cuerpo_tecnico
+           WHERE 
+           dct.id_tecnico = ?
+           ORDER BY 
+           j.nombre_jugador, j.apellido_jugador;';
+           $params = array($_SESSION['idTecnico']);
+           return Database::getRows($sql, $params);
+       }
     //Función para leer un registro médico.
     public function readOne()
     {
