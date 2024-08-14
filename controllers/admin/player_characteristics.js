@@ -5,6 +5,7 @@ let SAVE_FORM,
     CLASIFICACION_CARACTERISTICA;
 let SEARCH_FORM;
 let ROWS_FOUND;
+let GRAPHIC_MODAL;
 
 // Constantes para completar las rutas de la API
 const API = 'services/admin/caracteristicas.php';
@@ -15,6 +16,7 @@ async function loadComponent(path) {
     return text;
 }
 
+let chartInstance = null;  
 /*
 *   Función para preparar el formulario al momento de insertar un registro.
 *   Parámetros: ninguno.
@@ -28,6 +30,50 @@ const openCreate = () => {
     SAVE_FORM.reset();
     fillSelected(lista_datos, 'readAll', 'clasificacionCaracteristica');
 }
+
+const openGraphic = () => {
+    // Se muestra la caja de diálogo con su título.
+    GRAPHIC_MODAL.show();
+    modalTitleGraphic.textContent = 'Gráfica de cuantos caracteristica hay en una clasificación';
+    graficoBarrasLineasAnalisis();
+}
+
+
+const graficoBarrasLineasAnalisis = async () => {
+    try {
+        // Petición para obtener los datos del gráfico.
+        let DATA = await fetchData(API, 'graphic');
+
+        // Se comprueba si la respuesta es satisfactoria, de lo contrario se remueve la etiqueta canvas.
+        if (DATA.status) {
+            // Se declaran los arreglos para guardar los datos a graficar.
+            let numCaracteristica = [];
+            let caracteristica = [];
+
+            // Se recorre el conjunto de registros fila por fila a través del objeto row.
+            DATA.dataset.forEach(row => {
+                // Se agregan los datos a los arreglos.
+                caracteristica.push(row.CARACTERISTICA);
+                numCaracteristica.push(row.NUM_CARACTERISTICA);
+            });
+
+            // Imprime los datos en la consola para depuración
+            console.log(numCaracteristica);
+            console.log(caracteristica);
+
+            // Restablecer el canvas en caso de que sea necesario
+            const canvasContainer = document.getElementById('analisis').parentElement;
+            canvasContainer.innerHTML = '<canvas id="analisis"></canvas>';
+            // Llamada a la función para generar y mostrar un gráfico de pastel. Se encuentra en el archivo components.js
+            PolarAreaGraph('analisis', caracteristica, numCaracteristica, 'Número de caracteristica de cada clasificación');
+        } else {
+            console.log(DATA.error);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 const lista_datos = [
     {
@@ -247,6 +293,9 @@ window.onload = async function () {
     titleElement.textContent = 'Características de los jugadores';
     ROWS_FOUND = document.getElementById('rowsFound');
     fillTable();
+
+    GRAPHIC_MODAL = new bootstrap.Modal('#graphicModal'),
+    modalTitleGraphic = document.getElementById('modalTitleGraphic');
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');

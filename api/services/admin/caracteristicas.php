@@ -88,6 +88,14 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Ocurrió un problema al eliminar la caracterísca. Por seguridad no la puedes eliminar porque se ocupa en otros registros';
                 }
                 break;
+                // Gráfica Polar
+            case 'graphic':
+                if ($result['dataset'] = $caracteristica->graphic()) {
+                   $result['status'] = 1;
+               } else {
+                   $result['error'] = 'Gráfica inexistente';
+               }
+               break;
             default:
                 $result['error'] = 'Acción no disponible dentro de la sesión';
         }

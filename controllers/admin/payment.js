@@ -423,7 +423,7 @@ window.onload = async function () {
     fillTable();
 
     GRAPHIC_MODAL = new bootstrap.Modal('#graphicModal'),
-    modalTitleGraphic = document.getElementById('modalTitleGraphic')
+    modalTitleGraphic = document.getElementById('modalTitleGraphic');
 
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),

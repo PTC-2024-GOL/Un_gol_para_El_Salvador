@@ -155,14 +155,4 @@ class PagoHandler
         return Database::getRows($sql);
     }
 
-    //Función para la gráfica lineal.
-    public function graphicLine()
-    {
-        $sql = 'SELECT mes_pago AS MES, AVG(cantidad_pago) AS PRO_PAGO
-                FROM pagos
-                WHERE YEAR(fecha_pago) = YEAR(CURDATE())
-                GROUP BY mes_pago;';
-        return Database::getRows($sql);
-    }
-
 }

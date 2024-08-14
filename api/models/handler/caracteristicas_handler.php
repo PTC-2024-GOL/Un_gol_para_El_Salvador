@@ -79,4 +79,13 @@ class CaracteristicasHandler
         $params = array($this->id);
         return Database::executeRow($sql, $params);
     }
+
+    //Función para la gráfica Barra.
+    public function graphic()
+    {
+        $sql = 'SELECT clasificacion_caracteristica_jugador AS CARACTERISTICA, COUNT(nombre_caracteristica_jugador) AS NUM_CARACTERISTICA
+                FROM caracteristicas_jugadores
+                GROUP BY clasificacion_caracteristica_jugador;';
+        return Database::getRows($sql);
+    }
 }
