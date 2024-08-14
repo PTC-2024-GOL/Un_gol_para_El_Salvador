@@ -26,6 +26,28 @@ class PlantillasHandler
         return Database::getRows($sql, $params);
     }
 
+    //Función para buscar plantillas de los técnicos
+    public function searchRowsTechnics()
+    {
+        $value = '%' . Validator::getSearchValue() . '%';
+        $sql = 'SELECT DISTINCT
+                p.id_plantilla AS ID,
+                p.nombre_plantilla AS NOMBRE
+                FROM 
+                plantillas p
+                RIGHT JOIN 
+                plantillas_equipos pe ON p.id_plantilla = pe.id_plantilla
+                RIGHT JOIN 
+                equipos e ON pe.id_equipo = e.id_equipo
+                LEFT JOIN 
+                detalles_cuerpos_tecnicos dct ON e.id_cuerpo_tecnico = dct.id_cuerpo_tecnico
+                WHERE 
+                dct.id_tecnico = ? AND p.nombre_plantilla LIKE ?
+                ORDER BY p.nombre_plantilla;';
+        $params = array($_SESSION['idTecnico'],$value);
+        return Database::getRows($sql, $params);
+    }
+
     //Función para crear una plantilla
     public function createRow()
     {
@@ -40,6 +62,28 @@ class PlantillasHandler
         $sql = 'SELECT ID, NOMBRE FROM vista_plantillas
                 ORDER BY NOMBRE;';
         return Database::getRows($sql);
+    }
+
+
+    //Función para mostrar todas las plantillas
+    public function readAllTechnics()
+    {
+        $sql = 'SELECT DISTINCT
+                p.id_plantilla AS ID,
+                p.nombre_plantilla AS NOMBRE
+                FROM 
+                plantillas p
+                RIGHT JOIN 
+                plantillas_equipos pe ON p.id_plantilla = pe.id_plantilla
+                RIGHT JOIN 
+                equipos e ON pe.id_equipo = e.id_equipo
+                LEFT JOIN 
+                detalles_cuerpos_tecnicos dct ON e.id_cuerpo_tecnico = dct.id_cuerpo_tecnico
+                WHERE 
+                dct.id_tecnico = ?
+                ORDER BY p.nombre_plantilla;';
+        $params = array($_SESSION['idTecnico']);
+        return Database::getRows($sql, $params);
     }
 
     //Función para mostrar una de las plantillas

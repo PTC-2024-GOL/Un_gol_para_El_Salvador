@@ -17,7 +17,7 @@ if (isset($_GET['action'])) {
             case 'searchRows':
                 if (!Validator::validateSearch($_POST['search'])) {
                     $result['error'] = Validator::getSearchError();
-                } elseif ($result['dataset'] = $plantilla->searchRows()) {
+                } elseif ($result['dataset'] = $plantilla->searchRowsTechnics()) {
                     $result['status'] = 1;
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' coincidencias';
                 } else {
@@ -40,7 +40,7 @@ if (isset($_GET['action'])) {
                 break;
                 // Leer todos
             case 'readAll':
-                if ($result['dataset'] = $plantilla->readAll()) {
+                if ($result['dataset'] = $plantilla->readAllTechnics()) {
                     $result['status'] = 1;
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {

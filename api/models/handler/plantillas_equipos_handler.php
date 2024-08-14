@@ -82,6 +82,38 @@ class PlantillasEquiposHandler
         ORDER BY DORSAL ASC;';
         $params = array($this->idPlantilla);
         return Database::getRows($sql, $params);
+    } 
+    
+    //Función para leer todas las cuerpo técnico.
+    public function readOneTemplateTechnics()
+    {
+        $sql = 'SELECT 
+        pe.id_plantilla_equipo AS IDP,
+        j.id_jugador AS ID,  
+        CONCAT(j.nombre_jugador, " ", j.apellido_jugador) AS NOMBRE,
+        j.nombre_jugador AS NOMBRE_JUGADOR, 
+        j.apellido_jugador AS APELLIDO_JUGADOR,
+        j.dorsal_jugador AS DORSAL, 
+        j.fecha_nacimiento_jugador AS NACIMIENTO, 
+        p.posicion AS POSICION_PRINCIPAL,
+        pe.id_temporada AS ID_TEMPORADA,
+        t.nombre_temporada AS NOMBRE_TEMPORADA,
+        pe.id_equipo AS ID_EQUIPO,
+        e.logo_equipo AS LOGO,
+        e.nombre_equipo AS NOMBRE_EQUIPO,
+        j.foto_jugador AS IMAGEN
+        FROM 
+        plantillas_equipos pe JOIN 
+        jugadores j ON pe.id_jugador = j.id_jugador 
+        JOIN posiciones p ON j.id_posicion_principal = p.id_posicion
+        JOIN temporadas t ON pe.id_temporada = t.id_temporada
+        JOIN equipos e ON pe.id_equipo = e.id_equipo
+        JOIN detalles_cuerpos_tecnicos dct ON e.id_cuerpo_tecnico = dct.id_cuerpo_tecnico
+        WHERE 
+        pe.id_plantilla = ? AND dct.id_tecnico = ?
+        ORDER BY DORSAL ASC;';
+        $params = array($this->idPlantilla,$_SESSION['idTecnico']);
+        return Database::getRows($sql, $params);
     }
 
     //Función para leer una cuerpo técnico.

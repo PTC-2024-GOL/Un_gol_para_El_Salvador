@@ -65,7 +65,7 @@ if (isset($_GET['action'])) {
                 if (!$plantilla->setIdPlantilla($_POST['idPlantillaEquipo'])
                     ) {
                     $result['error'] = $plantilla->getDataError();
-                } elseif ($result['dataset'] = $plantilla->readOneTemplate()) {
+                } elseif ($result['dataset'] = $plantilla->readOneTemplateTechnics()) {
                     $result['status'] = 1;
                 } else {
                     $result['error'] = 'Plantilla inexistente';

@@ -197,7 +197,7 @@ const openCreateD = (id) => {
     fillSelect(PLANTILLA_API, 'readAll', 'plantilla', id);
     fillSelect(JUGADOR_API, 'readAll', 'jugador');
     fillSelect(TEMPORADA_API, 'readAll', 'temporada');
-    fillSelect(EQUIPO_API, 'readAllSelect', 'equipo');
+    fillSelect(EQUIPO_API, 'readAll', 'equipo');
 }
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
@@ -226,7 +226,7 @@ const openUpdateD = async (id) => {
             fillSelect(PLANTILLA_API, 'readAll', 'plantilla', ROW.ID_PLANTILLA);
             fillSelect(JUGADOR_API, 'readAll', 'jugador', ROW.ID);
             fillSelect(TEMPORADA_API, 'readAll', 'temporada', ROW.ID_TEMPORADA);
-            fillSelect(EQUIPO_API, 'readAllSelect', 'equipo', ROW.ID_EQUIPO);
+            fillSelect(EQUIPO_API, 'readAll', 'equipo', ROW.ID_EQUIPO);
         } else {
             sweetAlert(2, DATA.error, false);
         }

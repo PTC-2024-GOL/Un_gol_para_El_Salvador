@@ -399,8 +399,13 @@ async function buscarAnalisis(FORM) {
                     </button>
                 </td>
                 <td>
-                    <button type="button" class="btn transparente" onclick="openGraphic(${row.IDJ})">
+                    <button type="button" class="btn transparente" onclick="openGraphic(${row.IDJ})"
+                    data-bs-toggle="tooltip" data-bs-placement="top" title="Gráfica de notas durante el entrenamiento">
                     <img src="../../../resources/img/svg/icons_forms/Frame.svg" width="18" height="18">
+                    </button>
+                    <button type="button" class="btn transparente" onclick="openGraphicLine(${row.IDJ})"
+                    data-bs-toggle="tooltip" data-bs-placement="top" title="Gráfica de promedio de notas durante las ultimas 3 sesiones de entrenamientos">
+                    <img src="../../../resources/img/svg/icons_forms/line.svg" width="18" height="18">
                     </button>
                 </td>
             </tr>
@@ -464,10 +469,12 @@ async function cargarTabla() {
                     </button>
                 </td>
                 <td>
-                    <button type="button" class="btn transparente" onclick="openGraphic(${row.IDJ})">
+                    <button type="button" class="btn transparente" onclick="openGraphic(${row.IDJ})"
+                    data-bs-toggle="tooltip" data-bs-placement="top" title="Gráfica de notas durante el entrenamiento">
                     <img src="../../../resources/img/svg/icons_forms/Frame.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente" onclick="openGraphicLine(${row.IDJ})">
+                    <button type="button" class="btn transparente" onclick="openGraphicLine(${row.IDJ})"
+                    data-bs-toggle="tooltip" data-bs-placement="top" title="Gráfica de promedio de notas durante las ultimas 3 sesiones de entrenamientos">
                     <img src="../../../resources/img/svg/icons_forms/line.svg" width="18" height="18">
                     </button>
                 </td>
@@ -602,6 +609,12 @@ window.onload = async function () {
     const equiposHtml = await loadComponent('../components/feaute_analysis.html');
     // Llamada a la función para mostrar el encabezado.
     loadTemplate();
+    // Contenedor de error.
+    errorContainer = document.getElementById('error');
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
     // Agrega el HTML del encabezado
     appContainer.innerHTML = equiposHtml;
     //Agrega el encabezado de la pantalla
@@ -688,8 +701,5 @@ window.onload = async function () {
         buscarAnalisis(FORM);
     });
     cargarNav();
-    
-    // Contenedor de error.
-    errorContainer = document.getElementById('error');
 };
 

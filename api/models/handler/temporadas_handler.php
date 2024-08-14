@@ -42,6 +42,17 @@ class TemporadasHandler
         return Database::getRows($sql);
     }
 
+    //Función para mostrar todas las temporadas
+    public function readAllTechnics()
+    {
+        $sql = 'SELECT 
+                id_temporada AS ID,
+                nombre_temporada AS NOMBRE
+                FROM 
+                temporadas';
+        return Database::getRows($sql);
+    }
+
     //Función para mostrar una de las temporadas
     public function readOne()
     {
