@@ -2,12 +2,14 @@ let SAVE_MODAL,
     MODAL_TITLE;
 let GRAPHIC_MODAL,
     MODAL_TITLE2;
+let GRAPHIC_MODAL_LINE,
+    MODAL_TITLE_4;
 let SAVE_FORM,
     ID_ANALISIS,
     JUGADOR,
     ENTRENAMIENTO;
 let SEARCH_FORM;
-
+let errorContainer;
 // Constantes para completar las rutas de la API.
 const API = 'services/admin/caracteristicas_analisis.php';
 const JUGADOR_API = 'services/admin/jugadores.php';
@@ -39,6 +41,7 @@ const openCreate1 = (id) => {
 
 let estado_inicial = document.getElementById('analisis');
 let chartInstance = null;
+let chartInstance2 = null;
 
 /*
 *   Función para abrir la gráfica al momento.
@@ -48,11 +51,26 @@ let chartInstance = null;
 const openGraphic = (id) => {
     // Se muestra la caja de diálogo con su título.
     GRAPHIC_MODAL.show();
-    MODAL_TITLE2.textContent = 'Gráfica de análisis del jugador';
+    MODAL_TITLE2.textContent = 'Gráfico de notas obtenidas en el entrenamiento';
     const FORM = new FormData();
     FORM.append('idJugador', id);
     FORM.append('idEntrenamiento', PARAMS.get('id'));
     graficoBarrasAnalisis(FORM);
+}
+
+/*
+*   Función para abrir la gráfica al momento.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
+const openGraphicLine = (id) => {
+    // Se muestra la caja de diálogo con su título.
+    GRAPHIC_MODAL_LINE.show();
+    MODAL_TITLE_4.textContent = 'Gráfico del promedio de las ultimas 3 sesiones de entrenamiento';
+    const FORM = new FormData();
+    FORM.append('idJugador', id);
+    FORM.append('idEntrenamiento', PARAMS.get('id'));
+    graficoLinealPromedioJugadores(FORM);
 }
 
 /*
@@ -95,6 +113,69 @@ const graficoBarrasAnalisis = async (FORM) => {
         }
     } catch (error) {
         console.log(error);
+    }
+}
+
+// Función para cargar la gráfica lineal
+const graficoLinealPromedioJugadores = async (FORM) => {
+    try {
+        // Mandamos la peticion a la API para traernos la informacion correspondiente.
+        const DATA = await fetchData(API, 'graphicPromedyByJourney', FORM);
+        if (DATA.status) {
+            let fecha = [];
+            let promedios = [];
+            let fechas = [];
+            DATA.dataset.forEach(row => {
+                fecha.push(row.SESION);
+                promedios.push(row.PROMEDIO);
+                fechas.push(row.FECHAS);
+            });
+
+            // Destruir la instancia existente del gráfico si existe
+            if (chartInstance2) {
+                chartInstance2.destroy();
+                chartInstance2 = null; // Asegúrate de restablecer la referencia
+            }
+
+            // Restablecer el canvas en caso de que sea necesario
+            const canvasContainer = document.getElementById('promedios').parentElement;
+            canvasContainer.innerHTML = '<canvas id="promedios"></canvas> <div id="error"></div>';
+
+            errorContainer.innerHTML = '';
+            // Llamada a la función para generar y mostrar un gráfico lineal.
+            chartInstance2 = lineGraphWithFill('promedios', fecha, promedios, 'Promedio por sesión', 'Gráfica de promedios durante las sesiones del día ' + fechas[0]);
+        } else {
+            console.log(DATA.error);
+            // Destruir la instancia existente del gráfico si existe
+            if (chartInstance2) {
+                chartInstance2.destroy();
+                chartInstance2 = null; // Asegúrate de restablecer la referencia
+            }
+            // Restablecer el canvas en caso de que sea necesario
+            const canvasContainer = document.getElementById('promedios').parentElement;
+            canvasContainer.innerHTML = ' <div id="error"></div> <canvas id="promedios"></canvas>';
+            
+            // Restablecer o crear el contenedor
+            errorContainer = document.getElementById('error');
+            errorContainer.innerHTML += '';
+            const tablaHtml = `
+            <div class="col-md-12">
+                <div class="card mb-4 shadow-sm">
+                    <img src="../../../resources/img/svg/errores/404.jpg"
+                        class="card-img-top img-thumbnail" alt="Imagen de ejemplo"">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-center align-items-center">
+                           <p class="text-danger">${DATA.error} </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+            errorContainer.innerHTML += tablaHtml;
+            chartInstance2 = null;
+        }
+    } catch (error) {
+        console.log('Error:', error);
     }
 }
 
@@ -386,6 +467,9 @@ async function cargarTabla() {
                     <button type="button" class="btn transparente" onclick="openGraphic(${row.IDJ})">
                     <img src="../../../resources/img/svg/icons_forms/Frame.svg" width="18" height="18">
                     </button>
+                    <button type="button" class="btn transparente" onclick="openGraphicLine(${row.IDJ})">
+                    <img src="../../../resources/img/svg/icons_forms/line.svg" width="18" height="18">
+                    </button>
                 </td>
             </tr>
                 `;
@@ -420,14 +504,6 @@ async function cargarTabla() {
     }
 }
 
-
-async function cargarSearch() {
-    try {
-        fillSelect(JUGADOR_API, 'readAll', 'search');
-    } catch {
-        console.log('No se pudo cargar el select de esta forma.')
-    }
-}
 
 // Variables y constantes para la paginación
 const analisisPorPagina = 10;
@@ -533,13 +609,15 @@ window.onload = async function () {
     titleElement.textContent = 'Análisis de las características';
     ROWS_FOUND = document.getElementById('rowsFound');
     cargarTabla();
-    cargarSearch();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
 
     GRAPHIC_MODAL = new bootstrap.Modal('#graphicModal'),
         MODAL_TITLE2 = document.getElementById('modalTitle3')
+
+    GRAPHIC_MODAL_LINE = new bootstrap.Modal('#graphicModalLine'),
+        MODAL_TITLE_4 = document.getElementById('modalTitle4')
 
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
@@ -610,5 +688,8 @@ window.onload = async function () {
         buscarAnalisis(FORM);
     });
     cargarNav();
+    
+    // Contenedor de error.
+    errorContainer = document.getElementById('error');
 };
 

@@ -69,6 +69,29 @@
 </div>
 
 
+<!-- Componente Modal para ver la gráfica de barras -->
+<div class="modal fade" id="graphicModalLine" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modalTitle4" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-principal-color text-light">
+                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                <h1 class="modal-title fs-5" id="modalTitle4"></h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="row justify-content-center">
+                <!-- Contenedor de la gráfica -->
+                <div class="col-md-9 col-sm-9">
+                    <div class="container-fluid">
+                        <canvas id="promedios"></canvas>
+                        <div id="error"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Componente Modal para guardar un registro -->
 <div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="modalTitle" aria-hidden="true">
