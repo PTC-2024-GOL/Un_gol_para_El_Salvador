@@ -351,7 +351,7 @@ function mostrarPago(pagina) {
                     <button type="button" class="btn transparente" onclick="openDelete(${row.ID})">
                         <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente" onclick="openReport(${row.ID})">
+                    <button type="button" class="btn transparente">
                         <img src="../../../resources/img/svg/icons_forms/report.svg" width="18" height="18">
                     </button>
                 </td>
