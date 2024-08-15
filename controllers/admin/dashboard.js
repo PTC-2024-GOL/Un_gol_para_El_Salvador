@@ -47,7 +47,7 @@ let COLOR_7;
 
 let API_SOCCER = 'services/admin/equipos.php';
 let MATCHES_API = 'services/admin/partidos.php';
-let CALENDAR_API = 'services/technics/calendario.php';
+let CALENDAR_API = 'services/admin/calendario.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);

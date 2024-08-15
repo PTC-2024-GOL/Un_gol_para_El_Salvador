@@ -369,6 +369,9 @@ const stackedBarLineGraph = (canvas, xAxis, data, barLegend, title) => {
 *   Parámetros: canvas (identificador de la etiqueta canvas), xAxis (datos para el eje X), yAxis (datos para el eje Y), legend (etiqueta para los datos) y title (título del gráfico).
 *   Retorno: ninguno.
 */
+
+// Variable que guardara la grafica que se cree
+let Bargraph = null;
 const barGraph = (canvas, xAxis, yAxis, legend, title) => {
     // Se declara un arreglo para guardar códigos de colores en formato hexadecimal.
     let colors = [];
@@ -376,8 +379,14 @@ const barGraph = (canvas, xAxis, yAxis, legend, title) => {
     xAxis.forEach(() => {
         colors.push('#' + (Math.random().toString(16)).substring(2, 8));
     });
+
+    //Verifica si la variable graph cuenta con una grafica previamente creada, si es si entonces la va destruir
+    if (Bargraph) {
+        Bargraph.destroy();
+    }
+
     // Se crea una instancia para generar el gráfico con los datos recibidos.
-    new Chart(document.getElementById(canvas), {
+    Bargraph = new Chart(document.getElementById(canvas), {
         type: 'bar',
         data: {
             labels: xAxis,
@@ -395,6 +404,12 @@ const barGraph = (canvas, xAxis, yAxis, legend, title) => {
                 },
                 legend: {
                     display: false
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        stepSize: 1
+                    }
                 }
             }
         }
