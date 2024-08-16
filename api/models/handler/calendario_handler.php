@@ -29,6 +29,7 @@ class CalendarioHandler
             $this->fechaFinal,
             $this->color
         );
+        //Me devuelve el id del registro recien creado
         if (Database::executeRow($sql, $params)) {
             return Database::getLastRowId();
         } else {

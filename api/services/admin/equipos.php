@@ -121,6 +121,16 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Ocurrió un problema al eliminar el equipo. Por seguridad no puedes eliminar este equipo porque lo estas ocupando en otras tablas.';
                 }
                 break;
+            // Leer uno
+            case 'countTeamsByCategory':
+                if (!$equipo->setIdCategoria($_POST['idCategoria'])) {
+                    $result['error'] = $equipo->getDataError();
+                } elseif ($result['dataset'] = $equipo->countTeamsByCategory()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Aún no hay equipos en esta categoría';
+                }
+                break;
             default:
                 $result['error'] = 'Acción no disponible dentro de la sesión';
         }

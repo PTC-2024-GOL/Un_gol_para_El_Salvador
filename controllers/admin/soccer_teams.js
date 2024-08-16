@@ -16,9 +16,11 @@ let SEE_GRAPHIC,
 
 let SEARCH_FORM;
 
+let SELECT;
+
 let IMAGEN;
 let CUERPO_TECNICO;
-let SELECT;
+let SELECT_CATEGORY;
 
 // Constantes para completar las rutas de la API.
 const EQUIPO_API = 'services/admin/equipos.php';
@@ -259,6 +261,30 @@ const FilterByGender = async () => {
 const openGraphic = async () => {
     SEE_GRAPHIC.show();
     MODAL_TITLE_GRAPHIC.textContent = 'Gráfico'
+    await fillSelect(CATEGORIA_API, 'readAll', 'selectCategory');
+}
+
+const selectCategory = async () => {
+    SELECT_CATEGORY = document.getElementById('selectCategory').value;
+
+    console.log(SELECT_CATEGORY);
+    const FORM = new FormData();
+    FORM.append('idCategoria', SELECT_CATEGORY);
+
+    const DATA = await fetchData(EQUIPO_API, 'countTeamsByCategory', FORM);
+    console.log(DATA)
+    if(DATA.status){
+        let dataset = DATA.dataset;
+        let total = [];
+        let nombre = [];
+        dataset.forEach(filter => {
+            total.push(filter.total);
+            nombre.push(filter.nombre_categoria);
+        })
+        barGraph('barGraphic', nombre, total, 'Total de equipos', 'Total de equipos por categorías')
+    }else{
+        console.log(DATA.error);
+    }
 }
 
 // window.onload

@@ -149,4 +149,12 @@ class EquiposHandler
         return Database::getRows($sql, $params);
     }
 
+    //FUNCIONES PARA GRAFICAS
+    public function countTeamsByCategory()
+    {
+        $sql = 'SELECT COUNT(ID) AS total, vista_equipos.nombre_categoria FROM vista_equipos WHERE id_categoria = ?';
+        $params = array($this->idCategoria);
+        return Database::getRows($sql,$params);
+    }
+
 }
