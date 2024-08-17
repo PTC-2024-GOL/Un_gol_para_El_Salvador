@@ -4,8 +4,7 @@ let SAVE_FORM,
     EQUIPO,
     CATEGORIA,
     HORARIO,
-    SEE_MODAL,
-    SEE_FORM;
+    SEE_MODAL;
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
@@ -58,23 +57,35 @@ const seeModal = async (id) => {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
         FORM.append('idEquipo', id);
+    
         // Petición para obtener los datos del registro solicitado.
         await fillSelectPost(DETALLE_CONTENIDO_API, 'readOneHorario', 'horario', FORM);
-        // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-        if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SEE_MODAL.show();
             MODAL_TITLE.textContent = 'Elegir entrenamiento';
-            // Se prepara el formulario.
-            SEE_FORM.reset();
-            // Se inicializan los campos con los datos.
+            const DATA2 = await fetchData(DETALLE_CONTENIDO_API, 'lastAssists', FORM);
+        if (DATA2.status) {
+            datos = DATA2.dataset;
+            console.log('Estos son los datos de la variable', datos);
+            let mes = [];
+            let cantidad = [];
+            DATA2.dataset.forEach(row => {
+                mes.push(row.fecha);
+                //Formatea asistencias a número
+                cantidad.push(Number(row.asistencia));
+            });
+            console.log('Estos son los datos de la variable', mes);
+            console.log('Estos son los datos de la variable', cantidad);
+            lineTwoGraph('myChart', mes, cantidad, 'Asistencias', `Asistencias de los últimos entrenamiento`);
+    
+            console.log('Llegue después de la grafica');
         } else {
-            sweetAlert(2, DATA.error, false);
+            sweetAlert(2, DATA2.error, false);
         }
     } catch (Error) {
         console.log(Error);
         SEE_MODAL.show();
-        MODAL_TITLE.textContent = 'Elegir horario';
+        MODAL_TITLE.textContent = 'Elegir horario cuando error';
         SEE_FORM.reset();
     }
 }

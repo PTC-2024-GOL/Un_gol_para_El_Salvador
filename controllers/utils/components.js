@@ -625,3 +625,56 @@ const radarGraph = (canvas, labels, data, legend, title, options = {}) => {
     return new Chart(document.getElementById(canvas), config);
 }
 
+const lineTwoGraph = (canvas, xAxis, yAxis, legend, title) => {
+    // Se declara un arreglo para guardar códigos de colores en formato hexadecimal.
+    let colors = [];
+  
+    // Se generan códigos hexadecimales de 6 cifras de acuerdo con el número de datos a mostrar y se agregan al arreglo.
+    xAxis.forEach(() => {
+      colors.push('#' + (Math.random().toString(16)).substring(2, 8));
+    });
+  
+    // Se crea una instancia para generar el gráfico con los datos recibidos.
+    new Chart(document.getElementById(canvas), {
+      type: 'line',
+      data: {
+        labels: xAxis,
+        datasets: [{
+          label: legend,
+          data: yAxis,
+          backgroundColor: colors,
+          borderColor: colors,
+          pointStyle: 'circle', // Estilo de punto, puede ser 'circle', 'rect', 'triangle', etc.
+          pointRadius: 5, // Tamaño del punto
+          pointHoverRadius: 7 // Tamaño del punto al pasar el cursor
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: false, // Cambiado a false para no mostrar el título
+          },
+          legend: {
+            display: true // Cambiado a true para mostrar la leyenda
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'X Axis'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Y Axis'
+            }
+          }
+        }
+      }
+    });
+  }
+
+  

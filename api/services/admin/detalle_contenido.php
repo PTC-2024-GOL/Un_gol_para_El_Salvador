@@ -92,6 +92,16 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Equipo inexistente';
                 }
                 break;
+            //Leer estadisticas en base al identrenamiento
+            case 'lastAssists':
+                if (!$detalle->setIdEquipo($_POST['idEquipo'])) {
+                    $result['error'] = $detalle->getDataError();
+                } elseif ($result['dataset'] = $detalle->readlastAssists()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Este equipo no tiene asistencias';
+                }
+                break;
             // Leer todos los contenidos
             case 'readAllDContenido':
                 if (!$detalle->setIdEntrenamiento($_POST['idEntrenamiento'])) {
