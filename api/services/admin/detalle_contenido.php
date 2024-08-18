@@ -99,6 +99,7 @@ if (isset($_GET['action'])) {
                 } elseif ($result['dataset'] = $detalle->readlastAssists()) {
                     $result['status'] = 1;
                 } else {
+                    $result['status'] = 0;
                     $result['error'] = 'Este equipo no tiene asistencias';
                 }
                 break;

@@ -65,6 +65,7 @@ const seeModal = async (id) => {
             MODAL_TITLE.textContent = 'Elegir entrenamiento';
             const DATA2 = await fetchData(DETALLE_CONTENIDO_API, 'lastAssists', FORM);
         if (DATA2.status) {
+            CHART.classList.remove('d-none');
             datos = DATA2.dataset;
             console.log('Estos son los datos de la variable', datos);
             let mes = [];
@@ -76,11 +77,11 @@ const seeModal = async (id) => {
             });
             console.log('Estos son los datos de la variable', mes);
             console.log('Estos son los datos de la variable', cantidad);
-            lineTwoGraph('myChart', mes, cantidad, 'Asistencias', `Asistencias de los últimos entrenamiento`);
+            lineTwoGraph('myChart', mes, cantidad, 'Asistencias', 'Asistencias', 'fechas');
     
             console.log('Llegue después de la grafica');
         } else {
-            sweetAlert(2, DATA2.error, false);
+            CHART.classList.add('d-none');
         }
     } catch (Error) {
         console.log(Error);
@@ -193,6 +194,7 @@ window.onload = async function () {
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('seeForm'),
         ID_CATEGORIA = document.getElementById('idCategoria'),
+        CHART = document.getElementById('contendorChart'),
         HORARIO = document.getElementById('horario');
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');

@@ -625,7 +625,8 @@ const radarGraph = (canvas, labels, data, legend, title, options = {}) => {
     return new Chart(document.getElementById(canvas), config);
 }
 
-const lineTwoGraph = (canvas, xAxis, yAxis, legend, title) => {
+
+const lineTwoGraph = (canvas, xAxis, yAxis, legend, texty, textx) => {
     // Se declara un arreglo para guardar códigos de colores en formato hexadecimal.
     let colors = [];
   
@@ -633,9 +634,12 @@ const lineTwoGraph = (canvas, xAxis, yAxis, legend, title) => {
     xAxis.forEach(() => {
       colors.push('#' + (Math.random().toString(16)).substring(2, 8));
     });
-  
+     //Verifica si la variable graph cuenta con una grafica previamente creada, si es si entonces la va destruir
+     if (graph) {
+        graph.destroy();
+    }
     // Se crea una instancia para generar el gráfico con los datos recibidos.
-    new Chart(document.getElementById(canvas), {
+    graph = new Chart(document.getElementById(canvas), {
       type: 'line',
       data: {
         labels: xAxis,
@@ -663,13 +667,13 @@ const lineTwoGraph = (canvas, xAxis, yAxis, legend, title) => {
           x: {
             title: {
               display: true,
-              text: 'X Axis'
+              text: textx
             }
           },
           y: {
             title: {
               display: true,
-              text: 'Y Axis'
+              text: texty
             }
           }
         }
