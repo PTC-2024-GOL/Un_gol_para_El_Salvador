@@ -51,7 +51,7 @@ const openGraphic = () => {
     console.log(localStorage.getItem('graficaVentas'));
 }
 
-
+let chartInstance = null;
 // Función para cargar la gráfica lineal predictiva
 const cargarGraficaLinealPredicticion = async () => {
     try {
@@ -65,7 +65,18 @@ const cargarGraficaLinealPredicticion = async () => {
                 fecha.push(`${row.fecha}`);
                 imc.push(row.imc);
             });
-            lineGraphWithFill('prediccion', fecha, imc, 'Imc por día', 'Predicción del imc de la siguiente semana');
+
+            // Destruir la instancia existente del gráfico si existe
+            if (chartInstance) {
+                chartInstance.destroy();
+                chartInstance = null; // Asegúrate de restablecer la referencia
+            }
+
+            // Restablecer el canvas en caso de que sea necesario
+            const canvasContainer = document.getElementById('prediccion').parentElement;
+            canvasContainer.innerHTML = '<canvas id="prediccion"></canvas>';
+
+            chartInstance = lineGraphWithFill('prediccion', fecha, imc, 'Imc por día', 'Predicción del imc de la siguiente semana');
         } else {
             document.getElementById('prediccion').remove();
             console.log(DATA.error);
@@ -75,6 +86,7 @@ const cargarGraficaLinealPredicticion = async () => {
     }
 }
 
+let chartInstance2 = null;
 // Función para cargar la gráfica lineal
 const cargarGraficaLineal = async () => {
     try {
@@ -88,7 +100,18 @@ const cargarGraficaLineal = async () => {
                 fecha.push(`${row.FECHA}`);
                 imc.push(row.IMC);
             });
-            lineGraphWithFill('historico', fecha, imc, 'Imc por mes $', 'Gráfica del indice de masa corporal historico del jugador');
+            
+            // Destruir la instancia existente del gráfico si existe
+            if (chartInstance2) {
+                chartInstance2.destroy();
+                chartInstance2 = null; // Asegúrate de restablecer la referencia
+            }
+
+            // Restablecer el canvas en caso de que sea necesario
+            const canvasContainer = document.getElementById('historico').parentElement;
+            canvasContainer.innerHTML = '<canvas id="historico"></canvas>';
+
+            chartInstance2 = lineGraphWithFill('historico', fecha, imc, 'Imc por mes $', 'Gráfica del indice de masa corporal historico del jugador');
         } else {
             document.getElementById('historico').remove();
             console.log(DATA.error);

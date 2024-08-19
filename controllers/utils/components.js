@@ -464,8 +464,10 @@ const lineGraphWithFill = (canvas, xAxis, yAxis, legend, title) => {
             datasets: [{
                 label: legend,
                 data: yAxis,
-                backgroundColor: 'rgba(2, 8, 135, 0.7)',
-                fill: true
+                borderColor: 'rgba(2, 8, 135, 1)',
+                backgroundColor: 'rgba(2, 8, 135, 0.4)',
+                fill: true,
+                tension: 0.4
             }]
         },
         options: {
@@ -476,7 +478,7 @@ const lineGraphWithFill = (canvas, xAxis, yAxis, legend, title) => {
                 },
                 legend: {
                     display: false
-                }
+                },
             }
         }
     });

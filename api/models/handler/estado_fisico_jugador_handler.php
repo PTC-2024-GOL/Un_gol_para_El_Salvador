@@ -75,7 +75,8 @@ class EstadoFisicoJugadorHandler
         FROM estados_fisicos_jugadores e
         INNER JOIN
         jugadores j ON j.id_jugador = e.id_jugador
-        WHERE e.id_jugador = ?;";
+        WHERE e.id_jugador = ?
+        ORDER BY e.fecha_creacion DESC;";
         $params = array($this->idJugador);
         return Database::getRows($sql, $params);
     }
@@ -149,20 +150,23 @@ class EstadoFisicoJugadorHandler
                  CONCAT(DATE_FORMAT(e.fecha_creacion, "%e %M %Y")) AS FECHA 
                  FROM estados_fisicos_jugadores e
                  INNER JOIN jugadores j  ON j.id_jugador = e.id_jugador
-                 WHERE e.id_jugador = ?;
+                 WHERE e.id_jugador = ?
+                 ORDER BY e.fecha_creacion ASC LIMIT 31;
          ';
         $params = array($this->idJugador);
         return Database::getRows($sql, $params);
     }
 
-    // Función para cargar gráfica de proyección del IMC para la siguiente semana utilizando regresión lineal.
+
+    //ESTE SI VARIA LA LINEA
+    //Función para cargar gráfica de proyección del IMC para la siguiente semana utilizando regresión lineal.
     public function graphicPredictiveImc()
     {
         // Consulta para obtener los datos de IMC y fecha
         $sql = 'SELECT e.indice_masa_corporal AS IMC, e.fecha_creacion AS FECHA 
             FROM estados_fisicos_jugadores e
             WHERE e.id_jugador = ?
-            ORDER BY e.fecha_creacion ASC;';
+            ORDER BY e.fecha_creacion ASC LIMIT 31';
         $params = array($this->idJugador);
         $rows = Database::getRows($sql, $params);
 
@@ -180,22 +184,20 @@ class EstadoFisicoJugadorHandler
             $imcs[] = $row['IMC'];
         }
 
-        // Predecir el IMC para cada día de la siguiente semana
         $predictions = [];
+        // Calcular la regresión para cada día de la semana
         for ($i = 1; $i <= 7; $i++) {
-            // Preparar los datos para el modelo con todos los datos hasta el día actual
-            $X = array_map(function ($timestamp) {
-                return [$timestamp];
-            }, $dates);
-            $y = $imcs;
+            $X = array_slice($dates, 0, count($dates) - ($i - 1)); // Reducir el tamaño de los datos en cada ciclo
+            $y = array_slice($imcs, 0, count($imcs) - ($i - 1));
 
             // Crear el modelo de regresión lineal
             $regression = new LeastSquares();
-            $regression->train($X, $y);
+            $regression->train(array_map(function ($timestamp) {
+                return [$timestamp];
+            }, $X), $y);
 
-            // Obtener la fecha del último dato y predecir para el día actual del ciclo
-            $lastTimestamp = end($dates);
-            $timestamp = $lastTimestamp + $i * 24 * 60 * 60; // Sumar días en segundos
+            // Predecir el IMC para el día
+            $timestamp = end($dates) + $i * 24 * 60 * 60; // Sumar días en segundos
             $predictedIMC = $regression->predict([$timestamp]);
 
             // Convertir timestamp a fecha
@@ -209,61 +211,7 @@ class EstadoFisicoJugadorHandler
 
         return $predictions;
     }
-
-    // ESTE SI VARIA LA LINEA
-    //Función para cargar gráfica de proyección del IMC para la siguiente semana utilizando regresión lineal.
-    // public function graphicPredictiveImc()
-    // {
-    //     // Consulta para obtener los datos de IMC y fecha
-    //     $sql = 'SELECT e.indice_masa_corporal AS IMC, e.fecha_creacion AS FECHA 
-    //         FROM estados_fisicos_jugadores e
-    //         WHERE e.id_jugador = ?
-    //         ORDER BY e.fecha_creacion ASC;';
-    //     $params = array($this->idJugador);
-    //     $rows = Database::getRows($sql, $params);
-
-    //     if (empty($rows)) {
-    //         return [];
-    //     }
-
-    //     // Preparar datos para la regresión
-    //     $dates = [];
-    //     $imcs = [];
-
-    //     foreach ($rows as $row) {
-    //         $date = new DateTime($row['FECHA']);
-    //         $dates[] = $date->getTimestamp(); // Convertir fecha a timestamp
-    //         $imcs[] = $row['IMC'];
-    //     }
-
-    //     $predictions = [];
-    //     // Calcular la regresión para cada día de la semana
-    //     for ($i = 1; $i <= 7; $i++) {
-    //         $X = array_slice($dates, 0, count($dates) - ($i - 1)); // Reducir el tamaño de los datos en cada ciclo
-    //         $y = array_slice($imcs, 0, count($imcs) - ($i - 1));
-
-    //         // Crear el modelo de regresión lineal
-    //         $regression = new LeastSquares();
-    //         $regression->train(array_map(function ($timestamp) {
-    //             return [$timestamp];
-    //         }, $X), $y);
-
-    //         // Predecir el IMC para el día
-    //         $timestamp = end($dates) + $i * 24 * 60 * 60; // Sumar días en segundos
-    //         $predictedIMC = $regression->predict([$timestamp]);
-
-    //         // Convertir timestamp a fecha
-    //         $date = (new DateTime())->setTimestamp($timestamp)->format('d F Y');
-
-    //         $predictions[] = [
-    //             'fecha' => $date,
-    //             'imc' => $predictedIMC
-    //         ];
-    //     }
-
-    //     return $predictions;
-    // }
-
+/* 
     //Función para cargar gráfica de proyección del IMC para la siguiente semana utilizando regresión con soporte vectorial.
     public function graphicPredictiveImcSVR()
     {
@@ -318,5 +266,5 @@ class EstadoFisicoJugadorHandler
         }
 
         return $predictions;
-    }
+    } */
 }
