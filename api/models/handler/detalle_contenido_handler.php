@@ -1,6 +1,6 @@
 <?php
 // Se incluye la clase para trabajar con la base de datos.
-require_once ('../../helpers/database.php');
+require_once('../../helpers/database.php');
 /*
  *  Clase para manejar el comportamiento de los datos de la tabla Detalle Contenido.
  */
@@ -83,18 +83,18 @@ class DetalleContenidoHandler
                 FROM vista_equipos_categorias;";
         return Database::getRows($sql);
     }
-        //Función para leer todos los equipos o varios. Esta función es para "elegir horario" 
-        public function readAllHorarioTenico()
-        {
-            $sql = "SELECT 
+    //Función para leer todos los equipos o varios. Esta función es para "elegir horario" 
+    public function readAllHorarioTenico()
+    {
+        $sql = "SELECT 
                     id_equipo,
                     nombre_categoria,
                     nombre_equipo,
                     id_tecnico
                     FROM vista_equipos_categorias_tecnico where id_tecnico = ?;";
-            $params = array($_SESSION['idTecnico']);
-            return Database::getRows($sql, $params);
-        }
+        $params = array($_SESSION['idTecnico']);
+        return Database::getRows($sql, $params);
+    }
     //Función para rellenar la opcion del combobox con horarios de subcontenidos, 
     //Función para leer todos los subcontenidos disponibles. Esta función es para "Detalle Contenido" 
     public function readAllSubContenidos()
@@ -243,5 +243,20 @@ class DetalleContenidoHandler
                 DELETE FROM detalles_contenidos WHERE id_detalle_contenido = ?;';
         $params = array($this->idDetalleContenido, $this->idDetalleContenido);
         return Database::executeRow($sql, $params);
+    }
+
+    //Función para leer todos los equipos o varios. Esta función es para "elegir horario" 
+    public function readAllGraphicContents()
+    {
+        $sql = "SELECT id_entrenamiento, sub_tema_contenido, minutos_maximos_subtema FROM vista_grafico_contenidos_entrenamiento WHERE id_entrenamiento = ?;";
+        $params = array($this->idEntrenamiento);
+        return Database::getRows($sql, $params);
+    }
+
+    public function readAllGraphicTareas()
+    {
+        $sql = "SELECT id_entrenamiento, nombre_tarea, minutos_maximos_tarea FROM vista_grafico_tareas_entrenamiento WHERE id_entrenamiento = ?;";
+        $params = array($this->idEntrenamiento);
+        return Database::getRows($sql, $params);
     }
 }

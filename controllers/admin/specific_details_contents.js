@@ -13,7 +13,11 @@ let SAVE_FORM,
     ID_ENTRENAMIENTO,
     ID_EQUIPO,
     ADD_JUGADOR,
-    BUSCADOR
+    BUSCADOR,
+    CONTENEDOR1,
+    CONTENEDOR2,
+    CONTENIDO1,
+    CONTENIDO2
     ;
 
 let SEARCH_FORM;
@@ -231,32 +235,6 @@ const openDelete = async (id) => {
 */
 async function fillTable(form = null, actions = 0) {
     let action;
-    const lista_datos = [
-        {
-            subcontenido: "Juegos lúdicos",
-            tarea: 'Coordinación',
-            jugador: 'Paolo',
-            id: 1,
-        },
-        {
-            tarea: "Trabajo preventivo",
-            subcontenido: 'Agilidad',
-            jugador: 'Marco',
-            id: 2,
-        },
-        {
-            tarea: "Circuitos/ Fisicos sin balón",
-            subcontenido: 'Toma de decisiciones',
-            jugador: 'Susan',
-            id: 3,
-        },
-        {
-            tarea: "Circuitos/ Fisicos con balón",
-            subcontenido: 'Toma de decisiciones',
-            jugador: 'Agustin',
-            id: 4,
-        }
-    ];
     const cargarTabla = document.getElementById('tabla_especificos_detalles_contenidos');
 
     try {
@@ -273,6 +251,56 @@ async function fillTable(form = null, actions = 0) {
         console.log(DATA);
 
         if (DATA.status) {
+            CONTENEDOR1.classList.remove('d-none');
+            CONTENEDOR2.classList.remove('d-none');
+            let form2 = new FormData();
+            form2.append('idEntrenamiento', ID_ENTRENAMIENTO);
+            const DATA2 = await fetchData(SD_CONTENTS_API, 'readAllGraphic', form2);
+            let contenido = [];
+            let minutosC = [];
+            let minutosT = [];
+            let tarea = [];
+            let datos = DATA2.dataset;
+            let datos2 = DATA2.dataset2;
+            console.log('Console de graficos', datos);
+            console.log('Console de graficos', datos2);
+            datos.forEach(filter => {
+                contenido.push(filter.sub_tema_contenido);
+                minutosC.push(Number(filter.minutos_maximos_subtema));
+            });
+            datos2.forEach(filter => {
+                tarea.push(filter.nombre_tarea);
+                minutosT.push(Number(filter.minutos_maximos_tarea));
+            });
+            // Análisis de los minutos por subContenido
+            let totalMinutosC = minutosC.reduce((acc, curr) => acc + curr, 0);
+            let analisisContenido = contenido.map((nombre, index) => {
+                let porcentaje = ((minutosC[index] / totalMinutosC) * 100).toFixed(2);
+                return `${nombre}: ${minutosC[index]} minutos (${porcentaje}%)`;
+            }).join('\n');
+
+            // Análisis de los minutos por tarea
+            let totalMinutosT = minutosT.reduce((acc, curr) => acc + curr, 0);
+            let analisisTareas = tarea.map((nombre, index) => {
+                let porcentaje = ((minutosT[index] / totalMinutosT) * 100).toFixed(2);
+                return `${nombre}: ${minutosT[index]} minutos (${porcentaje}%)`;
+            }).join('\n');
+
+            // Función para calcular el total de minutos
+            function calcularTotalMinutos(arreglo) {
+                return arreglo.reduce((total, minutos) => total + minutos, 0);
+            }
+
+            // Calcular el total de minutos para contenidos y tareas
+            const totalMinutosContenidos = calcularTotalMinutos(minutosC);
+            const totalMinutosTareas = calcularTotalMinutos(minutosT);
+
+            // Mostrar el análisis en los elementos correspondientes
+            CONTENIDO1.textContent = `Tu entrenamiento dura ${totalMinutosContenidos} minutos y se basa en ${'\n'} ${analisisContenido}.`;
+            CONTENIDO2.textContent = `Tu entrenamiento dura ${totalMinutosTareas} minutos y se basa en ${'\n'} ${analisisTareas}.`;
+
+            DoughnutGraph('myChart', contenido, minutosC, 'Minutos por subContenido', 0);
+            DoughnutGraph3('myChart2', tarea, minutosT, 'Minutos por Tarea', 0);
             // Mostrar elementos obtenidos de la API
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
@@ -294,28 +322,16 @@ async function fillTable(form = null, actions = 0) {
             });
         } else {
             sweetAlert(4, DATA.error, true);
+            CONTENEDOR1.classList.add('d-none');
+            CONTENEDOR2.classList.add('d-none');
         }
     } catch (error) {
         console.error('Error al obtener datos de la API:', error);
         // Mostrar materiales de respaldo
-        lista_datos.forEach(row => {
-            const tablaHtml = `
-            <tr>
-                    <td>${row.jugador}</td>
-                    <td>${row.subcontenido}</td>
-                    <td>${row.tarea}<td>
-                    <td>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                    </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
-                    </td>
-            </tr>
+        const tablaHtml = `
+            <p> error al cargar los datos</p>
             `;
-            cargarTabla.innerHTML += tablaHtml;
-        });
+        cargarTabla.innerHTML += tablaHtml;
     }
 }
 
@@ -343,7 +359,7 @@ window.onload = async function () {
     ID_EQUIPO = DATA.dataset.id_equipo;
     console.log('Este es el idequipo que trae el windowsOnload', ID_EQUIPO);
     if (BUSCADOR == '0') {
-    fillTable();
+        fillTable();
     } else {
         const FORM = new FormData();
         FORM.append('search', BUSCADOR);
@@ -355,10 +371,14 @@ window.onload = async function () {
 
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
+        CONTENEDOR1 = document.getElementById('contenedor1graf'),
+        CONTENEDOR2 = document.getElementById('contenedor2graf'),
         IDDETALLE_CONTENIDO = document.getElementById('iddetallecontenido'),
         ID_SUBCONTENIDO = document.getElementById('iddetallecontenido'),
         SUBCONTENIDO = document.getElementById('subcontenido'),
-        TAREA = document.getElementById('tarea');
+        CONTENIDO1 = document.getElementById('contenido1'),
+        CONTENIDO2 = document.getElementById('contenido2');
+    TAREA = document.getElementById('tarea');
     ID_JUGADOR = document.getElementById('generador');
     CANTIDAD_CONTENIDO = document.getElementById('cantidadEquipo');
     MINUTOS_TAREA = document.getElementById('minutostarea');
