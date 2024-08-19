@@ -9,7 +9,7 @@ require_once('../../models/data/cuerpo_tecnico_data.php');
 $pdf = new Report;
 
 // Se inicia el reporte con el encabezado del documento.
-$pdf->startReport('Reporte global de cuerpo tecnico');
+$pdf->startReport('Reporte de cuerpo técnico');
 
 // Se instancia el modelo Categoría para obtener los datos.
 $cuerpotecnico = new CuerpoTecnicoData;
@@ -28,7 +28,7 @@ if ($dataCuerpoTecnico = $cuerpotecnico->readAll()) {
     // Se imprimen las celdas con los encabezados.
     // Explicación de funcionamiento de los valores de las celdas: 
     // (Ancho, Alto, Texto, Borde, Salto de linea, Alineación (Centrado = C, Izquierda = L, Derecha = R), Fondo, Link)
-    $pdf->cell(30, 10, 'Foto', 1, 0, 'C', 1); // Nueva columna para imagen
+    $pdf->cell(36, 10, 'Foto', 1, 0, 'C', 1); // Nueva columna para imagen
     $pdf->cell(110, 10, 'Jugador', 1, 0, 'C', 1);
     $pdf->cell(40, 10, 'Rol', 1, 1, 'C', 1);
 
@@ -42,11 +42,12 @@ if ($dataCuerpoTecnico = $cuerpotecnico->readAll()) {
         // Verifica si se ha creado una nueva página
         if ($pdf->getY() + 15 > 279 - 30) { // Ajusta este valor según el tamaño de tus celdas y la altura de la página
             $pdf->addPage('P', 'Letter'); // Añade una nueva página y con letter se define de tamaño carta
+            $pdf->setTextColor(255, 255, 255);
             $pdf->setFillColor(2, 8, 135);
             $pdf->setDrawColor(2, 8, 135);
             $pdf->setFont('Arial', 'B', 11);
             // Vuelve a imprimir los encabezados en la nueva página
-            $pdf->cell(30, 10, 'Foto', 1, 0, 'C', 1); // Nueva columna para imagen
+            $pdf->cell(36, 10, 'Foto', 1, 0, 'C', 1); // Nueva columna para imagen
             $pdf->cell(110, 10, 'Jugador', 1, 0, 'C', 1);
             $pdf->cell(40, 10, 'Rol', 1, 1, 'C', 1);
         }
@@ -58,26 +59,25 @@ if ($dataCuerpoTecnico = $cuerpotecnico->readAll()) {
         // Establecer color de texto a blanco
         $pdf->setTextColor(255, 255, 255);
         // Imprime una celda con el nombre de la plantilla.
-        $pdf->cell(180, 10, $pdf->encodeString('Cuerpo Técnico: ' . $rowCuerpoTecnico['NOMBRE']), 1, 1, 'C', 1);
+        $pdf->cell(186, 10, $pdf->encodeString('Cuerpo Técnico: ' . $rowCuerpoTecnico['NOMBRE']), 1, 1, 'C', 1);
 
         // Se instancia el modelo Producto para procesar los datos.
         $cuerpotecnicos = new DetalleCuerpoTecnicoData;
         // Se establece la plantilla para obtener sus productos, de lo contrario se imprime un mensaje de error.
         if ($cuerpotecnicos->setCuerpo($rowCuerpoTecnico['ID'])) {
             // Se verifica si existen registros para mostrar, de lo contrario se imprime un mensaje.
-            if ($dataCuerpoTecnicos = $cuerpotecnicos->readOneDetail()) {
+            if ($dataCuerpoTecnicos = $cuerpotecnicos->readOneDetailReport()) {
                 foreach ($dataCuerpoTecnicos as $rowCuerpoTecnicos) {
                     // Verifica si se ha creado una nueva página
                     if ($pdf->getY() + 15 > 279 - 30) { // Ajusta este valor según el tamaño de tus celdas y la altura de la página
 
-                        // Establecer color de texto a blanco
-                        $pdf->setTextColor(255, 255, 255);
                         $pdf->addPage('P', 'Letter'); // Añade una nueva página y con letter se define de tamaño carta
+                        $pdf->setTextColor(255, 255, 255);
                         $pdf->setFillColor(2, 8, 135);
                         $pdf->setDrawColor(2, 8, 135);
                         $pdf->setFont('Arial', 'B', 11);
                         // Vuelve a imprimir los encabezados en la nueva página
-                        $pdf->cell(30, 10, 'Foto', 1, 0, 'C', 1); // Nueva columna para imagen
+                        $pdf->cell(36, 10, 'Foto', 1, 0, 'C', 1); // Nueva columna para imagen
                         $pdf->cell(110, 10, 'Jugador', 1, 0, 'C', 1);
                         $pdf->cell(40, 10, 'Rol', 1, 1, 'C', 1);
                     }
@@ -95,10 +95,10 @@ if ($dataCuerpoTecnico = $cuerpotecnico->readAll()) {
                         // Usa una imagen por defecto o maneja el error
                         $imagePath = '../../images/tecnicos/default.png';
                     }
-                    $pdf->cell(30, 15, $pdf->image($imagePath, $pdf->getX() + 10, $currentY + 2, 10), 1, 0);
+                    $pdf->cell(36, 15, $pdf->image($imagePath, $pdf->getX() + 10, $currentY + 2, 10), 1, 0);
                     // Imprime las celdas con los datos del producto.
-                    $pdf->cell(110, 15, $pdf->encodeString($rowCuerpoTecnicos['TECNICO']), 1, 0, 'C', false);
-                    $pdf->cell(40, 15, $pdf->encodeString($rowCuerpoTecnicos['ROL_TECNICO']), 1, 1, 'C');
+                    $pdf->cell(100, 15, $pdf->encodeString($rowCuerpoTecnicos['TECNICO']), 1, 0, 'C', false);
+                    $pdf->cell(50, 15, $pdf->encodeString($rowCuerpoTecnicos['ROL_TECNICO']), 1, 1, 'C');
                 }
             } else {
                 $pdf->cell(0, 10, $pdf->encodeString('No hay técnico para el cuerpo técnico'), 1, 1);
