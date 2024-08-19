@@ -58,16 +58,20 @@ class PagoHandler
         return Database::getRows($sql);
     }
 
-    //Función para leer una tipología.
+    //Función para leer un pago.
     public function readOne()
     {
         $sql = 'SELECT p.id_pago AS ID,
                 p.fecha_pago AS FECHA,
+                DATE_FORMAT(p.fecha_pago, "%d %M %Y") AS FECHAFORMAT,
                 p.cantidad_pago AS CANTIDAD,
                 p.pago_tardio AS TARDIO,
                 p.mora_pago AS MORA,
                 p.mes_pago AS MES,
-                j.id_jugador AS NOMBRE
+                CONCAT(nombre_jugador, " " ,apellido_jugador) AS NOMBRE,
+                J.foto_jugador AS FOTO,
+                ROUND(P.cantidad_pago + P.mora_pago, 2) AS SUBTOTAL,
+                ROUND((p.cantidad_pago + p.mora_pago) * 1.13, 2) AS TOTAL
                 FROM pagos p
                 INNER JOIN jugadores j ON p.id_jugador = j.id_jugador
                 WHERE p.id_pago LIKE ?';
@@ -76,7 +80,7 @@ class PagoHandler
     }
 
 
-    //Función para actualizar una SUBtipología.
+    //Función para actualizar un pago.
     public function updateRow()
     {
         $sql = 'CALL actualizar_pago(?,?,?,?,?,?,?);';

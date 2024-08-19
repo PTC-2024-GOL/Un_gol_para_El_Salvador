@@ -351,8 +351,8 @@ function mostrarPago(pagina) {
                     <button type="button" class="btn transparente" onclick="openDelete(${row.ID})">
                         <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente">
-                        <img src="../../../resources/img/svg/icons_forms/report.svg" width="18" height="18">
+                    <button type="button" class="btn transparente" onclick="openReport(${row.ID})">
+                        <img src="../../../resources/img/svg/icons_forms/report-blanco.svg" width="18" height="18">
                     </button>
                 </td>
             </tr>
@@ -415,7 +415,7 @@ function updateMoraPago() {
 */
 const openReport = (id) => {
     // Se declara una constante tipo objeto con la ruta específica del reporte en el servidor.
-    const PATH = new URL(`${SERVER_URL}reports/admin/reporte_global_de_plantillas.php`);
+    const PATH = new URL(`${SERVER_URL}reports/admin/reporte_parametrizado_pagos.php`);
     // Se agrega un parámetro a la ruta con el valor del registro seleccionado.
     PATH.searchParams.append('idPago', id);
     // Se abre el reporte en una nueva pestaña.
