@@ -492,7 +492,7 @@ const lineGraphWithFill = (canvas, xAxis, yAxis, legend, title) => {
 */
 // Variable que guardara la grafica que se cree
 let graph = null;
-const DoughnutGraph = (canvas, legends, values, title) => {
+const DoughnutGraph = (canvas, legends, values, title, titlebool = 1) => {
     // Se declara un arreglo para guardar códigos de colores en formato hexadecimal.
     let colors = [];
     // Se generan códigos hexadecimales de 6 cifras de acuerdo con el número de datos a mostrar y se agregan al arreglo.
@@ -518,14 +518,49 @@ const DoughnutGraph = (canvas, legends, values, title) => {
         options: {
             plugins: {
                 title: {
-                    display: true,
-                    text: title
+                    display: titlebool,
+                    text: title,
+
                 }
             }
         }
     });
 }
 
+let graph3 = null;
+const DoughnutGraph3 = (canvas, legends, values, title, titlebool = 1) => {
+    // Se declara un arreglo para guardar códigos de colores en formato hexadecimal.
+    let colors = [];
+    // Se generan códigos hexadecimales de 6 cifras de acuerdo con el número de datos a mostrar y se agregan al arreglo.
+    values.forEach(() => {
+        colors.push('#' + (Math.random().toString(16)).substring(2, 8));
+    });
+
+    //Verifica si la variable graph cuenta con una grafica previamente creada, si es si entonces la va destruir
+    if (graph3) {
+        graph3.destroy();
+    }
+
+    // Se crea una instancia para generar el gráfico con los datos recibidos.
+    graph3 = new Chart(document.getElementById(canvas), {
+        type: 'doughnut',
+        data: {
+            labels: legends,
+            datasets: [{
+                data: values,
+                backgroundColor: colors
+            }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: titlebool,
+                    text: title
+                }
+            }
+        }
+    });
+}
 /*
 *   Función para generar un gráfico de polar. Requiere la librería chart.js para funcionar.
 *   Parámetros: canvas (identificador de la etiqueta canvas), legends (valores para las etiquetas), values (valores de los datos) y title (título del gráfico).

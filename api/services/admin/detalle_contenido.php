@@ -8,7 +8,7 @@ if (isset($_GET['action'])) {
     // Se instancia la clase correspondiente.
     $detalle = new DetalleContenidoData();
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
-    $result = array('status' => 0, 'message' => null, 'dataset' => null, 'error' => null, 'exception' => null, 'fileStatus' => null);
+    $result = array('status' => 0, 'message' => null, 'dataset' => null, 'error' => null, 'exception' => null, 'fileStatus' => null, 'dataset2' => null);
     // Se verifica si existe una sesión iniciada como administrador, de lo contrario se finaliza el script con un mensaje de error.
     if ((isset($_SESSION['idAdministrador'])) /*and Validator::validateSessionTime()*/) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
@@ -190,6 +190,19 @@ if (isset($_GET['action'])) {
                     $result['message'] = 'El contenido ha sido eliminado correctamente del jugador';
                 } else {
                     $result['error'] = 'Ocurrió un problema al eliminar el contenido del jugador. ';
+                }
+                break;
+            //Leer graficas en base al identrenamiento
+            case 'readAllGraphic':
+                if (!$detalle->setIdEntrenamiento($_POST['idEntrenamiento'])) {
+                    $result['error'] = $detalle->getDataError();
+                } elseif ($result['dataset'] = $detalle->readAllGraphicContents()) {
+                    if($result['dataset2'] = $detalle->readAllGraphicTareas()){
+                        $result['status'] = 1;
+                    }
+                } else {
+                    $result['error'] = 'Sin contenidos';
+                    $result['status'] = 0;
                 }
                 break;
             default:

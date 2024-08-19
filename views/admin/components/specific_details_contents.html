@@ -26,32 +26,55 @@
             </div>
         </div>
     </div>
-    <div class="card" id="contenedor1graf">
-        <div class="bar"></div>
-        <div class="card_form">
-            <div class="container-fluid">
-                <canvas id="myChart">
-
-                </canvas>
+    <!-- Gráficos -->
+    <div class="row justify-content-center">
+        <div class="col-sm-12 col-lg-6 d-flex justify-content-center">
+            <div class="card d-none" id="contenedor1graf">
+                <div class="bar"></div>
+                <div class="card_form">
+                    <div class="container-fluid">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+                <div class="card_data">
+                    <div class="data">
+                        <div class="text">
+                            <label class="text_m">¿Esto qué es?</label>
+                            <div class="cube text_s">
+                                <label class="side front">Gráfico de contenidos</label>
+                                <label class="side top">Analiza</label>
+                            </div>
+                            <label class="text_d" id="contenido1">
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="card_data">
-            <div class="data">
-                <div class="text">
-                    <label class="text_m">¿Esto qué es?</label>
-                    <div class="cube text_s">
-                        <label class="side front">Gráficos de tu entrenamiento</label>
-                        <label class="side top">Analiza</label>
+        <div class="col-sm-12 col-lg-6 d-flex justify-content-center p-2">
+            <div class="card d-none" id="contenedor2graf">
+                <div class="bar"></div>
+                <div class="card_form">
+                    <div class="container-fluid">
+                        <canvas id="myChart2"></canvas>
                     </div>
-                    <label class="text_d">Conocer en qué temas y tareas 
-                        se enfocan tus entrenamientos te permitirá mejorar tus entrenamientos 
-                        y hacerlos más efectivos.
-                    </label>
+                </div>
+                <div class="card_data">
+                    <div class="data">
+                        <div class="text">
+                            <label class="text_m">¿Esto qué es?</label>
+                            <div class="cube text_s">
+                                <label class="side front">Gráfico de tareas</label>
+                                <label class="side top">Analiza</label>
+                            </div>
+                            <label class="text_d" id="contenido2">
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
     <hr>
     <!-- Tabla para mostrar los registros existentes -->
     <div class="table-responsive">
@@ -71,6 +94,21 @@
             <tbody id="tabla_especificos_detalles_contenidos"></tbody>
         </table>
     </div>
+    <!-- Tags -->
+     <div id="tags">
+    <div class="card2 mt-4">
+        <span class="title2">También puede interesarte</span>
+        <div class="card__tags">
+            <ul class="tag">
+                <li class="tag__name">Agregar sub contenidos</li>
+                <li class="tag__name">Agregar tareas</li>
+                <li class="tag__name">Agregar entrenamientos</li>
+                <li class="tag__name">Agregar jugadores</li>
+                <li class="tag__name">Pasar asistencia</li>
+            </ul>
+        </div>
+    </div>
+</div>
 </div>
 
 <!-- Componente Modal para guardar un registro -->

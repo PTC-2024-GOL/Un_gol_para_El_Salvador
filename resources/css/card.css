@@ -2,7 +2,7 @@
 .card {
     position: relative;
     display: flex;
-    width: 350px;
+    width: 450px;
     background-color: #242824;
     padding: 10px;
     border-radius: 6px;
@@ -12,7 +12,7 @@
   .bar {
     width: 10px;
     border-radius: 5px;
-    background-color: #03045e;
+    background-color: white;
     transition: all 0.5s ease-in-out;
   }
   .card:hover .bar {
@@ -23,7 +23,7 @@
     min-width: 5em;
     min-height: 5em;
     border-radius: 4px;
-    background-color: #03045e;
+    background-color: white;
     transition: 0.2s ease-in-out;
     overflow: hidden;
   }
@@ -33,7 +33,7 @@
     justify-content: space-between;
   }
   .card_data span {
-    color: #03045e;
+    color: white;
     margin-top: auto;
     font-size: 0.9em;
     transition: 0.2s ease-in-out;
