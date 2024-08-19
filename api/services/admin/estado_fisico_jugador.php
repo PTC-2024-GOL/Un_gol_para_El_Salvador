@@ -18,7 +18,7 @@ if (isset($_GET['action'])) {
                 if (
                     !Validator::validateSearch2($_POST['search']) or
                     !$estadofisico->setIdJugador($_POST['idJugador'])
-                    ) {
+                ) {
                     $result['error'] = Validator::getSearchError();
                 } elseif ($result['dataset'] = $estadofisico->searchRows()) {
                     $result['status'] = 1;
@@ -33,7 +33,7 @@ if (isset($_GET['action'])) {
                 if (
                     !$estadofisico->setIdJugador($_POST['idJugador']) or
                     !$estadofisico->setPeso($_POST['peso']) or
-                    !$estadofisico->setAltura($_POST['altura'])  
+                    !$estadofisico->setAltura($_POST['altura'])
                 ) {
                     $result['error'] = $estadofisico->getDataError();
                 } elseif ($estadofisico->createRow()) {
@@ -91,6 +91,36 @@ if (isset($_GET['action'])) {
                     $result['message'] = 'Estado eliminado correctamente';
                 } else {
                     $result['error'] = 'Ocurrió un problema al eliminar el estado fisico';
+                }
+                break;
+                // Grafica para mostrar el IMC por jugador
+            case 'graphicImcByPlayer':
+                if (!$estadofisico->setIdJugador($_POST['idJugador'])) {
+                    $result['error'] = $estadofisico->getDataError();
+                } elseif ($result['dataset'] = $estadofisico->graphicImcByPlayer()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Este jugador no tiene registros de estado fisico';
+                }
+                break;
+                // Grafica para mostrar la predicción lineal de los IMC de la siguiente semana por jugador
+            case 'graphicPredictiveImc':
+                if (!$estadofisico->setIdJugador($_POST['idJugador'])) {
+                    $result['error'] = $estadofisico->getDataError();
+                } elseif ($result['dataset'] = $estadofisico->graphicPredictiveImc()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Este jugador no tiene registros de estado fisico';
+                }
+                break;
+                // Grafica para mostrar la predicción con soporte vertical de los IMC de la siguiente semana por jugador
+            case 'graphicPredictiveImcSVR':
+                if (!$estadofisico->setIdJugador($_POST['idJugador'])) {
+                    $result['error'] = $estadofisico->getDataError();
+                } elseif ($result['dataset'] = $estadofisico->graphicPredictiveImcSVR()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Este jugador no tiene registros de estado fisico';
                 }
                 break;
             default:

@@ -141,7 +141,6 @@ const graficoLinealPromedioJugadores = async (FORM) => {
             const canvasContainer = document.getElementById('promedios').parentElement;
             canvasContainer.innerHTML = '<canvas id="promedios"></canvas> <div id="error"></div>';
 
-            errorContainer.innerHTML = '';
             // Llamada a la función para generar y mostrar un gráfico lineal.
             chartInstance2 = lineGraphWithFill('promedios', fecha, promedios, 'Promedio por sesión', 'Gráfica de promedios durante las sesiones del día ' + fechas[0]);
         } else {

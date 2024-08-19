@@ -7,9 +7,10 @@ let SAVE_FORM,
     ID_JUGADOR,
     FECHA,
     titleElement;
-    let SAVE_MODAL2;
-    let titleElement2;
+let SAVE_MODAL2;
+let titleElement2;
 let SEARCH_FORM;
+let GRAPHIC_MODAL;
 const PARAMS = new URLSearchParams(window.location.search);
 //Guarda en una variable el parametro obtenido
 const JUGADOR = PARAMS.get("id");
@@ -32,6 +33,71 @@ const modalMedicalRecords = () => {
     SAVE_MODAL2.show();
     MODAL_TITLE2.textContent = 'Clasificación de IMC';
 }
+
+
+
+/*
+*   Función para abrir un modal con las gráficas.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
+const openGraphic = () => {
+    // Se muestra la caja de diálogo con su título.
+    GRAPHIC_MODAL.show();
+    MODAL_TITLE_GRAPHIC.textContent = 'Gráficas del indice de masa corporal del jugador';
+    cargarGraficaLinealPredicticion();
+    cargarGraficaLineal();
+    console.log(localStorage.getItem('graficaPrediccion'));
+    console.log(localStorage.getItem('graficaVentas'));
+}
+
+
+// Función para cargar la gráfica lineal predictiva
+const cargarGraficaLinealPredicticion = async () => {
+    try {
+        const FORM = new FormData();
+        FORM.append('idJugador', JUGADOR);
+        const DATA = await fetchData(ESTADO_API, 'graphicPredictiveImc', FORM);
+        if (DATA.status) {
+            let fecha = [];
+            let imc = [];
+            DATA.dataset.forEach(row => {
+                fecha.push(`${row.fecha}`);
+                imc.push(row.imc);
+            });
+            lineGraphWithFill('prediccion', fecha, imc, 'Imc por día', 'Predicción del imc de la siguiente semana');
+        } else {
+            document.getElementById('prediccion').remove();
+            console.log(DATA.error);
+        }
+    } catch (error) {
+        console.log('Error:', error);
+    }
+}
+
+// Función para cargar la gráfica lineal
+const cargarGraficaLineal = async () => {
+    try {
+        const FORM = new FormData();
+        FORM.append('idJugador', JUGADOR);
+        const DATA = await fetchData(ESTADO_API, 'graphicImcByPlayer', FORM);
+        if (DATA.status) {
+            let fecha = [];
+            let imc = [];
+            DATA.dataset.forEach(row => {
+                fecha.push(`${row.FECHA}`);
+                imc.push(row.IMC);
+            });
+            lineGraphWithFill('historico', fecha, imc, 'Imc por mes $', 'Gráfica del indice de masa corporal historico del jugador');
+        } else {
+            document.getElementById('historico').remove();
+            console.log(DATA.error);
+        }
+    } catch (error) {
+        console.log('Error:', error);
+    }
+}
+
 /*
 *   Función para preparar el formulario al momento de insertar un registro.
 *   Parámetros: ninguno.
@@ -137,7 +203,7 @@ async function fillTable(form = null) {
             console.log('entré al parametro de readAll ');
         }
         console.log('form despues del parametro' + FORM);
-        
+
         // Petición para obtener los registros disponibles.
         const DATA = await fetchData(ESTADO_API, action, form);
         console.log('Esto contiene la consulta ' + DATA);
@@ -241,6 +307,9 @@ window.onload = async function () {
 
     SAVE_MODAL2 = new bootstrap.Modal('#saveModal2'),
         MODAL_TITLE2 = document.getElementById('modalTitle2');
+
+    GRAPHIC_MODAL = new bootstrap.Modal('#graphicModal'),
+        MODAL_TITLE_GRAPHIC = document.getElementById('modalTitle3')
 
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),

@@ -16,6 +16,10 @@
                     <button type="button" class="btn" onclick="modalMedicalRecords()">
                         <img src="../../../resources/img/png/medical_record.png" width="23px" height="23px">
                     </button>
+                    <!-- Botón grafica-->
+                    <button type="button" class="btn" onclick="openGraphic()">
+                        <img src="../../../resources/img/svg/icons_forms/graphicLine.svg" width="20px" height="20px">
+                    </button>
                 </form>
             </div>
 
@@ -107,6 +111,33 @@
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
                     <button type="reset" class="btn bg-red-cream-color text-white">Cancelar</button>
                 </div>
+        </div>
+    </div>
+</div>
+
+<!-- Componente Modal para ver la gráfica de barras -->
+<div class="modal fade" id="graphicModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modalTitle2" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalTitle3"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="row justify-content-center">
+                <!-- Contenedor de la gráfica -->
+                <div class="col-md-12 col-sm-12">
+                    <div class="container-fluid">
+                        <canvas id="historico"></canvas>
+                    </div>
+                </div>
+                <!-- Contenedor de la gráfica -->
+                <div class="col-md-12 col-sm-12">
+                    <div class="container-fluid">
+                        <canvas id="prediccion"></canvas>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
