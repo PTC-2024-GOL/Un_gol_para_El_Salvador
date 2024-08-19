@@ -73,8 +73,10 @@ if ($pago->setId($_GET['idPago'])) {
         $pdf->cell(30, 15, $pdf->encodeString($dataPago['CANTIDAD']), 1, 0, 'C');
         $pdf->cell(25, 15, $pdf->encodeString($dataPago['MORA']), 1, 0, 'C');
         $pdf->cell(30, 15, $pdf->encodeString($dataPago['SUBTOTAL']), 1, 1, 'C');
-        $pdf->cell(155, 15, $pdf->encodeString('Pago Hecho: ' . $dataPago['FECHAFORMAT']), 1, 0, 'C');
-        $pdf->cell(30, 15, $pdf->encodeString('Total: $' . $dataPago['TOTAL']), 1, 0, 'C');
+        $pdf->cell(155, 20, $pdf->encodeString('Pago Hecho: ' . $dataPago['FECHAFORMAT']), 1, 0, 'C');
+        $pdf->cell(30, 10, $pdf->encodeString('IVA 13%'), 1, 1, 'C');
+        $pdf->cell(155, 20, '', 0, 0, 'C');
+        $pdf->cell(30, 10, $pdf->encodeString('Total: $' . $dataPago['TOTAL']), 1, 0, 'C');
 
     } else {
         $pdf->cell(0, 10, $pdf->encodeString('No hay pago de este jugador'), 1, 1);
