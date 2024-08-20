@@ -104,6 +104,18 @@ class PagoHandler
         return Database::executeRow($sql, $params);
     }
 
+    public function verificarRegistro()
+    {
+        $sql = 'SELECT * FROM vista_pagos
+                WHERE FECHA = ? AND NOMBRE = ?;';
+        $params = array($this->fecha, $this->jugador);
+        $result = Database::executeRow($sql, $params);
+
+        // Verificar si se encontraron resultados
+        return !empty($result);
+    }
+
+
     // ----------------------------------------- INGRESOS -----------------------------------------------------------------
 
     public function totalMoney()
