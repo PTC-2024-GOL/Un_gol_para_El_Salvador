@@ -19,7 +19,6 @@ let SEE_FORM,
 // Constantes para completar las rutas de la API.
 const API = 'services/technics/categorias.php';
 const HORARIOSCAT_API = 'services/technics/horarios_categoria.php';
-const TEMPORADAS_API = 'services/technics/temporadas.php';
 const HORARIO_API = 'services/technics/horarios.php';
 
 async function loadComponent(path) {
@@ -86,9 +85,6 @@ async function mostrarCategorias(pagina) {
                                     </div>
                                     <div class="col">
                                         ${row.edad_maxima_permitida}
-                                    </div>
-                                    <div class="col">
-                                        ${row.nombre_temporada}
                                     </div>
                                 </div>
                             </div>

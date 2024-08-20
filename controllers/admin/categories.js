@@ -19,7 +19,6 @@ let SEE_FORM,
 // Constantes para completar las rutas de la API.
 const API = 'services/admin/categorias.php';
 const HORARIOSCAT_API = 'services/admin/horarios_categoria.php';
-const TEMPORADAS_API = 'services/admin/temporadas.php';
 const HORARIO_API = 'services/admin/horarios.php';
 
 async function loadComponent(path) {
@@ -38,7 +37,6 @@ const openCreate = () => {
     MODAL_TITLE.textContent = 'Agregar una categoría';
     // Se prepara el formulario.
     SAVE_FORM.reset();
-    fillSelect(TEMPORADAS_API, 'readAll', 'temporada');
 }
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
@@ -65,7 +63,6 @@ const openUpdate = async (id) => {
             NOMBRE_CATEGORIA.value = ROW.nombre_categoria;
             EDAD_MIN.value = ROW.edad_minima_permitida;
             EDAD_MAX.value = ROW.edad_maxima_permitida;
-            fillSelect(TEMPORADAS_API, 'readAll', 'temporada', ROW.id_temporada);
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -73,7 +70,6 @@ const openUpdate = async (id) => {
         console.log(Error);
         SAVE_MODAL.show();
         MODAL_TITLE.textContent = 'Actualizar una categoría';
-        fillSelect(TEMPORADAS_API, 'readAll', 'temporada');
     }
 
 }
@@ -279,9 +275,6 @@ async function mostrarCategorias(pagina) {
                                     <div class="col">
                                         ${row.edad_maxima_permitida}
                                     </div>
-                                    <div class="col">
-                                        ${row.nombre_temporada}
-                                    </div>
                                 </div>
                             </div>
                         </h2>
@@ -447,7 +440,6 @@ window.onload = async function () {
         NOMBRE_CATEGORIA = document.getElementById('nombreCategoria'),
         EDAD_MIN = document.getElementById('edadMin'),
         EDAD_MAX = document.getElementById('edadMax'),
-        TEMPORADA = document.getElementById('temporada'),
         HORARIO = document.getElementById('horario');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {

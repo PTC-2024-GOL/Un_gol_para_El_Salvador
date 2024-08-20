@@ -15,7 +15,6 @@ class CategoriasHandler
     protected $nombreCategoria = null;
     protected $edadMinima = null;
     protected $edadMaxima = null;
-    protected $temporada = null;
 
     /*
     *  Métodos para realizar las operaciones SCRUD (search, create, read, update, and delete).
@@ -35,12 +34,11 @@ class CategoriasHandler
     //Función para insertar una categoría.
     public function createRow()
     {
-        $sql = 'CALL sp_insertar_categoria(?,?,?,?);';
+        $sql = 'CALL sp_insertar_categoria(?,?,?);';
         $params = array(
             $this->nombreCategoria,
             $this->edadMinima,
-            $this->edadMaxima,
-            $this->temporada
+            $this->edadMaxima
         );
         return Database::executeRow($sql, $params);
     }
@@ -65,13 +63,12 @@ class CategoriasHandler
     //Función para actualizar una categoría.
     public function updateRow()
     {
-        $sql = 'CALL sp_actualizar_categoria(?,?,?,?,?);';
+        $sql = 'CALL sp_actualizar_categoria(?,?,?,?);';
         $params = array(
             $this->idCategoria,
             $this->nombreCategoria,
             $this->edadMinima,
             $this->edadMaxima,
-            $this->temporada
         );
         return Database::executeRow($sql, $params);
     }

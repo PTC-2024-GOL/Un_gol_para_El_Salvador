@@ -61,19 +61,6 @@ class CategoriasData extends CategoriasHandler
         }
     }
 
-    // Validación y asignación del ID de lesion
-    public function setTemporada($value)
-    {
-        if (Validator::validateNaturalNumber($value)) {
-            $this->temporada = $value;
-            return true;
-        } else {
-            $this->data_error = 'El identificador de la temporada es incorrecto';
-            return false;
-        }
-    }
-
-
     // Método para obtener el error de los datos.
     public function getDataError()
     {

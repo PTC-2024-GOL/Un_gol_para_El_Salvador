@@ -31,8 +31,7 @@ if (isset($_GET['action'])) {
                 if (
                     !$categorias->setNombreCategoria($_POST['nombreCategoria']) or
                     !$categorias->setEdadMinima($_POST['edadMin']) or
-                    !$categorias->setEdadMaxima($_POST['edadMax']) or
-                    !$categorias->setTemporada($_POST['temporada'])
+                    !$categorias->setEdadMaxima($_POST['edadMax']) 
                 ) {
                     $result['error'] = $categorias->getDataError();
                 } elseif ($categorias->createRow()) {
@@ -68,8 +67,7 @@ if (isset($_GET['action'])) {
                     !$categorias->setIdCategoria($_POST['idCategoria']) or
                     !$categorias->setNombreCategoria($_POST['nombreCategoria']) or
                     !$categorias->setEdadMinima($_POST['edadMin']) or
-                    !$categorias->setEdadMaxima($_POST['edadMax']) or
-                    !$categorias->setTemporada($_POST['temporada'])
+                    !$categorias->setEdadMaxima($_POST['edadMax'])
                 ) {
                     $result['error'] = $categorias->getDataError();
                 } elseif ($categorias->updateRow()) {
