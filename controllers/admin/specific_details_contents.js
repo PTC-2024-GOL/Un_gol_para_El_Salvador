@@ -322,6 +322,9 @@ async function fillTable(form = null, actions = 0) {
             });
         } else {
             sweetAlert(4, DATA.error, true);
+            Mensaje   .innerHTML = `
+            <p> Aún no has asignado contenidos ni tareas a este entrenamiento, presiona "Agregar contenidos para los jugadores"</p>
+            `; 
             CONTENEDOR1.classList.add('d-none');
             CONTENEDOR2.classList.add('d-none');
         }
@@ -365,6 +368,9 @@ window.onload = async function () {
         FORM.append('search', BUSCADOR);
         fillTable(FORM, 1);
     }
+    const titulos = ['Agregar entrenamientos', 'Agregar tareas', 'Ver equipos', 'Pasar asistencia', 'Ver jugadores y sus equipos', 'Ver jugadores'];
+    const links = ['../pages/journeys.html', '../pages/tasks.html', '../pages/soccer_teams.html', '../pages/assists.html', '../pages/templates_name.html', '../pages/players.html'];
+    insertTag('tags', titulos, links, 'Titulos relacionados');
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');

@@ -718,4 +718,72 @@ const lineTwoGraph = (canvas, xAxis, yAxis, legend, texty, textx) => {
     });
   }
 
+
+/*
+*  Función para generar un tab con enlaces para mejorar la navegabilidad en la página.
+*  Parametros: 
+*  1. id del contendor del tab (preferiblemente que sea un div)
+*  2. Arreglo de titulos de los tabs, ejem: ['Entrenamientos', 'Jugadores', 'Equipos']
+*  3. Arreglo de links de los tabs, ejem: ['../pages/entrenamientos.html', '../pages/jugadores.html', '../pages/equipos.html']
+*  4. Titulo del tab
+*  Retorno: ninguno.
+*  PUNTOS A PONER ATENCIÓN
+*  La lógica es que titulos[0] debe ser pareja de links[0]
+*  debes de tener un div con un id que se le pase como parametro
+*  debes de usar el css de tags.css en tu página web, ejemplo en:
+*  Specific_details_contents.html
+*/
+
+const insertTag = (idContainer, titulos, links, titulo_tab) => {
+    // Verificación de que los arreglos de títulos y links tengan la misma longitud
+    if (titulos.length !== links.length) {
+        console.error('La cantidad de títulos y links no coinciden, la longitud debe ser igual en ambos arreglos');
+        return;
+    }
+
+    // Obtener el contenedor por su ID
+    const container = document.getElementById(idContainer);
+
+    // Verificación de que el contenedor exista
+    if (!container) {
+        console.error(`No se encontró ningún elemento con el ID del contenedor: ${idContainer}`);
+        return;
+    }
+
+    // Crear el HTML para el tab
+    const cardHtml = document.createElement('div');
+    cardHtml.className = 'card2 mt-4';
+    cardHtml.innerHTML = `
+        <span class="title2">${titulo_tab}</span>
+        <div class="card__tags">
+            <ul class="tag"></ul>
+        </div>
+    `;
+
+    // Obtener la lista dentro de la tarjeta
+    const ul = cardHtml.querySelector('ul.tag');
+
+    // Iterar sobre los títulos y links para crear los elementos <li> con los enlaces
+    titulos.forEach((titulo, index) => {
+        const li = document.createElement('li');
+        li.className = 'tag__name';
+        
+        // Crear el enlace
+        const a = document.createElement('a');
+        a.href = links[index];
+        a.textContent = titulo;
+        a.classList.add('color_white');
+        a.style.textDecoration = 'none'; // Opcional: para quitar el subrayado del enlace
+        
+        // Agregar el enlace dentro del <li>
+        li.appendChild(a);
+        
+        // Agregar el <li> a la lista
+        ul.appendChild(li);
+    });
+
+    // Insertar la tarjeta dentro del contenedor
+    container.appendChild(cardHtml);
+};
+
   

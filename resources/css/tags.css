@@ -14,8 +14,12 @@
     font-weight: 900;
     font-size: 1.7em;
     padding-left: 3%;
+    padding-top: 2%;
   }
-  
+  .color_white
+  {
+    color: #fff;
+  }
   .tag__name {
     display: inline-block;
     color: #fff;
@@ -26,7 +30,6 @@
     margin: 10px 8px 10px 0;
     margin-left: 0px;
     position: relative;
-    text-transform: lowercase;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
   }
