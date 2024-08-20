@@ -730,7 +730,7 @@ const lineTwoGraph = (canvas, xAxis, yAxis, legend, texty, textx) => {
 *  PUNTOS A PONER ATENCIÓN
 *  La lógica es que titulos[0] debe ser pareja de links[0]
 *  debes de tener un div con un id que se le pase como parametro
-*  debes de usar el css de tags.css en tu página web, ejemplo en:
+*  debes de usar el css de style.css en tu página web, ejemplo en:
 *  Specific_details_contents.html
 */
 

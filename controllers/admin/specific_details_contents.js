@@ -19,7 +19,7 @@ let SAVE_FORM,
     CONTENIDO1,
     CONTENIDO2
     ;
-
+let ACTIVATE = '';
 let SEARCH_FORM;
 
 
@@ -190,6 +190,21 @@ const openUpdate = async (id) => {
         SAVE_MODAL.show();
         MODAL_TITLE.textContent = 'Actualizar detalle';
 
+    }
+}
+const grapicsView = async () =>{
+    if (ACTIVATE == '')
+    {
+    ACTIVATE = 'd-none';
+    CONTENEDOR1.classList.add(ACTIVATE);
+    CONTENEDOR2.classList.add(ACTIVATE);
+    }
+    else
+    {
+        
+    CONTENEDOR1.classList.remove(ACTIVATE);
+    CONTENEDOR2.classList.remove(ACTIVATE);
+        ACTIVATE = '';
     }
 }
 
