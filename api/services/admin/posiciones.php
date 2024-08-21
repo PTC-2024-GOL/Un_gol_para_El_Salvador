@@ -87,6 +87,18 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Ocurrió un problema al eliminar la posición. Por seguridad no puedes eliminarla porque esta siendo ocupada en otros registros.';
                 }
                 break;
+            // Gráfica
+            case 'graphic':
+                if (
+                    !$posicion->setIdPosicion($_POST['idPosicion'])
+                ) {
+                    $result['error'] = $posicion->getDataError();
+                } elseif ($result['dataset'] = $posicion->graphic()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Gráfica inexistente';
+                }
+                break;
             default:
                 $result['error'] = 'Acción no disponible dentro de la sesión';
         }

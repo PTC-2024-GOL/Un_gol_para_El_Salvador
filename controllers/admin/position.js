@@ -5,6 +5,8 @@ let SAVE_FORM,
     AREA_DE_JUEGO;
 let SEARCH_FORM;
 let ROWS_FOUND;
+let GRAPHIC_MODAL,
+    MODAL_TITLE2;
 
 // Constantes para completar las rutas de la API.
 const API = 'services/admin/posiciones.php';
@@ -178,6 +180,61 @@ async function fillTable(form = null) {
     }
 }
 
+/*
+*   Función para abrir la gráfica al momento.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
+const openGraphic = (id) => {
+    // Se muestra la caja de diálogo con su título.
+    GRAPHIC_MODAL.show();
+    MODAL_TITLE2.textContent = 'Gráfica de jugadores por posición';
+    const FORM = new FormData();
+    FORM.append('idPosicion', id);
+    graficoBarrasAnalisis(FORM);
+}
+
+/*
+*   Función asíncrona para mostrar un gráfico de barras con la cantidad de jugadores por posición.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
+const graficoBarrasAnalisis = async (FORM) => {
+    try {
+        // Petición para obtener los datos del gráfico.
+        let DATA = await fetchData(API, 'graphic', FORM);
+        // Se comprueba si la respuesta es satisfactoria, de lo contrario se remueve la etiqueta canvas.
+        if (DATA.status) {
+            // Se declaran los arreglos para guardar los datos a graficar.
+            let posicion = [];
+            let total = [];
+            // Se recorre el conjunto de registros fila por fila a través del objeto row.
+            DATA.dataset.forEach(row => {
+                // Se agregan los datos a los arreglos.
+                posicion.push(row.POSICION);
+                total.push(row.TOTAL);
+            });
+
+            // Destruir la instancia existente del gráfico si existe
+            if (chartInstance) {
+                chartInstance.destroy();
+                chartInstance = null; // Asegúrate de restablecer la referencia
+            }
+
+            // Restablecer el canvas en caso de que sea necesario
+            const canvasContainer = document.getElementById('posicion').parentElement;
+            canvasContainer.innerHTML = '<canvas id="posicion"></canvas>';
+
+            // Llamada a la función para generar y mostrar un gráfico de barras. Se encuentra en el archivo components.js
+            chartInstance = barGraph('posicion', posicion, total, 'Análisis de jugadores por posición');
+        } else {
+            console.log(DATA.error);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 // Función para mostrar técnicos en una página específica
 function mostrarPosiciones(pagina) {
     const inicio = (pagina - 1) * posicionesPorPagina;
@@ -197,6 +254,9 @@ function mostrarPosiciones(pagina) {
                     </button>
                     <button type="button" class="btn transparente" onclick="openDelete(${row.id_posicion})">
                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                    </button>
+                    <button type="button" class="btn transparente" onclick="openGraphic(${row.id_posicion})">
+                    <img src="../../../resources/img/svg/icons_forms/graphicLine.svg" width="18" height="18">
                     </button>
                     </td>
                 </tr>
@@ -251,7 +311,8 @@ window.onload = async function () {
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
-
+    GRAPHIC_MODAL = new bootstrap.Modal('#graphicModal'),
+        MODAL_TITLE2 = document.getElementById('modalTitle3');
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
         ID_POSICION = document.getElementById('idPosicion'),
