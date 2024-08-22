@@ -18,6 +18,8 @@ let SEARCH_FORM;
 
 let SELECT;
 
+let SHOW_GRAPHIC;
+
 let IMAGEN;
 let CUERPO_TECNICO;
 let SELECT_CATEGORY;
@@ -274,6 +276,7 @@ const selectCategory = async () => {
     const DATA = await fetchData(EQUIPO_API, 'countTeamsByCategory', FORM);
     console.log(DATA)
     if(DATA.status){
+        SHOW_GRAPHIC.classList.add('d-none');
         let dataset = DATA.dataset;
         let total = [];
         let nombre = [];
@@ -324,6 +327,8 @@ window.onload = async function () {
 
     SEE_GRAPHIC = new bootstrap.Modal('#seeGraphic'),
         MODAL_TITLE_GRAPHIC = document.getElementById('modalTitleGraphic');
+
+    SHOW_GRAPHIC = document.getElementById('dnoneGraphic');
 
     // Constantes para ver los miembros del cuerpo tecnico
     CUERPO_TECNICO = document.getElementById('cuerpoTecnicoEquipo');
