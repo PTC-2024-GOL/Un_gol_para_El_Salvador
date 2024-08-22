@@ -258,7 +258,7 @@ function mostrarPosiciones(pagina) {
                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
                     <button type="button" class="btn transparente" onclick="openGraphic(${row.id_posicion})">
-                    <img src="../../../resources/img/svg/icons_forms/graphicLine.svg" width="18" height="18">
+                    <img src="../../../resources/img/svg/icons_forms/barchart.svg" width="18" height="18">
                     </button>
                     </td>
                 </tr>
