@@ -171,7 +171,7 @@
 <!-- Componente Modal para ver la grafica -->
 <div class="modal fade" id="seeGraphic" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="modalTitle1" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen modal-dialog-scrollable bg-white p-3">
+    <div class="modal-dialog modal-fullscreen modal-dialog-scrollable bg-white">
         <div class="modal-content">
             <div class="modal-header bg-blue-principal-color text-light">
                 <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
@@ -198,7 +198,10 @@
                             </select>
                         </div>
                     </div>
-                    <canvas id="barGraphic"></canvas>
+                    <div class="mt-5" id="dnoneGraphic">
+                        <p class="text-center bg-skyBlue-pastel-color p-4 rounded-3">Selecciona una subcategoría</p>
+                    </div>
+                    <canvas class="mt-4" id="barGraphic"></canvas>
                 </div>
             </div>
         </div>
