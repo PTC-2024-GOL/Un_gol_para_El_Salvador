@@ -228,7 +228,7 @@ const graficoBarrasAnalisis = async (FORM) => {
             canvasContainer.innerHTML = '<canvas id="posicion"></canvas>';
 
             // Llamada a la función para generar y mostrar un gráfico de barras. Se encuentra en el archivo components.js
-            chartInstance = barGraph('posicion', posicion, total, 'Análisis de jugadores por posición');
+            chartInstance = barGraph1('posicion', posicion, total, 'Cantidad de jugadores', 'Análisis');
         } else {
             console.log(DATA.error);
         }
