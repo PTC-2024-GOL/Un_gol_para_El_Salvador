@@ -180,6 +180,8 @@ async function fillTable(form = null) {
     }
 }
 
+let chartInstance = null;
+
 /*
 *   Función para abrir la gráfica al momento.
 *   Parámetros: ninguno.
