@@ -451,7 +451,7 @@ const barGraph1 = (canvas, xAxis, yAxis, legend, title) => {
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false,
+            maintainAspectRatio: true,
             plugins: {
                 title: {
                     display: false,

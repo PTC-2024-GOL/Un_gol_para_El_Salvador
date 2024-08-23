@@ -284,7 +284,7 @@ const selectCategory = async () => {
             total.push(filter.total);
             nombre.push(filter.nombre_categoria);
         })
-        barGraph('barGraphic', nombre, total, 'Total de equipos', 'Total de equipos por categorías')
+        barGraph1('barGraphic', nombre, total, 'Total de equipos', 'Total de equipos por categorías')
     }else{
         console.log(DATA.error);
     }

@@ -147,7 +147,7 @@ const seeBecas = async () =>{
         });
         console.log(GRAPHIC_DATA);
         // Si ocurre un error, se utilizan los datos de ejemplo definidos arriba.
-        barGraph('graphic', becado, total, 'Total de becados', 'Total de jugadores por tipo de beca');
+        barGraph1('graphic', becado, total, 'Total de becados', 'Total de jugadores por tipo de beca');
     } else {
         console.log(DATA.error)
     }
