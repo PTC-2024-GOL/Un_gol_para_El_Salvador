@@ -89,11 +89,7 @@ if (isset($_GET['action'])) {
                 break;
             // Gráfica
             case 'graphic':
-                if (
-                    !$posicion->setIdPosicion($_POST['idPosicion'])
-                ) {
-                    $result['error'] = $posicion->getDataError();
-                } elseif ($result['dataset'] = $posicion->graphic()) {
+                if ($result['dataset'] = $posicion->graphic()) {
                     $result['status'] = 1;
                 } else {
                     $result['error'] = 'Gráfica inexistente';

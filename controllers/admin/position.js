@@ -187,13 +187,11 @@ let chartInstance = null;
 *   Parámetros: ninguno.
 *   Retorno: ninguno.
 */
-const openGraphic = (id) => {
+const openGraphic = () => {
     // Se muestra la caja de diálogo con su título.
     GRAPHIC_MODAL.show();
     MODAL_TITLE2.textContent = 'Gráfica de jugadores por posición';
-    const FORM = new FormData();
-    FORM.append('idPosicion', id);
-    graficoBarrasAnalisis(FORM);
+    graficoBarrasAnalisis();
 }
 
 /*
@@ -201,10 +199,10 @@ const openGraphic = (id) => {
 *   Parámetros: ninguno.
 *   Retorno: ninguno.
 */
-const graficoBarrasAnalisis = async (FORM) => {
+const graficoBarrasAnalisis = async () => {
     try {
         // Petición para obtener los datos del gráfico.
-        let DATA = await fetchData(API, 'graphic', FORM);
+        let DATA = await fetchData(API, 'graphic');
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se remueve la etiqueta canvas.
         if (DATA.status) {
             // Se declaran los arreglos para guardar los datos a graficar.
@@ -256,9 +254,6 @@ function mostrarPosiciones(pagina) {
                     </button>
                     <button type="button" class="btn transparente" onclick="openDelete(${row.id_posicion})">
                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
-                    <button type="button" class="btn transparente" onclick="openGraphic(${row.id_posicion})">
-                    <img src="../../../resources/img/svg/icons_forms/barchart.svg" width="18" height="18">
                     </button>
                     </td>
                 </tr>

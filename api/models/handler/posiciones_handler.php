@@ -83,11 +83,9 @@ class PosicionesHandler{
         $sql = 'SELECT COUNT(j.id_jugador) AS TOTAL, p.posicion AS POSICION 
                 FROM jugadores j
                 INNER JOIN posiciones p ON j.id_posicion_principal = p.id_posicion
-                WHERE id_posicion = ?
                 GROUP BY p.posicion
                 ORDER BY TOTAL DESC;';
-        $params = array($this->idPosicion);
-        return Database::getRows($sql, $params);
+        return Database::getRows($sql);
     }
 
 }
