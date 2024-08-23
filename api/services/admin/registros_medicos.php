@@ -95,6 +95,14 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Ocurrió un problema al eliminar el registro médico';
                 }
                 break;
+            // Gráfica
+            case 'graphic':
+                if ($result['dataset'] = $registro->graphic()) {
+                   $result['status'] = 1;
+               } else {
+                   $result['error'] = 'Gráfica inexistente';
+               }
+               break;
             default:
                 $result['error'] = 'Acción no disponible dentro de la sesión';
         }
