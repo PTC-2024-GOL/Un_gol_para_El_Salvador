@@ -63,17 +63,18 @@ class Report extends FPDF
         
         // Título
         $this->setFont('Arial', 'B', 24);
+        $this->Ln(6);
         $this->cell(0, 25, $this->encodeString($this->title), 0, 1, 'R');
         
         // Fecha y hora
         $this->setFont('Arial', '', 12);
-        $this->cell(0, 10, 'Fecha/Hora: ' . date('d-m-Y H:i:s'), 0, 1, 'R');
+        $this->cell(0, 0, 'Fecha/Hora: ' . date('d-m-Y H:i:s'), 0, 1, 'R');
         // Se define la imagen del fondo en el centro del reporte
         // $this->image('../../images/logo_semi_transparente.png', 45, 95, 128, 128);
         // Salto de línea
-        $this->ln(10);
+        $this->ln(15);
         // Fondo inferior derecho
-        $this->image('../../images/fondo_inferior_derecho.png', 0, 197, 216, 90);
+        $this->image('../../images/footer.png', 0, 240, 216, 40);
     }
 
     /*
@@ -87,7 +88,7 @@ class Report extends FPDF
         // Número de página y usuario
         $this->setY(-20);
         $this->setFont('Arial', 'I', 10);
-        $this->cell(0, 10, $this->encodeString('Usuario: ' . $_SESSION['nombreAdministrador']), 0, 1, 'L');
-        $this->cell(0, 10, $this->encodeString('Página ') . $this->pageNo() . '/{nb}', 0, 0, 'L');
+        $this->cell(0, 10, $this->encodeString('Generado por: ' . $_SESSION['nombreAdministrador']), 0, 1, 'R');
+        $this->cell(0, 10, $this->encodeString('Página ') . $this->pageNo() . '/{nb}', 0, 0, 'C');
     }
 }
