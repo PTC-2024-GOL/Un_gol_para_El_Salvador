@@ -164,6 +164,23 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'No hay jugadores con becas completas';
                 }
                 break;
+            case 'graphicBecas':
+                if (!$pago->setAño($_POST['año'])) {
+                    $result['error'] = $pago->getDataError();
+                } elseif ($result['dataset'] = $pago->graphicBecas()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Aún no hay jugadores registrados';
+                }
+                break;
+            case 'years':
+                if ($result['dataset'] = $pago->years()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
+                } else {
+                    $result['error'] = 'No hay jugadores registrados';
+                }
+                break;
             default:
                 $result['error'] = 'Acción no disponible dentro de la sesión';
         }

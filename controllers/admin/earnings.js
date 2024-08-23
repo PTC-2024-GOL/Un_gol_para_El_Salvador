@@ -5,6 +5,9 @@ let SIN_BECA;
 let BECA;
 let MEDIA_BECA;
 
+let SEE_MODAL;
+let SHOW_GRAPHIC;
+
 // Constantes para completar las rutas de la API.
 const PAGO_API = 'services/admin/pagos.php';
 
@@ -115,6 +118,41 @@ const becaCompleta = async () => {
     }
 }
 
+const seeGraphic = async () => {
+    SEE_MODAL.show();
+    MODAL_TITLE.textContent = 'Becas';
+}
+
+const seeBecas = async () =>{
+    let YEAR = document.getElementById('becasSelect');
+    let SELECTED_YEAR = YEAR.options[YEAR.selectedIndex].text;
+
+
+    const FORM = new FormData();
+
+    FORM.append('año',SELECTED_YEAR);
+
+    console.log(SELECTED_YEAR)
+
+    const DATA = await fetchData(PAGO_API, 'graphicBecas', FORM);
+
+    if (DATA.status) {
+        SHOW_GRAPHIC.classList.add('d-none');
+        let GRAPHIC_DATA = DATA.dataset;
+        let becado = [];
+        let total = [];
+        GRAPHIC_DATA.forEach(filter => {
+            becado.push(filter.becado);
+            total.push(filter.total);
+        });
+        console.log(GRAPHIC_DATA);
+        // Si ocurre un error, se utilizan los datos de ejemplo definidos arriba.
+        barGraph('graphic', becado, total, 'Total de becados', 'Total de jugadores por tipo de beca');
+    } else {
+        console.log(DATA.error)
+    }
+}
+
 window.onload = async function () {
     // Obtiene el contenedor principal
     const appContainer = document.getElementById('main');
@@ -135,6 +173,13 @@ window.onload = async function () {
     SIN_BECA = document.getElementById('sinBeca');
     BECA = document.getElementById('becaCompleta');
     MEDIA_BECA = document.getElementById('mediaBeca');
+
+    await fillSelect(PAGO_API, 'years', 'becasSelect');
+
+    SEE_MODAL = new bootstrap.Modal('#seeModal');
+        MODAL_TITLE = document.getElementById('modalTitle');
+
+    SHOW_GRAPHIC = document.getElementById('dnoneGraphic');
 
     await total();
     await totalJugadores();

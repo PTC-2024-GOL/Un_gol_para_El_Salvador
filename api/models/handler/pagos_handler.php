@@ -18,6 +18,7 @@ class PagoHandler
     protected $jugador = null;
 
     protected $mesPago = null;
+    protected $año = null;
 
 
     /*
@@ -168,6 +169,19 @@ class PagoHandler
                 FROM pagos
                 WHERE YEAR(fecha_pago) = YEAR(CURDATE())
                 GROUP BY mes_pago;';
+        return Database::getRows($sql);
+    }
+
+    public function graphicBecas()
+    {
+        $sql = 'SELECT COUNT(becado) AS total, becado FROM jugadores WHERE YEAR(fecha_creacion) = ? GROUP BY becado';
+        $params = array($this->año);
+        return Database::getRows($sql, $params);
+    }
+
+    public function years()
+    {
+        $sql = 'SELECT id_jugador, YEAR(fecha_creacion) FROM jugadores GROUP BY fecha_creacion;';
         return Database::getRows($sql);
     }
 

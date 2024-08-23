@@ -29,6 +29,12 @@ class PagoData extends PagoHandler
         }
     }
 
+    public function setAño($value)
+    {
+        $this -> año = $value;
+        return true;
+    }
+
     // Validación y asignación de la fecha de pago .
     public function setFecha($value)
     {
