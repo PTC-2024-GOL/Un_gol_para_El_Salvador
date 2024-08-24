@@ -1,10 +1,6 @@
 <?php
 
-
-use Phpml\Regression\SVR;
 use Phpml\Regression\LeastSquares;
-use Phpml\ModelManager;
-use Phpml\Dataset\ArrayDataset;
 
 require('C:/xampp/htdocs/sitio_gol_sv/vendor/autoload.php');
 // Se incluye la clase para trabajar con la base de datos.
@@ -151,7 +147,8 @@ class EstadoFisicoJugadorHandler
                  FROM estados_fisicos_jugadores e
                  INNER JOIN jugadores j  ON j.id_jugador = e.id_jugador
                  WHERE e.id_jugador = ?
-                 ORDER BY e.fecha_creacion ASC LIMIT 31;
+                 AND e.fecha_creacion >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+                 ORDER BY e.fecha_creacion ASC;
          ';
         $params = array($this->idJugador);
         return Database::getRows($sql, $params);
@@ -166,7 +163,8 @@ class EstadoFisicoJugadorHandler
         $sql = 'SELECT e.indice_masa_corporal AS IMC, e.fecha_creacion AS FECHA 
             FROM estados_fisicos_jugadores e
             WHERE e.id_jugador = ?
-            ORDER BY e.fecha_creacion ASC LIMIT 31';
+            AND e.fecha_creacion >= DATE_SUB(CURDATE(), INTERVAL 2 WEEK)
+            ORDER BY e.fecha_creacion ASC;';
         $params = array($this->idJugador);
         $rows = Database::getRows($sql, $params);
 
@@ -211,60 +209,4 @@ class EstadoFisicoJugadorHandler
 
         return $predictions;
     }
-/* 
-    //Función para cargar gráfica de proyección del IMC para la siguiente semana utilizando regresión con soporte vectorial.
-    public function graphicPredictiveImcSVR()
-    {
-        // Consulta para obtener los datos de IMC y fecha
-        $sql = 'SELECT e.indice_masa_corporal AS IMC, e.fecha_creacion AS FECHA 
-            FROM estados_fisicos_jugadores e
-            WHERE e.id_jugador = ?
-            ORDER BY e.fecha_creacion ASC;';
-        $params = array($this->idJugador);
-        $rows = Database::getRows($sql, $params);
-
-        if (empty($rows)) {
-            return [];
-        }
-
-        // Preparar datos para la regresión
-        $dates = [];
-        $imcs = [];
-
-        foreach ($rows as $row) {
-            $date = new DateTime($row['FECHA']);
-            $dates[] = $date->getTimestamp(); // Convertir fecha a timestamp
-            $imcs[] = $row['IMC'];
-        }
-
-        // Convertir datos a formato para el modelo
-        $X = array_map(function ($timestamp) {
-            return [$timestamp];
-        }, $dates);
-        $y = $imcs;
-
-        // Crear el modelo de regresión SVR
-        $regression = new SVR();
-        $regression->train($X, $y);
-
-        // Obtener la fecha del último dato
-        $lastTimestamp = end($dates);
-
-        // Predecir el IMC para cada día de la siguiente semana
-        $predictions = [];
-        for ($i = 1; $i <= 7; $i++) {
-            $timestamp = $lastTimestamp + $i * 24 * 60 * 60; // Sumar días en segundos
-            $predictedIMC = $regression->predict([$timestamp]);
-
-            // Convertir timestamp a fecha
-            $date = (new DateTime())->setTimestamp($timestamp)->format('d de F de Y');
-
-            $predictions[] = [
-                'fecha' => $date,
-                'imc' => $predictedIMC
-            ];
-        }
-
-        return $predictions;
-    } */
 }
