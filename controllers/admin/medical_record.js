@@ -10,6 +10,7 @@ let SAVE_FORM,
     RETORNO_PARTIDO;
 let SEARCH_FORM;
 let ROWS_FOUND;
+let GRAPHIC_MODAL;
 
 // Constantes para completar las rutas de la API.
 const API = 'services/admin/registros_medicos.php';
@@ -146,6 +147,58 @@ async function fillTable(form = null) {
     }
 }
 
+let chartInstance = null;  
+/*
+*   Función para abrir la gráfica al momento.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
+const openGraphic = () => {
+    // Se muestra la caja de diálogo con su título.
+    GRAPHIC_MODAL.show();
+    modalTitleGraphic.textContent = 'Gráfica de la cantidad de lesiones por mes del último año';
+    graficoBarrasLineasAnalisis();
+}
+
+const graficoBarrasLineasAnalisis = async () => {
+    try {
+        // Petición para obtener los datos del gráfico.
+        let DATA = await fetchData(API, 'graphic');
+
+        // Se comprueba si la respuesta es satisfactoria.
+        if (DATA.status) {
+            // Se declaran los arreglos para guardar los datos a graficar.
+            let mes = [];
+            let lesion = [];
+            
+            // Se recorre el conjunto de registros fila por fila a través del objeto row.
+            DATA.dataset.forEach(row => {
+                // Capitaliza la primera letra del mes y se agregan los datos a los arreglos.
+                let mesCapitalizado = row.MES_NOMBRE.charAt(0).toUpperCase() + row.MES_NOMBRE.slice(1).toLowerCase();
+                mes.push(mesCapitalizado);
+                lesion.push(row.CANTIDAD_LESIONES); // Datos para las barras
+            });
+
+            // Destruir la instancia existente del gráfico si existe
+            if (chartInstance) {
+                chartInstance.destroy();
+                chartInstance = null;
+            }
+
+            // Restablecer el canvas en caso de que sea necesario
+            const canvasContainer = document.getElementById('lesiones').parentElement;
+            canvasContainer.innerHTML = '<canvas id="lesiones"></canvas>';
+
+            // Llamada a la función para generar y mostrar un gráfico combinado de barras apiladas y líneas
+            chartInstance = lineGraph1('lesiones', mes, lesion, 'Número de lesiones', 'Lesiones por mes');
+        } else {
+            console.log(DATA.error);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 // Función para mostrar técnicos en una página específica
 function mostrarRegistros(pagina) {
     const inicio = (pagina - 1) * registrosPorPagina;
@@ -232,7 +285,8 @@ window.onload = async function () {
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
-
+    GRAPHIC_MODAL = new bootstrap.Modal('#graphicModal'),
+        modalTitleGraphic = document.getElementById('modalTitleGraphic');
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
         ID_REGISTRO_MEDICO = document.getElementById('idMedico'),
