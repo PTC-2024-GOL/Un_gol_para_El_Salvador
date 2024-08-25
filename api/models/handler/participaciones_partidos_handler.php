@@ -123,7 +123,7 @@ class ParticipacionesPartidosHandler
     //Funcion que traera todos los juegadors
     public function participationReports()
     {
-        $sql = 'SELECT * FROM vista_reporte_participacion_partido WHERE id_partido = ?;';
+        $sql = 'SELECT * FROM vista_reporte_participacion_partido WHERE id_partido = ? ORDER BY puntuacion ASC ;';
         $params = array($this->idPartido);
         return Database::getRows($sql, $params);
     }
