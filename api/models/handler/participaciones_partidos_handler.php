@@ -118,5 +118,14 @@ class ParticipacionesPartidosHandler
         return Database::executeRow($sql, $params);
     }
 
+    //Funciones para reportes
+
+    //Funcion que traera todos los juegadors
+    public function participationReports()
+    {
+        $sql = 'SELECT * FROM vista_reporte_participacion_partido WHERE id_partido = ?;';
+        $params = array($this->idPartido);
+        return Database::getRows($sql, $params);
+    }
 
 }

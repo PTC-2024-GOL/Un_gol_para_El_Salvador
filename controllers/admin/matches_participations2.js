@@ -20,6 +20,15 @@ async function loadComponent(path) {
     return text;
 }
 
+const openReportWithParams = (id) => {
+    // Se declara una constante tipo objeto con la ruta específica del reporte en el servidor.
+    const PATH = new URL(`${SERVER_URL}reports/admin/reporte_parametrizado_participaciones.php`);
+    // Se agrega un parámetro a la ruta con el valor del registro seleccionado.
+    PATH.searchParams.append('idPartido', id);
+    // Se abre el reporte en una nueva pestaña.
+    window.open(PATH.href);
+}
+
 // Manejo para la paginacion
 const matchesByPage = 10;
 let currentPage = 1;
@@ -60,6 +69,7 @@ function showMatches(page) {
                         </div>
                     </div>
                     <hr>
+                    <button class="btn bg-blue-secondary-color text-white btn-sm rounded-3" onclick="openReportWithParams(${row.id_partido})" >Generar reporte</button>
                     <button class="btn bg-blue-principal-color text-white btn-sm rounded-3"  onclick="goToPlayers(${row.id_partido})">
                         Agregar participaciones
                     </button>
