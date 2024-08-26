@@ -199,6 +199,20 @@ const graficoBarrasLineasAnalisis = async () => {
     }
 }
 
+/*
+*   Función para abrir un reporte parametrizado de registro médico.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
+const openReport = (id) => {
+    // Se declara una constante tipo objeto con la ruta específica del reporte en el servidor.
+    const PATH = new URL(`${SERVER_URL}reports/admin/reporte_parametrizado_registro_medico.php`);
+    // Se agrega un parámetro a la ruta con el valor del registro seleccionado.
+    PATH.searchParams.append('idMedico', id);
+    // Se abre el reporte en una nueva pestaña.
+    window.open(PATH.href);
+}
+
 // Función para mostrar técnicos en una página específica
 function mostrarRegistros(pagina) {
     const inicio = (pagina - 1) * registrosPorPagina;
@@ -227,10 +241,13 @@ function mostrarRegistros(pagina) {
                     <td>${retornoPartido}</td>
                     <td>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id_registro_medico})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                        <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
                     <button type="button" class="btn transparente" onclick="openDelete(${row.id_registro_medico})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                        <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                    </button>
+                    <button type="button" class="btn transparente" onclick="openReport(${row.id_registro_medico})">
+                        <img src="../../../resources/img/svg/icons_forms/report-blanco.svg" width="18" height="18">
                     </button>
                     </td>
                 </tr>

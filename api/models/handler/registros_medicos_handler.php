@@ -146,11 +146,45 @@ class RegistrosHandler{
            $params = array($_SESSION['idTecnico']);
            return Database::getRows($sql, $params);
        }
+
     //Función para leer un registro médico.
     public function readOne()
     {
         $sql = 'SELECT * FROM registros_medicos
         WHERE id_registro_medico LIKE ?';
+        $params = array($this->idRegistroMedico);
+        return Database::getRow($sql, $params);
+    }
+
+    //Función para leer un registro médico.
+    public function readOne1()
+    {
+        $sql = 'SELECT 
+        rm.id_registro_medico,
+        rm.id_jugador,
+        CONCAT(j.nombre_jugador, " ", j.apellido_jugador) AS NOMBRE,
+        j.foto_jugador AS FOTO,
+        rm.fecha_lesion AS FECHALESION,
+        rm.fecha_registro,
+        rm.dias_lesionado AS DIAS,
+        rm.id_lesion,
+        l.id_tipo_lesion,
+        l.id_sub_tipologia,
+        st.nombre_sub_tipologia AS LESION,
+        rm.retorno_entreno AS RETORNO,
+        rm.retorno_partido,
+        p.fecha_partido
+        FROM 
+        registros_medicos rm
+        INNER JOIN 
+        jugadores j ON rm.id_jugador = j.id_jugador
+        INNER JOIN 
+        lesiones l ON rm.id_lesion = l.id_lesion
+        INNER JOIN 
+        sub_tipologias st ON l.id_sub_tipologia = st.id_sub_tipologia
+        LEFT JOIN 
+        partidos p ON rm.retorno_partido = p.id_partido
+        WHERE rm.id_registro_medico LIKE ?';
         $params = array($this->idRegistroMedico);
         return Database::getRow($sql, $params);
     }
