@@ -44,7 +44,7 @@ const openCreate = () => {
 const openGraphic = () => {
     // Se muestra la caja de diálogo con su título.
     GRAPHIC_MODAL.show();
-    modalTitleGraphic.textContent = 'Gráfica de cuantos jugadores ha pagado el mes del último año';
+    modalTitleGraphic.textContent = 'Gráfica de pagos';
     graficoBarrasLineasAnalisis();
 }
 
@@ -78,7 +78,7 @@ const graficoBarrasLineasAnalisis = async () => {
             canvasContainer.innerHTML = '<canvas id="analisis"></canvas>';
 
             // Llamada a la función para generar y mostrar un gráfico combinado de barras apiladas y líneas
-            chartInstance = lineGraph('analisis', mes, numJugador, 'Número de jugadores que han pagado');
+            chartInstance = lineGraph('analisis', mes, numJugador, 'Número de jugadores que han pagado mensualmente');
         } else {
             console.log(DATA.error);
         }

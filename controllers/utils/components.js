@@ -574,7 +574,7 @@ const lineGraph = (canvas, xAxis, yAxis, legend, title) => {
                     text: title
                 },
                 legend: {
-                    display: false
+                    display: true
                 }
             }
         }

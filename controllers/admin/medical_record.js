@@ -156,7 +156,7 @@ let chartInstance = null;
 const openGraphic = () => {
     // Se muestra la caja de diálogo con su título.
     GRAPHIC_MODAL.show();
-    modalTitleGraphic.textContent = 'Gráfica de la cantidad de lesiones por mes del último año';
+    modalTitleGraphic.textContent = 'Gráfica de lesiones';
     graficoBarrasLineasAnalisis();
 }
 
