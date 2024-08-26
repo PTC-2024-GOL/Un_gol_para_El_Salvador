@@ -268,10 +268,8 @@ class RegistrosHandler{
                 // Clasificamos el tipo de riesgo de la lesión
                 if ($row['dias_lesionado'] > 25) {
                     $labels[] = 'riesgo alto, lo que significa que varios jugadores presentaron lesiones de larga recuperación, con una duración de más de 25 días, por lo que se predice un riesgo bajo.';
-                    $tipo = 1;
                 } elseif ($row['dias_lesionado'] > 15) {
                     $labels[] = 'riesgo medio, lo que significa que varios jugadores presentaron lesiones intermedias, con una duración de más de 15 días, por lo que se predice un riesgo medio.';
-                    $tipo = 2;
                 } else {
                     $labels[] = 'riesgo bajo, lo que significa que varios jugadores presentaron lesiones de corto plazo, con una duración menor a 15 días, por lo que se predice un riesgo bajo.';
                 }
@@ -321,6 +319,15 @@ class RegistrosHandler{
         // Hacemos la predicción global basada en los promedios de todo el grupo
         $nuevos_datos = [$dias_lesionados_promedio, $id_lesion_promedio, $dias_recuperacion_promedio];
         $prediccion = $classifier->predict($nuevos_datos);
+
+        // Asignar $tipo basado en la predicción global
+        if (strpos($prediccion, 'riesgo alto') !== false) {
+            $tipo = 1;
+        } elseif (strpos($prediccion, 'riesgo medio') !== false) {
+            $tipo = 2;
+        } else {
+            $tipo = 3;
+        }
 
         // Encontrar el tipo de lesión más frecuente
         $tipo_lesion_mas_frecuente = array_search(max($lesion_count), $lesion_count);
