@@ -78,12 +78,68 @@ const cargarGraficaLinealPredicticion = async () => {
 
             chartInstance = lineGraphWithFill('prediccion', fecha, imc, 'Imc por día', 'Predicción del imc de la siguiente semana');
         } else {
-            document.getElementById('prediccion').remove();
             console.log(DATA.error);
+            // Destruir la instancia existente del gráfico si existe
+            if (chartInstance) {
+                chartInstance.destroy();
+                chartInstance = null; // Asegúrate de restablecer la referencia
+            }
+            // Restablecer el canvas en caso de que sea necesario
+            const canvasContainer = document.getElementById('prediccion').parentElement;
+            canvasContainer.innerHTML = ' <div id="error_prediccion"></div> <canvas id="prediccion"></canvas>';
+
+            // Restablecer o crear el contenedor
+            errorContainer = document.getElementById('error_prediccion');
+            errorContainer.innerHTML += '';
+            const tablaHtml = `
+            <div class="col-md-12 row d-flex text-center justify-content-center">
+                <div class="col-md-6">
+                    <div class="card mb-4 shadow-sm">
+                        <img src="../../../resources/img/svg/errores/find.png"
+                        class="card-img-top img-thumbnail" alt="Imagen de ejemplo"">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center align-items-center">
+                            <p class="text-primary">${DATA.error} </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+            errorContainer.innerHTML += tablaHtml;
+            chartInstance = null;
         }
     } catch (error) {
-
         console.log('Error:', error);
+        // Destruir la instancia existente del gráfico si existe
+        if (chartInstance) {
+            chartInstance.destroy();
+            chartInstance = null; // Asegúrate de restablecer la referencia
+        }
+        // Restablecer el canvas en caso de que sea necesario
+        const canvasContainer = document.getElementById('prediccion').parentElement;
+        canvasContainer.innerHTML = ' <div id="error_prediccion"></div> <canvas id="prediccion"></canvas>';
+
+        // Restablecer o crear el contenedor
+        errorContainer = document.getElementById('error_prediccion');
+        errorContainer.innerHTML += '';
+        const tablaHtml = `
+        <div class="col-md-12 row d-flex text-center justify-content-center">
+            <div class="col-md-6">
+                <div class="card mb-4 shadow-sm">
+                    <img src="../../../resources/img/svg/errores/find.png"
+                    class="card-img-top img-thumbnail" alt="Imagen de ejemplo"">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <p class="text-primary">No hay datos suficientes para mostrar la gráfica predictiva</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+        errorContainer.innerHTML += tablaHtml;
+        chartInstance = null;
     }
 }
 
@@ -101,7 +157,7 @@ const cargarGraficaLineal = async () => {
                 fecha.push(`${row.FECHA}`);
                 imc.push(row.IMC);
             });
-            
+
             // Destruir la instancia existente del gráfico si existe
             if (chartInstance2) {
                 chartInstance2.destroy();
@@ -110,15 +166,72 @@ const cargarGraficaLineal = async () => {
 
             // Restablecer el canvas en caso de que sea necesario
             const canvasContainer = document.getElementById('historico').parentElement;
-            canvasContainer.innerHTML = '<canvas id="historico"></canvas>';
+            canvasContainer.innerHTML = '<canvas id="historico"></canvas> <div id="error_historico"></div>';
 
             chartInstance2 = lineGraphWithFill('historico', fecha, imc, 'Imc por mes', 'Gráfica del índice de masa corporal del último mes del jugador ');
         } else {
-            document.getElementById('historico').remove();
             console.log(DATA.error);
+            // Destruir la instancia existente del gráfico si existe
+            if (chartInstance2) {
+                chartInstance2.destroy();
+                chartInstance2 = null; // Asegúrate de restablecer la referencia
+            }
+            // Restablecer el canvas en caso de que sea necesario
+            const canvasContainer = document.getElementById('historico').parentElement;
+            canvasContainer.innerHTML = '<div id="error_historico"></div> <canvas id="historico"></canvas>';
+
+            // Restablecer o crear el contenedor
+            errorContainer = document.getElementById('error_historico');
+            errorContainer.innerHTML += '';
+            const tablaHtml = `
+            <div class="col-md-12 row d-flex text-center justify-content-center">
+                <div class="col-md-6">
+                    <div class="card mb-4 shadow-sm">
+                        <img src="../../../resources/img/svg/errores/find.png"
+                        class="card-img-top img-thumbnail" alt="Imagen de ejemplo"">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center align-items-center">
+                            <p class="text-primary">${DATA.error} </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+            errorContainer.innerHTML += tablaHtml;
+            chartInstance2 = null;
         }
     } catch (error) {
         console.log('Error:', error);
+        // Destruir la instancia existente del gráfico si existe
+        if (chartInstance2) {
+            chartInstance2.destroy();
+            chartInstance2 = null; // Asegúrate de restablecer la referencia
+        }
+        // Restablecer el canvas en caso de que sea necesario
+        const canvasContainer = document.getElementById('historico').parentElement;
+        canvasContainer.innerHTML = ' <div id="error_historico"></div> <canvas id="historico"></canvas>';
+
+        // Restablecer o crear el contenedor
+        errorContainer = document.getElementById('error_historico');
+        errorContainer.innerHTML += '';
+        const tablaHtml = `
+        <div class="col-md-12 row d-flex text-center justify-content-center">
+            <div class="col-md-6">
+                <div class="card mb-4 shadow-sm">
+                    <img src="../../../resources/img/svg/errores/find.png"
+                    class="card-img-top img-thumbnail" alt="Imagen de ejemplo"">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <p class="text-primary">No existen datos para la gráfica</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+        errorContainer.innerHTML += tablaHtml;
+        chartInstance2 = null;
     }
 }
 

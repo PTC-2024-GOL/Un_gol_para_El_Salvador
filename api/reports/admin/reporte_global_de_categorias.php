@@ -55,7 +55,7 @@ if ($dataCategorias = $categorias->readAll()) {
         // Establecer color de texto a blanco
         $pdf->setTextColor(0, 0, 0);
         // Se establacen los colores de las celdas
-        $pdf->setDrawColor(0, 119, 182);
+        $pdf->setDrawColor(0, 0, 0);
         $pdf->setFont('Arial', 'B', 11);
         $pdf->setFillColor(255, 255, 255);
         // Imprime las celdas con los datos

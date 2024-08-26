@@ -52,12 +52,12 @@ if ($dataCuerpoTecnico = $cuerpotecnico->readAll()) {
             $pdf->cell(40, 10, 'Rol', 1, 1, 'C', 1);
         }
 
-        $pdf->setFillColor(0, 119, 182);
-        $pdf->setDrawColor(0, 119, 182);
+        $pdf->setFillColor(110, 151, 214);
+        $pdf->setDrawColor(0, 0, 0);
         $pdf->setFont('Arial', 'B', 11);
 
         // Establecer color de texto a blanco
-        $pdf->setTextColor(255, 255, 255);
+        $pdf->setTextColor(0, 0, 0);
         // Imprime una celda con el nombre de la plantilla.
         $pdf->cell(186, 10, $pdf->encodeString('Cuerpo Técnico: ' . $rowCuerpoTecnico['NOMBRE']), 1, 1, 'C', 1);
 
@@ -85,7 +85,7 @@ if ($dataCuerpoTecnico = $cuerpotecnico->readAll()) {
                     // Establecer color de texto a blanco
                     $pdf->setTextColor(0, 0, 0);
                     // Se establacen los colores de las celdas
-                    $pdf->setDrawColor(0, 119, 182);
+                    $pdf->setDrawColor(0, 0, 0);
                     $pdf->setFont('Arial', 'B', 11);
                     $pdf->setFillColor(255, 255, 255);
                     //Verificación de que el archivo existe
