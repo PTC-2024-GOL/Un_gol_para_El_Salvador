@@ -111,7 +111,7 @@ const cargarGraficaLineal = async () => {
             const canvasContainer = document.getElementById('historico').parentElement;
             canvasContainer.innerHTML = '<canvas id="historico"></canvas>';
 
-            chartInstance2 = lineGraphWithFill('historico', fecha, imc, 'Imc por mes $', 'Gráfica del indice de masa corporal del ultimo mes del jugador ');
+            chartInstance2 = lineGraphWithFill('historico', fecha, imc, 'Imc por mes', 'Gráfica del indice de masa corporal del ultimo mes del jugador ');
         } else {
             document.getElementById('historico').remove();
             console.log(DATA.error);
