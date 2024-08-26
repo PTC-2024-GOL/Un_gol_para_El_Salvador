@@ -71,11 +71,11 @@ if (isset($_GET['id']) || isset($_GET['jugador'])) {
                     }
                 }
             } else {
-                $pdf->cell(0, 10, $pdf->encodeString('No hay predicción disponible para este jugador'), 1, 1);
+                $pdf->cell(0, 10, $pdf->encodeString('No hay predicción disponible para este jugador'), 1, 1, 'C');
             }
         } catch (Exception $e) {
             // Mostrar un mensaje específico si ocurre una excepción
-            $pdf->cell(0, 10, $pdf->encodeString('No hay datos suficientes para realizar la predicción'), 1, 1);
+            $pdf->cell(0, 10, $pdf->encodeString('No hay datos suficientes para realizar la predicción'), 1, 1, 'C');
         }
         // Se llama implícitamente al método footer() y se envía el documento al navegador web.
         $pdf->output('I', 'prediccion_jugador.pdf');
