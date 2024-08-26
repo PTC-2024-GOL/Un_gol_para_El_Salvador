@@ -62,7 +62,7 @@ class Report extends FPDF
         $this->image('../../images/fondo_superior_derecho.png', 0, 0, 108);
         
         // Título
-        $this->setFont('Arial', 'B', 24);
+        $this->setFont('Arial', 'B', 20);
         $this->Ln(6);
         $this->cell(0, 25, $this->encodeString($this->title), 0, 1, 'R');
         
