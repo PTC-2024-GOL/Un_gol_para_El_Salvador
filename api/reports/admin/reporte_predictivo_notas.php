@@ -25,8 +25,9 @@ if (isset($_GET['id']) || isset($_GET['jugador'])) {
     // Se establece un color de relleno para los encabezados.
     $pdf->setFillColor(255, 255, 255);
     // Se establece la fuente para los encabezados.
-    $pdf->setFont('Arial', 'B', 14);
+    $pdf->setFont('Arial', 'B', 11);
     $pdf->cell(100, 10, $pdf->encodeString('Jugador elegido para la predicción: ' . $_GET['jugador']), 0, 1, 'L', 1);
+    $pdf->setFont('Arial', 'B', 14);
     // Se establece el valor de la categoría, de lo contrario se muestra un mensaje.
     if ($caracteristica->setJugador($_GET['id'])) {
         // Establecer color de texto a blanco
