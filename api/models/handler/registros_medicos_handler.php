@@ -1,7 +1,11 @@
 <?php
 
+use Phpml\Classification\KNearestNeighbors;
+
 // Se incluye la clase para trabajar con la base de datos.
 require_once('../../helpers/database.php');
+
+require('C:/xampp/htdocs/sitio_gol_sv/vendor/autoload.php');
 
 /*
  *  Clase para manejar el comportamiento de los datos de la tabla tipos de jugadas.
@@ -231,5 +235,59 @@ class RegistrosHandler{
     return Database::getRows($sql);
     }
 
-}
+    //Funcion para sacar la predicición en registro médico (Predecir el riesgo de lesiones de un grupo)
+    public function globalMedicalPrediction ()
+    {
+        $sql = 'SELECT dias_lesionado, id_lesion, DATEDIFF(retorno_entreno, fecha_lesion) AS dias_recuperacion FROM registros_medicos WHERE fecha_lesion IS NOT NULL';
+        $result = Database::getRows($sql);
 
+        $samples = [];
+        $labels = [];
+
+        $dias_lesionados_total = 0;
+        $id_lesion_total = 0;
+        $dias_recuperacion_total = 0;
+        $contador = 0;
+
+        // Verificamos si hay resultados
+        if (count($result) > 0) {
+            foreach ($result as $row) {
+                // Añadimos las características al modelo
+                $samples[] = [$row['dias_lesionado'], $row['id_lesion'], $row['dias_recuperacion']];
+
+                // Clasificamos el tipo de riesgo de la lesión
+                if ($row['dias_lesionado'] > 25) {
+                    $labels[] = 'Alto';
+                } elseif ($row['dias_lesionado'] > 15) {
+                    $labels[] = 'Medio';
+                } else {
+                    $labels[] = 'Bajo';
+                }
+
+                // Sumamos para sacar promedios globales
+                $dias_lesionados_total += $row['dias_lesionado'];
+                $id_lesion_total += $row['id_lesion'];
+                $dias_recuperacion_total += $row['dias_recuperacion'];
+                $contador++;
+            }
+        }
+
+        // Evitar división por 0
+        if ($contador == 0) {
+            throw new Exception("No hay suficientes datos para realizar la predicción.");
+        }
+
+        // Calculamos los promedios globales
+        $dias_lesionados_promedio = $dias_lesionados_total / $contador;
+        $id_lesion_promedio = $id_lesion_total / $contador;
+        $dias_recuperacion_promedio = $dias_recuperacion_total / $contador;
+
+        // Entrenamos el modelo de clasificación
+        $classifier = new KNearestNeighbors();
+        $classifier->train($samples, $labels);
+
+        // Hacemos la predicción global basada en los promedios de todo el grupo
+        $nuevos_datos = [$dias_lesionados_promedio, $id_lesion_promedio, $dias_recuperacion_promedio];
+        return $classifier->predict($nuevos_datos);
+    }
+}
