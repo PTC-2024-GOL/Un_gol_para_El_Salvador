@@ -64,7 +64,7 @@ if ($dataCategorias = $categorias->readAll()) {
         $pdf->cell(35, 15, $pdf->encodeString($rowCategorias['edad_maxima_permitida']), 1, 1, 'C');
     }
 } else {
-    $pdf->cell(0, 15, $pdf->encodeString('No hay categorias registradas para mostrar'), 1, 1);
+    $pdf->cell(0, 15, $pdf->encodeString('No hay categorías registradas para mostrar'), 1, 1);
 }
 
 // Se llama implícitamente al método footer() y se envía el documento al navegador web.
