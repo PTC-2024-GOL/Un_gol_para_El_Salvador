@@ -57,7 +57,7 @@ if ($pago->setId($_GET['idPago'])) {
         // Establecer color de texto a negro
         $pdf->setTextColor(0, 0, 0);
         // Se establacen los colores de las celdas
-        $pdf->setDrawColor(0, 119, 182);
+        $pdf->setDrawColor(0, 0, 0);
         $pdf->setFont('Arial', '', 11);
         $pdf->setFillColor(255, 255, 255);
         //Verificación de que el archivo existe

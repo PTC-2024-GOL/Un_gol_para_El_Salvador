@@ -72,6 +72,14 @@ if ($dataCuerpoTecnico = $cuerpotecnico->readAll()) {
                     if ($pdf->getY() + 15 > 279 - 30) { // Ajusta este valor según el tamaño de tus celdas y la altura de la página
 
                         $pdf->addPage('P', 'Letter'); // Añade una nueva página y con letter se define de tamaño carta
+                        $pdf->setTextColor(255, 255, 255);
+                        $pdf->setFillColor(2, 8, 135);
+                        $pdf->setDrawColor(2, 8, 135);
+                        $pdf->setFont('Arial', 'B', 11);
+                        // Vuelve a imprimir los encabezados en la nueva página
+                        $pdf->cell(36, 10, 'Foto', 1, 0, 'C', 1); // Nueva columna para imagen
+                        $pdf->cell(110, 10, 'Jugador', 1, 0, 'C', 1);
+                        $pdf->cell(40, 10, 'Rol', 1, 1, 'C', 1);
                     }
                     $currentY = $pdf->getY(); // Obtén la coordenada Y actual
                     // Establecer color de texto a blanco

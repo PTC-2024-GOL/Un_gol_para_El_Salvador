@@ -66,6 +66,21 @@ if (isset($_GET['id']) || isset($_GET['jugador'])) {
                     $pdf->cell(0, 10, $pdf->encodeString($date), 1, 1, 'C', 1);
 
                     foreach ($rows as $row) {
+                        // Verifica si se ha creado una nueva página
+                        if ($pdf->getY() + 15 > 279 - 30) { // Ajusta este valor según el tamaño de tus celdas y la altura de la página
+                            // Establecer color de texto a blanco
+                            $pdf->setTextColor(255, 255, 255);
+                            $pdf->addPage('P', 'Letter'); // Añade una nueva página y con letter se define de tamaño carta
+                            $pdf->setTextColor(255, 255, 255);
+                            $pdf->setFillColor(2, 8, 135);
+                            $pdf->setDrawColor(2, 8, 135);
+                            $pdf->setFont('Arial', 'B', 11);
+                            // Vuelve a imprimir los encabezados en la nueva página
+                            $pdf->cell(106, 10, 'Caracteristica', 1, 0, 'C', 1);
+                            $pdf->cell(80, 10, 'Nota', 1, 1, 'C', 1);
+                            // Establecer color de texto a blanco
+                            $pdf->setTextColor(0, 0, 0);
+                        }
                         // Establecer color de texto a blanco
                         $pdf->setTextColor(0, 0, 0);
                         // Se establacen los colores de las celdas
