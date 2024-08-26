@@ -135,6 +135,24 @@ class CaracteristicasAnalisisHandler
 
     public function predictNextSessionScores()
     {
+        // Configurar la localización en español
+        setlocale(LC_TIME, 'es_ES.UTF-8');
+
+        // Mapa de traducción de meses
+        $monthNames = [
+            1 => 'enero',
+            2 => 'febrero',
+            3 => 'marzo',
+            4 => 'abril',
+            5 => 'mayo',
+            6 => 'junio',
+            7 => 'julio',
+            8 => 'agosto',
+            9 => 'septiembre',
+            10 => 'octubre',
+            11 => 'noviembre',
+            12 => 'diciembre'
+        ];
         // Consulta para obtener las notas, fechas de entrenamiento y nombres de características analizadas para el jugador específico
         $sql = 'SELECT ca.nota_caracteristica_analisis AS NOTA, e.fecha_entrenamiento AS FECHA, cj.nombre_caracteristica_jugador AS CARACTERISTICA
                 FROM caracteristicas_analisis ca
@@ -177,7 +195,7 @@ class CaracteristicasAnalisisHandler
                 if (count($X) <= 1 || count(array_unique($X)) == 1) {
                     throw new Exception("Datos insuficientes o colineales para la regresión.");
                 }
-                
+
                 // Crear el modelo de regresión lineal
                 $regression = new LeastSquares();
                 $regression->train(array_map(function ($timestamp) {
@@ -190,8 +208,16 @@ class CaracteristicasAnalisisHandler
 
                 // Asegurarse de que la nota no supere 10
                 $predictedScore = max(0, min($predictedScore, 10));
-                // Convertir timestamp a fecha
-                $date = (new DateTime())->setTimestamp($timestamp)->format('d F Y');
+
+                // Convertir timestamp a fecha en español
+                $dateTime = new DateTime();
+                $dateTime->setTimestamp($timestamp);
+                $day = $dateTime->format('d');
+                $month = (int) $dateTime->format('m');
+                $year = $dateTime->format('Y');
+                $monthName = $monthNames[$month];
+
+                $date = "$day de $monthName de $year";
 
                 $predictions[] = [
                     'fecha' => $date,
