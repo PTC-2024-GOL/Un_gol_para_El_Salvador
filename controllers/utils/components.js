@@ -678,6 +678,103 @@ const lineGraph1 = (canvas, xAxis, yAxis, legend, title) => {
     });
   }
 
+  const lineGraph2 = (canvas, xAxis, yAxis, legend, title) => {
+    const colors = ['#4e79a7', '#f28e2b', '#e15759', '#76b7b2', '#59a14f', '#edc948', '#b07aa1', '#ff9da7', '#9c755f', '#bab0ab'];
+    
+    new Chart(document.getElementById(canvas), {
+      type: 'line',
+      data: {
+        labels: xAxis,
+        datasets: [{
+          label: legend,
+          data: yAxis,
+          backgroundColor: colors[0] + '80',
+          borderColor: colors[0],
+          pointBackgroundColor: colors[0],
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: colors[0],
+          fill: true,
+          tension: 0.4,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: title,
+            font: {
+              size: 18,
+              family: 'Arial',
+              weight: 'bold',
+            },
+            color: '#333',
+          },
+          tooltip: {
+            mode: 'index',
+            intersect: false,
+            callbacks: {
+              title: function(tooltipItems) {
+                return tooltipItems[0].label;
+              },
+              label: function(context) {
+                return `${legend}: ${context.parsed.y}`;
+              }
+            },
+            backgroundColor: 'rgba(0,0,0,0.7)',
+            titleFont: {
+              size: 14,
+              weight: 'bold',
+            },
+            bodyFont: {
+              size: 12,
+            },
+          },
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Mes',
+              font: {
+                size: 14,
+                weight: 'bold',
+              },
+              color: '#333',
+            },
+            grid: {
+              display: false,
+            }
+          },
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Cantidad de pagos',
+              font: {
+                size: 14,
+                weight: 'bold',
+              },
+              color: '#333',
+            },
+            grid: {
+              color: 'rgba(200,200,200,0.2)',
+            },
+            ticks: {
+              stepSize: 1,
+              precision: 0
+            }
+          }
+        },
+        animation: {
+          duration: 1000,
+          easing: 'easeOutBounce',
+        }
+      }
+    });
+  }
+
 
 const lineGraphWithFill = (canvas, xAxis, yAxis, legend, title) => {
     // Se declara un arreglo para guardar códigos de colores en formato hexadecimal.
