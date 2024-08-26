@@ -15,6 +15,11 @@ if (isset($_GET['id']) || isset($_GET['jugador'])) {
     // Se inicia el reporte con el encabezado del documento.
     $pdf->startReport('Predicción de notas');
 
+    // Información general
+    $pdf->setFont('Arial', '', 11);
+    $pdf->MultiCell(190, 7, $pdf->encodeString('Este informe muestra la predicción de las proximas notas posibles del jugador, durante los siguientes entrenamientos, basados en las notas que este recibio en las ultimas dos semanas de entrenamientos.'), 0, 1);
+    $pdf->ln(5);
+
     // Establecer color de texto a blanco
     $pdf->setTextColor(0, 0, 0);
     // Se establece un color de relleno para los encabezados.
@@ -22,7 +27,6 @@ if (isset($_GET['id']) || isset($_GET['jugador'])) {
     // Se establece la fuente para los encabezados.
     $pdf->setFont('Arial', 'B', 14);
     $pdf->cell(100, 10, $pdf->encodeString('Jugador elegido para la predicción: ' . $_GET['jugador']), 0, 1, 'L', 1);
-
     // Se establece el valor de la categoría, de lo contrario se muestra un mensaje.
     if ($caracteristica->setJugador($_GET['id'])) {
         // Establecer color de texto a blanco
