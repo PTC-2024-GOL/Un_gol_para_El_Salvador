@@ -163,7 +163,7 @@ class EstadoFisicoJugadorHandler
         $sql = 'SELECT e.indice_masa_corporal AS IMC, e.fecha_creacion AS FECHA 
             FROM estados_fisicos_jugadores e
             WHERE e.id_jugador = ?
-            AND e.fecha_creacion >= DATE_SUB(CURDATE(), INTERVAL 2 WEEK)
+            AND e.fecha_creacion >= DATE_SUB(CURDATE(), INTERVAL 2 MONTH)
             ORDER BY e.fecha_creacion ASC;';
         $params = array($this->idJugador);
         $rows = Database::getRows($sql, $params);

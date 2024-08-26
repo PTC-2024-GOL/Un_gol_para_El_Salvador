@@ -74,7 +74,7 @@ const cargarGraficaLinealPredicticion = async () => {
 
             // Restablecer el canvas en caso de que sea necesario
             const canvasContainer = document.getElementById('prediccion').parentElement;
-            canvasContainer.innerHTML = '<canvas id="prediccion"></canvas>';
+            canvasContainer.innerHTML = '<canvas id="prediccion"></canvas>  <div id="error_prediccion"></div>';
 
             chartInstance = lineGraphWithFill('prediccion', fecha, imc, 'Imc por día', 'Predicción del imc de la siguiente semana');
         } else {
@@ -82,6 +82,7 @@ const cargarGraficaLinealPredicticion = async () => {
             console.log(DATA.error);
         }
     } catch (error) {
+
         console.log('Error:', error);
     }
 }

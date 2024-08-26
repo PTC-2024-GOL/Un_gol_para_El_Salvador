@@ -98,14 +98,14 @@ if ($dataCategorias = $Categoria->readAll()) {
                     $pdf->cell(30, 15, $pdf->encodeString($dataCategorias['hora_final']), 1, 1, 'C');
                 }
             } else {
-                $pdf->cell(0, 10, $pdf->encodeString('No hay jugadores para la plantilla'), 1, 1);
+                $pdf->cell(0, 10, $pdf->encodeString('No hay horarios para la categoría'), 1, 1);
             }
         } else {
-            $pdf->cell(0, 10, $pdf->encodeString('Plantilla incorrecta o inexistente'), 1, 1);
+            $pdf->cell(0, 10, $pdf->encodeString('Categoría incorrecta o inexistente'), 1, 1);
         }
     }
 } else {
-    $pdf->cell(0, 10, $pdf->encodeString('No hay plantillas para mostrar'), 1, 1);
+    $pdf->cell(0, 10, $pdf->encodeString('No hay horarios para mostrar'), 1, 1);
 }
 
 // Se llama implícitamente al método footer() y se envía el documento al navegador web.

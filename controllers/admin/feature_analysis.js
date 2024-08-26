@@ -160,7 +160,7 @@ const graficoLinealPromedioJugadores = async (FORM) => {
             const tablaHtml = `
             <div class="col-md-12">
                 <div class="card mb-4 shadow-sm">
-                    <img src="../../../resources/img/svg/errores/404.jpg"
+                    <img src="../../../resources/img/svg/errores/not_found.jpg"
                         class="card-img-top img-thumbnail" alt="Imagen de ejemplo"">
                     <div class="card-body">
                         <div class="d-flex justify-content-center align-items-center">
