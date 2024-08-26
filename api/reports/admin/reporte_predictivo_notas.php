@@ -6,7 +6,7 @@ require_once('../../helpers/report.php');
 $pdf = new Report;
 
 // Se verifica si existe un valor para la , de lo contrario se muestra un mensaje.
-if (isset($_GET['id'])) {
+if (isset($_GET['id']) || isset($_GET['jugador'])) {
     // Se incluyen las clases para la transferencia y acceso a datos.
     require_once('../../models/data/caracteristicas_analisis_data.php');
     // Se instancian las entidades correspondientes.
@@ -14,6 +14,14 @@ if (isset($_GET['id'])) {
 
     // Se inicia el reporte con el encabezado del documento.
     $pdf->startReport('Predicción de notas');
+
+    // Establecer color de texto a blanco
+    $pdf->setTextColor(0, 0, 0);
+    // Se establece un color de relleno para los encabezados.
+    $pdf->setFillColor(255, 255, 255);
+    // Se establece la fuente para los encabezados.
+    $pdf->setFont('Arial', 'B', 14);
+    $pdf->cell(100, 10, $pdf->encodeString('Jugador elegido para la predicción: ' . $_GET['jugador']), 0, 1, 'L', 1);
 
     // Se establece el valor de la categoría, de lo contrario se muestra un mensaje.
     if ($caracteristica->setJugador($_GET['id'])) {
@@ -42,30 +50,12 @@ if (isset($_GET['id'])) {
             // Se verifica si existen datos, de lo contrario se muestra un mensaje.
             if ($dataFavorito = $caracteristica->predictNextSessionScores()) {
                 $groupedByDate = [];
-
                 // Agrupar los datos por fecha
                 foreach ($dataFavorito as $rowFavorito) {
                     $groupedByDate[$rowFavorito['fecha']][] = $rowFavorito;
                 }
-
                 // Iterar sobre las fechas agrupadas
                 foreach ($groupedByDate as $date => $rows) {
-                    // Verifica si se ha creado una nueva página
-                    if ($pdf->getY() + 15 > 279 - 30) { // Ajusta este valor según el tamaño de tus celdas y la altura de la página
-                        $pdf->addPage('P', 'Letter');
-                        // Establecer color de texto a blanco
-                        $pdf->setTextColor(255, 255, 255);
-                        // Se establece un color de relleno para los encabezados.
-                        $pdf->setFillColor(2, 8, 135);
-                        // Se establece el color del borde.
-                        $pdf->setDrawColor(2, 8, 135);
-                        // Se establece la fuente para los encabezados.
-                        $pdf->setFont('Arial', 'B', 11);
-                        // Vuelve a imprimir los encabezados en la nueva página
-                        $pdf->cell(106, 10, 'Caracteristica', 1, 0, 'C', 1);
-                        $pdf->cell(80, 10, 'Nota', 1, 1, 'C', 1);
-                    }
-
                     $pdf->setFont('Arial', 'B', 11);
                     $pdf->setFillColor(110, 151, 214);
                     $pdf->cell(0, 10, $pdf->encodeString($date), 1, 1, 'C', 1);

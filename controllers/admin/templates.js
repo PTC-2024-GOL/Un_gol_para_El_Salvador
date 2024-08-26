@@ -412,7 +412,7 @@ async function cargarCarrouselParaPlantillas(id) {
                                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18"
                                         height="18">
                                 </button>
-                                <button type="button" class="btn botones ms-1" onclick="openReportPredictive(${plantilla.ID})">
+                                <button type="button" class="btn botones ms-1" onclick="openReportPredictive(${plantilla.ID}, '${plantilla.NOMBRE}')">
                                     <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18"
                                         height="18">
                                 </button>
@@ -497,11 +497,12 @@ const openReport = () => {
 *   Parámetros: ninguno.
 *   Retorno: ninguno.
 */
-const openReportPredictive = (id) => {
+const openReportPredictive = (id, jugador) => {
     // Se declara una constante tipo objeto con la ruta específica del reporte en el servidor.
     const PATH = new URL(`${SERVER_URL}reports/admin/reporte_predictivo_notas.php`);
     // Se agrega un parámetro a la ruta con el valor del registro seleccionado.
     PATH.searchParams.append('id', id);
+    PATH.searchParams.append('jugador', jugador);
     // Se abre el reporte en una nueva pestaña.
     window.open(PATH.href);
 }
