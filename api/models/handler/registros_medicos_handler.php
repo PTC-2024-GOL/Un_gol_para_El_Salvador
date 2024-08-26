@@ -236,18 +236,28 @@ class RegistrosHandler{
     }
 
     //Funcion para sacar la predicición en registro médico (Predecir el riesgo de lesiones de un grupo)
-    public function globalMedicalPrediction ()
+    public function globalMedicalPrediction()
     {
-        $sql = 'SELECT dias_lesionado, id_lesion, DATEDIFF(retorno_entreno, fecha_lesion) AS dias_recuperacion FROM registros_medicos WHERE fecha_lesion IS NOT NULL';
+        $sql = 'SELECT dias_lesionado, id_lesion, dias_recuperacion, tipo_lesion FROM proyectiva_registro_medico WHERE fecha_lesion IS NOT NULL';
         $result = Database::getRows($sql);
 
         $samples = [];
         $labels = [];
+        $contador = 0;
+        $tipo = 0;
 
+        // Variables para calcular los promedios y el rango
         $dias_lesionados_total = 0;
         $id_lesion_total = 0;
         $dias_recuperacion_total = 0;
-        $contador = 0;
+
+        // Inicializamos las variables para el rango
+        $dias_lesionados_min = PHP_INT_MAX;
+        $dias_lesionados_max = PHP_INT_MIN;
+
+        // Array para contar las ocurrencias de cada tipo de lesión
+        $lesion_count = [];
+        $tipos_lesion = [];  // Array para almacenar tipos de lesiones únicos
 
         // Verificamos si hay resultados
         if (count($result) > 0) {
@@ -257,17 +267,39 @@ class RegistrosHandler{
 
                 // Clasificamos el tipo de riesgo de la lesión
                 if ($row['dias_lesionado'] > 25) {
-                    $labels[] = 'Alto';
+                    $labels[] = 'riesgo alto, lo que significa que varios jugadores presentaron lesiones de larga recuperación, con una duración de más de 25 días, por lo que se predice un riesgo bajo.';
+                    $tipo = 1;
                 } elseif ($row['dias_lesionado'] > 15) {
-                    $labels[] = 'Medio';
+                    $labels[] = 'riesgo medio, lo que significa que varios jugadores presentaron lesiones intermedias, con una duración de más de 15 días, por lo que se predice un riesgo medio.';
+                    $tipo = 2;
                 } else {
-                    $labels[] = 'Bajo';
+                    $labels[] = 'riesgo bajo, lo que significa que varios jugadores presentaron lesiones de corto plazo, con una duración menor a 15 días, por lo que se predice un riesgo bajo.';
                 }
 
                 // Sumamos para sacar promedios globales
                 $dias_lesionados_total += $row['dias_lesionado'];
                 $id_lesion_total += $row['id_lesion'];
                 $dias_recuperacion_total += $row['dias_recuperacion'];
+
+                // Actualizamos el rango de días lesionados
+                if ($row['dias_lesionado'] < $dias_lesionados_min) {
+                    $dias_lesionados_min = $row['dias_lesionado'];
+                }
+                if ($row['dias_lesionado'] > $dias_lesionados_max) {
+                    $dias_lesionados_max = $row['dias_lesionado'];
+                }
+
+                // Contamos las ocurrencias de cada tipo de lesión
+                if (!isset($lesion_count[$row['tipo_lesion']])) {
+                    $lesion_count[$row['tipo_lesion']] = 0;
+                }
+                $lesion_count[$row['tipo_lesion']]++;
+
+                // Agregamos el tipo de lesión al array si aún no existe
+                if (!in_array($row['tipo_lesion'], $tipos_lesion)) {
+                    $tipos_lesion[] = $row['tipo_lesion'];
+                }
+
                 $contador++;
             }
         }
@@ -288,6 +320,18 @@ class RegistrosHandler{
 
         // Hacemos la predicción global basada en los promedios de todo el grupo
         $nuevos_datos = [$dias_lesionados_promedio, $id_lesion_promedio, $dias_recuperacion_promedio];
-        return $classifier->predict($nuevos_datos);
+        $prediccion = $classifier->predict($nuevos_datos);
+
+        // Encontrar el tipo de lesión más frecuente
+        $tipo_lesion_mas_frecuente = array_search(max($lesion_count), $lesion_count);
+
+        // Retornar la predicción, el rango de días lesionados, el tipo de lesión más frecuente y todos los tipos de lesiones
+        return [
+            'prediccion' => $prediccion,
+            'dias_lesionados_rango' => "Varían de $dias_lesionados_min a $dias_lesionados_max días",
+            'tipo_lesion_mas_frecuente' => $tipo_lesion_mas_frecuente,
+            'tipos_lesiones' => $tipos_lesion, // Retornamos todos los tipos de lesiones
+            'tipo' => $tipo
+        ];
     }
 }
