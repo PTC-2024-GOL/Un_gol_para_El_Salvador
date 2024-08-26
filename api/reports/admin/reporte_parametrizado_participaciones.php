@@ -83,7 +83,7 @@ if (isset($_GET['idPartido'])) {
                     $pdf->cell(20, 10, $pdf->encodeString($item['goles']), 1, 0, 'C');
                     $pdf->cell(45, 10, $pdf->encodeString($item['estado_animo']), 1, 0, 'C');
                     $pdf->cell(50, 10, $pdf->encodeString($item['posicion']), 1, 0, 'C');
-                    $pdf->cell(25, 10, $pdf->encodeString($item['puntuacion']), 1, 0, 'C');
+                    $pdf->cell(25, 10, $pdf->encodeString($item['puntuacion']), 1, 1, 'C');
                 }
 
             } else {
