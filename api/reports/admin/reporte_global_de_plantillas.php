@@ -73,8 +73,9 @@ if ($dataPlantillas = $Plantilla->readAll()) {
                     if ($pdf->getY() + 15 > 279 - 30) { // Ajusta este valor según el tamaño de tus celdas y la altura de la página
                         
                         // Establecer color de texto a blanco
-                        $pdf->setTextColor(255, 255, 255);
+                        $pdf->setTextColor(0, 0, 0);
                         $pdf->addPage('P', 'Letter'); // Añade una nueva página y con letter se define de tamaño carta
+                        $pdf->setTextColor(255, 255, 255);
                         $pdf->setFillColor(2, 8, 135);
                         $pdf->setDrawColor(2, 8, 135);
                         $pdf->setFont('Arial', 'B', 11);

@@ -1,4 +1,8 @@
 <?php
+
+use Phpml\Regression\LeastSquares;
+
+require('C:/xampp/htdocs/sitio_gol_sv/vendor/autoload.php');
 // Se incluye la clase para trabajar con la base de datos.
 require_once('../../helpers/database.php');
 /*
@@ -125,5 +129,78 @@ class CaracteristicasAnalisisHandler
             $this->jugador,
         );
         return Database::executeRow($sql, $params);
+    }
+
+    // Función para predecir las notas de las siguientes sesiones
+
+    public function predictNextSessionScores()
+    {
+        // Consulta para obtener las notas, fechas de entrenamiento y nombres de características analizadas para el jugador específico
+        $sql = 'SELECT ca.nota_caracteristica_analisis AS NOTA, e.fecha_entrenamiento AS FECHA, cj.nombre_caracteristica_jugador AS CARACTERISTICA
+                FROM caracteristicas_analisis ca
+                INNER JOIN entrenamientos e ON ca.id_entrenamiento = e.id_entrenamiento
+                INNER JOIN caracteristicas_jugadores cj ON ca.id_caracteristica_jugador = cj.id_caracteristica_jugador
+                WHERE ca.id_jugador = ?
+                AND e.fecha_entrenamiento >= DATE_SUB(CURDATE(), INTERVAL 2 WEEK)
+                ORDER BY e.fecha_entrenamiento ASC;';
+        $params = array($this->jugador);
+        $rows = Database::getRows($sql, $params);
+
+        if (empty($rows)) {
+            return [];
+        }
+
+        // Agrupar los datos por características
+        $groupedData = [];
+        foreach ($rows as $row) {
+            $characteristic = $row['CARACTERISTICA'];
+            $date = new DateTime($row['FECHA']);
+            $timestamp = $date->getTimestamp();
+
+            if (!isset($groupedData[$characteristic])) {
+                $groupedData[$characteristic] = ['dates' => [], 'scores' => []];
+            }
+            $groupedData[$characteristic]['dates'][] = $timestamp;
+            $groupedData[$characteristic]['scores'][] = $row['NOTA'];
+        }
+
+        $predictions = [];
+        // Calcular la regresión para cada característica
+        foreach ($groupedData as $characteristic => $data) {
+            $dates = $data['dates'];
+            $scores = $data['scores'];
+
+            for ($i = 1; $i <= 7; $i++) {
+                $X = array_slice($dates, 0, count($dates));
+                $y = array_slice($scores, 0, count($scores));
+
+                if (count($X) <= 1 || count(array_unique($X)) == 1) {
+                    throw new Exception("Datos insuficientes o colineales para la regresión.");
+                }
+                
+                // Crear el modelo de regresión lineal
+                $regression = new LeastSquares();
+                $regression->train(array_map(function ($timestamp) {
+                    return [$timestamp];
+                }, $X), $y);
+
+                // Predecir la nota para la próxima sesión
+                $timestamp = end($dates) + $i * 24 * 60 * 60;
+                $predictedScore = $regression->predict([$timestamp]);
+
+                // Asegurarse de que la nota no supere 10
+                $predictedScore = max(0, min($predictedScore, 10));
+                // Convertir timestamp a fecha
+                $date = (new DateTime())->setTimestamp($timestamp)->format('d F Y');
+
+                $predictions[] = [
+                    'fecha' => $date,
+                    'caracteristica' => $characteristic,
+                    'nota' => $predictedScore
+                ];
+            }
+        }
+
+        return $predictions;
     }
 }

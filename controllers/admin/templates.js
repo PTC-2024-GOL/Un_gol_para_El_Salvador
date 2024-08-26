@@ -404,12 +404,16 @@ async function cargarCarrouselParaPlantillas(id) {
                                 <p class="card-text">${plantilla.NOMBRE_EQUIPO}</p>
                                 <p class="card-text">${plantilla.NOMBRE_TEMPORADA}</p>
                             </div>
-                            <div class="card-footer p-3">
-                                <button type="button" class="btn botones me-3" onclick="openUpdateD(${plantilla.IDP})">
+                            <div class="card-footer d-flex">
+                                <button type="button" class="btn botones me-1" onclick="openUpdateD(${plantilla.IDP})">
                                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                                 </button>
-                                <button type="button" class="btn botones" onclick="openDeleteD(${plantilla.IDP})">
+                                <button type="button" class="btn botones mx-1" onclick="openDeleteD(${plantilla.IDP})">
                                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18"
+                                        height="18">
+                                </button>
+                                <button type="button" class="btn botones ms-1" onclick="openReportPredictive(${plantilla.ID})">
+                                    <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18"
                                         height="18">
                                 </button>
                             </div>
@@ -488,7 +492,19 @@ const openReport = () => {
     window.open(PATH.href);
 }
 
-
+/*
+*   Función para abrir un reporte automático de productos por categoría.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
+const openReportPredictive = (id) => {
+    // Se declara una constante tipo objeto con la ruta específica del reporte en el servidor.
+    const PATH = new URL(`${SERVER_URL}reports/admin/reporte_predictivo_notas.php`);
+    // Se agrega un parámetro a la ruta con el valor del registro seleccionado.
+    PATH.searchParams.append('id', id);
+    // Se abre el reporte en una nueva pestaña.
+    window.open(PATH.href);
+}
 // window.onload
 window.onload = async function () {
     // Obtiene el contenedor principal
