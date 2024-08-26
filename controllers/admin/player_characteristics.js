@@ -34,7 +34,7 @@ const openCreate = () => {
 const openGraphic = () => {
     // Se muestra la caja de diálogo con su título.
     GRAPHIC_MODAL.show();
-    modalTitleGraphic.textContent = 'Gráfica de cuantos caracteristica hay en una clasificación';
+    modalTitleGraphic.textContent = 'Gráfica de cuantas características hay en una clasificación';
     graficoBarrasLineasAnalisis();
 }
 
@@ -65,7 +65,7 @@ const graficoBarrasLineasAnalisis = async () => {
             const canvasContainer = document.getElementById('analisis').parentElement;
             canvasContainer.innerHTML = '<canvas id="analisis"></canvas>';
             // Llamada a la función para generar y mostrar un gráfico de pastel. Se encuentra en el archivo components.js
-            PolarAreaGraph('analisis', caracteristica, numCaracteristica, 'Número de caracteristica de cada clasificación');
+            PolarAreaGraph('analisis', caracteristica, numCaracteristica, 'Número de característica de cada clasificación');
         } else {
             console.log(DATA.error);
         }

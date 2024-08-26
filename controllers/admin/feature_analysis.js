@@ -66,7 +66,7 @@ const openGraphic = (id) => {
 const openGraphicLine = (id) => {
     // Se muestra la caja de diálogo con su título.
     GRAPHIC_MODAL_LINE.show();
-    MODAL_TITLE_4.textContent = 'Gráfico del promedio de las ultimas 3 sesiones de entrenamiento';
+    MODAL_TITLE_4.textContent = 'Gráfico del promedio de las últimas 3 sesiones de entrenamiento';
     const FORM = new FormData();
     FORM.append('idJugador', id);
     FORM.append('idEntrenamiento', PARAMS.get('id'));
@@ -107,7 +107,7 @@ const graficoBarrasAnalisis = async (FORM) => {
             canvasContainer.innerHTML = '<canvas id="analisis"></canvas>';
 
             // Llamada a la función para generar y mostrar un gráfico de radar.
-            chartInstance = radarGraph('analisis', caracteristicas, notas, 'Caracteristicas', 'Análisis');
+            chartInstance = radarGraph('analisis', caracteristicas, notas, 'Características', 'Análisis');
         } else {
             console.log(DATA.error);
         }
