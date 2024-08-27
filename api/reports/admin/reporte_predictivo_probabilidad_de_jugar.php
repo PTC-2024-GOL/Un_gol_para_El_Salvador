@@ -5,7 +5,7 @@ require_once('../../helpers/report.php');
 // Se instancia la clase para crear el reporte.
 $pdf = new Report;
 // Se verifica si existe un valor para la , de lo contrario se muestra un mensaje.
-if (isset($_GET['id']) && isset($_GET['jugador'])) {
+if (isset($_GET['id'])) {
     // Se incluyen las clases para la transferencia y acceso a datos.
     require_once('../../models/data/caracteristicas_analisis_data.php'); // Asegúrate de que esta ruta sea correcta
     // Se instancia el modelo para obtener los datos de predicción.
@@ -13,7 +13,7 @@ if (isset($_GET['id']) && isset($_GET['jugador'])) {
     // Se establece el valor de la categoría, de lo contrario se muestra un mensaje.
     if ($analisisHandler->setJugador($_GET['id'])) {
         // Se inicia el reporte con el encabezado del documento.
-        $pdf->startReport('Reporte probabilidad de jugar el proximo partido');
+        $pdf->startReport('Reporte predictivo');
 
         try {
             // Obtener los datos para la predicción
@@ -27,6 +27,9 @@ if (isset($_GET['id']) && isset($_GET['jugador'])) {
             $prediccion = $analisisHandler->predecir($nuevosDatos);
 
             // Información general
+            $pdf->setFont('Arial', 'B', 16);
+            $pdf->MultiCell(190, 7, $pdf->encodeString('Reporte de probabilidad de jugar el proximo partido'), 0, 1);
+            $pdf->ln(10);
             $pdf->setFont('Arial', '', 11);
             $pdf->MultiCell(190, 7, $pdf->encodeString('Este informe muestra la predicción de si el jugador participará en el próximo partido basado en los datos de rendimiento y asistencia.'), 0, 1);
             $pdf->ln(10);
@@ -34,10 +37,6 @@ if (isset($_GET['id']) && isset($_GET['jugador'])) {
             $pdf->setTextColor(0, 0, 0);
             // Se establece un color de relleno para los encabezados.
             $pdf->setFillColor(255, 255, 255);
-            // Se establece la fuente para los encabezados.
-            $pdf->setFont('Arial', 'B', 11);
-            $pdf->cell(100, 10, $pdf->encodeString('Jugador elegido para la predicción: ' . $_GET['jugador']), 0, 1, 'L', 1);
-
             $pdf->SetDrawColor(180, 177, 187);
             $pdf->Line(15, 85, 200, 85);
 
@@ -72,12 +71,11 @@ if (isset($_GET['id']) && isset($_GET['jugador'])) {
         } catch (Exception $e) {
             $pdf->cell(0, 10, $pdf->encodeString('No hay datos suficientes para realizar la predicción'), 1, 1, 'C');
         }
+        // Se llama implícitamente al método footer() y se envía el documento al navegador web.
+        $pdf->output('I', 'prediccion_participacion.pdf');
     } else {
         print('Jugador incorrecto');
     }
 } else {
     print('Debe seleccionar un jugador');
 }
-
-// Se llama implícitamente al método footer() y se envía el documento al navegador web.
-$pdf->output('I', 'prediccion_participacion.pdf');
