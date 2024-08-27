@@ -225,13 +225,13 @@ class RegistrosHandler{
     public function graphic()
     {
         $sql = 'SELECT 
-            MONTH(fecha_lesion) AS MES_NUMERO,
-            MONTHNAME(fecha_lesion) AS MES_NOMBRE, 
-            COUNT(*) AS CANTIDAD_LESIONES
-            FROM registros_medicos
-            WHERE fecha_lesion >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
-            GROUP BY MES_NUMERO, MES_NOMBRE
-            ORDER BY MES_NUMERO;';
+        MONTH(fecha_lesion) AS MES_NUMERO,
+        CONCAT(MONTHNAME(fecha_lesion), " ", YEAR(fecha_lesion)) AS MES_NOMBRE, 
+        COUNT(*) AS CANTIDAD_LESIONES
+        FROM registros_medicos
+        WHERE fecha_lesion >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
+        GROUP BY MES_NUMERO, MES_NOMBRE
+        ORDER BY YEAR(fecha_lesion), MES_NUMERO;';
     return Database::getRows($sql);
     }
 
