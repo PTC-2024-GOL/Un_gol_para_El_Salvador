@@ -34,7 +34,7 @@ const openCreate = () => {
 const openGraphic = () => {
     // Se muestra la caja de diálogo con su título.
     GRAPHIC_MODAL.show();
-    modalTitleGraphic.textContent = 'Gráfica de cuantas características hay en una clasificación';
+    modalTitleGraphic.textContent = 'Gráfica - Número de características por clasificación';
     graficoBarrasLineasAnalisis();
 }
 

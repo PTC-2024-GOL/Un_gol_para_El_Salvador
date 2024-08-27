@@ -78,7 +78,7 @@ const graficoBarrasLineasAnalisis = async () => {
             canvasContainer.innerHTML = '<canvas id="analisis"></canvas>';
 
             // Llamada a la función para generar y mostrar un gráfico combinado de barras apiladas y líneas
-            chartInstance = lineGraph2('analisis', mes, numJugador, 'Número de jugadores ','Pagos mensualmente');
+            chartInstance = lineGraph2('analisis', mes, numJugador, 'Número de jugadores ','Total de pagos mensuales');
         } else {
             console.log(DATA.error);
         }
