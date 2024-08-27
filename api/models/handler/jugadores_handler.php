@@ -23,6 +23,12 @@ class JugadoresHandler
     protected $claveJ = null;
     protected $fotoJ = null;
 
+    protected $telefono = null;
+    protected $telefono_emergencia = null;
+    protected $correoJ = null;
+    protected $tipo_sangreJ = null;
+    protected $observacion_medica = null;
+
     // Constante para establecer la ruta de las imágenes.
     const RUTA_IMAGEN = '../../images/jugadores/';
 
@@ -45,7 +51,7 @@ class JugadoresHandler
     //Función para insertar un jugador.
     public function createRow()
     {
-        $sql = 'CALL insertar_jugador (?,?,?,?,?,?,?,?,?,?,?,?)';
+        $sql = 'CALL insertar_jugador (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
         $params = array(
             $this->dorsalJ,
             $this->nombreJ,
@@ -58,7 +64,12 @@ class JugadoresHandler
             $this->posicionPrincipal,
             $this->posicionSecundaria,
             $this->claveJ,
-            $this->fotoJ
+            $this->fotoJ,
+            $this->telefono,
+            $this->telefono_emergencia,
+            $this->correoJ,
+            $this->tipo_sangreJ,
+            $this->observacion_medica
         );
         return Database::executeRow($sql, $params);
     }
@@ -102,7 +113,7 @@ class JugadoresHandler
     //Función para actualizar jugadores
     public function updateRow()
     {
-        $sql = 'CALL actualizar_jugador (?,?,?,?,?,?,?,?,?,?,?,?)';
+        $sql = 'CALL actualizar_jugador (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
         $params = array(
             $this->id,
             $this->dorsalJ,
@@ -116,6 +127,11 @@ class JugadoresHandler
             $this->posicionPrincipal,
             $this->posicionSecundaria,
             $this->fotoJ,
+            $this->telefono,
+            $this->telefono_emergencia,
+            $this->correoJ,
+            $this->tipo_sangreJ,
+            $this->observacion_medica
         );
         return Database::executeRow($sql, $params);
     }

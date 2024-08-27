@@ -59,6 +59,59 @@ class JugadoresData extends JugadoresHandler
         }
     }
 
+    public function setCorreo($value, $min = 8, $max = 100)
+    {
+        if (!Validator::validateEmail($value)) {
+            $this->data_error = 'El correo no es válido';
+            return false;
+        } elseif (Validator::validateLength($value, $min, $max)) {
+            $this->correoJ = $value;
+            return true;
+        } else {
+            $this->data_error = 'El correo debe tener una longitud entre ' . $min . ' y ' . $max;
+            return false;
+        }
+    }
+
+    public function setTelefono($value)
+    {
+        if (Validator::validatePhone($value)) {
+            $this->telefono = $value;
+            return true;
+        } else {
+            $this->data_error = 'El teléfono debe tener el formato (2, 6, 7)###-####';
+            return false;
+        }
+    }
+
+    public function setTelefonoEmergencia($value)
+    {
+        if (Validator::validatePhone($value)) {
+            $this->telefono_emergencia = $value;
+            return true;
+        } else {
+            $this->data_error = 'El teléfono debe tener el formato (2, 6, 7)###-####';
+            return false;
+        }
+    }
+
+    public function setObservacionMedica($value, $min = 2, $max = 200)
+    {
+     if (Validator::validateLength($value, $min, $max)) {
+            $this->observacion_medica = $value;
+            return true;
+        } else {
+            $this->data_error = 'La observación debe tener una longitud entre ' . $min . ' y ' . $max;
+            return false;
+        }
+    }
+
+    public function setTipoSangre($value)
+    {
+        $this->tipo_sangreJ = $value;
+        return true;
+    }
+
     public function setDorsal($value)
     {
         if (Validator::validatePositiveNumber2($value)) {

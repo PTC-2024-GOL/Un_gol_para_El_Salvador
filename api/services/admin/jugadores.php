@@ -38,6 +38,11 @@ if (isset($_GET['action'])) {
                     !$jugador->setBecado($_POST['beca']) or
                     !$jugador->setIdPosicion1($_POST['posicion1']) or
                     !$jugador->setIdPosicion2($_POST['posicion2']) or
+                    !$jugador->setTelefono($_POST['telefono']) or
+                    !$jugador->setTelefonoEmergencia($_POST['telefonoEmergencia']) or
+                    !$jugador->setCorreo($_POST['correo']) or
+                    !$jugador->setTipoSangre($_POST['tipoSangre']) or
+                    !$jugador->setObservacionMedica($_POST['observacionMedica']) or
                     !$jugador->setClave($_POST['clave']) or
                     !$jugador->setImagen($_FILES['imagen'])
                 ) {
@@ -99,6 +104,11 @@ if (isset($_GET['action'])) {
                     !$jugador->setBecado($_POST['beca']) or
                     !$jugador->setIdPosicion1($_POST['posicion1']) or
                     !$jugador->setIdPosicion2($_POST['posicion2']) or
+                    !$jugador->setTelefono($_POST['telefono']) or
+                    !$jugador->setTelefonoEmergencia($_POST['telefonoEmergencia']) or
+                    !$jugador->setCorreo($_POST['correo']) or
+                    !$jugador->setTipoSangre($_POST['tipoSangre']) or
+                    !$jugador->setObservacionMedica($_POST['observacionMedica']) or
                     !$jugador->setImagen($_FILES['imagen'], $jugador->getFilename())
                 ) {
                     $result['error'] = $jugador->getDataError();
