@@ -7,11 +7,13 @@ require_once('../../models/data/registros_medicos_data.php');
 // Se instancia la clase para crear el reporte.
 $pdf = new Report;
 
-// Se inicia el reporte con el encabezado del documento.
-$pdf->startReport('Reporte de registro médico');
+if (isset($_GET['idMedico'])) {
+    //Se instancia el modelo Producto para procesar los datos.
+    $registro = new RegistrosData;
 
-// Se instancia el modelo Producto para procesar los datos.
-$registro = new RegistrosData;
+    // Se inicia el reporte con el encabezado del documento.
+    $pdf->startReport('Reporte de registro médico');
+
 // Se establece la plantilla para obtener sus productos, de lo contrario se imprime un mensaje de error.
 if ($registro->setIdRegistroMedico($_GET['idMedico'])) {
     // Establecer color de texto a blanco
@@ -24,7 +26,7 @@ if ($registro->setIdRegistroMedico($_GET['idMedico'])) {
     $pdf->setFont('Arial', 'B', 11);
     // Se imprimen las celdas con los encabezados.
 
-    // Explicación de funcionamiento de los valores de las celdas: 
+    // Explicación de funcionamiento de los valores de las celdas:
     // (Ancho, Alto, Texto, Borde, Salto de linea, Alineación (Centrado = C, Izquierda = L, Derecha = R), Fondo, Link)
     $pdf->cell(60, 10, $pdf->encodeString('Jugador'), 1, 0, 'C', 1);
     $pdf->cell(25, 10, $pdf->encodeString('Fecha'), 1, 0, 'C', 1);
@@ -70,9 +72,11 @@ if ($registro->setIdRegistroMedico($_GET['idMedico'])) {
     } else {
         $pdf->cell(0, 10, $pdf->encodeString('No hay registro médico de este jugador'), 1, 1);
     }
+    // Se llama implícitamente al método footer() y se envía el documento al navegador web.
+    $pdf->output('I', 'registro_medico.pdf');
 } else {
-    $pdf->cell(0, 10, $pdf->encodeString('registro incorrecta o inexistente'), 1, 1);
+    print('Registro incorrecto o inexistente');
 }
-
-// Se llama implícitamente al método footer() y se envía el documento al navegador web.
-$pdf->output('I', 'registro_medico.pdf');
+}else{
+    print('No se proporcionó un ID del registro médico.');
+}
