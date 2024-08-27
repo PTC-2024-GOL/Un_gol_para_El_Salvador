@@ -51,6 +51,15 @@ const openGraphic = () => {
     console.log(localStorage.getItem('graficaVentas'));
 }
 
+const openReport = () => {
+    // Se declara una constante tipo objeto con la ruta específica del reporte en el servidor.
+    const PATH = new URL(`${SERVER_URL}reports/admin/reporte_parametrizado_estado_fisico.php`);
+    // Se agrega un parámetro a la ruta con el valor del registro seleccionado.
+    PATH.searchParams.append('idJugador', JUGADOR);
+    // Se abre el reporte en una nueva pestaña.
+    window.open(PATH.href);
+}
+
 let chartInstance = null;
 // Función para cargar la gráfica lineal predictiva
 const cargarGraficaLinealPredicticion = async () => {

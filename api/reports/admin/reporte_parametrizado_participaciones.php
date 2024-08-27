@@ -94,7 +94,7 @@ if (isset($_GET['idPartido'])) {
             // Se llama implícitamente al método footer() y se envía el documento al navegador web.
             $pdf->output('I', 'Particiapciones por partidos.pdf');
         } else {
-            print('Marca inexistente');
+            print('Participacion inexistente');
         }
 } else {
     print('No se proporcionó un ID del partido.');
