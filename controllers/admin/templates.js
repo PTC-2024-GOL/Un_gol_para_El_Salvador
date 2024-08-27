@@ -509,27 +509,28 @@ const openReports = (id) => {
     const botonesReportes = document.getElementById('reportes');
     botonesReportes.innerHTML = ' ';
     const tablaHtml = `
-                <div class="col-md-4 col-sm-4">
+                <p class="ms-5 mt-4 mb-0">Elige la opción que quieres realizar:</p>
+                <div class="col-md-4 col-sm-4 p-4">
                     <div class="container-fluid">
-                        <button type="button" class="btn btn-outline-warning" onclick="openReportPredictive(${id})">
+                        <button type="button" class="btn btn-outline-skyBlue-pastel-color bg-blue-light-color" onclick="openReportPredictive(${id}, '${jugador}')">
                             <img src="../../../resources/img/svg/icons_forms/report.svg">
-                            <h1 class="fs-5 text-dark">Reporte de predicción de notas</h1>
+                            <h1 class="fs-5 text-dark mt-2">Reporte de predicción de notas</h1>
                         </button>
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-4">
+                <div class="col-md-4 col-sm-4 p-4">
                     <div class="container-fluid">
-                        <button type="button" class="btn btn-outline-warning" onclick="openGraphicProgression(${id})">
+                        <button type="button" class="btn btn-outline-skyBlue-pastel-color bg-blue-light-color" onclick="openGraphicProgression(${id}, '${jugador}')">
                             <img src="../../../resources/img/svg/icons_forms/graphicLine.svg">
-                            <h1 class="fs-5 text-dark">Gráfica predictiva de progresión del Rendimiento</h1>
+                            <h1 class="fs-5 text-dark mt-2">Gráfica predictiva de progresión del Rendimiento</h1>
                         </button>
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-4">
+                <div class="col-md-4 col-sm-4 p-4">
                     <div class="container-fluid">
-                        <button type="button" class="btn btn-outline-warning" onclick="openReportProbability(${id})">
+                        <button type="button" class="btn btn-outline-skyBlue-pastel-color bg-blue-light-color" onclick="openReportProbability(${id}, '${jugador}')">
                             <img src="../../../resources/img/svg/icons_forms/report.svg">
-                            <h1 class="fs-5 text-dark">Reporte de posibilidades de jugar el siguiente partido</h1>
+                            <h1 class="fs-5 text-dark mt-2">Reporte de posibilidades de jugar el siguiente partido</h1>
                         </button>
                     </div>
                 </div>
