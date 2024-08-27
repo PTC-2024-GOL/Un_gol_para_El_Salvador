@@ -159,6 +159,24 @@ class EstadoFisicoJugadorHandler
     //Función para cargar gráfica de proyección del IMC para la siguiente semana utilizando regresión lineal.
     public function graphicPredictiveImc()
     {
+        // Configurar la localización en español
+        setlocale(LC_TIME, 'es_ES.UTF-8');
+
+        // Mapa de traducción de meses
+        $monthNames = [
+            1 => 'enero',
+            2 => 'febrero',
+            3 => 'marzo',
+            4 => 'abril',
+            5 => 'mayo',
+            6 => 'junio',
+            7 => 'julio',
+            8 => 'agosto',
+            9 => 'septiembre',
+            10 => 'octubre',
+            11 => 'noviembre',
+            12 => 'diciembre'
+        ];
         // Consulta para obtener los datos de IMC y fecha
         $sql = 'SELECT e.indice_masa_corporal AS IMC, e.fecha_creacion AS FECHA 
             FROM estados_fisicos_jugadores e
@@ -198,8 +216,18 @@ class EstadoFisicoJugadorHandler
             $timestamp = end($dates) + $i * 24 * 60 * 60; // Sumar días en segundos
             $predictedIMC = $regression->predict([$timestamp]);
 
-            // Convertir timestamp a fecha
-            $date = (new DateTime())->setTimestamp($timestamp)->format('d F Y');
+            // Asegurarse de que la nota no baje de 0
+            $predictedIMC = max(0, $predictedIMC);
+            
+            // Convertir timestamp a fecha en español
+            $dateTime = new DateTime();
+            $dateTime->setTimestamp($timestamp);
+            $day = $dateTime->format('d');
+            $month = (int) $dateTime->format('m');
+            $year = $dateTime->format('Y');
+            $monthName = $monthNames[$month];
+
+            $date = "$day de $monthName de $year";
 
             $predictions[] = [
                 'fecha' => $date,

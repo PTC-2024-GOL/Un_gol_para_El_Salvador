@@ -11,9 +11,12 @@ let DETAIL_FORM,
     JUGADOR,
     TEMPORADA,
     EQUIPO;
-
 let TEMPLATE_MODAL,
     TEMPLATE_TITLE;
+let REPORTS_MODAL,
+    REPORTS_TITLE;
+let GRAPHIC_MODAL,
+    GRAPHIC_TITLE;
 let TEMPLATE_FORM,
     ID_PLANTILLA_EQUIPO,
     PLANTILLAS,
@@ -412,7 +415,7 @@ async function cargarCarrouselParaPlantillas(id) {
                                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18"
                                         height="18">
                                 </button>
-                                <button type="button" class="btn botones ms-1" onclick="openReportPredictive(${plantilla.ID}, '${plantilla.NOMBRE}')">
+                                <button type="button" class="btn botones ms-1" onclick="openReports(${plantilla.ID}, '${plantilla.NOMBRE}')">
                                     <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18"
                                         height="18">
                                 </button>
@@ -492,6 +495,47 @@ const openReport = () => {
     window.open(PATH.href);
 }
 
+
+/*
+*   Función para abrir un reporte automático de productos por categoría.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
+const openReports = (id, jugador) => {
+    // Se muestra la caja de diálogo con su título.
+    REPORTS_MODAL.show();
+    REPORTS_TITLE.textContent = 'Reportes del jugador';
+    const botonesReportes = document.getElementById('reportes');
+    botonesReportes.innerHTML = ' ';
+    const tablaHtml = `
+                <div class="col-md-4 col-sm-4">
+                    <div class="container-fluid">
+                        <button type="button" class="btn btn-outline-warning" onclick="openReportPredictive(${id}, '${jugador}')">
+                            <img src="../../../resources/img/svg/icons_forms/report.svg">
+                            <h1 class="fs-5 text-dark">Reporte de predicción de notas</h1>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4">
+                    <div class="container-fluid">
+                        <button type="button" class="btn btn-outline-warning" onclick="openGraphicProgression(${id}, '${jugador}')">
+                            <img src="../../../resources/img/svg/icons_forms/graphicLine.svg">
+                            <h1 class="fs-5 text-dark">Gráfica predictiva de progresión del Rendimiento</h1>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4">
+                    <div class="container-fluid">
+                        <button type="button" class="btn btn-outline-warning" onclick="openReportProbability(${id}, '${jugador}')">
+                            <img src="../../../resources/img/svg/icons_forms/report.svg">
+                            <h1 class="fs-5 text-dark">Reporte de posibilidades de jugar el siguiente partido</h1>
+                        </button>
+                    </div>
+                </div>
+        `;
+    botonesReportes.innerHTML += tablaHtml;
+}
+
 /*
 *   Función para abrir un reporte automático de productos por categoría.
 *   Parámetros: ninguno.
@@ -506,6 +550,121 @@ const openReportPredictive = (id, jugador) => {
     // Se abre el reporte en una nueva pestaña.
     window.open(PATH.href);
 }
+
+let chartInstance = null;
+/*
+*   Función para abrir un reporte automático de productos por categoría.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
+const openGraphicProgression =  async (id) => {
+    // Se muestra la caja de diálogo con su título.
+    GRAPHIC_MODAL.show();
+    GRAPHIC_TITLE.textContent = 'Gráfica de progresión del jugador';
+    try {
+        const FORM = new FormData();
+        FORM.append('idJugador', id);
+        const DATA = await fetchData(ESTADO_API, 'graphicPredictiveImc', FORM);
+        if (DATA.status) {
+            let fecha = [];
+            let imc = [];
+            DATA.dataset.forEach(row => {
+                fecha.push(`${row.fecha}`);
+                imc.push(row.imc);
+            });
+
+            // Destruir la instancia existente del gráfico si existe
+            if (chartInstance) {
+                chartInstance.destroy();
+                chartInstance = null; // Asegúrate de restablecer la referencia
+            }
+
+            // Restablecer el canvas en caso de que sea necesario
+            const canvasContainer = document.getElementById('prediccion').parentElement;
+            canvasContainer.innerHTML = '<canvas id="prediccion"></canvas>  <div id="error_prediccion"></div>';
+
+            chartInstance = lineGraphWithFill('prediccion', fecha, imc, 'Imc por día', 'Predicción del imc de la siguiente semana');
+        } else {
+            console.log(DATA.error);
+            // Destruir la instancia existente del gráfico si existe
+            if (chartInstance) {
+                chartInstance.destroy();
+                chartInstance = null; // Asegúrate de restablecer la referencia
+            }
+            // Restablecer el canvas en caso de que sea necesario
+            const canvasContainer = document.getElementById('prediccion').parentElement;
+            canvasContainer.innerHTML = ' <div id="error_prediccion"></div> <canvas id="prediccion"></canvas>';
+
+            // Restablecer o crear el contenedor
+            errorContainer = document.getElementById('error_prediccion');
+            errorContainer.innerHTML += '';
+            const tablaHtml = `
+            <div class="col-md-12 row d-flex text-center justify-content-center">
+                <div class="col-md-6">
+                    <div class="card mb-4 shadow-sm">
+                        <img src="../../../resources/img/svg/errores/find.png"
+                        class="card-img-top img-thumbnail" alt="Imagen de ejemplo"">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center align-items-center">
+                            <p class="text-primary">${DATA.error} </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+            errorContainer.innerHTML += tablaHtml;
+            chartInstance = null;
+        }
+    } catch (error) {
+        console.log('Error:', error);
+        // Destruir la instancia existente del gráfico si existe
+        if (chartInstance) {
+            chartInstance.destroy();
+            chartInstance = null; // Asegúrate de restablecer la referencia
+        }
+        // Restablecer el canvas en caso de que sea necesario
+        const canvasContainer = document.getElementById('prediccion').parentElement;
+        canvasContainer.innerHTML = ' <div id="error_prediccion"></div> <canvas id="prediccion"></canvas>';
+
+        // Restablecer o crear el contenedor
+        errorContainer = document.getElementById('error_prediccion');
+        errorContainer.innerHTML += '';
+        const tablaHtml = `
+        <div class="col-md-12 row d-flex text-center justify-content-center">
+            <div class="col-md-6">
+                <div class="card mb-4 shadow-sm">
+                    <img src="../../../resources/img/svg/errores/find.png"
+                    class="card-img-top img-thumbnail" alt="Imagen de ejemplo"">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <p class="text-primary">No hay datos suficientes para mostrar la gráfica predictiva</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+        errorContainer.innerHTML += tablaHtml;
+        chartInstance = null;
+    }
+}
+
+/*
+*   Función para abrir un reporte automático de productos por categoría.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
+const openReportProbability = (id, jugador) => {
+    // Se declara una constante tipo objeto con la ruta específica del reporte en el servidor.
+    const PATH = new URL(`${SERVER_URL}reports/admin/reporte_predictivo_probabilidad.php`);
+    // Se agrega un parámetro a la ruta con el valor del registro seleccionado.
+    PATH.searchParams.append('id', id);
+    PATH.searchParams.append('jugador', jugador);
+    // Se abre el reporte en una nueva pestaña.
+    window.open(PATH.href);
+}
+
 // window.onload
 window.onload = async function () {
     // Obtiene el contenedor principal
@@ -526,6 +685,10 @@ window.onload = async function () {
         MODAL_TITLE = document.getElementById('modalTitle');
     TEMPLATE_MODAL = new bootstrap.Modal('#templateModal'),
         TEMPLATE_TITLE = document.getElementById('modalTitle2');
+    REPORTS_MODAL = new bootstrap.Modal('#reportsModal'),
+        REPORTS_TITLE = document.getElementById('modalTitle3');
+    GRAPHIC_MODAL = new bootstrap.Modal('#graphicModal'),
+        GRAPHIC_TITLE = document.getElementById('modalTitle4');
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
         ID_PLANTILLA = document.getElementById('idPlantilla'),
