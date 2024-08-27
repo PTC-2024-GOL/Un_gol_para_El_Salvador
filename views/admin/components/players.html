@@ -5,9 +5,9 @@
             <div class="col-sm-12 col-md-6">
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
-                        name="search" placeholder="Busca al jugador por su nombre o apellido" required>
+                           name="search" placeholder="Busca al jugador por su nombre o apellido" required>
                     <button type="submit"
-                        class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
+                            class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
                     </button>
                     <button type="reset" class="btn" onclick="fillTable()">
@@ -19,8 +19,8 @@
             <div class="col-sm-12 col-md-6">
                 <!-- Botón Agregar -->
                 <button
-                    class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
-                    type="submit" onclick="openCreate()">
+                        class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
+                        type="submit" onclick="openCreate()">
                     <span class="fs-5 me-2">+</span> Agregar jugador
                 </button>
             </div>
@@ -42,18 +42,18 @@
         <table class="table table align-middle table-striped table-borderless">
             <!-- Cabeza de la tabla para mostrar la cantidad de registros y los títulos de las columnas -->
             <thead>
-                <tr>
-                    <td colspan="6" id="rowsFound"></td>
-                </tr>
-                <tr>
-                    <th>Imagen</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Dorsal</th>
-                    <th>Posición principal</th>
-                    <th>Fecha de creación</th>
-                    <th>Estado físico</th>
-                </tr>
+            <tr>
+                <td colspan="6" id="rowsFound"></td>
+            </tr>
+            <tr>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Dorsal</th>
+                <th>Posición principal</th>
+                <th>Fecha de creación</th>
+                <th>Estado físico</th>
+            </tr>
             </thead>
             <!-- Cuerpo de la tabla para mostrar un registro por fila -->
             <tbody id="tabla_jugadores"></tbody>
@@ -68,32 +68,32 @@
 
 <!-- Componente Modal para guardar un registro -->
 <div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="modalTitle" aria-hidden="true">
+     aria-labelledby="modalTitle" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-blue-principal-color">
                 <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
                 <h1 class="modal-title fs-5 text-white" id="modalTitle"></h1>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
+                        aria-label="Close"></button>
             </div>
             <!-- Formulario para crear o actualizar un registro -->
             <form id="saveForm">
-                <div class="modal-body row g-4">
+                <div class="modal-body row g-4 p-4">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
                     <input type="hidden" id="idJugador" name="idJugador">
                     <div class="container text-center text-md-start text-lg-start">
                         <div class="row align-items-center justify-content-center gy-3 mt-3 mb-2">
                             <div class="col-sm-12 col-md-auto">
                                 <img class="circulo" id="imagenJugador" src="../../../resources/img/png/default.jpg"
-                                    width="130px" height="130px">
+                                     width="130px" height="130px">
                             </div>
                             <div class="col-sm-12 text-center">
                                 <!-- Botón para cargar imagen -->
                                 <input type="file" class="form-control" id="imagen_jugador" name="imagen" hidden>
                                 <!-- Para que tenga el mismo funcionamiento del input file le ponemos el for y le agregamos el id del input file -->
                                 <label class="btn bg-blue-secondary-color rounded-4 text-light"
-                                    for="imagen_jugador">Cargar
+                                       for="imagen_jugador">Cargar
                                     imagen</label>
                             </div>
                         </div>
@@ -101,17 +101,17 @@
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="nombreJugador" class="form-label fw-semibold">Nombre</label>
                         <input id="nombreJugador" type="text" name="nombre" class="form-control"
-                            placeholder="Ingresa el nombre del jugador" required>
+                               placeholder="Ingresa el nombre del jugador" required>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="apellidoJugador" class="form-label fw-semibold">Apellido</label>
                         <input id="apellidoJugador" type="text" name="apellido" class="form-control"
-                            placeholder="Ingresa el apellido del jugador" required>
+                               placeholder="Ingresa el apellido del jugador" required>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="fechaNacimientoJugador" class="form-label fw-semibold">Fecha de nacimiento</label>
                         <input id="fechaNacimientoJugador" type="date" name="nacimiento" class="form-control"
-                            placeholder="Selecciona la fecha de nacimiento del jugador" required>
+                               placeholder="Selecciona la fecha de nacimiento del jugador" required>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="generoJugador" class="form-label fw-semibold">Género del jugador</label>
@@ -141,7 +141,7 @@
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="Dorsal" class="form-label fw-semibold">Dorsal</label>
                         <input id="Dorsal" type="number" name="dorsal" placeholder="Escribe el número dorsal" max="99"
-                            min="1" class="form-control" required>
+                               min="1" class="form-control" required>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="estadoJugador" class="form-label fw-semibold">Estado del jugador</label>
@@ -165,15 +165,66 @@
                         </select>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
+                        <label for="telefonoJugador" class="form-label fw-semibold">Teléfono de contacto</label>
+                        <input id="telefonoJugador" type="text" name="telefono" class="form-control"
+                               placeholder="Ingresa un teléfono de contacto" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6 mb-2">
+                        <label for="correoContacto" class="form-label fw-semibold">Correo de contácto</label>
+                        <input id="correoContacto" type="email" name="correo" class="form-control"
+                               placeholder="Ingresa un correo de contácto" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6 mb-2">
                         <label for="claveJugador" class="form-label fw-semibold">Clave del jugador</label>
                         <input id="claveJugador" type="password" name="clave" class="form-control"
-                            placeholder="Ingresa la clave del jugador" required>
+                               placeholder="Ingresa la clave del jugador" required>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="repetirclaveJugador" class="form-label fw-semibold">Repetir clave del
                             jugador</label>
                         <input id="repetirclaveJugador" type="password" name="repetirClave" class="form-control"
-                            placeholder="Repite la clave del jugador" required>
+                               placeholder="Repite la clave del jugador" required>
+                    </div>
+
+                    <div class="border border-secondary-subtle p-4 rounded-3">
+                        <div class="row align-items-center">
+                            <p class="fw-semibold mb-0">Información médica</p>
+                            <small>En este apartado podrás ingresar información médica importante para el bienestar del jugador.</small>
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <div class="input-group flex-nowrap">
+                                        <span class="input-group-text" id="addon-wrapping"><img src="../../../node_modules/bootstrap-icons/icons/exclamation-circle.svg"></span>
+                                        <input type="text" class="form-control" name="telefonoEmergencia" id="telefonoEmergencia" placeholder="Teléfono de emergencia" aria-label="Username" aria-describedby="addon-wrapping">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group flex-nowrap">
+                                        <span class="input-group-text" id="addon-wrapping"><img src="../../../node_modules/bootstrap-icons/icons/droplet.svg"></span>
+                                        <select class="form-select" name="tipoSangre" id="tipoSangre" aria-label="Username" aria-describedby="addon-wrapping">
+                                            <option selected>Seleccionar una opción</option>
+                                            <option>A+</option>
+                                            <option>A-</option>
+                                            <option>B+</option>
+                                            <option>B-</option>
+                                            <option>AB+</option>
+                                            <option>AB-</option>
+                                            <option>O+</option>
+                                            <option>O-</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mt-3">
+                                   <div class="col mb-2">
+                                       <label for="observacionMedica" class="form-label fw-semibold mb-0">Notas extras</label><br>
+                                       <small>En el siguiente apartado podrás agregar notas extras que sean importantes para el jugador en caso de emergencia. Ejem. Si es alérgico etc. En caso de no tener dejar el texto que esta por defecto</small>
+                                   </div>
+                                    <div class="input-group flex-nowrap">
+                                        <span class="input-group-text" id="addon-wrapping"><img src="../../../node_modules/bootstrap-icons/icons/heart-pulse.svg"></span>
+                                        <textarea type="text" id="observacionMedica" name="observacionMedica" class="form-control" maxlength="200" rows="3" placeholder="Notas extras. Ejem: Si es alérgico a algo etc." aria-label="Username" aria-describedby="addon-wrapping">Ninguna</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center">

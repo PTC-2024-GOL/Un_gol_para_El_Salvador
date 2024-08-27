@@ -12,6 +12,11 @@ let SAVE_FORM,
     GENERO_JUGADOR,
     IMAGEN_JUGADOR,
     CLAVE_JUGADOR,
+    TELEFONO_JUGADOR,
+    TELEFONO_EMERGENCIA_JUGADOR,
+    CORREO_JUGADOR,
+    TIPO_SANGRE,
+    OBSERVACION_MEDICA,
     REPETIR_CLAVE;
 let SEARCH_FORM;
 let IMAGEN;
@@ -95,6 +100,11 @@ const openUpdate = async (id) => {
             IMAGEN.src = SERVER_URL + 'images/jugadores/' + ROW.foto_jugador;
             GENERO_JUGADOR.value = ROW.genero_jugador;
             BECADO.value = ROW.becado;
+            TELEFONO_JUGADOR.value = ROW.telefono;
+            TELEFONO_EMERGENCIA_JUGADOR.value = ROW.telefono_de_emergencia;
+            OBSERVACION_MEDICA.value = ROW.observacion_medica;
+            TIPO_SANGRE.value = ROW.tipo_sangre;
+            CORREO_JUGADOR.value = ROW.correo_jugador;
         } else {
             await sweetAlert(2, DATA.error, false);
         }
@@ -281,12 +291,17 @@ window.onload = async function () {
         DORSAL_JUGADOR = document.getElementById('Dorsal'),
         BECADO = document.getElementById('beca'),
         ESTATUS_JUGADOR = document.getElementById('estadoJugador');
-    GENERO_JUGADOR = document.getElementById('generoJugador'),
+        GENERO_JUGADOR = document.getElementById('generoJugador'),
         IMAGEN_JUGADOR = document.getElementById('imagen_jugador'),
         IMAGEN = document.getElementById('imagenJugador'),
         CLAVE_JUGADOR = document.getElementById('claveJugador'),
-        REPETIR_CLAVE = document.getElementById('repetirclaveJugador');
-    ALIAS = document.getElementById('alias');
+        REPETIR_CLAVE = document.getElementById('repetirclaveJugador'),
+        TELEFONO_JUGADOR = document.getElementById('telefonoJugador'),
+        TELEFONO_EMERGENCIA_JUGADOR =  document.getElementById('telefonoEmergencia'),
+        CORREO_JUGADOR =  document.getElementById('correoContacto'),
+        TIPO_SANGRE = document.getElementById('tipoSangre'),
+        OBSERVACION_MEDICA = document.getElementById('observacionMedica'),
+        ALIAS = document.getElementById('alias');
 
     SELECT_GENER0 = document.getElementById('selectGenero');
 
@@ -353,5 +368,17 @@ window.onload = async function () {
 
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
         fillTable(FORM);
+    });
+
+    // Llamada a la función para establecer la mascara del campo teléfono.
+    vanillaTextMask.maskInput({
+        inputElement: document.getElementById('telefonoJugador'),
+        mask: [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
+    });
+
+    // Llamada a la función para establecer la mascara del campo teléfono.
+    vanillaTextMask.maskInput({
+        inputElement: document.getElementById('telefonoEmergencia'),
+        mask: [/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
     });
 };
