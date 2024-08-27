@@ -277,12 +277,14 @@ async function fillCards(form = null) {
         // Petición para obtener los registros disponibles.
         const DATA = await fetchData(PARTIDO_API, action, form);
         console.log(DATA);
-
+        
         if (DATA.status) {
             // Mostrar elementos obtenidos de la API
             DATA.dataset.forEach(row => {
                 let resultado = row.tipo_resultado_partido;
                 const pendienteHtml = resultado === 'Pendiente' ? '<p class="text-warning fw-semibold mb-0">Pendiente</p>' : '';
+                const prediccionHTML = resultado === 'Pendiente' ? `<button class="btn bg-blue-light-color text-black btn-sm rounded-3" 
+                onclick="seeReport(${row.id_partido})"> Predicción </button>` : '';
                 const cardsHtml = `<div class="col-md-6 col-sm-12">
                     <div class="tarjetas shadow p-4">
                         <div class="row">
@@ -293,6 +295,9 @@ async function fillCards(form = null) {
                                 <p class="fw-semibold mb-0">${row.fecha}</p>
                                 <p class="small">${row.localidad_partido}</p>
                                 ${pendienteHtml}
+                            </div>
+                            <div class="col-auto py-3">
+                                ${prediccionHTML}
                             </div>
                         </div>
                         <div class="row align-items-center">
@@ -374,6 +379,15 @@ async function fillCards(form = null) {
         });
     }
 }
+
+const seeReport = (id) => {
+        // Se declara una constante tipo objeto con la ruta específica del reporte en el servidor.
+        const PATH = new URL(`${SERVER_URL}reports/admin/reporte_prediccion_partido.php`);
+        // Se agrega un parámetro a la ruta con el valor del registro seleccionado.
+        PATH.searchParams.append('idPartido', id);
+        // Se abre el reporte en una nueva pestaña.
+        window.open(PATH.href);
+    }
 
 // window.onload
 window.onload = async function () {

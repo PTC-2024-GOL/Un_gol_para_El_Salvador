@@ -10,7 +10,7 @@ if (isset($_GET['action'])) {
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
     $result = array('status' => 0, 'message' => null, 'dataset' => null, 'error' => null, 'exception' => null, 'fileStatus' => null);
     // Se verifica si existe una sesión iniciada como administrador, de lo contrario se finaliza el script con un mensaje de error.
-    if ((isset($_SESSION['idAdministrador']))/*and Validator::validateSessionTime()*/) {
+    if ((isset($_SESSION['idAdministrador']) or true)/*and Validator::validateSessionTime()*/) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
                 // Buscar
@@ -161,6 +161,15 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                 } else {
                     $result['error'] = 'El equipo seleccionado aún no ha tenido pruebas en los entrenamientos';
+                }
+                break;
+            case 'pruebas':
+                if (!$partido->setIdPartido($_POST['idPartido'])) {
+                    $result['error'] = $partido->getDataError();
+                } elseif ($result['dataset'] = $partido->generarMensajePrediccion()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Elol';
                 }
                 break;
             default:

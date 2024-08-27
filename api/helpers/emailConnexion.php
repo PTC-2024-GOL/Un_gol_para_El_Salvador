@@ -21,7 +21,7 @@ class Props
             $mail->Host       = 'smtp.gmail.com';                     // Configurar el servidor SMTP para enviar a través de Gmail
             $mail->SMTPAuth   = true;                                   // Habilitar autenticación SMTP
             $mail->Username = 'guayito.palom0@gmail.com';
-            $mail->Password = 'xokbehxzwqumgsvd';                             // Contraseña SMTP
+            $mail->Password = 'mgjcxwecwexqftuj';                             // Contraseña SMTP
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            // Habilitar cifrado TLS implícito
             $mail->Port       = 465;                                    // Puerto TCP para conectarse; usa 587 si has configurado `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
             // Destinatarios
