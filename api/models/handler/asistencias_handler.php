@@ -73,7 +73,8 @@ class AsistenciasrHandler
     //Función para leer si una asistencia ya se ha registrado
     public function readOne()
     {
-        $sql = "SELECT id_entrenamiento, id_horario, asistencia, fecha_entrenamiento 
+        $sql = "SELECT id_entrenamiento, id_horario, asistencia, fecha_entrenamiento,
+        sesion, fecha_transformada 
         FROM vista_asistencias_entrenamiento WHERE id_entrenamiento = ?;";
         $params = array($this->idEntrenamiento);
         return Database::getRow($sql, $params);
