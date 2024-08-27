@@ -1,6 +1,10 @@
 <?php
 
 use Phpml\Regression\LeastSquares;
+use Phpml\Classification\MLPClassifier;
+use Phpml\NeuralNetwork\Node\Neuron;
+use Phpml\NeuralNetwork\ActivationFunction\Sigmoid;
+use Phpml\NeuralNetwork\Network\Layer;
 
 require('C:/xampp/htdocs/sitio_gol_sv/vendor/autoload.php');
 // Se incluye la clase para trabajar con la base de datos.
@@ -256,7 +260,7 @@ class CaracteristicasAnalisisHandler
                    ROUND(AVG(NOTA), 2) AS PROMEDIO,
                    FECHA
             FROM vista_predictiva_progresion
-            WHERE IDJ = ?
+            WHERE IDJ = ? AND FECHA >= DATE_SUB(CURDATE(), INTERVAL 2 WEEK)
             GROUP BY IDE, JUGADOR
             ORDER BY FECHA ASC;';
         $params = array($this->jugador);
@@ -317,5 +321,106 @@ class CaracteristicasAnalisisHandler
         }
 
         return $predictions;
+    }
+
+
+    // Función para encontrar una fila por su identificador en un array de datos
+    private function findRowById($data, $id)
+    {
+        foreach ($data as $row) {
+            if ($row['id'] == $id) {
+                return $row;
+            }
+        }
+        return null;
+    }
+
+    // Función para entrenar la red neuronal con los datos obtenidos de las consultas SQL
+    public function entrenarRedNeuronal()
+    {
+        // Consulta para obtener el promedio de las notas del jugador en cada sesión de entrenamiento durante las ultimas 2 semanas
+        $sql1 = 'SELECT IDJ AS id ,JUGADOR, 
+                   ROUND(AVG(NOTA), 2) AS PROMEDIO,
+                   FECHA
+                FROM vista_predictiva_progresion
+                WHERE IDJ = ? AND FECHA >= DATE_SUB(CURDATE(), INTERVAL 2 WEEK)
+                GROUP BY IDE, JUGADOR
+                ORDER BY FECHA ASC;';
+
+        // Consulta para obtener el porcentaje de asistencias que ha tenido el jugador durante las ultimas 2 semanas
+        $sql2 = 'SELECT j.id_jugador AS id,  
+                CONCAT(j.nombre_jugador, " ", j.apellido_jugador) AS JUGADOR, 
+                ROUND(SUM(CASE WHEN a.asistencia = "Asistencia" THEN 1 ELSE 0 END) * 100.0 / COUNT(a.id_entrenamiento), 2) AS porcentaje_asistencia
+                FROM jugadores j
+                INNER JOIN asistencias a ON j.id_jugador = a.id_jugador
+                INNER JOIN entrenamientos e ON a.id_entrenamiento = e.id_entrenamiento
+                WHERE j.id_jugador = ? AND e.fecha_entrenamiento >= DATE_SUB(CURDATE(), INTERVAL 2 WEEK)
+                GROUP BY j.id_jugador;';
+
+        // Consulta para obtener el promedio de puntuación de participaciones que ha tenido el jugador durante las ultimas 2 semanas
+        $sql3 = 'SELECT pp.id_jugador AS id, p.fecha_partido AS FECHA, pp.puntuacion AS PUNTUACION
+                FROM participaciones_partidos pp INNER JOIN partidos p ON p.id_partido = pp.id_partido
+                WHERE pp.id_jugador = ? AND p.fecha_partido >= DATE_SUB(CURDATE(), INTERVAL 2 WEEK);';
+
+        $params = array($this->jugador);
+        // Ejecutar las 4 consultas SQL
+        $data1 = Database::getRows($sql1, $params);
+        $data2 = Database::getRows($sql2, $params);
+        $data3 = Database::getRows($sql3, $params);
+
+        // Preparar los datos para el entrenamiento (inputs y outputs)
+        $trainingSamples = [];
+        $trainingLabels = [];
+
+        // Suponiendo que cada consulta devuelve un array de filas y las filas tienen un identificador común
+        foreach ($data1 as $row1) {
+            $id = $row1['id'];
+
+            // Encontrar las filas correspondientes en los otros datos
+            $row2 = $this->findRowById($data2, $id);
+            $row3 = $this->findRowById($data3, $id);
+
+            // Verificar si todas las filas están presentes
+            if ($row2 && $row3) {
+                // Preparar los inputs y labels basados en los datos combinados
+                $input = [
+                    $row1['PROMEDIO'], // Datos de la consulta 1
+                    $row2['porcentaje_asistencia'], // Datos de la consulta 2
+                    $row3['puntuacion_promedio'], // Datos de la consulta 3
+                ];
+
+                // Aquí puedes definir cómo calcular el resultado esperado. Por ahora se coloca un valor de ejemplo.
+                $label = $this->calcularProbabilidadDeJugar($row1, $row2, $row3);
+
+                $trainingSamples[] = $input;
+                $trainingLabels[] = $label;
+            }
+        }
+
+        // Configurar la red neuronal
+        $mlp = new MLPClassifier(3, [5], [0, 1]); // Ajusta la arquitectura según tus necesidades
+
+        // Entrenar la red neuronal
+        $mlp->train($trainingSamples, $trainingLabels);
+
+        // Devolver el modelo entrenado
+        return $mlp;
+    }
+
+    // Función para calcular la probabilidad de jugar en base a los datos (ejemplo)
+    private function calcularProbabilidadDeJugar($row1, $row2, $row3)
+    {
+        // Implementa tu lógica para determinar si el jugador jugará el próximo partido.
+        return $row1['PROMEDIO'] > 5 && $row2['porcentaje_asistencia'] > 75 && $row3['puntuacion_promedio'] > 7 ? 1 : 0;
+    }
+
+    // Función para hacer predicciones con la red neuronal entrenada
+    public function predecir($nuevosDatos)
+    {
+        $modelo = $this->entrenarRedNeuronal();
+
+        $prediccion = $modelo->predict($nuevosDatos);
+
+        return $prediccion;
     }
 }
