@@ -198,6 +198,7 @@ class CaracteristicasAnalisisHandler
             $dates = $data['dates'];
             $scores = $data['scores'];
 
+            // Calcular la regresión para predecir la notas en los próximos entrenamientos de la semana siguiente
             for ($i = 1; $i <= 7; $i++) {
                 $X = array_slice($dates, 0, count($dates));
                 $y = array_slice($scores, 0, count($scores));
@@ -343,6 +344,10 @@ class CaracteristicasAnalisisHandler
         return null;
     }
 
+
+
+
+    // RED NEURONAL
     // Función para entrenar la red neuronal con los datos obtenidos de las consultas SQL
     public function entrenarRedNeuronal()
     {

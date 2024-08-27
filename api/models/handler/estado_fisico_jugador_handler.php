@@ -216,8 +216,8 @@ class EstadoFisicoJugadorHandler
             $timestamp = end($dates) + $i * 24 * 60 * 60; // Sumar días en segundos
             $predictedIMC = $regression->predict([$timestamp]);
 
-            // Asegurarse de que la nota no baje de 0
-            $predictedIMC = max(0, $predictedIMC);
+            // Asegurarse de que la nota no baje de 0 y supere 100
+            $predictedIMC = max(0, min($predictedIMC, 100));
             
             // Convertir timestamp a fecha en español
             $dateTime = new DateTime();
