@@ -13,7 +13,7 @@ $pdf->startReport('Predicción del siguiente partido');
 // Se instancia el modelo Producto para procesar los datos.
 $registro = new PartidosData();
 // Se establece la plantilla para obtener sus productos, de lo contrario se imprime un mensaje de error.
-if ($registro->setIdPartido($_GET['idPartido'])) {
+if ($registro->setIdPartido(isset($_GET['idPartido']))) {
     try {
         // Se verifica si existen registros para mostrar, de lo contrario se imprime un mensaje.
         if ($arreglo = $registro->generarMensajePrediccion()) {

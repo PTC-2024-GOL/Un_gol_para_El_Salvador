@@ -63,7 +63,7 @@ const seeModal = async (id) => {
             // Se muestra la caja de diálogo con su título.
             SEE_MODAL.show();
             MODAL_TITLE.textContent = 'Elegir entrenamiento';
-            const DATA2 = await fetchData(DETALLE_CONTENIDO_API, 'lastAssists', FORM);
+            const DATA2 = await fetchData(DETALLE_CONTENIDO_API, 'readlastAssists', FORM);
         if (DATA2.status) {
             CHART.classList.remove('d-none');
             datos = DATA2.dataset;

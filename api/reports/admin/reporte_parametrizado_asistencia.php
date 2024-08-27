@@ -28,99 +28,125 @@ $asistenciaAcronimos = [
 ];
 
 // Se establece la plantilla para obtener sus productos, de lo contrario se imprime un mensaje de error.
-if (!($registro->setIdEntrenamiento($_GET['idEntrenamiento'])) or !($registro->setIdAsistenciaBool($_GET['asistencia']))) {
+if (!isset($_GET['asistencia']) or !isset($_GET['idEntrenamiento'])) {
     $pdf->cell(0, 10, $pdf->encodeString('Parametros incorrectos o alterados'), 1, 1);
 } else {
     try {
-    // Se verifica si existen registros para mostrar, de lo contrario se imprime un mensaje.
-    if ($_GET['asistencia'] == 0) {
-        if ($dataRegistro = $registro->readAlldefault()) {
-            $dataHorario = $registro->readOne();
-            $pdf->cell(0, 10, $pdf->encodeString("Esta es la asistencia del {$dataHorario['fecha_transformada']}, {$dataHorario['sesion']}"), 0, 1, 'C');
+        $registro->setIdAsistenciaBool($_GET['asistencia']);
+        $registro->setIdEntrenamiento($_GET['idEntrenamiento']);
+        // Establecer color de texto a blanco
+        $pdf->setTextColor(0, 0, 0);
+        // Se establece un color de relleno para los encabezados.
+        $pdf->setFillColor(2, 8, 135);
+        // Se establece el color del borde.
+        $pdf->setDrawColor(2, 8, 135);
+        // Se establece la fuente para los encabezados.
+        $pdf->setFont('Arial', 'B', 11);
+        // Se imprimen las celdas con los encabezados.
 
-            $pdf->cell(100, 15, $pdf->encodeString('Jugador'), 1, 0, 'C');
-            $pdf->cell(30, 15, $pdf->encodeString('Asistencia'), 1, 0, 'C');
-            $pdf->cell(60, 15, $pdf->encodeString('Observación'), 1, 1, 'C');
+        // Se verifica si existen registros para mostrar, de lo contrario se imprime un mensaje.
+        if ($_GET['asistencia'] == 0) {
+            $pdf->setTextColor(0, 0, 0);
+            // Se establece un color de relleno para los encabezados.
+            $pdf->setFillColor(2, 8, 135);
+            if ($dataRegistro = $registro->readAlldefault()) {
+                $dataHorario = $registro->readOne();
+                $pdf->cell(0, 10, $pdf->encodeString("Esta es la asistencia del {$dataHorario['fecha_transformada']}, {$dataHorario['sesion']}"), 0, 1, 'C');
+                $pdf->setTextColor(255, 255, 255);
+                $pdf->cell(80, 15, $pdf->encodeString('Jugador'), 1, 0, 'C',1 );
+                $pdf->cell(20, 15, $pdf->encodeString('Asistencia'), 1, 0, 'C',1 );
+                $pdf->cell(80, 15, $pdf->encodeString('Observación'), 1, 1, 'C', 1);
 
-            foreach ($dataRegistro as $asistencias) {
-                // Comprobamos si hay que añadir una nueva página
-                if ($pdf->getY() + 15 > 279 - 30) {
-                    $pdf->addPage();
-                    $pdf->cell(100, 15, $pdf->encodeString('Jugador'), 1, 0, 'C');
-                    $pdf->cell(30, 15, $pdf->encodeString('Asistencia'), 1, 0, 'C');
-                    $pdf->cell(60, 15, $pdf->encodeString('Observación'), 1, 1, 'C');
+                foreach ($dataRegistro as $asistencias) {
+                    $pdf->SetTextColor(0, 0, 0);
+                    $pdf->setFillColor(240);
+                    // Comprobamos si hay que añadir una nueva página
+                    if ($pdf->getY() + 15 > 279 - 30) {
+                        $pdf->addPage();
+                        $pdf->cell(80, 20, $pdf->encodeString('Jugador'), 1, 0, 'C', 1);
+                        $pdf->cell(20, 20, $pdf->encodeString('Asistencia'), 1, 0, 'C');
+                        $pdf->cell(80, 20, $pdf->encodeString('Observación'), 1, 1, 'C', 1);
+                    }
+
+                    // Obtener el acrónimo de asistencia.
+                    $acronimo = $asistenciaAcronimos[$asistencias['asistencia']] ?? $asistencias['asistencia'];
+
+                    // Imprime la fila con los datos del registro utilizando los acrónimos.
+                    $pdf->cell(80, 20, $pdf->encodeString($asistencias['jugador']), 1, 0, 'C', 1);
+                    $pdf->cell(20, 20, $pdf->encodeString(''), 1, 0, 'C');
+                    $pdf->cell(80, 20, $pdf->encodeString(''), 1, 1, 'C', 1);
                 }
-
-                // Obtener el acrónimo de asistencia.
-                $acronimo = $asistenciaAcronimos[$asistencias['asistencia']] ?? $asistencias['asistencia'];
-
-                // Imprime la fila con los datos del registro utilizando los acrónimos.
-                $pdf->cell(100, 15, $pdf->encodeString($asistencias['jugador']), 1, 0, 'C');
-                $pdf->cell(30, 15, $pdf->encodeString(''), 1, 0, 'C');
-                $pdf->cell(60, 15, $pdf->encodeString(''), 1, 1, 'C');
+            } else {
+                $pdf->cell(0, 10, $pdf->encodeString('No hay jugadores que mostrar'), 0, 1);
             }
         } else {
-            $pdf->cell(0, 10, $pdf->encodeString('No hay jugadores que mostrar'), 0, 1);
-        }
-    } else {
-        if ($dataRegistro = $registro->readAll()) {
+            if ($dataRegistro = $registro->readAll()) {
+                $pdf->setTextColor(0, 0, 0);
+        // Se establece un color de relleno para los encabezados.
+        $pdf->setFillColor(2, 8, 135);
+                $dataHorario = $registro->readOne();
+                $pdf->cell(0, 10, $pdf->encodeString("Esta es la asistencia del {$dataHorario['fecha_transformada']}, {$dataHorario['sesion']}"), 0, 1, 'C');
+                $pdf->setTextColor(255, 255, 255);
+                $pdf->cell(80, 15, $pdf->encodeString('Jugador'), 1, 0, 'C',1 );
+                $pdf->cell(20, 15, $pdf->encodeString('Asistencia'), 1, 0, 'C',1 );
+                $pdf->cell(80, 15, $pdf->encodeString('Observación'), 1, 1, 'C', 1);
 
-            $pdf->cell(0, 10, $pdf->encodeString('Esta es la asistencia de un jugador'), 0, 1, 'C');
+                foreach ($dataRegistro as $asistencias) {
+                    $pdf->setFont('Arial', '', 11);
+                    $pdf->setFillColor(240);
+                    $pdf->SetTextColor(0, 0, 0);
+                    // Comprobamos si hay que añadir una nueva página
+                    if ($pdf->getY() + 15 > 279 - 30) {
+                        $pdf->addPage();
+                        $pdf->cell(80, 15, $pdf->encodeString('Jugador'), 1, 0, 'C');
+                        $pdf->cell(20, 15, $pdf->encodeString('Asistencia'), 1, 0, 'C');
+                        $pdf->setFont('Arial', '', 9);
+                        $pdf->MultiCell(80, 15, $pdf->encodeString('Observación'), 1, 1, 'C');
+                        $pdf->SetXY($pdf->GetX(), $pdf->GetY());
+                    }
 
-            $pdf->cell(100, 15, $pdf->encodeString('Jugador'), 1, 0, 'C');
-            $pdf->cell(30, 15, $pdf->encodeString('Asistencia'), 1, 0, 'C');
-            $pdf->cell(60, 15, $pdf->encodeString('Observación'), 1, 1, 'C');
+                    // Obtener el acrónimo de asistencia.
+                    $acronimo = $asistenciaAcronimos[$asistencias['asistencia']] ?? $asistencias['asistencia'];
 
-            foreach ($dataRegistro as $asistencias) {
-                // Comprobamos si hay que añadir una nueva página
-                if ($pdf->getY() + 15 > 279 - 30) {
-                    $pdf->addPage();
-                    $pdf->cell(100, 15, $pdf->encodeString('Jugador'), 1, 0, 'C');
-                    $pdf->cell(30, 15, $pdf->encodeString('Asistencia'), 1, 0, 'C');
-                    $pdf->cell(60, 15, $pdf->encodeString('Observación'), 1, 1, 'C');
+                    // Imprime la fila con los datos del registro utilizando los acrónimos.
+                    $pdf->cell(80, 15, $pdf->encodeString($asistencias['jugador']), 0, 0, 'C');
+                    $pdf->cell(20, 15, $pdf->encodeString($acronimo), 0, 0, 'C');
+                    $pdf->setFont('Arial', '', 9);
+                    $pdf->MultiCell(80, 15, $pdf->encodeString($asistencias['observacion']), 0, 'C');
+                    $pdf->Cell(0, 0, '', 'B', 1);
                 }
-
-                // Obtener el acrónimo de asistencia.
-                $acronimo = $asistenciaAcronimos[$asistencias['asistencia']] ?? $asistencias['asistencia'];
-
-                // Imprime la fila con los datos del registro utilizando los acrónimos.
-                $pdf->cell(100, 15, $pdf->encodeString($asistencias['jugador']), 1, 0, 'C');
-                $pdf->cell(30, 15, $pdf->encodeString($acronimo), 1, 0, 'C');
-                $pdf->cell(60, 15, $pdf->encodeString($asistencias['observacion']), 1, 1, 'C');
+            } else {
+                $pdf->cell(0, 10, $pdf->encodeString('No hay jugadores que mostrar'), 0, 1);
             }
-        } else {
-            $pdf->cell(0, 10, $pdf->encodeString('No hay jugadores que mostrar'), 0, 1);
         }
-    }
 
-    // Sección de acrónimos
-    $pdf->ln(5); // Agregar un pequeño espacio antes de los acrónimos
-    $pdf->setFont('Arial', 'B', 12); // Cambiar el tamaño de la fuente del título
-    $pdf->cell(0, 10, $pdf->encodeString('Estructura de los acrónimos utilizados en la asistencia'), 0, 1, 'L');
+        // Sección de acrónimos
+        $pdf->ln(5); // Agregar un pequeño espacio antes de los acrónimos
+        $pdf->setFont('Arial', 'B', 12); // Cambiar el tamaño de la fuente del título
+        $pdf->cell(0, 10, $pdf->encodeString('Estructura de los acrónimos utilizados en la asistencia'), 0, 1, 'L');
 
-    // Cambiar a una fuente más pequeña para los acrónimos
-    $pdf->setFont('Arial', '', 9);
+        // Cambiar a una fuente más pequeña para los acrónimos
+        $pdf->setFont('Arial', '', 9);
 
-    // Crear una cadena que contenga todos los acrónimos separados por comas
-    $acronimosTexto = implode(', ', array_map(
-        function ($descripcion, $acronimo) {
-            return "$descripcion = $acronimo";
-        },
-        array_keys($asistenciaAcronimos),
-        $asistenciaAcronimos
-    ));
+        // Crear una cadena que contenga todos los acrónimos separados por comas
+        $acronimosTexto = implode(', ', array_map(
+            function ($descripcion, $acronimo) {
+                return "$descripcion = $acronimo";
+            },
+            array_keys($asistenciaAcronimos),
+            $asistenciaAcronimos
+        ));
 
-    // Verificar si hay espacio suficiente para los acrónimos, si no, agregar nueva página
-    if ($pdf->getY() + 10 > 279 - 30) {
-        $pdf->addPage();
-    }
+        // Verificar si hay espacio suficiente para los acrónimos, si no, agregar nueva página
+        if ($pdf->getY() + 10 > 279 - 30) {
+            $pdf->addPage();
+        }
 
-    // Imprimir todos los acrónimos en una sola línea
-    $pdf->multiCell(0, 5, $pdf->encodeString($acronimosTexto . '.'), 0, 'L');
+        // Imprimir todos los acrónimos en una sola línea
+        $pdf->multiCell(0, 5, $pdf->encodeString($acronimosTexto . '.'), 0, 'L');
 
-    }
-    catch (Exception $e) {
-        $pdf->cell(0, 10, $pdf->encodeString('Datos corruptos o incompletos, recargar'), 1, 1);
+    } catch (Exception $e) {
+        $pdf->cell(0, 10, $pdf->encodeString('Datos corruptos o incompletos, cierra esta página e intentalo de nuevo'), 1, 1);
     }
 }
 
