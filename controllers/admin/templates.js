@@ -659,7 +659,7 @@ const openGraphicProgression =  async (id) => {
 */
 const openReportProbability = (id, jugador) => {
     // Se declara una constante tipo objeto con la ruta específica del reporte en el servidor.
-    const PATH = new URL(`${SERVER_URL}reports/admin/reporte_predictivo_probabilidad.php`);
+    const PATH = new URL(`${SERVER_URL}reports/admin/reporte_predictivo_probabilidad_de_jugar.php`);
     // Se agrega un parámetro a la ruta con el valor del registro seleccionado.
     PATH.searchParams.append('id', id);
     PATH.searchParams.append('jugador', jugador);

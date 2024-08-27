@@ -100,7 +100,7 @@ if (isset($_GET['id']) || isset($_GET['jugador'])) {
         // Se llama implícitamente al método footer() y se envía el documento al navegador web.
         $pdf->output('I', 'prediccion_jugador.pdf');
     } else {
-        print('Jugador incorrecta');
+        print('Jugador incorrecto');
     }
 } else {
     print('Debe seleccionar un jugador');
