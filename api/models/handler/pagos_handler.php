@@ -181,7 +181,7 @@ class PagoHandler
 
     public function years()
     {
-        $sql = 'SELECT id_jugador, YEAR(fecha_creacion) FROM jugadores GROUP BY fecha_creacion;';
+        $sql = 'SELECT id_jugador, YEAR(fecha_creacion) FROM jugadores GROUP BY YEAR(fecha_creacion);';
         return Database::getRows($sql);
     }
 

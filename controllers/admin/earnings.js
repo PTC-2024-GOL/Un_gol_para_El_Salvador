@@ -56,7 +56,7 @@ const graficoLinealIngresos = async () => {
         cantidad.push(filter.cantidad);
     });
     // Si ocurre un error, se utilizan los datos de ejemplo definidos arriba.
-    lineGraph('analisis', mes, cantidad, 'Ingreso de este mes $');
+    lineGraph('analisis', mes, cantidad, 'Ingresos por meses ($)', 'Ingresos mensuales que han habido durante el presente año' );
 
 }
 
