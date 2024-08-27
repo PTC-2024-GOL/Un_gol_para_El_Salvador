@@ -132,7 +132,6 @@ class CaracteristicasAnalisisHandler
     }
 
     // Función para predecir las notas de las siguientes sesiones
-
     public function predictNextSessionScores()
     {
         // Configurar la localización en español
@@ -225,6 +224,96 @@ class CaracteristicasAnalisisHandler
                     'nota' => $predictedScore
                 ];
             }
+        }
+
+        return $predictions;
+    }
+
+    // Función para predecir los promedios de las siguientes sesiones de entrenamiento
+    public function predictAverageScoresNextWeek()
+    {
+        // Configurar la localización en español
+        setlocale(LC_TIME, 'es_ES.UTF-8');
+
+        // Mapa de traducción de meses
+        $monthNames = [
+            1 => 'enero',
+            2 => 'febrero',
+            3 => 'marzo',
+            4 => 'abril',
+            5 => 'mayo',
+            6 => 'junio',
+            7 => 'julio',
+            8 => 'agosto',
+            9 => 'septiembre',
+            10 => 'octubre',
+            11 => 'noviembre',
+            12 => 'diciembre'
+        ];
+
+        // Consulta para obtener el promedio de las notas del jugador en cada sesión de entrenamiento
+        $sql = 'SELECT JUGADOR, 
+                   ROUND(AVG(NOTA), 2) AS PROMEDIO,
+                   FECHA
+            FROM vista_predictiva_progresion
+            WHERE IDJ = ?
+            GROUP BY IDE, JUGADOR
+            ORDER BY FECHA DESC;';
+        $params = array($this->jugador);
+        $rows = Database::getRows($sql, $params);
+
+        if (empty($rows)) {
+            return [];
+        }
+
+        // Extraer fechas y promedios para la regresión
+        $dates = [];
+        $averages = [];
+
+        foreach ($rows as $row) {
+            $date = new DateTime($row['FECHA']);
+            $timestamp = $date->getTimestamp();
+            $dates[] = $timestamp;
+            $averages[] = $row['PROMEDIO'];
+        }
+
+        $predictions = [];
+        // Calcular la regresión para predecir el promedio en los próximos entrenamientos de la semana siguiente
+        for ($i = 1; $i <= 7; $i++) {
+            $X = array_slice($dates, 0, count($dates));
+            $y = array_slice($averages, 0, count($averages));
+
+            if (count($X) <= 1 || count(array_unique($X)) == 1) {
+                throw new Exception("Datos insuficientes o colineales para la regresión.");
+            }
+
+            // Crear el modelo de regresión lineal
+            $regression = new LeastSquares();
+            $regression->train(array_map(function ($timestamp) {
+                return [$timestamp];
+            }, $X), $y);
+
+            // Predecir el promedio para la próxima sesión
+            $timestamp = end($dates) + $i * 24 * 60 * 60;
+            $predictedAverage = $regression->predict([$timestamp]);
+
+            // Asegurarse de que la nota no supere 10 ni sea menor a 0
+            $predictedAverage = max(0, min($predictedAverage, 10));
+
+            // Convertir timestamp a fecha en español
+            $dateTime = new DateTime();
+            $dateTime->setTimestamp($timestamp);
+            $day = $dateTime->format('d');
+            $month = (int) $dateTime->format('m');
+            $year = $dateTime->format('Y');
+            $monthName = $monthNames[$month];
+
+            $date = "$day de $monthName de $year";
+
+            $predictions[] = [
+                'fecha' => $date,
+                'promedio' => $predictedAverage
+            ];
         }
 
         return $predictions;

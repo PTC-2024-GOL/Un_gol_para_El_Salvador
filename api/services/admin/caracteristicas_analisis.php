@@ -98,6 +98,18 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Gráfica inexistente';
                 }
                 break;
+                // Gráfica predictiva
+            case 'predictAverageScoresNextWeek':
+                if (
+                    !$caracteristica->setJugador($_POST['idJugador'])
+                ) {
+                    $result['error'] = $caracteristica->getDataError();
+                } elseif ($result['dataset'] = $caracteristica->predictAverageScoresNextWeek()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Gráfica inexistente';
+                }
+                break;
                 // Gráfica de lineas 
             case 'graphicPromedyByJourney':
                 if (
