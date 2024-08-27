@@ -32,6 +32,7 @@ const PLANTILLA_API = 'services/admin/plantillas.php';
 const JUGADOR_API = 'services/admin/jugadores.php';
 const TEMPORADA_API = 'services/admin/temporadas.php';
 const EQUIPO_API = 'services/admin/equipos.php';
+const ANALISIS_API = 'services/admin/caracteristicas_analisis.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -561,16 +562,17 @@ const openGraphicProgression =  async (id) => {
     // Se muestra la caja de diálogo con su título.
     GRAPHIC_MODAL.show();
     GRAPHIC_TITLE.textContent = 'Gráfica de progresión del jugador';
+    REPORTS_MODAL.hide();
     try {
         const FORM = new FormData();
         FORM.append('idJugador', id);
-        const DATA = await fetchData(ESTADO_API, 'graphicPredictiveImc', FORM);
+        const DATA = await fetchData(ANALISIS_API, 'predictAverageScoresNextWeek', FORM);
         if (DATA.status) {
             let fecha = [];
-            let imc = [];
+            let promedio = [];
             DATA.dataset.forEach(row => {
                 fecha.push(`${row.fecha}`);
-                imc.push(row.imc);
+                promedio.push(row.promedio);
             });
 
             // Destruir la instancia existente del gráfico si existe
@@ -583,7 +585,7 @@ const openGraphicProgression =  async (id) => {
             const canvasContainer = document.getElementById('prediccion').parentElement;
             canvasContainer.innerHTML = '<canvas id="prediccion"></canvas>  <div id="error_prediccion"></div>';
 
-            chartInstance = lineGraphWithFill('prediccion', fecha, imc, 'Imc por día', 'Predicción del imc de la siguiente semana');
+            chartInstance = lineGraphWithFill('prediccion', fecha, promedio, 'Promedio por día', 'Gráfica predictiva de progresión del Rendimiento');
         } else {
             console.log(DATA.error);
             // Destruir la instancia existente del gráfico si existe

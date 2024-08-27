@@ -258,7 +258,7 @@ class CaracteristicasAnalisisHandler
             FROM vista_predictiva_progresion
             WHERE IDJ = ?
             GROUP BY IDE, JUGADOR
-            ORDER BY FECHA DESC;';
+            ORDER BY FECHA ASC;';
         $params = array($this->jugador);
         $rows = Database::getRows($sql, $params);
 
@@ -280,8 +280,8 @@ class CaracteristicasAnalisisHandler
         $predictions = [];
         // Calcular la regresión para predecir el promedio en los próximos entrenamientos de la semana siguiente
         for ($i = 1; $i <= 7; $i++) {
-            $X = array_slice($dates, 0, count($dates));
-            $y = array_slice($averages, 0, count($averages));
+            $X = array_slice($dates, 0, count($dates) - ($i - 1));
+            $y = array_slice($averages, 0, count($averages) - ($i - 1));
 
             if (count($X) <= 1 || count(array_unique($X)) == 1) {
                 throw new Exception("Datos insuficientes o colineales para la regresión.");
