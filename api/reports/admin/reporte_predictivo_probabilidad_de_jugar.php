@@ -1,21 +1,19 @@
 <?php
 // Se incluye la clase con las plantillas para generar reportes.
 require_once('../../helpers/report.php');
-// Se incluyen las clases para la transferencia y acceso a datos.
-require_once('../../models/data/caracteristicas_analisis_data.php'); // Asegúrate de que esta ruta sea correcta
 
 // Se instancia la clase para crear el reporte.
 $pdf = new Report;
 // Se verifica si existe un valor para la , de lo contrario se muestra un mensaje.
-if (isset($_GET['id']) || isset($_GET['jugador'])) {
-
-    // Se inicia el reporte con el encabezado del documento.
-    $pdf->startReport('Reporte predictivo');
-
+if (isset($_GET['id']) && isset($_GET['jugador'])) {
+    // Se incluyen las clases para la transferencia y acceso a datos.
+    require_once('../../models/data/caracteristicas_analisis_data.php'); // Asegúrate de que esta ruta sea correcta
     // Se instancia el modelo para obtener los datos de predicción.
     $analisisHandler = new CaracteristicasAnalisisData();
     // Se establece el valor de la categoría, de lo contrario se muestra un mensaje.
     if ($analisisHandler->setJugador($_GET['id'])) {
+        // Se inicia el reporte con el encabezado del documento.
+        $pdf->startReport('Reporte probabilidad de jugar el proximo partido');
 
         try {
             // Obtener los datos para la predicción
@@ -39,7 +37,7 @@ if (isset($_GET['id']) || isset($_GET['jugador'])) {
             // Se establece la fuente para los encabezados.
             $pdf->setFont('Arial', 'B', 11);
             $pdf->cell(100, 10, $pdf->encodeString('Jugador elegido para la predicción: ' . $_GET['jugador']), 0, 1, 'L', 1);
-    
+
             $pdf->SetDrawColor(180, 177, 187);
             $pdf->Line(15, 85, 200, 85);
 

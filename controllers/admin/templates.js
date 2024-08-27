@@ -502,7 +502,7 @@ const openReport = () => {
 *   Parámetros: ninguno.
 *   Retorno: ninguno.
 */
-const openReports = (id, jugador) => {
+const openReports = (id) => {
     // Se muestra la caja de diálogo con su título.
     REPORTS_MODAL.show();
     REPORTS_TITLE.textContent = 'Reportes del jugador';
@@ -511,7 +511,7 @@ const openReports = (id, jugador) => {
     const tablaHtml = `
                 <div class="col-md-4 col-sm-4">
                     <div class="container-fluid">
-                        <button type="button" class="btn btn-outline-warning" onclick="openReportPredictive(${id}, '${jugador}')">
+                        <button type="button" class="btn btn-outline-warning" onclick="openReportPredictive(${id})">
                             <img src="../../../resources/img/svg/icons_forms/report.svg">
                             <h1 class="fs-5 text-dark">Reporte de predicción de notas</h1>
                         </button>
@@ -519,7 +519,7 @@ const openReports = (id, jugador) => {
                 </div>
                 <div class="col-md-4 col-sm-4">
                     <div class="container-fluid">
-                        <button type="button" class="btn btn-outline-warning" onclick="openGraphicProgression(${id}, '${jugador}')">
+                        <button type="button" class="btn btn-outline-warning" onclick="openGraphicProgression(${id})">
                             <img src="../../../resources/img/svg/icons_forms/graphicLine.svg">
                             <h1 class="fs-5 text-dark">Gráfica predictiva de progresión del Rendimiento</h1>
                         </button>
@@ -527,7 +527,7 @@ const openReports = (id, jugador) => {
                 </div>
                 <div class="col-md-4 col-sm-4">
                     <div class="container-fluid">
-                        <button type="button" class="btn btn-outline-warning" onclick="openReportProbability(${id}, '${jugador}')">
+                        <button type="button" class="btn btn-outline-warning" onclick="openReportProbability(${id})">
                             <img src="../../../resources/img/svg/icons_forms/report.svg">
                             <h1 class="fs-5 text-dark">Reporte de posibilidades de jugar el siguiente partido</h1>
                         </button>
@@ -542,12 +542,11 @@ const openReports = (id, jugador) => {
 *   Parámetros: ninguno.
 *   Retorno: ninguno.
 */
-const openReportPredictive = (id, jugador) => {
+const openReportPredictive = (id) => {
     // Se declara una constante tipo objeto con la ruta específica del reporte en el servidor.
     const PATH = new URL(`${SERVER_URL}reports/admin/reporte_predictivo_notas.php`);
     // Se agrega un parámetro a la ruta con el valor del registro seleccionado.
     PATH.searchParams.append('id', id);
-    PATH.searchParams.append('jugador', jugador);
     // Se abre el reporte en una nueva pestaña.
     window.open(PATH.href);
 }
@@ -657,12 +656,11 @@ const openGraphicProgression =  async (id) => {
 *   Parámetros: ninguno.
 *   Retorno: ninguno.
 */
-const openReportProbability = (id, jugador) => {
+const openReportProbability = (id) => {
     // Se declara una constante tipo objeto con la ruta específica del reporte en el servidor.
     const PATH = new URL(`${SERVER_URL}reports/admin/reporte_predictivo_probabilidad_de_jugar.php`);
     // Se agrega un parámetro a la ruta con el valor del registro seleccionado.
     PATH.searchParams.append('id', id);
-    PATH.searchParams.append('jugador', jugador);
     // Se abre el reporte en una nueva pestaña.
     window.open(PATH.href);
 }

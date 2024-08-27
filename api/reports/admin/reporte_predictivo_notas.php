@@ -6,7 +6,7 @@ require_once('../../helpers/report.php');
 $pdf = new Report;
 
 // Se verifica si existe un valor para la , de lo contrario se muestra un mensaje.
-if (isset($_GET['id']) || isset($_GET['jugador'])) {
+if (isset($_GET['id'])) {
     // Se incluyen las clases para la transferencia y acceso a datos.
     require_once('../../models/data/caracteristicas_analisis_data.php');
     // Se instancian las entidades correspondientes.
@@ -19,14 +19,6 @@ if (isset($_GET['id']) || isset($_GET['jugador'])) {
     $pdf->setFont('Arial', '', 11);
     $pdf->MultiCell(190, 7, $pdf->encodeString('Este informe muestra la predicción de las proximas notas posibles del jugador, durante los siguientes entrenamientos, basados en las notas que este recibio en las ultimas dos semanas de entrenamientos.'), 0, 1);
     $pdf->ln(5);
-
-    // Establecer color de texto a blanco
-    $pdf->setTextColor(0, 0, 0);
-    // Se establece un color de relleno para los encabezados.
-    $pdf->setFillColor(255, 255, 255);
-    // Se establece la fuente para los encabezados.
-    $pdf->setFont('Arial', 'B', 11);
-    $pdf->cell(100, 10, $pdf->encodeString('Jugador elegido para la predicción: ' . $_GET['jugador']), 0, 1, 'L', 1);
     $pdf->setFont('Arial', 'B', 14);
     // Se establece el valor de la categoría, de lo contrario se muestra un mensaje.
     if ($caracteristica->setJugador($_GET['id'])) {
@@ -54,6 +46,13 @@ if (isset($_GET['id']) || isset($_GET['jugador'])) {
         try {
             // Se verifica si existen datos, de lo contrario se muestra un mensaje.
             if ($dataFavorito = $caracteristica->predictNextSessionScores()) {
+                // Establecer color de texto a blanco
+                $pdf->setTextColor(0, 0, 0);
+                // Se establece un color de relleno para los encabezados.
+                $pdf->setFillColor(110, 151, 214);
+                // Se establece la fuente para los encabezados.
+                $pdf->setFont('Arial', 'B', 11);
+                $pdf->cell(0, 10, $pdf->encodeString('Jugador elegido para la predicción: ' . $dataFavorito[0]['jugador']), 1, 1, 'C', 1);
                 $groupedByDate = [];
                 // Agrupar los datos por fecha
                 foreach ($dataFavorito as $rowFavorito) {

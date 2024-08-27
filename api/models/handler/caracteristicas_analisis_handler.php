@@ -157,8 +157,12 @@ class CaracteristicasAnalisisHandler
             12 => 'diciembre'
         ];
         // Consulta para obtener las notas, fechas de entrenamiento y nombres de características analizadas para el jugador específico
-        $sql = 'SELECT ca.nota_caracteristica_analisis AS NOTA, e.fecha_entrenamiento AS FECHA, cj.nombre_caracteristica_jugador AS CARACTERISTICA
+        $sql = 'SELECT ca.nota_caracteristica_analisis AS NOTA, 
+                e.fecha_entrenamiento AS FECHA, 
+                cj.nombre_caracteristica_jugador AS CARACTERISTICA,
+                CONCAT(j.nombre_jugador, " ", j.apellido_jugador) AS JUGADOR
                 FROM caracteristicas_analisis ca
+                INNER JOIN jugadores j ON j.id_jugador = ca.id_jugador
                 INNER JOIN entrenamientos e ON ca.id_entrenamiento = e.id_entrenamiento
                 INNER JOIN caracteristicas_jugadores cj ON ca.id_caracteristica_jugador = cj.id_caracteristica_jugador
                 WHERE ca.id_jugador = ?
@@ -170,6 +174,9 @@ class CaracteristicasAnalisisHandler
         if (empty($rows)) {
             return [];
         }
+
+        // Obtener el nombre del jugador (todos los registros tienen el mismo nombre)
+        $jugador = $rows[0]['JUGADOR'];
 
         // Agrupar los datos por características
         $groupedData = [];
@@ -225,7 +232,8 @@ class CaracteristicasAnalisisHandler
                 $predictions[] = [
                     'fecha' => $date,
                     'caracteristica' => $characteristic,
-                    'nota' => $predictedScore
+                    'nota' => $predictedScore,
+                    'jugador' => $jugador
                 ];
             }
         }
