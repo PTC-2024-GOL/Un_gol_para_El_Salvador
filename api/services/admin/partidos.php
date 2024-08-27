@@ -163,15 +163,6 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'El equipo seleccionado aún no ha tenido pruebas en los entrenamientos';
                 }
                 break;
-            case 'pruebas':
-                if (!$partido->setIdPartido($_POST['idPartido'])) {
-                    $result['error'] = $partido->getDataError();
-                } elseif ($result['dataset'] = $partido->generarMensajePrediccion()) {
-                    $result['status'] = 1;
-                } else {
-                    $result['error'] = 'Elol';
-                }
-                break;
             default:
                 $result['error'] = 'Acción no disponible dentro de la sesión';
         }
