@@ -64,6 +64,8 @@ if (isset($_GET['idJugador'])) {
             $pdf->setFont('Arial', '', 13);
             $pdf->cell(0, 80, $pdf->encodeString('Aún no hay registro físico para el jugador'), 0, 1, 'C');
         }
+        // Se llama implícitamente al método footer() y se envía el documento al navegador web.
+        $pdf->output('I', 'Registro físico.pdf');
     } else {
         print('Jugador inexistente');
     }
@@ -71,5 +73,3 @@ if (isset($_GET['idJugador'])) {
     print('No se proporcionó un ID del jugador.');
 }
 
-// Se llama implícitamente al método footer() y se envía el documento al navegador web.
-$pdf->output('I', 'Registro físico.pdf');
