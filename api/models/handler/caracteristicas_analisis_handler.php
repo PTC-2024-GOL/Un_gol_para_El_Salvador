@@ -1,10 +1,11 @@
 <?php
 
 use Phpml\Regression\LeastSquares;
+use Phpml\Regression\MLPRegressor;
 use Phpml\Classification\MLPClassifier;
-use Phpml\NeuralNetwork\Node\Neuron;
+use Phpml\NeuralNetwork\Network\MultilayerPerceptron;
 use Phpml\NeuralNetwork\ActivationFunction\Sigmoid;
-use Phpml\NeuralNetwork\Network\Layer;
+use Phpml\Classification\KNearestNeighbors;
 
 require('C:/xampp/htdocs/sitio_gol_sv/vendor/autoload.php');
 // Se incluye la clase para trabajar con la base de datos.
@@ -333,6 +334,7 @@ class CaracteristicasAnalisisHandler
     }
 
 
+    // RED NEURONAL
     // Función para encontrar una fila por su identificador en un array de datos
     private function findRowById($data, $id)
     {
@@ -344,39 +346,33 @@ class CaracteristicasAnalisisHandler
         return null;
     }
 
-
-
-
-    // RED NEURONAL
-    // Función para entrenar la red neuronal con los datos obtenidos de las consultas SQL
+    // Método para entrenar la red neuronal con los datos obtenidos de las consultas SQL
     public function entrenarRedNeuronal()
     {
+        // Consultas SQL (como antes)
         // Consulta para obtener el promedio de las notas del jugador en cada sesión de entrenamiento durante las ultimas 2 semanas
         $sql1 = 'SELECT IDJ AS id ,JUGADOR, 
-                   ROUND(AVG(NOTA), 2) AS PROMEDIO,
-                   FECHA
-                FROM vista_predictiva_progresion
-                WHERE IDJ = ? AND FECHA >= DATE_SUB(CURDATE(), INTERVAL 2 WEEK)
-                GROUP BY IDE, JUGADOR
-                ORDER BY FECHA ASC;';
+        ROUND(AVG(NOTA), 2) AS PROMEDIO, FECHA
+        FROM vista_predictiva_progresion WHERE IDJ = ? AND FECHA >= DATE_SUB(CURDATE(), INTERVAL 2 WEEK)
+        GROUP BY IDE, JUGADOR
+        ORDER BY FECHA ASC;';
 
         // Consulta para obtener el porcentaje de asistencias que ha tenido el jugador durante las ultimas 2 semanas
-        $sql2 = 'SELECT j.id_jugador AS id,  
-                CONCAT(j.nombre_jugador, " ", j.apellido_jugador) AS JUGADOR, 
-                ROUND(SUM(CASE WHEN a.asistencia = "Asistencia" THEN 1 ELSE 0 END) * 100.0 / COUNT(a.id_entrenamiento), 2) AS porcentaje_asistencia
-                FROM jugadores j
-                INNER JOIN asistencias a ON j.id_jugador = a.id_jugador
-                INNER JOIN entrenamientos e ON a.id_entrenamiento = e.id_entrenamiento
-                WHERE j.id_jugador = ? AND e.fecha_entrenamiento >= DATE_SUB(CURDATE(), INTERVAL 2 WEEK)
-                GROUP BY j.id_jugador;';
+        $sql2 = 'SELECT j.id_jugador AS id, CONCAT(j.nombre_jugador, " ", j.apellido_jugador) AS JUGADOR, 
+        ROUND(SUM(CASE WHEN a.asistencia = "Asistencia" THEN 1 ELSE 0 END) * 100.0 / COUNT(a.id_entrenamiento), 2) AS porcentaje_asistencia
+        FROM jugadores j INNER JOIN asistencias a ON j.id_jugador = a.id_jugador
+        INNER JOIN entrenamientos e ON a.id_entrenamiento = e.id_entrenamiento
+        WHERE j.id_jugador = ? AND e.fecha_entrenamiento >= DATE_SUB(CURDATE(), INTERVAL 2 WEEK)
+        GROUP BY j.id_jugador;';
 
         // Consulta para obtener el promedio de puntuación de participaciones que ha tenido el jugador durante las ultimas 2 semanas
         $sql3 = 'SELECT pp.id_jugador AS id, p.fecha_partido AS FECHA, pp.puntuacion AS PUNTUACION
-                FROM participaciones_partidos pp INNER JOIN partidos p ON p.id_partido = pp.id_partido
-                WHERE pp.id_jugador = ? AND p.fecha_partido >= DATE_SUB(CURDATE(), INTERVAL 2 WEEK);';
+        FROM participaciones_partidos pp INNER JOIN partidos p ON p.id_partido = pp.id_partido
+        WHERE pp.id_jugador = ? AND p.fecha_partido >= DATE_SUB(CURDATE(), INTERVAL 2 WEEK);';
 
         $params = array($this->jugador);
-        // Ejecutar las 4 consultas SQL
+
+        // Ejecutar las 3 consultas SQL
         $data1 = Database::getRows($sql1, $params);
         $data2 = Database::getRows($sql2, $params);
         $data3 = Database::getRows($sql3, $params);
@@ -399,33 +395,59 @@ class CaracteristicasAnalisisHandler
                 $input = [
                     $row1['PROMEDIO'], // Datos de la consulta 1
                     $row2['porcentaje_asistencia'], // Datos de la consulta 2
-                    $row3['puntuacion_promedio'], // Datos de la consulta 3
+                    $row3['puntuacion'] // Asegúrate de que este sea el nombre correcto de la columna
                 ];
 
-                // Aquí puedes definir cómo calcular el resultado esperado. Por ahora se coloca un valor de ejemplo.
-                $label = $this->calcularProbabilidadDeJugar($row1, $row2, $row3);
+                // Definir el resultado esperado como un porcentaje
+                $datos = [
+                    'PROMEDIO' => $input[0],
+                    'porcentaje_asistencia' => $input[1],
+                    'puntuacion_promedio' => $input[2],
+                ];
+
+                // Aquí calculas la "probabilidad" (puede ser entre 0 y 1 o 0 y 100)
+                $label = $this->calcularProbabilidadDeJugar($datos);
+
+                // Dependiendo de cómo manejas el label, puede ser una clase (0 o 1) o un valor continuo
+                // Si es un valor continuo entre 0 y 1, puedes considerar redondearlo o clasificarlo en categorías
 
                 $trainingSamples[] = $input;
-                $trainingLabels[] = $label;
+                $trainingLabels[] = [$label]; // Asegúrate de que esté en un array
             }
         }
 
-        // Configurar la red neuronal
-        $mlp = new MLPClassifier(3, [5], [0, 1]); // Ajusta la arquitectura según tus necesidades
+        // Crear el modelo de red neuronal para clasificación binaria
+        $network = new MLPClassifier(3, [10, 10], [0, 1]);
 
-        // Entrenar la red neuronal
-        $mlp->train($trainingSamples, $trainingLabels);
+        // Entrenar el modelo
+        $network->train($trainingSamples, $trainingLabels);
 
-        // Devolver el modelo entrenado
-        return $mlp;
+        return $network;
     }
 
-    // Función para calcular la probabilidad de jugar en base a los datos (ejemplo)
-    private function calcularProbabilidadDeJugar($row1, $row2, $row3)
+    // Función para calcular la probabilidad de jugar en base a los datos (ajustada para múltiples datos)
+    private function calcularProbabilidadDeJugar($datos)
     {
-        // Implementa tu lógica para determinar si el jugador jugará el próximo partido.
-        return $row1['PROMEDIO'] > 5 && $row2['porcentaje_asistencia'] > 75 && $row3['puntuacion_promedio'] > 7 ? 1 : 0;
+        // Asegúrate de que $datos es un array con los índices esperados
+        $promedio = $datos['PROMEDIO'];
+        $porcentaje_asistencia = $datos['porcentaje_asistencia'];
+        $puntuacion_promedio = $datos['puntuacion_promedio'];
+
+        // Implementa la lógica para determinar la probabilidad en porcentaje
+        // Ejemplo de lógica simple: normaliza y combina los datos
+        $probabilidad = 0;
+
+        // Normalización y ponderación simple
+        if ($promedio > 5) $probabilidad += 0.4;
+        if ($porcentaje_asistencia > 75) $probabilidad += 0.3;
+        if ($puntuacion_promedio > 7) $probabilidad += 0.3;
+
+        // Escalar a porcentaje (0 a 100%)
+        $probabilidad *= 100;
+
+        return $probabilidad;
     }
+
 
     // Función para hacer predicciones con la red neuronal entrenada
     public function predecir($nuevosDatos)

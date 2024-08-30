@@ -28,6 +28,7 @@ class Report extends FPDF
             $this->title = $title;
             // Se establece el título del documento (true = utf-8).
             $this->setTitle('OneGoal - Reporte', true);
+            // Aquí se establece el margen Izquierdo, Derecho y de Arriba, en el FOOTER SE PONE EL DE ABAJO.
             // Se establecen los márgenes del documento (izquierdo, superior y derecho).
             $this->setMargins(15, 15, 15);
             // Se añade una nueva página al documento con orientación vertical y formato carta, llamando implícitamente al método header()
@@ -85,9 +86,10 @@ class Report extends FPDF
     {
         // Establecer color de texto a blanco
         $this->setTextColor(0, 0, 0);
-        // Número de página y usuario
+        // ESTE ES EL MARGEN INFERIOR.
         $this->setY(-20);
         $this->setFont('Arial', 'I', 10);
+        // Número de página y usuario
         $this->cell(0, 10, $this->encodeString('Generado por: ' . $_SESSION['nombreAdministrador']), 0, 1, 'R');
         $this->cell(0, 10, $this->encodeString('Página ') . $this->pageNo() . '/{nb}', 0, 0, 'C');
     }

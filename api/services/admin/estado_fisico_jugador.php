@@ -113,16 +113,6 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Este jugador no tiene registros de estado fisico';
                 }
                 break;
-                // Grafica para mostrar la predicción con soporte vertical de los IMC de la siguiente semana por jugador
-            case 'graphicPredictiveImcSVR':
-                if (!$estadofisico->setIdJugador($_POST['idJugador'])) {
-                    $result['error'] = $estadofisico->getDataError();
-                } elseif ($result['dataset'] = $estadofisico->graphicPredictiveImcSVR()) {
-                    $result['status'] = 1;
-                } else {
-                    $result['error'] = 'Este jugador no tiene registros de estado fisico';
-                }
-                break;
             default:
                 $result['error'] = 'Acción no disponible dentro de la sesión';
         }
