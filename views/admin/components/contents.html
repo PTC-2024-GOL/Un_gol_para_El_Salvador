@@ -37,6 +37,8 @@
                 </tr>
                 <tr>
                     <th>Nombre del contenido</th>
+                    <th>Momento de juego</th>
+                    <th>Zona de campo</th>
                 </tr>
             </thead>
             <!-- Cuerpo de la tabla para mostrar un registro por fila -->
@@ -60,11 +62,49 @@
             <form id="saveForm">
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input class="d-none"  id="idContenido" name="idContenido">
-                    <div class="col-sm-12 col-md-12">
+                    <input class="d-none" id="idContenido" name="idContenido">
+                    <div class="col-sm-12 col-md-6">
                         <label for="contenido" class="form-label fw-semibold">Contenido</label>
                         <input id="contenido" type="text" name="contenido" class="form-control"
                             placeholder="Escribe el nombre del contenido" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="momento" class="form-label fw-semibold">Selecciona el momento de juego</label>
+                        <select id="momento" type="text" name="momento" class="form-select" required>
+                            <option value="">Selecciona una opción</option>
+                            <option value="Ofensivo">Ofensivo</option>
+                            <option value="Transición defensiva">Transición defensiva</option>
+                            <option value="Transición ofensiva">Transición ofensiva</option>
+                            <option value="Balón parado ofensivo">Balón parado ofensivo</option>
+                            <option value="Balón parado defensivo">Balón parado defensivo</option>
+                            <option value="Defensivo">Defensivo</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-12">
+                        <label for="contenido" class="form-label fw-semibold">Selecciona la zona de campo</label>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-12">
+                                <button href="#" class="btn" role="button" data-bs-toggle="button"
+                                onclick="zona1func()" id="zona1">
+                                    <img src="../../../resources/img/png/zona_campo_1.png"
+                                        class="rounded float-start img-fluid" alt="...">
+                                </button>
+                            </div>
+                            <div class="col-md-4 col-sm-12">
+                                <button href="#" class="btn" role="button" data-bs-toggle="button"
+                                onclick="zona2func()" id="zona2">
+                                    <img src="../../../resources/img/png/zona_campo_2.png"
+                                        class="rounded mx-auto d-block img-fluid" alt="...">
+                                </button>
+                            </div>
+                            <div class="col-md-4 col-sm-12">
+                                <button href="#" class="btn" role="button" data-bs-toggle="button"
+                                onclick="zona3func()" id="zona3">
+                                    <img src="../../../resources/img/png/zona_campo_3.png"
+                                        class="rounded float-end img-fluid" alt="...">
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">

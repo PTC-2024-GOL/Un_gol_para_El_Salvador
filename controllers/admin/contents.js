@@ -2,6 +2,11 @@ let SAVE_MODAL;
 let SAVE_FORM,
     ID_CONTENIDO,
     NOMBRE_CONTENIDO;
+let ZONA,
+    ZONA1,
+    ZONA2,
+    MOMENTO,
+    ZONA3;
 let SEARCH_FORM;
 
 // Constantes para completar las rutas de la API.
@@ -25,6 +30,7 @@ const openCreate = () => {
     MODAL_TITLE.textContent = 'Agregar una contenido';
     // Se prepara el formulario.
     SAVE_FORM.reset();
+    zona2func();
 }
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
@@ -47,8 +53,25 @@ const openUpdate = async (id) => {
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
+            console.log(ROW);
             ID_CONTENIDO.value = ROW.id_tema_contenido;
             NOMBRE_CONTENIDO.value = ROW.nombre_tema_contenido;
+            const options = MOMENTO.options;
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].value === ROW.momento_juego) {
+                    MOMENTO.selectedIndex = i;
+                    break;
+                }
+            }
+            if (ROW.zona_campo == 'Zona 1') {
+                zona1func();
+            }
+            else if (ROW.zona_campo == 'Zona 2') {
+                zona2func();
+            }
+            else{
+                zona3func();
+            }
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -135,6 +158,8 @@ async function fillTable(form = null) {
                 const tablaHtml = `
                 <tr>
                 <td class="text-center">${row.nombre_tema_contenido}</td>
+                <td class="text-center">${row.momento_juego}</td>
+                <td class="text-center">${row.zona_campo}</td>
                 <td class="text-end">
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id_tema_contenido})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
@@ -172,6 +197,29 @@ async function fillTable(form = null) {
     }
 }
 
+const zona1func = () => {
+    ZONA1.classList.add('active');
+    ZONA2.classList.remove('active');
+    ZONA3.classList.remove('active');
+    ZONA = 'Zona 1';
+    console.log('oaaaaaaaaaa ', ZONA);
+}
+
+
+const zona2func = () => {
+    ZONA1.classList.remove('active');
+    ZONA2.classList.add('active');
+    ZONA3.classList.remove('active');
+    ZONA = 'Zona 2';
+}
+
+const zona3func = () => {
+    ZONA1.classList.remove('active');
+    ZONA2.classList.remove('active');
+    ZONA3.classList.add('active');
+    ZONA = 'Zona 3';
+}
+
 // window.onload
 window.onload = async function () {
     // Obtiene el contenedor principal
@@ -189,11 +237,15 @@ window.onload = async function () {
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
+    ZONA1 = document.getElementById('zona1');
+    ZONA2 = document.getElementById('zona2');
+    ZONA3 = document.getElementById('zona3');
 
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
         ID_CONTENIDO = document.getElementById('idContenido'),
-        NOMBRE_CONTENIDO = document.getElementById('contenido');
+        NOMBRE_CONTENIDO = document.getElementById('contenido'),
+        MOMENTO = document.getElementById('momento');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {
         // Se evita recargar la página web después de enviar el formulario.
@@ -202,6 +254,7 @@ window.onload = async function () {
         (ID_CONTENIDO.value) ? action = 'updateRow' : action = 'createRow';
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(SAVE_FORM);
+        FORM.append('zona', ZONA);
         // Petición para guardar los datos del formulario.
         const DATA = await fetchData(API, action, FORM);
         // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.

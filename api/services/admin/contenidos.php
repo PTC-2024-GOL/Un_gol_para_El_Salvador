@@ -28,7 +28,9 @@ if (isset($_GET['action'])) {
             case 'createRow':
                 $_POST = Validator::validateForm($_POST);
                 if (
-                    !$contenidos->setContenido($_POST['contenido'])
+                    !$contenidos->setContenido($_POST['contenido']) or
+                    !$contenidos->setZona($_POST['zona']) or
+                    !$contenidos->setMomento($_POST['momento'])
                 ) {
                     $result['error'] = $contenidos->getDataError();
                 } elseif ($contenidos->createRow()) {
@@ -62,7 +64,9 @@ if (isset($_GET['action'])) {
                 $_POST = Validator::validateForm($_POST);
                 if (
                     !$contenidos->setId($_POST['idContenido']) or
-                    !$contenidos->setContenido($_POST['contenido'])
+                    !$contenidos->setContenido($_POST['contenido']) or
+                    !$contenidos->setZona($_POST['zona']) or
+                    !$contenidos->setMomento($_POST['momento'])
                 ) {
                     $result['error'] = $contenidos->getDataError();
                 } elseif ($contenidos->updateRow()) {

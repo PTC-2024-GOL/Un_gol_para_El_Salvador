@@ -41,6 +41,29 @@ class ContenidosData extends ContenidosHandler
         }
     }
 
+    public function setMomento($value)
+    {
+        if (Validator::validateAlphanumeric($value)) {
+            $this->momento = $value;
+            return true;
+        } else {
+            $this->data_error = 'Elije otra opción';
+            return false;
+        }
+    }
+    public function setZona($value)
+    {
+        if (Validator::validateAlphanumeric($value)) {
+            $this->zona = $value;
+            return true;
+        } else {
+            $this->data_error = 'Elije otra opción';
+            return false;
+        }
+    }
+
+    
+
     // Método para obtener el error de los datos.
     public function getDataError()
     {
