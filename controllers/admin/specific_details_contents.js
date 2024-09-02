@@ -211,7 +211,7 @@ const cargarComponente = async (number) => {
     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
     <input type="hidden" id="iddetallecontenido" name="idDetalle">
     <div class="col-sm-12 col-md-6">
-        <label for="subcontenido" class="form-label fw-semibold">Sub contenido</label>
+        <label for="subcontenido" class="form-label fw-semibold">Principios de juego</label>
         <select id="subcontenido" type="text" name="idSubContenido" class="form-select"
             required></select>
     </div>
@@ -220,7 +220,7 @@ const cargarComponente = async (number) => {
         <select id="tarea" type="text" name="IdTarea" class="form-select" required></select>
     </div>
     <div class="col-sm-12 col-md-6 mb-3">
-        <label for="cantidadEquipo" class="form-label fw-semibold">Minutos del contenido</label>
+        <label for="cantidadEquipo" class="form-label fw-semibold">Minutos del principio</label>
         <input id="cantidadEquipo" type="number" name="CantidadSubContenido" class="form-control"
             min="1" max="600" placeholder="Ingresa los minutos del contenido" required>
     </div>
@@ -629,7 +629,7 @@ async function fillTable(form = null, actions = 0) {
             CONTENIDO1.textContent = `Tu entrenamiento dura ${totalMinutosContenidos} minutos y se basa en ${'\n'} ${analisisContenido}.`;
             CONTENIDO2.textContent = `Tu entrenamiento dura ${totalMinutosTareas} minutos y se basa en ${'\n'} ${analisisTareas}.`;
 
-            DoughnutGraph('myChart', contenido, minutosC, 'Minutos por subContenido', 0);
+            DoughnutGraph('myChart', contenido, minutosC, 'Minutos por principios', 0);
             DoughnutGraph3('myChart2', tarea, minutosT, 'Minutos por Tarea', 0);
             // Mostrar elementos obtenidos de la API
             DATA.dataset.forEach(row => {
