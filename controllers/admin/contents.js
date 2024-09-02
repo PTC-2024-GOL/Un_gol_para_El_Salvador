@@ -1,7 +1,6 @@
 let SAVE_MODAL;
 let SAVE_FORM,
-    ID_CONTENIDO,
-    NOMBRE_CONTENIDO;
+    ID_CONTENIDO;
 let ZONA,
     ZONA1,
     ZONA2,
@@ -55,7 +54,6 @@ const openUpdate = async (id) => {
             const ROW = DATA.dataset;
             console.log(ROW);
             ID_CONTENIDO.value = ROW.id_tema_contenido;
-            NOMBRE_CONTENIDO.value = ROW.nombre_tema_contenido;
             const options = MOMENTO.options;
             for (let i = 0; i < options.length; i++) {
                 if (options[i].value === ROW.momento_juego) {
@@ -157,7 +155,6 @@ async function fillTable(form = null) {
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
                 <tr>
-                <td class="text-center">${row.nombre_tema_contenido}</td>
                 <td class="text-center">${row.momento_juego}</td>
                 <td class="text-center">${row.zona_campo}</td>
                 <td class="text-end">
@@ -232,7 +229,7 @@ window.onload = async function () {
     appContainer.innerHTML = contentHtml;
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
-    titleElement.textContent = 'Contenidos';
+    titleElement.textContent = 'Momentos de juego';
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
@@ -244,7 +241,6 @@ window.onload = async function () {
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
         ID_CONTENIDO = document.getElementById('idContenido'),
-        NOMBRE_CONTENIDO = document.getElementById('contenido'),
         MOMENTO = document.getElementById('momento');
     // Método del evento para cuando se envía el formulario de guardar.
     SAVE_FORM.addEventListener('submit', async (event) => {

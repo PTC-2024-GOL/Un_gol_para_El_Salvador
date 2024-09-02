@@ -21,7 +21,7 @@
                 <button
                     class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
                     type="submit" onclick="openCreate()">
-                    <span class="fs-5 me-2">+</span> Agregar un nuevo contenido
+                    <span class="fs-5 me-2">+</span> Agregar un nuevo momento de juego
                 </button>
             </div>
         </div>
@@ -36,7 +36,6 @@
                     <td colspan="6" id="rowsFound"></td>
                 </tr>
                 <tr>
-                    <th>Nombre del contenido</th>
                     <th>Momento de juego</th>
                     <th>Zona de campo</th>
                 </tr>
@@ -63,12 +62,7 @@
                 <div class="modal-body row g-3">
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
                     <input class="d-none" id="idContenido" name="idContenido">
-                    <div class="col-sm-12 col-md-6">
-                        <label for="contenido" class="form-label fw-semibold">Contenido</label>
-                        <input id="contenido" type="text" name="contenido" class="form-control"
-                            placeholder="Escribe el nombre del contenido" required>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
+                    <div class="col-sm-12 col-md-12">
                         <label for="momento" class="form-label fw-semibold">Selecciona el momento de juego</label>
                         <select id="momento" type="text" name="momento" class="form-select" required>
                             <option value="">Selecciona una opción</option>
