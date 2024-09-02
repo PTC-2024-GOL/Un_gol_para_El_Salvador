@@ -26,11 +26,17 @@ const guardar = async () => {
 
             // Crear un arreglo para almacenar los datos de los checkbox.
             const convocados = [];
+            let marcados = 0;
 
             // Recorrer todos los inputs de tipo checkbox y agregar los datos al arreglo.
             document.querySelectorAll('input[type="checkbox"]').forEach(input => {
                 const jugador = input.id;
                 const convocado = input.checked ? 1 : 0; // Asigna 1 si está marcado, 0 si no.
+
+                // Contar los checkboxes marcados.
+                if (convocado === 1) {
+                    marcados++;
+                }
 
                 // Agregar el jugador y el estado del checkbox al arreglo.
                 convocados.push({
@@ -38,6 +44,12 @@ const guardar = async () => {
                     convocado: convocado
                 });
             });
+
+            // Validar que el número de checkboxes marcados esté entre 14 y 18.
+            if (marcados < 14 || marcados > 18) {
+                sweetAlert(2, 'Debe seleccionar entre 14 y 18 jugadores.', false);
+                return;
+            }
 
             // Agregar el JSON de los convocados al FormData.
             FORM.append('convocatoria', JSON.stringify(convocados));
@@ -58,6 +70,7 @@ const guardar = async () => {
         console.log(Error + ' Error al cargar el mensaje');
     }
 };
+
 
 
 // Variables y constantes para la paginación
