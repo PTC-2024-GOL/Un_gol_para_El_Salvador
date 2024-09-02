@@ -142,7 +142,7 @@ async function fillTable(form = null) {
                 console.log(action)
                 const tablaHtml = `
                 <tr>
-                    <td>${row.nombre_tema_contenido}</td>
+                    <td>${row.momento_juego}</td>
                     <td>${row.sub_tema_contenido}</td>
                     <td>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id_sub_tema_contenido})">
