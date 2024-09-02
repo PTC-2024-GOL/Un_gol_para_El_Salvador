@@ -10,7 +10,6 @@ class ContenidosHandler
      *  Declaración de atributos para el manejo de datos.
      */
     protected $id = null;
-    protected $contenido = null;
     protected $momento = null;
     protected $zona = null;
 
@@ -34,9 +33,8 @@ class ContenidosHandler
     
     public function createRow()
     {
-        $sql = 'INSERT INTO temas_contenidos(nombre_tema_contenido, zona_campo, momento_juego) VALUES(?, ?, ?);';    
+        $sql = 'INSERT INTO temas_contenidos(zona_campo, momento_juego) VALUES(?, ?);';    
         $params = array(
-            $this->contenido,
             $this->zona,
             $this->momento
         );
@@ -64,9 +62,8 @@ class ContenidosHandler
     
     public function updateRow()
     {
-        $sql = 'UPDATE temas_contenidos SET nombre_tema_contenido = ?, zona_campo = ?, momento_juego = ? WHERE id_tema_contenido = ?;';
+        $sql = 'UPDATE temas_contenidos SET zona_campo = ?, momento_juego = ? WHERE id_tema_contenido = ?;';
         $params = array(
-            $this->contenido,
             $this->zona,
             $this->momento,
             $this->id   

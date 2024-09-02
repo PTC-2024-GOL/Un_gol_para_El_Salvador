@@ -22,11 +22,11 @@ class SubContenidosHandler
     public function searchRows()
     {
         $value = '%' . Validator::getSearchValue() . '%';
-        $sql = 'SELECT stc.*, tc.nombre_tema_contenido
+        $sql = 'SELECT stc.*, tc.momento_juego
                 FROM sub_temas_contenidos stc
                 INNER JOIN temas_contenidos tc 
                 ON stc.id_tema_contenido = tc.id_tema_contenido
-                WHERE sub_tema_contenido LIKE ? OR nombre_tema_contenido LIKE ?
+                WHERE sub_tema_contenido LIKE ? OR momento_juego LIKE ?
                 ORDER BY sub_tema_contenido;';
         $params = array($value, $value);
         return Database::getRows($sql, $params);
@@ -47,7 +47,7 @@ class SubContenidosHandler
     //Función para leer todas las un Subcontenido o varios. 
     public function readAll()
     {
-        $sql = 'SELECT stc.*, tc.nombre_tema_contenido
+        $sql = 'SELECT stc.*, tc.momento_juego
                 FROM sub_temas_contenidos stc
                 INNER JOIN temas_contenidos tc ON stc.id_tema_contenido = tc.id_tema_contenido;';
         return Database::getRows($sql);
@@ -57,7 +57,7 @@ class SubContenidosHandler
     
     public function readOne()
     {
-        $sql = 'SELECT stc.*, tc.nombre_tema_contenido
+        $sql = 'SELECT stc.*, tc.momento_juego
                 FROM sub_temas_contenidos stc
                 INNER JOIN temas_contenidos tc ON stc.id_tema_contenido = tc.id_tema_contenido 
                 WHERE id_sub_tema_contenido = ?;';
@@ -69,7 +69,7 @@ class SubContenidosHandler
     
     public function readOneContents()
     {
-        $sql = 'SELECT * FROM temas_contenidos;';
+        $sql = 'SELECT id_tema_contenido, CONCAT(momento_juego, " - ", zona_campo) FROM temas_contenidos;';
         return Database::getRows($sql);
     }
 

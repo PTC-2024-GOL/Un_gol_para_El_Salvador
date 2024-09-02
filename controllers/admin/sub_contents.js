@@ -142,7 +142,7 @@ async function fillTable(form = null) {
                 console.log(action)
                 const tablaHtml = `
                 <tr>
-                    <td>${row.nombre_tema_contenido}</td>
+                    <td>${row.momento_juego}</td>
                     <td>${row.sub_tema_contenido}</td>
                     <td>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id_sub_tema_contenido})">
@@ -194,7 +194,7 @@ window.onload = async function () {
     appContainer.innerHTML = subcontenidosHtml;
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
-    titleElement.textContent = 'Subcontenidos';
+    titleElement.textContent = 'Principios';
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
