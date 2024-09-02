@@ -16,7 +16,7 @@ class DetalleContenidoHandler
     protected $cantidadSubContenido = null;
     protected $idSubContenido = null;
     protected $cantidadTarea = null;
-
+    protected $cancha = null;
     protected $idEquipo = null;
 
 
@@ -104,6 +104,18 @@ class DetalleContenidoHandler
                     sub_tema_contenido
                     FROM sub_temas_contenidos;";
         return Database::getRows($sql);
+    }
+
+    //Función para rellenar la opcion del combobox con horarios de subcontenidos en base a la cancha, 
+    //Función para leer los subcontenidos disponibles. Esta función es para "Detalle Contenido" 
+    public function readAllSubContenidos2()
+    {
+        $sql = "SELECT 
+                    id_sub_tema_contenido,
+                    sub_tema_contenido
+                    FROM subcontenidos_por_cancha WHERE zona_campo = ?;";
+        $params = array($this->cancha);
+        return Database::getRows($sql, $params);
     }
     //Función para rellenar la opcion del combobox con horarios de tareas, 
     //Función para leer todos los tareasdisponibles. Esta función es para "Detalle Contenido" 

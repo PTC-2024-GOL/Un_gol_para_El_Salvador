@@ -7,6 +7,7 @@ let SAVE_FORM,
     CANTIDAD_CONTENIDO,
     MINUTOS_TAREA,
     IDDETALLE_CONTENIDO,
+    CONTENEDOR_MODAL,
     JUGADORES,
     ID_JUGADOR,
     ID_URL,
@@ -17,11 +18,16 @@ let SAVE_FORM,
     CONTENEDOR1,
     CONTENEDOR2,
     CONTENIDO1,
-    CONTENIDO2
+    CONTENIDO2,
+    ZONA1,
+    ZONA2,
+    ZONA3,
+    ZONA
     ;
 let ACTIVATE = '';
 let SEARCH_FORM;
 
+let selectJugador;
 
 // Constantes para completar las rutas de la API.
 const SD_CONTENTS_API = 'services/admin/detalle_contenido.php';
@@ -116,6 +122,199 @@ const fillSelected = (data, selectId, selectedValue = null) => {
         selectElement.value = selectedValue;
     }
 };
+
+const zona1func = () => {
+    ZONA1.classList.add('active');
+    ZONA2.classList.remove('active');
+    ZONA3.classList.remove('active');
+    ZONA = 'Zona 1';
+}
+
+
+const zona2func = () => {
+    ZONA1.classList.remove('active');
+    ZONA2.classList.add('active');
+    ZONA3.classList.remove('active');
+    ZONA = 'Zona 2';
+}
+
+const zona3func = () => {
+    ZONA1.classList.remove('active');
+    ZONA2.classList.remove('active');
+    ZONA3.classList.add('active');
+    ZONA = 'Zona 3';
+}
+
+/*
+*   Función para preparar el formulario al momento de insertar un registro.
+*   Parámetros: ninguno.
+*   Retorno: ninguno.
+*/
+
+
+const openCreateCancha = async () => {
+    volverCancha();
+    zona2func();
+    SAVE_MODAL.show();
+    MODAL_TITLE.textContent = 'Agregar detalle';
+}
+
+const volverCancha = async () => {
+    // Se muestra la caja de diálogo con su título.
+    const modal = `<div class="col-sm-12 col-md-12 g-3 px-3 py-3">
+                        <label for="contenido" class="form-label fw-semibold">Por favor elije en qué parte de la cancha se desarrollara el contenido</label>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-12">
+                                <button href="#" class="btn" role="button" data-bs-toggle="button"
+                                onclick="zona1func()" id="zona1">
+                                    <img src="../../../resources/img/png/zona_campo_1.png"
+                                        class="rounded float-start img-fluid" alt="...">
+                                </button>
+                            </div>
+                            <div class="col-md-4 col-sm-12">
+                                <button href="#" class="btn" role="button" data-bs-toggle="button"
+                                onclick="zona2func()" id="zona2">
+                                    <img src="../../../resources/img/png/zona_campo_2.png"
+                                        class="rounded mx-auto d-block img-fluid" alt="...">
+                                </button>
+                            </div>
+                            <div class="col-md-4 col-sm-12">
+                                <button href="#" class="btn" role="button" data-bs-toggle="button"
+                                onclick="zona3func()" id="zona3">
+                                    <img src="../../../resources/img/png/zona_campo_3.png"
+                                        class="rounded float-end img-fluid" alt="...">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
+                    <button type="submit" class="btn bg-blue-principal-color text-white" onclick="openCreate()">Seguir</button>
+                </div>`
+    CONTENEDOR_MODAL.innerHTML = modal;
+    ZONA1 = document.getElementById('zona1');
+    ZONA2 = document.getElementById('zona2');
+    ZONA3 = document.getElementById('zona3');
+    if (ZONA == 'Zona 1') {
+        zona1func();
+    } else if (ZONA == 'Zona 2') {
+        zona2func();
+    }
+    else {
+        ZONA = 'Zona 3';
+        zona3func();
+    }
+}
+const cargarComponente = async (number) => {
+    // Se muestra la caja de diálogo con su título.
+    const modal = `<form id="saveForm">
+<div class="modal-body row g-3">
+    <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+    <input type="hidden" id="iddetallecontenido" name="idDetalle">
+    <div class="col-sm-12 col-md-6">
+        <label for="subcontenido" class="form-label fw-semibold">Sub contenido</label>
+        <select id="subcontenido" type="text" name="idSubContenido" class="form-select"
+            required></select>
+    </div>
+    <div class="col-sm-12 col-md-6">
+        <label for="tarea" class="form-label fw-semibold">Tarea</label>
+        <select id="tarea" type="text" name="IdTarea" class="form-select" required></select>
+    </div>
+    <div class="col-sm-12 col-md-6 mb-3">
+        <label for="cantidadEquipo" class="form-label fw-semibold">Minutos del contenido</label>
+        <input id="cantidadEquipo" type="number" name="CantidadSubContenido" class="form-control"
+            min="1" max="600" placeholder="Ingresa los minutos del contenido" required>
+    </div>
+    <div class="col-sm-12 col-md-6">
+        <label for="minutostarea" class="form-label fw-semibold">Minutos tarea</label>
+        <input id="minutostarea" type="number" name="CantidadTarea" class="form-control" min="1"
+            max="600" placeholder="Ingresa los minutos de la tarea" required>
+    </div>
+    <div class="col-sm-12 col-md-12">
+        <label for="telefonoEquipo" class="form-label fw-semibold">Jugador/ Jugadores</label>
+        <div class="row">
+            <div class="col-sm-12 col-md-10">
+                <select class="form-select me-3 borde-transparente campo rounded-3 shadow"
+                    id="generador">
+                    <option value="">Selecciona a quién se asignará</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-12" id="nombresDeLosJugadores">
+
+    </div>
+</div>
+<div class="modal-footer col-sm-12 col-md-12 col-lg-12">
+    <button class="btn bg-yellow-principal-color text-white" id="volver" onclick="volverCancha()">Cambiar cancha</button>
+    <button type="reset" class="btn bg-red-cream-color text-white" data-bs-dismiss="modal">Cancelar</button>
+    <button type="submit" class="btn bg-blue-principal-color text-white ">Guardar</button>
+</div>
+</form>`;
+    CONTENEDOR_MODAL.innerHTML = modal;
+    if(number){
+        
+        let boton = document.getElementById('volver');
+        //Quiero que el boton se elimine
+        boton.remove();
+    }
+}
+const cargarDespues = async (number = 0) => {
+    cargarComponente(number);
+
+    // Constantes para establecer los elementos del formulario de guardar.
+    SAVE_FORM = document.getElementById('saveForm'),
+        IDDETALLE_CONTENIDO = document.getElementById('iddetallecontenido'),
+        ID_SUBCONTENIDO = document.getElementById('iddetallecontenido'),
+        SUBCONTENIDO = document.getElementById('subcontenido');
+    TAREA = document.getElementById('tarea');
+    ID_JUGADOR = document.getElementById('generador');
+    CANTIDAD_CONTENIDO = document.getElementById('cantidadEquipo');
+    MINUTOS_TAREA = document.getElementById('minutostarea');
+    // Método del evento para cuando se envía el formulario de guardar.
+    SAVE_FORM.addEventListener('submit', async (event) => {
+        // Se evita recargar la página web después de enviar el formulario.
+        event.preventDefault();
+        // Constante tipo objeto con los datos del formulario.
+        const FORM = new FormData(SAVE_FORM);
+        FORM.append('idEntrenamiento', ID_ENTRENAMIENTO);
+        console.log(ID_ENTRENAMIENTO);
+        // Petición para guardar los datos del formulario.
+        if (!(IDDETALLE_CONTENIDO.value == 0)) {
+            const DATA = await fetchData(SD_CONTENTS_API, 'updateRow', FORM);
+            // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
+            if (DATA.status) {
+                // Se cierra la caja de diálogo.
+                SAVE_MODAL.hide();
+                // Se muestra un mensaje de éxito.
+                sweetAlert(1, DATA.message, true);
+                // Se carga nuevamente la tabla para visualizar los cambios.
+                fillTable();
+            } else {
+                sweetAlert(2, DATA.error, false);
+                console.error(DATA.exception);
+            }
+        } else {
+            console.log(datosguardados);
+            console.log(TAREA.value);
+            // Convertir el arreglo a una cadena JSON
+            const jugadoresJSON = JSON.stringify(datosguardados);
+            FORM.append('arregloJugadores', jugadoresJSON);
+            const DATA = await fetchData(SD_CONTENTS_API, 'createRow', FORM);
+            console.log(DATA);
+            if (DATA.status) {
+                // Se cierra la caja de diálogo.
+                SAVE_MODAL.hide();
+                // Se muestra un mensaje de éxito.
+                sweetAlert(1, DATA.message, true);
+                // Se carga nuevamente la tabla para visualizar los cambios.
+                fillTable();
+            } else {
+                sweetAlert(2, DATA.error, false);
+                console.error(DATA.exception);
+            }
+        }
+    });
+};
 /*
 *   Función para preparar el formulario al momento de insertar un registro.
 *   Parámetros: ninguno.
@@ -124,19 +323,135 @@ const fillSelected = (data, selectId, selectedValue = null) => {
 
 
 const openCreate = async () => {
-    // Se muestra la caja de diálogo con su título.
+    // Selecciona el elemento después de que se haya creado
+    await cargarDespues();
+    selectJugador = document.getElementById('generador');
+    // Añadir el listener para el evento 'change'
+    selectJugador.addEventListener('change', (event) => {
+        console.log('Estoy cambiando el select');
+        const selectedJugadorId = event.target.value;
+        if (ADD_JUGADOR) {
+            if (selectedJugadorId == 0) {
+                // Si entra a este if seleccionar todos los jugadores
+                eliminardata('delete full');
+
+                lista_datos.forEach(jugadorSeleccionado => {
+                    const elementoAgregado = datosguardados.some(elemento => elemento === jugadorSeleccionado.id);
+                    if (!elementoAgregado) {
+                        // Crear un nuevo contenedor de fila para el input y el botón
+                        const rowContainer = document.createElement('div');
+                        rowContainer.id = 'rowContainer_' + jugadorSeleccionado.id;
+                        rowContainer.classList.add('row', 'py-1', 'ms-1');
+
+                        // Crear un nuevo input para el nombre del jugador
+                        const nombreJugadorInput = document.createElement('input');
+                        nombreJugadorInput.id = 'nombreAdministrador_' + jugadorSeleccionado.id;
+                        nombreJugadorInput.type = 'text';
+                        nombreJugadorInput.name = 'nombreAdministrador_' + jugadorSeleccionado.id;
+                        nombreJugadorInput.classList.add('col-9', 'rounded-3', 'me-2', 'inputt');
+                        nombreJugadorInput.disabled = true;
+                        nombreJugadorInput.value = jugadorSeleccionado.jugadores;
+
+                        // Crear un nuevo botón de eliminar
+                        const botonEliminar = document.createElement('button');
+                        botonEliminar.id = 'btnEliminar_' + jugadorSeleccionado.id;
+                        botonEliminar.type = 'button';
+                        botonEliminar.classList.add('btn', 'transparente', 'col-1', 'border', 'border-danger');
+                        datosguardados.push(jugadorSeleccionado.id);
+                        console.log(datosguardados);
+                        botonEliminar.onclick = function () {
+                            eliminardata(jugadorSeleccionado.id);
+                            eliminarInput(jugadorSeleccionado.id);
+                        };
+
+                        // Crear la imagen para el botón de eliminar
+                        const imagenEliminar = document.createElement('img');
+                        imagenEliminar.src = '../../../resources/img/svg/icons_forms/trash 1.svg';
+                        imagenEliminar.width = 10;
+                        imagenEliminar.height = 10;
+
+                        // Agregar la imagen al botón de eliminar
+                        botonEliminar.appendChild(imagenEliminar);
+
+                        // Agregar el input y el botón al contenedor de fila
+                        rowContainer.appendChild(nombreJugadorInput);
+                        rowContainer.appendChild(botonEliminar);
+
+                        // Obtener el contenedor de los nombres de los jugadores
+                        const nombresDeLosJugadoresDiv = document.getElementById('nombresDeLosJugadores');
+
+                        // Agregar el contenedor de fila al contenedor de nombres de los jugadores
+                        nombresDeLosJugadoresDiv.appendChild(rowContainer);
+                    }
+                });
+            } else {
+                const jugadorSeleccionado = lista_datos.find(jugadorSeleccionado => jugadorSeleccionado.id == selectedJugadorId);
+                console.log(jugadorSeleccionado);
+                const elementoAgregado = datosguardados.some(elemento => elemento === jugadorSeleccionado.id);
+                if (!elementoAgregado) {
+                    // Crear un nuevo contenedor de fila para el input y el botón
+                    const rowContainer = document.createElement('div');
+                    rowContainer.id = 'rowContainer_' + jugadorSeleccionado.id;
+                    rowContainer.classList.add('row', 'py-1', 'ms-1');
+
+                    // Crear un nuevo input para el nombre del jugador
+                    const nombreJugadorInput = document.createElement('input');
+                    nombreJugadorInput.id = 'nombreAdministrador_' + jugadorSeleccionado.id;
+                    nombreJugadorInput.type = 'text';
+                    nombreJugadorInput.name = 'nombreAdministrador_' + jugadorSeleccionado.id;
+                    nombreJugadorInput.classList.add('col-9', 'rounded-3', 'me-2', 'inputt');
+                    nombreJugadorInput.disabled = true;
+                    nombreJugadorInput.value = jugadorSeleccionado.jugadores;
+
+                    // Crear un nuevo botón de eliminar
+                    const botonEliminar = document.createElement('button');
+                    botonEliminar.id = 'btnEliminar_' + jugadorSeleccionado.id;
+                    botonEliminar.type = 'button';
+                    botonEliminar.classList.add('btn', 'transparente', 'col-1', 'border', 'border-danger');
+                    datosguardados.push(jugadorSeleccionado.id);
+                    console.log(datosguardados);
+                    botonEliminar.onclick = function () {
+                        eliminardata(jugadorSeleccionado.id);
+                        eliminarInput(jugadorSeleccionado.id);
+                    };
+
+                    // Crear la imagen para el botón de eliminar
+                    const imagenEliminar = document.createElement('img');
+                    imagenEliminar.src = '../../../resources/img/svg/icons_forms/trash 1.svg';
+                    imagenEliminar.width = 10;
+                    imagenEliminar.height = 10;
+
+                    // Agregar la imagen al botón de eliminar
+                    botonEliminar.appendChild(imagenEliminar);
+
+                    // Agregar el input y el botón al contenedor de fila
+                    rowContainer.appendChild(nombreJugadorInput);
+                    rowContainer.appendChild(botonEliminar);
+
+                    // Obtener el contenedor de los nombres de los jugadores
+                    const nombresDeLosJugadoresDiv = document.getElementById('nombresDeLosJugadores');
+
+                    // Agregar el contenedor de fila al contenedor de nombres de los jugadores
+                    nombresDeLosJugadoresDiv.appendChild(rowContainer);
+                }
+            }
+        }
+    });
+
+    // Se prepara el formulario.
+    SAVE_FORM.reset();
     ID_JUGADOR.disabled = false;
     eliminardata('delete full');
     ADD_JUGADOR = 1;
-    SAVE_MODAL.show();
     IDDETALLE_CONTENIDO.value = 0;
     MODAL_TITLE.textContent = 'Agregar detalle';
-    // Se prepara el formulario.
-    SAVE_FORM.reset();
-    // Llenar el combobox de jugadores}
+
+    // Llenar el combobox de jugadores
+    const FORM2 = new FormData();
+    FORM2.append('cancha', ZONA);
     const FORM = new FormData();
     FORM.append('idEquipo', ID_EQUIPO);
-    await fillSelect(SD_CONTENTS_API, 'readAllSubContenidos', 'subcontenido');
+    await fillSelectPost(SD_CONTENTS_API, 'readAllSubContenidos2', 'subcontenido', FORM2);
     await fillSelect(SD_CONTENTS_API, 'readAllTareas', 'tarea');
     const jugadores = await fetchData(SD_CONTENTS_API, 'readAllJugadores', FORM);
     console.log(jugadores.dataset);
@@ -144,7 +459,7 @@ const openCreate = async () => {
     lista_datos = jugadores.dataset;
     console.log(lista_datos);
     fillSelected(jugadores.dataset, 'generador');
-}
+};
 
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
@@ -153,6 +468,7 @@ const openCreate = async () => {
 */
 const openUpdate = async (id) => {
     try {
+        cargarDespues(1);
         eliminardata('delete full');
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
@@ -192,18 +508,16 @@ const openUpdate = async (id) => {
 
     }
 }
-const grapicsView = async () =>{
-    if (ACTIVATE == '')
-    {
-    ACTIVATE = 'd-none';
-    CONTENEDOR1.classList.add(ACTIVATE);
-    CONTENEDOR2.classList.add(ACTIVATE);
+const grapicsView = async () => {
+    if (ACTIVATE == '') {
+        ACTIVATE = 'd-none';
+        CONTENEDOR1.classList.add(ACTIVATE);
+        CONTENEDOR2.classList.add(ACTIVATE);
     }
-    else
-    {
-        
-    CONTENEDOR1.classList.remove(ACTIVATE);
-    CONTENEDOR2.classList.remove(ACTIVATE);
+    else {
+
+        CONTENEDOR1.classList.remove(ACTIVATE);
+        CONTENEDOR2.classList.remove(ACTIVATE);
         ACTIVATE = '';
     }
 }
@@ -266,6 +580,7 @@ async function fillTable(form = null, actions = 0) {
         console.log(DATA);
 
         if (DATA.status) {
+            Mensaje.innerHTML = ``;
             CONTENEDOR1.classList.remove('d-none');
             CONTENEDOR2.classList.remove('d-none');
             let form2 = new FormData();
@@ -337,9 +652,9 @@ async function fillTable(form = null, actions = 0) {
             });
         } else {
             sweetAlert(4, DATA.error, true);
-            Mensaje   .innerHTML = `
+            Mensaje.innerHTML = `
             <p> Aún no has asignado contenidos ni tareas a este entrenamiento, presiona "Agregar contenidos para los jugadores"</p>
-            `; 
+            `;
             CONTENEDOR1.classList.add('d-none');
             CONTENEDOR2.classList.add('d-none');
         }
@@ -386,69 +701,16 @@ window.onload = async function () {
     const titulos = ['Agregar entrenamientos', 'Agregar tareas', 'Ver equipos', 'Pasar asistencia', 'Ver jugadores y sus equipos', 'Ver jugadores'];
     const links = ['../pages/journeys.html', '../pages/tasks.html', '../pages/soccer_teams.html', '../pages/assists.html', '../pages/templates_name.html', '../pages/players.html'];
     insertTag('tags', titulos, links, 'Titulos relacionados');
-    // Constantes para establecer los elementos del componente Modal.
-    SAVE_MODAL = new bootstrap.Modal('#saveModal'),
-        MODAL_TITLE = document.getElementById('modalTitle');
-
-    // Constantes para establecer los elementos del formulario de guardar.
-    SAVE_FORM = document.getElementById('saveForm'),
-        CONTENEDOR1 = document.getElementById('contenedor1graf'),
-        CONTENEDOR2 = document.getElementById('contenedor2graf'),
-        IDDETALLE_CONTENIDO = document.getElementById('iddetallecontenido'),
-        ID_SUBCONTENIDO = document.getElementById('iddetallecontenido'),
-        SUBCONTENIDO = document.getElementById('subcontenido'),
-        CONTENIDO1 = document.getElementById('contenido1'),
-        CONTENIDO2 = document.getElementById('contenido2');
-    TAREA = document.getElementById('tarea');
-    ID_JUGADOR = document.getElementById('generador');
-    CANTIDAD_CONTENIDO = document.getElementById('cantidadEquipo');
-    MINUTOS_TAREA = document.getElementById('minutostarea');
-    // Método del evento para cuando se envía el formulario de guardar.
-    SAVE_FORM.addEventListener('submit', async (event) => {
-        // Se evita recargar la página web después de enviar el formulario.
-        event.preventDefault();
-        // Constante tipo objeto con los datos del formulario.
-        const FORM = new FormData(SAVE_FORM);
-        FORM.append('idEntrenamiento', ID_ENTRENAMIENTO);
-        console.log(ID_ENTRENAMIENTO);
-        // Petición para guardar los datos del formulario.
-        if (!(IDDETALLE_CONTENIDO.value == 0)) {
-            const DATA = await fetchData(SD_CONTENTS_API, 'updateRow', FORM);
-            // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-            if (DATA.status) {
-                // Se cierra la caja de diálogo.
-                SAVE_MODAL.hide();
-                // Se muestra un mensaje de éxito.
-                sweetAlert(1, DATA.message, true);
-                // Se carga nuevamente la tabla para visualizar los cambios.
-                fillTable();
-            } else {
-                sweetAlert(2, DATA.error, false);
-                console.error(DATA.exception);
-            }
-        } else {
-            console.log(datosguardados);
-            console.log(TAREA.value);
-            // Convertir el arreglo a una cadena JSON
-            const jugadoresJSON = JSON.stringify(datosguardados);
-            FORM.append('arregloJugadores', jugadoresJSON);
-            const DATA = await fetchData(SD_CONTENTS_API, 'createRow', FORM);
-            console.log(DATA);
-            if (DATA.status) {
-                // Se cierra la caja de diálogo.
-                SAVE_MODAL.hide();
-                // Se muestra un mensaje de éxito.
-                sweetAlert(1, DATA.message, true);
-                // Se carga nuevamente la tabla para visualizar los cambios.
-                fillTable();
-            } else {
-                sweetAlert(2, DATA.error, false);
-                console.error(DATA.exception);
-            }
-        }
-    });
+    CONTENEDOR_MODAL = document.getElementById('contenedor_modal');
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');
+    // Constantes para establecer los elementos del componente Modal.
+    SAVE_MODAL = new bootstrap.Modal('#saveModal');
+    MODAL_TITLE = document.getElementById('modalTitle');
+    CONTENIDO1 = document.getElementById('contenido1');
+    CONTENIDO2 = document.getElementById('contenido2');
+    CONTENEDOR1 = document.getElementById('contenedor1graf');
+    CONTENEDOR2 = document.getElementById('contenedor2graf');
     // Verificar si SEARCH_FORM está seleccionado correctamente
     console.log(SEARCH_FORM)
     // Método del evento para cuando se envía el formulario de buscar.
@@ -461,119 +723,6 @@ window.onload = async function () {
         console.log(FORM);
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
         fillTable(FORM, 1);
-    });
-
-    // Listener para el cambio en el select de jugadores
-    const selectJugador = document.getElementById('generador');
-    selectJugador.addEventListener('change', (event) => {
-        const selectedJugadorId = event.target.value;
-        if (ADD_JUGADOR) {
-            if (selectedJugadorId == 0) {
-                // Si entra a este if seleccionar todos los jugadores
-                eliminardata('delete full');
-
-                lista_datos.forEach(jugadorSeleccionado => {
-                    const elementoAgregado = datosguardados.some(elemento => elemento === jugadorSeleccionado.id);
-                    if (!elementoAgregado) {
-                        // Crear un nuevo contenedor de fila para el input y el botón
-                        const rowContainer = document.createElement('div');
-                        rowContainer.id = 'rowContainer_' + jugadorSeleccionado.id;
-                        rowContainer.classList.add('row', 'py-1', 'ms-1');
-
-                        // Crear un nuevo input para el nombre del jugador
-                        const nombreJugadorInput = document.createElement('input');
-                        nombreJugadorInput.id = 'nombreAdministrador_' + jugadorSeleccionado.id;
-                        nombreJugadorInput.type = 'text';
-                        nombreJugadorInput.name = 'nombreAdministrador_' + jugadorSeleccionado.id;
-                        nombreJugadorInput.classList.add('col-9', 'rounded-3', 'me-2', 'inputt');
-                        nombreJugadorInput.disabled = true;
-                        nombreJugadorInput.value = jugadorSeleccionado.jugadores;
-
-                        // Crear un nuevo botón de eliminar
-                        const botonEliminar = document.createElement('button');
-                        botonEliminar.id = 'btnEliminar_' + jugadorSeleccionado.id;
-                        botonEliminar.type = 'button';
-                        botonEliminar.classList.add('btn', 'transparente', 'col-1', 'border', 'border-danger');
-                        datosguardados.push(jugadorSeleccionado.id);
-                        console.log(datosguardados);
-                        botonEliminar.onclick = function () {
-                            eliminardata(jugadorSeleccionado.id);
-                            eliminarInput(jugadorSeleccionado.id);
-                        };
-
-                        // Crear la imagen para el botón de eliminar
-                        const imagenEliminar = document.createElement('img');
-                        imagenEliminar.src = '../../../resources/img/svg/icons_forms/trash 1.svg';
-                        imagenEliminar.width = 10;
-                        imagenEliminar.height = 10;
-
-                        // Agregar la imagen al botón de eliminar
-                        botonEliminar.appendChild(imagenEliminar);
-
-                        // Agregar el input y el botón al contenedor de fila
-                        rowContainer.appendChild(nombreJugadorInput);
-                        rowContainer.appendChild(botonEliminar);
-
-                        // Obtener el contenedor de los nombres de los jugadores
-                        const nombresDeLosJugadoresDiv = document.getElementById('nombresDeLosJugadores');
-
-                        // Agregar el contenedor de fila al contenedor de nombres de los jugadores
-                        nombresDeLosJugadoresDiv.appendChild(rowContainer);
-                    }
-                });
-            }
-            else {
-                const jugadorSeleccionado = lista_datos.find(jugadorSeleccionado => jugadorSeleccionado.id == selectedJugadorId);
-                console.log(jugadorSeleccionado);
-                const elementoAgregado = datosguardados.some(elemento => elemento === jugadorSeleccionado.id);
-                if (!elementoAgregado) {
-                    // Crear un nuevo contenedor de fila para el input y el botón
-                    const rowContainer = document.createElement('div');
-                    rowContainer.id = 'rowContainer_' + jugadorSeleccionado.id;
-                    rowContainer.classList.add('row', 'py-1', 'ms-1');
-
-                    // Crear un nuevo input para el nombre del jugador
-                    const nombreJugadorInput = document.createElement('input');
-                    nombreJugadorInput.id = 'nombreAdministrador_' + jugadorSeleccionado.id;
-                    nombreJugadorInput.type = 'text';
-                    nombreJugadorInput.name = 'nombreAdministrador_' + jugadorSeleccionado.id;
-                    nombreJugadorInput.classList.add('col-9', 'rounded-3', 'me-2', 'inputt');
-                    nombreJugadorInput.disabled = true;
-                    nombreJugadorInput.value = jugadorSeleccionado.jugadores;
-
-                    // Crear un nuevo botón de eliminar
-                    const botonEliminar = document.createElement('button');
-                    botonEliminar.id = 'btnEliminar_' + jugadorSeleccionado.id;
-                    botonEliminar.type = 'button';
-                    botonEliminar.classList.add('btn', 'transparente', 'col-1', 'border', 'border-danger');
-                    datosguardados.push(jugadorSeleccionado.id);
-                    console.log(datosguardados);
-                    botonEliminar.onclick = function () {
-                        eliminardata(jugadorSeleccionado.id);
-                        eliminarInput(jugadorSeleccionado.id);
-                    };
-
-                    // Crear la imagen para el botón de eliminar
-                    const imagenEliminar = document.createElement('img');
-                    imagenEliminar.src = '../../../resources/img/svg/icons_forms/trash 1.svg';
-                    imagenEliminar.width = 10;
-                    imagenEliminar.height = 10;
-
-                    // Agregar la imagen al botón de eliminar
-                    botonEliminar.appendChild(imagenEliminar);
-
-                    // Agregar el input y el botón al contenedor de fila
-                    rowContainer.appendChild(nombreJugadorInput);
-                    rowContainer.appendChild(botonEliminar);
-
-                    // Obtener el contenedor de los nombres de los jugadores
-                    const nombresDeLosJugadoresDiv = document.getElementById('nombresDeLosJugadores');
-
-                    // Agregar el contenedor de fila al contenedor de nombres de los jugadores
-                    nombresDeLosJugadoresDiv.appendChild(rowContainer);
-                }
-            }
-        }
     });
 
 };

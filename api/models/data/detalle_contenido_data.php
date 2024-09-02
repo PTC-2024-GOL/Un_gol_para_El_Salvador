@@ -81,6 +81,16 @@ class DetalleContenidoData extends DetalleContenidoHandler
         }
     }
 
+    public function setCancha($value)
+    {
+        if (Validator::validateString($value)) {
+            $this->cancha = $value;
+            return true;
+        } else {
+            $this->data_error = 'El nombre de la cancha es incorrecto';
+            return false;
+        }
+    }
     // Validación y asignación del peso
     public function setCantidadSubContenido($value, $min = 1, $max = 600)
     {

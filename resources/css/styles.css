@@ -285,11 +285,11 @@ a{
 .card2 {
     width: 100%;
     height: 20%;
-    background: #CAF0F8;
+    background: #020777;
     padding: 10px;
     display: flex;
     flex-wrap: wrap;
-    color: #95B2B0;
+    color: #ffffff;
     border-radius: 15px;
   }
   
@@ -301,13 +301,13 @@ a{
   }
   .color_white
   {
-    color: #fff;
+    color: #000;
   }
   .tag__name {
     display: inline-block;
-    color: #fff;
+    color: #ffffff;
     font-size: 1.1em;
-    background-color: #a7c2c8;
+    background-color: #f2f7ff;
     padding: 6px 23px 9px;
     border-radius: 70em;
     margin: 10px 8px 10px 0;
@@ -336,7 +336,8 @@ a{
   
   .tag__name:hover {
     transform: scale(1.1);
-    background-color: #0077B6;
+    background-color: #cfcfcf;
+    color: #ffffff;
   }
   
 

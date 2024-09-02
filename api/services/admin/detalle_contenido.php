@@ -142,6 +142,16 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'No existen registros';
                 }
                 break;
+             // Leer todos los subcontenidos
+             case 'readAllSubContenidos2':
+                if (!$detalle->setCancha($_POST['cancha'])) {
+                    $result['error'] = $detalle->getDataError();
+                } elseif ($result['dataset'] = $detalle->readAllSubContenidos2()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'No existen contenidos con esta cancha, elija otra cancha';
+                }
+                break;
             // Leer todas las tareas    
             case 'readAllTareas':
                 if ($result['dataset'] = $detalle->readAllTareas()) {
