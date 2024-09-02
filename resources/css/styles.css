@@ -339,5 +339,9 @@ a{
     background-color: #cfcfcf;
     color: #ffffff;
   }
-  
+
+#tableEstadoFisico {
+    max-height: 300px; /* Ajusta este valor según lo que necesites */
+    overflow-y: auto;
+}
 
