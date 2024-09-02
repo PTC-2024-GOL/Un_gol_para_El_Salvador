@@ -194,7 +194,7 @@ window.onload = async function () {
     appContainer.innerHTML = subcontenidosHtml;
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
-    titleElement.textContent = 'Subcontenidos';
+    titleElement.textContent = 'Principios';
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),

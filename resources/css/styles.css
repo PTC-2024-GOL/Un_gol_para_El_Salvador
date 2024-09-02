@@ -307,9 +307,9 @@ a{
     display: inline-block;
     color: #ffffff;
     font-size: 1.1em;
-    background-color: #f2f7ff;
+    background-color: #fff2f2;
     padding: 6px 23px 9px;
-    border-radius: 70em;
+    border-radius: 0.5em;
     margin: 10px 8px 10px 0;
     margin-left: 0px;
     position: relative;

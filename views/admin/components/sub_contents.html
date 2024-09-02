@@ -5,7 +5,7 @@
             <div class="col-sm-12 col-md-6">
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
-                        name="search" placeholder="Buscar por el nombre del contenido o subcontenido" required>
+                        name="search" placeholder="Buscar por el nombre del momento de juego o principio" required>
                     <button type="submit"
                         class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
@@ -21,7 +21,7 @@
                 <button
                     class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
                     type="submit" onclick="openCreate()">
-                    <span class="fs-5 me-2">+</span> Agregar subcontenido
+                    <span class="fs-5 me-2">+</span> Agregar principio
                 </button>
             </div>
         </div>
@@ -37,7 +37,7 @@
                 </tr>
                 <tr>
                     <th>Momento de juego</th>
-                    <th>Subcontenido</th>
+                    <th>Principio</th>
                 </tr>
             </thead>
             <!-- Cuerpo de la tabla para mostrar un registro por fila -->
@@ -63,7 +63,7 @@
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
                     <input type="hidden" id="idSubcontenido" name="idSubcontenido">
                     <div class="col-sm-12 col-md-6">
-                        <label for="nombreSubcontenido" class="form-label fw-semibold">Subcontenido</label>
+                        <label for="nombreSubcontenido" class="form-label fw-semibold">Principio</label>
                         <input id="nombreSubcontenido" type="text" name="SubContenido" class="form-control"
                             placeholder="Escribe el nombre del Subcontenido" required>
                     </div>
