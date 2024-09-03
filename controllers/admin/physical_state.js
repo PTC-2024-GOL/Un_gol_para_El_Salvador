@@ -333,31 +333,20 @@ const openDelete = async (id) => {
 *   Parámetros: form (formulario de búsqueda).
 *   Retorno: ninguno.
 */
-async function fillTable(form = null) {
-    const lista_datos = [];
-    const cargarTabla = document.getElementById('tabla_estado');
+// Manejo para la paginacion
+const injuriesByPage = 10;
+let currentPage = 1;
+let injuries = [];
 
-    try {
-        cargarTabla.innerHTML = '';
-        let action = (form) ? 'searchRows' : 'readAll';
-        console.log('form antes del parametro' + form + ' y el action es ' + action);
-        console.log('El parametro de URL contiene esto ' + JUGADOR);
-        const FORM = new FormData();
-        if (action === 'readAll') {
-            FORM.append('idJugador', JUGADOR);
-            form = FORM;
-            console.log('entré al parametro de readAll ');
-        }
-        console.log('form despues del parametro' + FORM);
+function showInjuries(page) {
+    const start = (page - 1) * injuriesByPage;
+    const end = start + injuriesByPage;
+    const injuriesPage = injuries.slice(start, end);
 
-        // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(ESTADO_API, action, form);
-        console.log('Esto contiene la consulta ' + DATA);
-        let nombreJugador;
-        if (DATA.status) {
-            // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-                let color;
+    const fillTable = document.getElementById('tabla_estado');
+    fillTable.innerHTML = '';
+    injuriesPage.forEach(row => {
+        let color;
                 let imc = parseFloat(row.indice_masa_corporal);
 
                 // Determinar el color basado en el IMC
@@ -392,12 +381,36 @@ async function fillTable(form = null) {
                     </td>
                 </tr>
                 `;
-                nombreJugador = row.nombre_jugador;
-                if (nombreJugador !== undefined) {
-                    titleElement.textContent = 'Estado fisico del jugador ' + nombreJugador;
-                }
-                cargarTabla.innerHTML += tablaHtml;
-            });
+        fillTable.innerHTML += tablaHtml;
+    });
+
+    updatePaginate();
+}
+async function fillTable(form = null) {
+    const lista_datos = [];
+    const cargarTabla = document.getElementById('tabla_estado');
+
+    try {
+        cargarTabla.innerHTML = '';
+        let action = (form) ? 'searchRows' : 'readAll';
+        console.log('form antes del parametro' + form + ' y el action es ' + action);
+        console.log('El parametro de URL contiene esto ' + JUGADOR);
+        const FORM = new FormData();
+        if (action === 'readAll') {
+            FORM.append('idJugador', JUGADOR);
+            form = FORM;
+            console.log('entré al parametro de readAll ');
+        }
+        console.log('form despues del parametro' + FORM);
+
+        // Petición para obtener los registros disponibles.
+        const DATA = await fetchData(ESTADO_API, action, form);
+        console.log('Esto contiene la consulta ' + DATA);
+        let nombreJugador;
+        if (DATA.status) {
+            // Mostrar elementos obtenidos de la API
+            injuries = DATA.dataset;
+            showInjuries(currentPage);
         } else {
             sweetAlert(4, DATA.error, true);
         }
@@ -430,6 +443,32 @@ async function fillTable(form = null) {
             cargarTabla.innerHTML += tablaHtml;
         });
     }
+}
+
+// Función para actualizar los contlesiones de paginación
+function updatePaginate() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
+
+    const totalPaginas = Math.ceil(injuries.length / injuriesByPage);
+
+    if (currentPage > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-bs-dark" href="#" onclick="nextPage(${currentPage - 1})">Anterior</a></li>`;
+    }
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link text-bs-dark" href="#" onclick="nextPage(${i})">${i}</a></li>`;
+    }
+
+    if (currentPage < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-bs-dark" href="#" onclick="nextPage(${currentPage + 1})">Siguiente</a></li>`;
+    }
+}
+
+// Función para cambiar de página
+function nextPage(newPage) {
+    currentPage = newPage;
+    showInjuries(currentPage);
 }
 
 

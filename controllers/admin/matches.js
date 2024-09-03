@@ -216,6 +216,72 @@ const openDelete = async (id) => {
 * Parámetros: form (formulario de búsqueda).
 * Retorno: ninguno.
 */
+// Manejo para la paginacion
+const injuriesByPage = 10;
+let currentPage = 1;
+let injuries = [];
+
+function showInjuries(page) {
+    const start = (page - 1) * injuriesByPage;
+    const end = start + injuriesByPage;
+    const injuriesPage = injuries.slice(start, end);
+
+    const fillTable = document.getElementById('matches_cards');
+    fillTable.innerHTML = '';
+    injuriesPage.forEach(row => {
+        let resultado = row.tipo_resultado_partido;
+                const pendienteHtml = resultado === 'Pendiente' ? '<p class="text-warning fw-semibold mb-0">Pendiente</p>' : '';
+                const prediccionHTML = resultado === 'Pendiente' ? `<button class="btn bg-blue-light-color text-black btn-sm rounded-3" 
+                onclick="seeReport(${row.id_partido})"> Predicción </button>` : '';
+                const cardsHtml = `<div class="col-md-6 col-sm-12">
+                    <div class="tarjetas shadow p-4">
+                        <div class="row">
+                            <div class="col-auto">
+                                <img src="../../../resources/img/svg/calendar.svg" alt="">
+                            </div>
+                            <div class="col">
+                                <p class="fw-semibold mb-0">${row.fecha}</p>
+                                <p class="small">${row.localidad_partido}</p>
+                                ${pendienteHtml}
+                            </div>
+                            <div class="col-auto py-3">
+                                ${prediccionHTML}
+                            </div>
+                        </div>
+                        <div class="row align-items-center">
+                            <div class="col-4">
+                                <img src="${SERVER_URL}images/equipos/${row.logo_equipo}" class="img">
+                                <p class="small mt-3">${row.nombre_equipo}</p>
+                            </div>
+                            <div class="col-4">
+                                <h2 class="fw-semibold">${row.resultado_partido}</h2>
+                            </div>
+                            <div class="col-4">
+                                <img src="${SERVER_URL}images/rivales/${row.logo_rival}" class="img">
+                                <p class="small mt-3">${row.nombre_rival}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <button class="btn bg-yellow-principal-color text-white btn-sm rounded-3 mb-3" onclick="openUpdate(${row.id_partido})">
+                            Editar partido
+                        </button>
+                        <button class="btn bg-blue-principal-color text-white btn-sm rounded-3 mb-3" onclick="seeModal(${row.id_partido})">
+                            Más información
+                        </button>
+                        <button class="btn bg-red-cream-color text-white btn-sm rounded-3 mb-3" onclick="openDelete(${row.id_partido})">
+                            Eliminar
+                        </button>
+                        <button class="btn bg-blue-color text-white btn-sm rounded-3 mb-3" onclick="openCalls(${row.id_partido})">
+                            Convocatoria
+                        </button>
+                    </div>
+                </div>`;
+        fillTable.innerHTML += cardsHtml;
+    });
+
+    updatePaginate();
+}
+
 async function fillCards(form = null) {
     const lista_datos = [
         {
@@ -280,58 +346,9 @@ async function fillCards(form = null) {
         
         if (DATA.status) {
             // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-                let resultado = row.tipo_resultado_partido;
-                const pendienteHtml = resultado === 'Pendiente' ? '<p class="text-warning fw-semibold mb-0">Pendiente</p>' : '';
-                const prediccionHTML = resultado === 'Pendiente' ? `<button class="btn bg-blue-light-color text-black btn-sm rounded-3" 
-                onclick="seeReport(${row.id_partido})"> Predicción </button>` : '';
-                const cardsHtml = `<div class="col-md-6 col-sm-12">
-                    <div class="tarjetas shadow p-4">
-                        <div class="row">
-                            <div class="col-auto">
-                                <img src="../../../resources/img/svg/calendar.svg" alt="">
-                            </div>
-                            <div class="col">
-                                <p class="fw-semibold mb-0">${row.fecha}</p>
-                                <p class="small">${row.localidad_partido}</p>
-                                ${pendienteHtml}
-                            </div>
-                            <div class="col-auto py-3">
-                                ${prediccionHTML}
-                            </div>
-                        </div>
-                        <div class="row align-items-center">
-                            <div class="col-4">
-                                <img src="${SERVER_URL}images/equipos/${row.logo_equipo}" class="img">
-                                <p class="small mt-3">${row.nombre_equipo}</p>
-                            </div>
-                            <div class="col-4">
-                                <h2 class="fw-semibold">${row.resultado_partido}</h2>
-                            </div>
-                            <div class="col-4">
-                                <img src="${SERVER_URL}images/rivales/${row.logo_rival}" class="img">
-                                <p class="small mt-3">${row.nombre_rival}</p>
-                            </div>
-                        </div>
-                        <hr>
-                        <button class="btn bg-yellow-principal-color text-white btn-sm rounded-3 mb-3" onclick="openUpdate(${row.id_partido})">
-                            Editar partido
-                        </button>
-                        <button class="btn bg-blue-principal-color text-white btn-sm rounded-3 mb-3" onclick="seeModal(${row.id_partido})">
-                            Más información
-                        </button>
-                        <button class="btn bg-red-cream-color text-white btn-sm rounded-3 mb-3" onclick="openDelete(${row.id_partido})">
-                            Eliminar
-                        </button>
-                        <button class="btn bg-blue-color text-white btn-sm rounded-3 mb-3" onclick="openCalls(${row.id_partido})">
-                            Convocatoria
-                        </button>
-                    </div>
-                </div>`;
-                cargarCartas.innerHTML += cardsHtml;
-            });
-        }
-        else {
+            injuries = DATA.dataset;
+            showInjuries(currentPage);
+        } else {
             sweetAlert(4, DATA.error, true);
         }
     } catch (error) {
@@ -397,6 +414,31 @@ const seeReport = (id) => {
         window.open(PATH.href);
     }
 
+    // Función para actualizar los contlesiones de paginación
+function updatePaginate() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
+
+    const totalPaginas = Math.ceil(injuries.length / injuriesByPage);
+
+    if (currentPage > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-bs-dark" href="#" onclick="nextPage(${currentPage - 1})">Anterior</a></li>`;
+    }
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link text-bs-dark" href="#" onclick="nextPage(${i})">${i}</a></li>`;
+    }
+
+    if (currentPage < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-bs-dark" href="#" onclick="nextPage(${currentPage + 1})">Siguiente</a></li>`;
+    }
+}
+
+// Función para cambiar de página
+function nextPage(newPage) {
+    currentPage = newPage;
+    showInjuries(currentPage);
+}
 // window.onload
 window.onload = async function () {
     // Obtiene el contenedor principal
