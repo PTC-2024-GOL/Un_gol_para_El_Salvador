@@ -470,9 +470,9 @@ async function cargarTabla() {
     try {
         cargarTabla.innerHTML = '';
         const form = new FormData();
-        form.append('idEquipo', idEquipo)
+        form.append('idPartido', idPartido)
         // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(PARTICIPACION_API, 'readAllByIdEquipo', form);
+        const DATA = await fetchData(PARTICIPACION_API, 'readAllByIdPartido', form);
 
 
         if (DATA.status) {

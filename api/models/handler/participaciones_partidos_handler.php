@@ -33,7 +33,7 @@ class ParticipacionesPartidosHandler
     {
         $value = '%' . Validator::getSearchValue() . '%';
         $sql = "SELECT * FROM vista_jugadores_por_equipo
-                WHERE (nombre_jugador LIKE ? OR apellido_jugador LIKE ?) AND id_equipo = ?";
+                WHERE (nombre_jugador LIKE ? OR apellido_jugador LIKE ?) AND id_partido = ?";
         $params = array($value, $value, $this->idEquipo);
         return Database::getRows($sql, $params);
     }
@@ -57,11 +57,11 @@ class ParticipacionesPartidosHandler
         return Database::executeRow($sql, $params);
     }
 
-    //Función para mostrar todos los jugadores de un equipo
-    public function readAllByIdEquipo()
+    //Función para mostrar todos los jugadores convocados a un partido en especifico
+    public function readAllByIdPartido()
     {
         $sql = 'SELECT * FROM vista_jugadores_por_equipo
-                WHERE id_equipo= ? ORDER BY dorsal_jugador ASC ';
+                WHERE id_partido= ? ORDER BY dorsal_jugador ASC ';
         $params = array($this->idEquipo);
         return Database::getRows($sql, $params);
     }
@@ -85,7 +85,7 @@ class ParticipacionesPartidosHandler
     public function readByPlayerArea()
     {
         $sql = 'SELECT * FROM vista_jugadores_por_equipo
-                WHERE area_de_juego = ? AND id_equipo = ?';
+                WHERE area_de_juego = ? AND id_partido = ?';
         $params = array($this->areaJuego, $this->idEquipo);
         return Database::getRows($sql, $params);
     }
