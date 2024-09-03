@@ -150,6 +150,13 @@ class EntrenamientosHandler
         return Database::getRows($sql);
     }
 
+    //Función para leer la última jornada.
+    public function readUltimaJornada()
+    {
+        $sql = 'SELECT id_jornada FROM jornadas ORDER BY id_jornada DESC LIMIT 1;';
+        return Database::getRow($sql);
+    }
+
     //Función para leer una jornada o varios. 
 
     public function readOneCategoria()

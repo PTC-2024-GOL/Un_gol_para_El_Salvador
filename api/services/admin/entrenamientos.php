@@ -101,6 +101,15 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'No existen registros';
                 }
                 break;
+            // Leer la última jornada
+            case 'readUltimaJornada':
+                if ($result['dataset'] = $entrenamientos->readUltimaJornada()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
+                } else {
+                    $result['error'] = 'No existen jornadas';
+                }
+                break;
                 case 'readEquipos':
                     if ($result['dataset'] = $entrenamientos->readOneEquipos()) {
                         $result['status'] = 1;

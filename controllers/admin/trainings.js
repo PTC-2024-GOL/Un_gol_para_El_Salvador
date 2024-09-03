@@ -5,6 +5,7 @@ let GRAPHIC_MODAL,
     SAVE_FORM;
 let CONT_FORM,
     ID_JORNADA_URL,
+    ID_JORNADA_MEGA,
     ID_URL,
     ID_JORNADA,
     FECHA,
@@ -106,7 +107,7 @@ const openCreate = async () => {
     ID_EQUIPO.disabled = false;
     UP_FORM.reset();
     await fillSelect(ENTRENAMIENTOS_API, 'readOneCategoria', 'idCategoriaa');
-    await fillSelect(ENTRENAMIENTOS_API, 'readJornadas', 'idJornada', ID_JORNADA_URL);
+    await fillSelect(ENTRENAMIENTOS_API, 'readJornadas', 'idJornada', ID_JORNADA_MEGA);
     await fillSelect(ENTRENAMIENTOS_API, 'readEquipos', 'idEquipo');
 }
 
@@ -134,7 +135,7 @@ const openUpdate = async (id) => {
             ID_ENTRENAMIENTO.value = ROW.id_entrenamiento;
             FECHAx.value = ROW.fecha_entrenamiento
             await fillSelect(ENTRENAMIENTOS_API, 'readOneCategoria', 'idCategoriaa', ROW.id_horario_categoria);
-            await fillSelect(ENTRENAMIENTOS_API, 'readJornadas', 'idJornada', ID_JORNADA_URL);
+            await fillSelect(ENTRENAMIENTOS_API, 'readJornadas', 'idJornada', ID_JORNADA_MEGA);
             await fillSelect(ENTRENAMIENTOS_API, 'readEquipos', 'idEquipo', ROW.id_equipo);
             ID_EQUIPO.disabled = true;
             for (let option of SESION.options) {
@@ -446,10 +447,10 @@ async function cargarTabla(form = null) {
         (form) ? action = 'searchRows' : action = 'readAll';
         console.log(form);
         console.log(action);
-        console.log(ID_JORNADA_URL);
+        console.log(ID_JORNADA_MEGA);
         if (action == 'readAll') {
             form = new FormData();
-            form.append('idJornada', ID_JORNADA_URL);
+            form.append('idJornada', ID_JORNADA_MEGA);
         }
         // Petición para obtener los registros disponibles.
         const DATA = await fetchData(ENTRENAMIENTOS_API, action, form);
@@ -595,8 +596,20 @@ window.onload = async function () {
     appContainer.innerHTML = adminHtml;
     ID_URL = new URLSearchParams(window.location.search);
     ID_JORNADA_URL = ID_URL.get('id');
+    let id_jornadona = 0;
+    if (ID_JORNADA_URL == null)
+    {
+        const ultimaJornada = await fetchData(ENTRENAMIENTOS_API, 'readUltimaJornada');
+        id_jornadona = ultimaJornada.dataset.id_jornada;
+        console.log(id_jornadona, 'Esto es lo que contiene el arreglo del id_jornada');
+        ID_JORNADA_MEGA = id_jornadona;
+    }
+    else
+    {
+        ID_JORNADA_MEGA = ID_JORNADA_URL;
+    }
     const FORME = new FormData();
-    FORME.append('idJornada', ID_JORNADA_URL);
+    FORME.append('idJornada', ID_JORNADA_MEGA);
     // Petición para guardar los datos del formulario.
     const DATAE = await fetchData(ENTRENAMIENTOS_API, 'readOneTitulo', FORME);
     const titleElement = document.getElementById('title');
@@ -704,4 +717,8 @@ window.onload = async function () {
         cargarTabla(FORM);
     });
     ESTADO_INICIAL_SAVE_FORM = document.getElementById('saveForm').innerHTML;
+    
+    const titulos = ['¡No veo mi entrenamiento!', 'Elegir otra jornada', 'Agregar Tareas', 'Agregar principios', 'Ver jugadores y sus equipos', 'Ver jugadores'];
+    const links = ['../pages/journeys.html', '../pages/journeys.html', '../pages/task.html', '../pages/sub_contents.html', '../pages/templates_name.html', '../pages/players.html'];
+    insertTag('tags', titulos, links, 'También podría interesarte');
 };
