@@ -61,8 +61,8 @@ class ParticipacionesPartidosHandler
     public function readAllByIdPartido()
     {
         $sql = 'SELECT * FROM vista_jugadores_por_equipo
-                WHERE id_partido= ? ORDER BY dorsal_jugador ASC ';
-        $params = array($this->idEquipo);
+                WHERE id_partido= ? AND estado_convocado = 1 ORDER BY dorsal_jugador ASC ';
+        $params = array($this->idPartido);
         return Database::getRows($sql, $params);
     }
 
