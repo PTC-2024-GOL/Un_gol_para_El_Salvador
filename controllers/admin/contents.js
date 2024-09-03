@@ -120,6 +120,39 @@ const openDelete = async (id) => {
 *   Parámetros: form (formulario de búsqueda).
 *   Retorno: ninguno.
 */
+// Manejo para la paginacion
+const injuriesByPage = 8;
+let currentPage = 1;
+let injuries = [];
+
+function showInjuries(page) {
+    const start = (page - 1) * injuriesByPage;
+    const end = start + injuriesByPage;
+    const injuriesPage = injuries.slice(start, end);
+
+    const fillTable = document.getElementById('tabla_contenidos');
+    fillTable.innerHTML = '';
+    injuriesPage.forEach(row => {
+        const tablaHtml = `
+                <tr>
+                <td class="text-center">${row.momento_juego}</td>
+                <td class="text-center">${row.zona_campo}</td>
+                <td class="text-end">
+                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id_tema_contenido})">
+                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                    </button>
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_tema_contenido})">
+                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                    </button>
+                </td>
+            </tr>
+            `;
+        fillTable.innerHTML += tablaHtml;
+    });
+
+    updatePaginate();
+}
+
 async function fillTable(form = null) {
     const lista_datos = [
         {
@@ -152,23 +185,8 @@ async function fillTable(form = null) {
 
         if (DATA.status) {
             // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-                const tablaHtml = `
-                <tr>
-                <td class="text-center">${row.momento_juego}</td>
-                <td class="text-center">${row.zona_campo}</td>
-                <td class="text-end">
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id_tema_contenido})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                    </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_tema_contenido})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
-                </td>
-            </tr>
-            `;
-                cargarTabla.innerHTML += tablaHtml;
-            });
+            injuries = DATA.dataset;
+            showInjuries(currentPage);
         } else {
             sweetAlert(4, DATA.error, true);
         }
@@ -215,6 +233,32 @@ const zona3func = () => {
     ZONA2.classList.remove('active');
     ZONA3.classList.add('active');
     ZONA = 'Zona 3';
+}
+
+// Función para actualizar los contlesiones de paginación
+function updatePaginate() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
+
+    const totalPaginas = Math.ceil(injuries.length / injuriesByPage);
+
+    if (currentPage > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-bs-dark" href="#" onclick="nextPage(${currentPage - 1})">Anterior</a></li>`;
+    }
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link text-bs-dark" href="#" onclick="nextPage(${i})">${i}</a></li>`;
+    }
+
+    if (currentPage < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-bs-dark" href="#" onclick="nextPage(${currentPage + 1})">Siguiente</a></li>`;
+    }
+}
+
+// Función para cambiar de página
+function nextPage(newPage) {
+    currentPage = newPage;
+    showInjuries(currentPage);
 }
 
 // window.onload

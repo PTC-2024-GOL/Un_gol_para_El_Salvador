@@ -416,6 +416,52 @@ const openPag = (id_entrenamiento) => {
 *   Parámetros: form (formulario de búsqueda).
 *   Retorno: ninguno.
 */
+// Manejo para la paginacion
+const injuriesByPage = 10;
+let currentPage = 1;
+let injuries = [];
+
+function showInjuries(page) {
+    const start = (page - 1) * injuriesByPage;
+    const end = start + injuriesByPage;
+    const injuriesPage = injuries.slice(start, end);
+
+    const fillTable = document.getElementById('tabla_entrenamientos');
+    fillTable.innerHTML = '';
+    injuriesPage.forEach(row => {
+        const tablaHtml = `
+                <tr>
+                    <td>${row.detalle_entrenamiento}</td>
+                    <td class="justify-content-center">
+                        <button type="button" class="btn transparente" onclick="openPag(${row.id_entrenamiento})">
+                        <img src="../../../resources/img/svg/icons_forms/stadistic.png" width="30" height="30">
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn transparente" onclick="goToAssists(${row.id_entrenamiento})">
+                        <img src="../../../resources/img/svg/icons_forms/assists.svg" width="28" height="28">
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn transparente" onclick="seeCont(${row.id_entrenamiento})">
+                        <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn transparente" onclick="openUpdate(${row.id_entrenamiento})">
+                        <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                        </button>
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_entrenamiento})">
+                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                    </button>
+                    </td>
+                </tr>
+                `;
+        fillTable.innerHTML += tablaHtml;
+    });
+
+    updatePaginate();
+}
 async function cargarTabla(form = null) {
     const lista_datos = [
         {
@@ -458,37 +504,8 @@ async function cargarTabla(form = null) {
 
         if (DATA.status) {
             // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-                const tablaHtml = `
-                <tr>
-                    <td>${row.detalle_entrenamiento}</td>
-                    <td class="justify-content-center">
-                        <button type="button" class="btn transparente" onclick="openPag(${row.id_entrenamiento})">
-                        <img src="../../../resources/img/svg/icons_forms/stadistic.png" width="30" height="30">
-                        </button>
-                    </td>
-                    <td>
-                        <button type="button" class="btn transparente" onclick="goToAssists(${row.id_entrenamiento})">
-                        <img src="../../../resources/img/svg/icons_forms/assists.svg" width="28" height="28">
-                        </button>
-                    </td>
-                    <td>
-                        <button type="button" class="btn transparente" onclick="seeCont(${row.id_entrenamiento})">
-                        <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
-                        </button>
-                    </td>
-                    <td>
-                        <button type="button" class="btn transparente" onclick="openUpdate(${row.id_entrenamiento})">
-                        <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                        </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_entrenamiento})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
-                    </td>
-                </tr>
-                `;
-                cargarTabla.innerHTML += tablaHtml;
-            });
+            injuries = DATA.dataset;
+            showInjuries(currentPage);
         } else {
             sweetAlert(4, DATA.error, true);
         }
@@ -582,6 +599,32 @@ const restaurarFormulario = async (num = null) => {
         // Asignamos el nuevo ancho a la barra de progreso
         progress.style.width = widthPercentage + "%";
     }
+}
+
+// Función para actualizar los contlesiones de paginación
+function updatePaginate() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
+
+    const totalPaginas = Math.ceil(injuries.length / injuriesByPage);
+
+    if (currentPage > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-bs-dark" href="#" onclick="nextPage(${currentPage - 1})">Anterior</a></li>`;
+    }
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link text-bs-dark" href="#" onclick="nextPage(${i})">${i}</a></li>`;
+    }
+
+    if (currentPage < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-bs-dark" href="#" onclick="nextPage(${currentPage + 1})">Siguiente</a></li>`;
+    }
+}
+
+// Función para cambiar de página
+function nextPage(newPage) {
+    currentPage = newPage;
+    showInjuries(currentPage);
 }
 
 // window.onload
