@@ -51,8 +51,8 @@ if ($dataPlantillas = $Plantilla->readAll()) {
             // Vuelve a imprimir los encabezados en la nueva página
             $pdf->cell(30, 10, 'Foto', 1, 0, 'C', 1); // Nueva columna para imagen
             $pdf->cell(90, 10, 'Jugador', 1, 0, 'C', 1);
-            $pdf->cell(30, 10, $pdf->encodeString('Logo'), 1, 0, 'C', 1);
-            $pdf->cell(30, 10, 'Equipo', 1, 1, 'C', 1);
+            $pdf->cell(20, 10, $pdf->encodeString('Logo'), 1, 0, 'C', 1);
+            $pdf->cell(40, 10, 'Equipo', 1, 1, 'C', 1);
         }
 
         $pdf->setFillColor(110, 151, 214);
@@ -84,8 +84,8 @@ if ($dataPlantillas = $Plantilla->readAll()) {
                         // Vuelve a imprimir los encabezados en la nueva página
                         $pdf->cell(30, 10, 'Foto', 1, 0, 'C', 1); // Nueva columna para imagen
                         $pdf->cell(90, 10, 'Jugador', 1, 0, 'C', 1);
-                        $pdf->cell(30, 10, $pdf->encodeString('Logo'), 1, 0, 'C', 1);
-                        $pdf->cell(30, 10, 'Equipo', 1, 1, 'C', 1);
+                        $pdf->cell(20, 10, $pdf->encodeString('Logo'), 1, 0, 'C', 1);
+                        $pdf->cell(40, 10, 'Equipo', 1, 1, 'C', 1);
                     }
                     $currentY = $pdf->getY(); // Obtén la coordenada Y actual
                     // Establecer color de texto a blanco
@@ -111,8 +111,8 @@ if ($dataPlantillas = $Plantilla->readAll()) {
                         // Usa una imagen por defecto o maneja el error
                         $logoPath = '../../images/equipos/default.png';
                     }
-                    $pdf->cell(30, 15, $pdf->image($logoPath, $pdf->getX() + 10, $currentY + 2, 10), 1, 0);
-                    $pdf->cell(30, 15, $pdf->encodeString($rowPlantillas['NOMBRE_EQUIPO']), 1, 1, 'C');
+                    $pdf->cell(20, 15, $pdf->image($logoPath, $pdf->getX() + 5, $currentY + 2, 10), 1, 0);
+                    $pdf->cell(40, 15, $pdf->encodeString($rowPlantillas['NOMBRE_EQUIPO']), 1, 1, 'C');
                 }
             } else {
                 $pdf->cell(0, 10, $pdf->encodeString('No hay jugadores para la plantilla'), 1, 1);

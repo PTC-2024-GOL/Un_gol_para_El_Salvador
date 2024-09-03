@@ -13,6 +13,14 @@ async function loadComponent(path) {
 }
 
 
+const openReportWithParams = () => {
+    // Se declara una constante tipo objeto con la ruta específica del reporte en el servidor.
+    const PATH = new URL(`${SERVER_URL}reports/admin/reporte_parametrizado_convocatoria.php`);
+    // Se agrega un parámetro a la ruta con el valor del registro seleccionado.
+    PATH.searchParams.append('idPartido', PARAMS.get('idPartido'));
+    // Se abre el reporte en una nueva pestaña.
+    window.open(PATH.href);
+}
 /*
 *   Función asíncrona para realizar peticiones a la API.
 *   Esta función envia todos los datos del formulario. en forma de arreglos
