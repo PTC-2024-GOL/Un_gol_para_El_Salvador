@@ -5,6 +5,7 @@ let GRAPHIC_MODAL,
     SAVE_FORM;
 let CONT_FORM,
     ID_JORNADA_URL,
+    ID_JORNADA_MEGA,
     ID_URL,
     ID_JORNADA,
     FECHA,
@@ -106,7 +107,7 @@ const openCreate = async () => {
     ID_EQUIPO.disabled = false;
     UP_FORM.reset();
     await fillSelect(ENTRENAMIENTOS_API, 'readOneCategoria', 'idCategoriaa');
-    await fillSelect(ENTRENAMIENTOS_API, 'readJornadas', 'idJornada', ID_JORNADA_URL);
+    await fillSelect(ENTRENAMIENTOS_API, 'readJornadas', 'idJornada', ID_JORNADA_MEGA);
     await fillSelect(ENTRENAMIENTOS_API, 'readEquipos', 'idEquipo');
 }
 
@@ -134,7 +135,7 @@ const openUpdate = async (id) => {
             ID_ENTRENAMIENTO.value = ROW.id_entrenamiento;
             FECHAx.value = ROW.fecha_entrenamiento
             await fillSelect(ENTRENAMIENTOS_API, 'readOneCategoria', 'idCategoriaa', ROW.id_horario_categoria);
-            await fillSelect(ENTRENAMIENTOS_API, 'readJornadas', 'idJornada', ID_JORNADA_URL);
+            await fillSelect(ENTRENAMIENTOS_API, 'readJornadas', 'idJornada', ID_JORNADA_MEGA);
             await fillSelect(ENTRENAMIENTOS_API, 'readEquipos', 'idEquipo', ROW.id_equipo);
             ID_EQUIPO.disabled = true;
             for (let option of SESION.options) {
@@ -415,6 +416,52 @@ const openPag = (id_entrenamiento) => {
 *   Parámetros: form (formulario de búsqueda).
 *   Retorno: ninguno.
 */
+// Manejo para la paginacion
+const injuriesByPage = 10;
+let currentPage = 1;
+let injuries = [];
+
+function showInjuries(page) {
+    const start = (page - 1) * injuriesByPage;
+    const end = start + injuriesByPage;
+    const injuriesPage = injuries.slice(start, end);
+
+    const fillTable = document.getElementById('tabla_entrenamientos');
+    fillTable.innerHTML = '';
+    injuriesPage.forEach(row => {
+        const tablaHtml = `
+                <tr>
+                    <td>${row.detalle_entrenamiento}</td>
+                    <td class="justify-content-center">
+                        <button type="button" class="btn transparente" onclick="openPag(${row.id_entrenamiento})">
+                        <img src="../../../resources/img/svg/icons_forms/stadistic.png" width="30" height="30">
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn transparente" onclick="goToAssists(${row.id_entrenamiento})">
+                        <img src="../../../resources/img/svg/icons_forms/assists.svg" width="28" height="28">
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn transparente" onclick="seeCont(${row.id_entrenamiento})">
+                        <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn transparente" onclick="openUpdate(${row.id_entrenamiento})">
+                        <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                        </button>
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_entrenamiento})">
+                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                    </button>
+                    </td>
+                </tr>
+                `;
+        fillTable.innerHTML += tablaHtml;
+    });
+
+    updatePaginate();
+}
 async function cargarTabla(form = null) {
     const lista_datos = [
         {
@@ -446,10 +493,10 @@ async function cargarTabla(form = null) {
         (form) ? action = 'searchRows' : action = 'readAll';
         console.log(form);
         console.log(action);
-        console.log(ID_JORNADA_URL);
+        console.log(ID_JORNADA_MEGA);
         if (action == 'readAll') {
             form = new FormData();
-            form.append('idJornada', ID_JORNADA_URL);
+            form.append('idJornada', ID_JORNADA_MEGA);
         }
         // Petición para obtener los registros disponibles.
         const DATA = await fetchData(ENTRENAMIENTOS_API, action, form);
@@ -457,37 +504,8 @@ async function cargarTabla(form = null) {
 
         if (DATA.status) {
             // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-                const tablaHtml = `
-                <tr>
-                    <td>${row.detalle_entrenamiento}</td>
-                    <td class="justify-content-center">
-                        <button type="button" class="btn transparente" onclick="openPag(${row.id_entrenamiento})">
-                        <img src="../../../resources/img/svg/icons_forms/stadistic.png" width="30" height="30">
-                        </button>
-                    </td>
-                    <td>
-                        <button type="button" class="btn transparente" onclick="goToAssists(${row.id_entrenamiento})">
-                        <img src="../../../resources/img/svg/icons_forms/assists.svg" width="28" height="28">
-                        </button>
-                    </td>
-                    <td>
-                        <button type="button" class="btn transparente" onclick="seeCont(${row.id_entrenamiento})">
-                        <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="30" height="30">
-                        </button>
-                    </td>
-                    <td>
-                        <button type="button" class="btn transparente" onclick="openUpdate(${row.id_entrenamiento})">
-                        <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                        </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_entrenamiento})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
-                    </td>
-                </tr>
-                `;
-                cargarTabla.innerHTML += tablaHtml;
-            });
+            injuries = DATA.dataset;
+            showInjuries(currentPage);
         } else {
             sweetAlert(4, DATA.error, true);
         }
@@ -583,6 +601,32 @@ const restaurarFormulario = async (num = null) => {
     }
 }
 
+// Función para actualizar los contlesiones de paginación
+function updatePaginate() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
+
+    const totalPaginas = Math.ceil(injuries.length / injuriesByPage);
+
+    if (currentPage > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-bs-dark" href="#" onclick="nextPage(${currentPage - 1})">Anterior</a></li>`;
+    }
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link text-bs-dark" href="#" onclick="nextPage(${i})">${i}</a></li>`;
+    }
+
+    if (currentPage < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-bs-dark" href="#" onclick="nextPage(${currentPage + 1})">Siguiente</a></li>`;
+    }
+}
+
+// Función para cambiar de página
+function nextPage(newPage) {
+    currentPage = newPage;
+    showInjuries(currentPage);
+}
+
 // window.onload
 window.onload = async function () {
     // Obtiene el contenedor principal
@@ -595,8 +639,20 @@ window.onload = async function () {
     appContainer.innerHTML = adminHtml;
     ID_URL = new URLSearchParams(window.location.search);
     ID_JORNADA_URL = ID_URL.get('id');
+    let id_jornadona = 0;
+    if (ID_JORNADA_URL == null)
+    {
+        const ultimaJornada = await fetchData(ENTRENAMIENTOS_API, 'readUltimaJornada');
+        id_jornadona = ultimaJornada.dataset.id_jornada;
+        console.log(id_jornadona, 'Esto es lo que contiene el arreglo del id_jornada');
+        ID_JORNADA_MEGA = id_jornadona;
+    }
+    else
+    {
+        ID_JORNADA_MEGA = ID_JORNADA_URL;
+    }
     const FORME = new FormData();
-    FORME.append('idJornada', ID_JORNADA_URL);
+    FORME.append('idJornada', ID_JORNADA_MEGA);
     // Petición para guardar los datos del formulario.
     const DATAE = await fetchData(ENTRENAMIENTOS_API, 'readOneTitulo', FORME);
     const titleElement = document.getElementById('title');
@@ -704,4 +760,8 @@ window.onload = async function () {
         cargarTabla(FORM);
     });
     ESTADO_INICIAL_SAVE_FORM = document.getElementById('saveForm').innerHTML;
+    
+    const titulos = ['¡No veo mi entrenamiento!', 'Elegir otra jornada', 'Agregar Tareas', 'Agregar principios', 'Ver jugadores y sus equipos', 'Ver jugadores'];
+    const links = ['../pages/journeys.html', '../pages/journeys.html', '../pages/task.html', '../pages/sub_contents.html', '../pages/templates_name.html', '../pages/players.html'];
+    insertTag('tags', titulos, links, 'También podría interesarte');
 };

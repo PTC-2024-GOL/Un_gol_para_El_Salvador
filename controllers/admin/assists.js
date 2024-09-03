@@ -97,6 +97,36 @@ const seeModal = async (id) => {
 *   Parámetros: form (formulario de búsqueda).
 *   Retorno: ninguno.
 */
+// Manejo para la paginacion
+const injuriesByPage = 10;
+let currentPage = 1;
+let injuries = [];
+
+function showInjuries(page) {
+    const start = (page - 1) * injuriesByPage;
+    const end = start + injuriesByPage;
+    const injuriesPage = injuries.slice(start, end);
+
+    const fillTable = document.getElementById('tabla_detalles_contenidos');
+    fillTable.innerHTML = '';
+    injuriesPage.forEach(row => {
+        const tablaHtml = `
+                <tr>
+                <td>${row.nombre_equipo}</td>
+                <td>${row.nombre_categoria}</td>
+                
+                <td>
+                    <button type="button" class="btn transparente" onclick="seeModal(${row.id_equipo})">
+                    <img src="../../../resources/img/svg/icons_forms/reloj.png" width="30" height="30">
+                    </button>
+                </td>
+            </tr>
+                `;
+        fillTable.innerHTML += tablaHtml;
+    });
+
+    updatePaginate();
+}
 
 async function cargarTabla(form = null) {
     const lista_datos = [
@@ -134,21 +164,8 @@ async function cargarTabla(form = null) {
 
         if (DATA.status) {
             // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-                const tablaHtml = `
-                <tr>
-                <td>${row.nombre_equipo}</td>
-                <td>${row.nombre_categoria}</td>
-                
-                <td>
-                    <button type="button" class="btn transparente" onclick="seeModal(${row.id_equipo})">
-                    <img src="../../../resources/img/svg/icons_forms/reloj.png" width="30" height="30">
-                    </button>
-                </td>
-            </tr>
-                `;
-                cargarTabla.innerHTML += tablaHtml;
-            });
+            injuries = DATA.dataset;
+            showInjuries(currentPage);
         } else {
             sweetAlert(4, DATA.error, true);
         }
@@ -173,6 +190,32 @@ async function cargarTabla(form = null) {
     }
 }
 
+// Función para actualizar los contlesiones de paginación
+function updatePaginate() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
+
+    const totalPaginas = Math.ceil(injuries.length / injuriesByPage);
+
+    if (currentPage > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-bs-dark" href="#" onclick="nextPage(${currentPage - 1})">Anterior</a></li>`;
+    }
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link text-bs-dark" href="#" onclick="nextPage(${i})">${i}</a></li>`;
+    }
+
+    if (currentPage < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-bs-dark" href="#" onclick="nextPage(${currentPage + 1})">Siguiente</a></li>`;
+    }
+}
+
+// Función para cambiar de página
+function nextPage(newPage) {
+    currentPage = newPage;
+    showInjuries(currentPage);
+}
+
 // window.onload
 window.onload = async function () {
     // Obtiene el contenedor principal
@@ -185,7 +228,7 @@ window.onload = async function () {
     appContainer.innerHTML = adminHtml;
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Asistencias';
-    cargarTabla();
+    await cargarTabla();
     // Constantes para establecer los elementos del componente Modal.
 
     SEE_MODAL = new bootstrap.Modal('#seeModal'),
