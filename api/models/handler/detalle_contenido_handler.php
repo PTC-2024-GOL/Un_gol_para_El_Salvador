@@ -225,7 +225,8 @@ class DetalleContenidoHandler
     {
         $sql = "SELECT 
                 id,
-                jugadores
+                jugadores,
+                posicion
                 FROM vista_equipos_jugadores WHERE id_equipo = ?;";
         $params = array($this->idEquipo);
         return Database::getRows($sql, $params);
