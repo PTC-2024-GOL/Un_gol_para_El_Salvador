@@ -22,6 +22,8 @@ let SAVE_FORM,
     ZONA1,
     ZONA2,
     ZONA3,
+    OPCIONES,
+    OPCIONES_SIN_PARSE,
     ZONA
     ;
 let ACTIVATE = '';
@@ -93,22 +95,18 @@ async function loadComponent(path) {
     return text;
 }
 // Función para poblar un combobox (select) con opciones
-const fillSelected = (data, selectId, selectedValue = null) => {
+const fillSelected = (data, selectId, idcontenedorbotones, selectedValue = null) => {
     const selectElement = document.getElementById(selectId);
 
     // Limpiar opciones previas del combobox
     selectElement.innerHTML = '';
-
+    let options = [];
+    data.forEach(item => {
+        options.push(item.posicion);
+    });
+    console.log(options);
     // Crear opción por defecto
-    const defaultOption = document.createElement('option');
-    defaultOption.value = '';
-    defaultOption.textContent = 'Selecciona a quién se asignará';
-    selectElement.appendChild(defaultOption);
-
-    const addTodos = document.createElement('option');
-    addTodos.value = '0';
-    addTodos.textContent = 'Seleccionar a todos';
-    selectElement.appendChild(addTodos);
+    fillSelectedDynamic(selectId, idcontenedorbotones, options);
     // Llenar el combobox con los datos proporcionados
     data.forEach(item => {
         const option = document.createElement('option');
@@ -116,11 +114,47 @@ const fillSelected = (data, selectId, selectedValue = null) => {
         option.textContent = item.jugadores; // Cambia 'jugadores' al nombre de la propiedad que deseas mostrar en el combobox
         selectElement.appendChild(option);
     });
+    const option = document.createElement('option');
+    option.value = 'Seleccionar todos';
+    option.textContent = 'Seleccionar todos';
+    selectElement.appendChild(option);
+    console.log(data, 'Estos son los datos que procesa el fillSelected');
 
     // Seleccionar el valor especificado si se proporciona
     if (selectedValue !== null) {
         selectElement.value = selectedValue;
     }
+};
+
+// Función para poblar un combobox (select) con opciones diferentes a un jugador
+const fillSelectedDynamic = (selectId, idcontenedorbotones, options = null) => {
+    const selectElement = document.getElementById(selectId);
+
+    // Limpiar opciones previas del combobox
+    selectElement.innerHTML = '';
+
+    // Crear un arreglo de opciones únicas
+    const uniqueOptions = [...new Set(options)];
+
+    // Crear opción por defecto
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Selecciona a quién se asignará';
+    selectElement.appendChild(defaultOption);
+
+    // Agregar las opciones únicas al combobox
+    uniqueOptions.forEach((option) => {
+        ADD_JUGADOR = 1;
+        if (option == 'Seleccionar todos') {
+            let conca = (option);
+            let boton = generarBotones(conca, option);
+            document.getElementById(idcontenedorbotones).appendChild(boton);
+        }
+        let conca = ('Selecciona a todos los ' + option + 's');
+        let boton = generarBotones(conca, option);
+        document.getElementById(idcontenedorbotones).appendChild(boton);
+    });
+    OPCIONES = uniqueOptions;
 };
 
 const zona1func = () => {
@@ -145,6 +179,89 @@ const zona3func = () => {
     ZONA = 'Zona 3';
 }
 
+const generarBotones = (texto, valor) =>{
+    console.log('Estoy generando botones, este es el valor de ADD_JUGADOR ', ADD_JUGADOR);
+    const boton = document.createElement('button');
+    if (ADD_JUGADOR) {
+    boton.classList.add('btn', 'btn-outline-primary', 'rounded-5', 'btn-style', 'py-2', 'px-3', 'mb-2', 'me-2');
+    boton.textContent = texto;
+    boton.type = 'button';
+    boton.onclick = function() {
+        
+        let esOpcionValida = 0;
+        console.log(OPCIONES, 'Estas son las opciones');
+        esOpcionValida = OPCIONES.some(opcion => opcion == valor);
+        if (esOpcionValida) {
+            const jugadoresConPosicion = lista_datos.filter(jugador => jugador.posicion === valor);
+
+            if (jugadoresConPosicion.length > 0) {
+                // Aquí puedes manejar los jugadores que coinciden con la posición
+                console.log(jugadoresConPosicion, 'Estos son los jugadores filtrados');
+
+                //Aqui comienza la cración de los inputs
+                //eliminardata('delete full');
+
+                jugadoresConPosicion.forEach(jugadorSeleccionado => {
+                    const elementoAgregado = datosguardados.some(elemento => elemento === jugadorSeleccionado.id);
+                    if (!elementoAgregado) {
+                        // Crear un nuevo contenedor de fila para el input y el botón
+                        const rowContainer = document.createElement('div');
+                        rowContainer.id = 'rowContainer_' + jugadorSeleccionado.id;
+                        rowContainer.classList.add('row', 'py-1', 'ms-1');
+
+                        // Crear un nuevo input para el nombre del jugador
+                        const nombreJugadorInput = document.createElement('input');
+                        nombreJugadorInput.id = 'nombreAdministrador_' + jugadorSeleccionado.id;
+                        nombreJugadorInput.type = 'text';
+                        nombreJugadorInput.name = 'nombreAdministrador_' + jugadorSeleccionado.id;
+                        nombreJugadorInput.classList.add('col-9', 'rounded-3', 'me-2', 'inputt');
+                        nombreJugadorInput.disabled = true;
+                        nombreJugadorInput.value = jugadorSeleccionado.jugadores;
+
+                        // Crear un nuevo botón de eliminar
+                        const botonEliminar = document.createElement('button');
+                        botonEliminar.id = 'btnEliminar_' + jugadorSeleccionado.id;
+                        botonEliminar.type = 'button';
+                        botonEliminar.classList.add('btn', 'transparente', 'col-1', 'border', 'border-danger');
+                        datosguardados.push(jugadorSeleccionado.id);
+                        console.log(datosguardados);
+                        botonEliminar.onclick = function () {
+                            eliminardata(jugadorSeleccionado.id);
+                            eliminarInput(jugadorSeleccionado.id);
+                        };
+
+                        // Crear la imagen para el botón de eliminar
+                        const imagenEliminar = document.createElement('img');
+                        imagenEliminar.src = '../../../resources/img/svg/icons_forms/trash 1.svg';
+                        imagenEliminar.width = 10;
+                        imagenEliminar.height = 10;
+
+                        // Agregar la imagen al botón de eliminar
+                        botonEliminar.appendChild(imagenEliminar);
+
+                        // Agregar el input y el botón al contenedor de fila
+                        rowContainer.appendChild(nombreJugadorInput);
+                        rowContainer.appendChild(botonEliminar);
+
+                        // Obtener el contenedor de los nombres de los jugadores
+                        const nombresDeLosJugadoresDiv = document.getElementById('nombresDeLosJugadores');
+
+                        // Agregar el contenedor de fila al contenedor de nombres de los jugadores
+                        nombresDeLosJugadoresDiv.appendChild(rowContainer);
+                    }
+                });
+
+            } else if (esOpcionValida) {
+                // Lógica para manejar cuando selectedJugadorId es válido pero no es una posición en lista_datos
+                console.error(valor, 'Dio error y es una opción válida');
+            }
+
+        }
+    };
+}
+    return boton;
+    
+}
 /*
 *   Función para preparar el formulario al momento de insertar un registro.
 *   Parámetros: ninguno.
@@ -159,6 +276,20 @@ const openCreateCancha = async () => {
     MODAL_TITLE.textContent = 'Agregar detalle';
 }
 
+const zona1Seguir = () => {
+    zona1func();
+    openCreate();
+}
+
+const zona2Seguir = () => {
+    zona2func();
+    openCreate();
+}
+
+const zona3Seguir = () => {
+    zona3func();
+    openCreate();
+}
 const volverCancha = async () => {
     // Se muestra la caja de diálogo con su título.
     const modal = `<div class="col-sm-12 col-md-12 g-3 px-3 py-3">
@@ -166,21 +297,21 @@ const volverCancha = async () => {
                         <div class="row">
                             <div class="col-md-4 col-sm-12">
                                 <button href="#" class="btn" role="button" data-bs-toggle="button"
-                                onclick="zona1func()" id="zona1">
+                                onclick="zona1func()" ondblclick="zona1Seguir()" id="zona1">
                                     <img src="../../../resources/img/png/zona_campo_1.png"
                                         class="rounded float-start img-fluid" alt="...">
                                 </button>
                             </div>
                             <div class="col-md-4 col-sm-12">
                                 <button href="#" class="btn" role="button" data-bs-toggle="button"
-                                onclick="zona2func()" id="zona2">
+                                onclick="zona2func()" ondblclick="zona2Seguir()" id="zona2">
                                     <img src="../../../resources/img/png/zona_campo_2.png"
                                         class="rounded mx-auto d-block img-fluid" alt="...">
                                 </button>
                             </div>
                             <div class="col-md-4 col-sm-12">
                                 <button href="#" class="btn" role="button" data-bs-toggle="button"
-                                onclick="zona3func()" id="zona3">
+                                onclick="zona3func()" ondblclick="zona3Seguir()" id="zona3">
                                     <img src="../../../resources/img/png/zona_campo_3.png"
                                         class="rounded float-end img-fluid" alt="...">
                                 </button>
@@ -203,6 +334,7 @@ const volverCancha = async () => {
         ZONA = 'Zona 3';
         zona3func();
     }
+    
 }
 const cargarComponente = async (number) => {
     // Se muestra la caja de diálogo con su título.
@@ -232,6 +364,9 @@ const cargarComponente = async (number) => {
     <div class="col-sm-12 col-md-12">
         <label for="telefonoEquipo" class="form-label fw-semibold">Jugador/ Jugadores</label>
         <div class="row">
+            <div class="col-12" id="contenedorBotones">
+
+            </div>
             <div class="col-sm-12 col-md-10">
                 <select class="form-select me-3 borde-transparente campo rounded-3 shadow"
                     id="generador">
@@ -251,8 +386,8 @@ const cargarComponente = async (number) => {
 </div>
 </form>`;
     CONTENEDOR_MODAL.innerHTML = modal;
-    if(number){
-        
+    if (number) {
+
         let boton = document.getElementById('volver');
         //Quiero que el boton se elimine
         boton.remove();
@@ -331,7 +466,7 @@ const openCreate = async () => {
         console.log('Estoy cambiando el select');
         const selectedJugadorId = event.target.value;
         if (ADD_JUGADOR) {
-            if (selectedJugadorId == 0) {
+            if (selectedJugadorId == 'Seleccionar todos') {
                 // Si entra a este if seleccionar todos los jugadores
                 eliminardata('delete full');
 
@@ -458,7 +593,7 @@ const openCreate = async () => {
     console.log(lista_datos);
     lista_datos = jugadores.dataset;
     console.log(lista_datos);
-    fillSelected(jugadores.dataset, 'generador');
+    fillSelected(jugadores.dataset, 'generador', 'contenedorBotones');
 };
 
 /*
