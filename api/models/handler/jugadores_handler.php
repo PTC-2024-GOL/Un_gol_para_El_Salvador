@@ -22,6 +22,7 @@ class JugadoresHandler
     protected $posicionSecundaria = null;
     protected $claveJ = null;
     protected $fotoJ = null;
+    protected $alias = null;
 
     protected $telefono = null;
     protected $telefono_emergencia = null;
@@ -31,6 +32,79 @@ class JugadoresHandler
 
     // Constante para establecer la ruta de las imágenes.
     const RUTA_IMAGEN = '../../images/jugadores/';
+
+    
+    /*
+     *  Métodos para gestionar la cuenta del Jugador.
+     */
+
+    //Función para chequear el usuario de un admministrador en el login, sin el procedimiento almacenado.
+    
+    public function checkUser($username, $password)
+    {
+        $sql = 'SELECT id_jugador, correo_jugador, 
+                clave_jugador, estatus_jugador, 
+                foto_jugador, alias_jugador, 
+                nombre_jugador, apellido_jugador
+                FROM jugadores
+                WHERE (BINARY alias_jugador = ? OR BINARY correo_jugador = ?)';
+        $params = array($username,$username);
+        $data = Database::getRow($sql, $params);
+        if (password_verify($password, $data['clave_jugador'])) {
+            $this->id = $data['id_jugador'];
+            $this->correoJ = $data['correo_jugador'];
+            $this->alias = $data['alias_jugador'];
+            $this->estatusJ = $data['estatus_jugador'];
+            $this->fotoJ = $data['foto_jugador'];
+            $this->nombreJ = $data['nombre_jugador'];
+            $this->apellidoJ = $data['apellido_jugador'];
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Función que chequea el estado
+    public function checkStatus()
+    {
+        if ($this->estatusJ /*== "Activo"*/) {
+            $_SESSION['idJugador'] = $this->id;
+            $_SESSION['correoJugador'] = $this->correoJ;
+            $_SESSION['fotoJugador'] = $this->fotoJ;
+            $_SESSION['aliasJugador'] = $this->alias;
+            $_SESSION['nombreJugador'] = $this->nombreJ;
+            $_SESSION['apellidoJugador'] = $this->apellidoJ;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //Función para chequear la contraseña de un admministrador.
+    public function checkPassword($password)
+    {
+        $sql = 'SELECT clave_jugador AS CLAVE
+                FROM jugadores
+                WHERE id_jugador = ?';
+        $params = array($_SESSION['idJugador']);
+        $data = Database::getRow($sql, $params);
+        // Se verifica si la contraseña coincide con el hash almacenado en la base de datos.
+        if (password_verify($password, $data['CLAVE'])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //Función para cambiar la contraseña de un admministrador.
+    public function changePassword()
+    {
+        $sql = 'UPDATE jugadores
+                SET clave_jugador = ?, fecha_clave = NOW()
+                WHERE id_jugador = ?';
+        $params = array($this->claveJ, $_SESSION['idJugador']);
+        return Database::executeRow($sql, $params);
+    }
 
 
     /*
@@ -144,7 +218,7 @@ class JugadoresHandler
         return Database::executeRow($sql, $params);
     }
 
-    ///FUNCIONES PARA MOVIL DE TECNICOS - PANTALLA DE RENDIMIENTO
+    ///FUNCIONES PARA MOVIL DE JugadorS - PANTALLA DE RENDIMIENTO
 
     public function matchesByPlayer()
     {
