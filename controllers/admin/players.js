@@ -1,3 +1,6 @@
+let SEE_MEDICAL,
+    MODAL_TITLE_MEDICAL;
+
 let SAVE_MODAL;
 let SAVE_FORM,
     ID_JUGADOR,
@@ -28,6 +31,8 @@ let BOX_ALIAS;
 // Constantes para completar las rutas de la API.
 const JUGADOR_API = 'services/admin/jugadores.php';
 const POSICIONES_API = 'services/admin/posiciones.php';
+// Constantes para completar las rutas de la API.
+const ESTADO_API = 'services/admin/estado_fisico_jugador.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -58,10 +63,55 @@ const openCreate = async () => {
 *   Parámetros: id jugador.
 *   Retorno: ninguno.
 */
-const openPage = (id) => {
-    // Cuando se haga clic en el botón, se redirigirá a la página de estado fisica específicas.
-    window.location.href = `../pages/physical_states.html?id=${id}`;
+
+let idJugador;
+const openPage = async (id) => {
+    const cargarTabla = document.getElementById('tableEstadoFisico');
+    idJugador = id;
+    SEE_MEDICAL.show();
+    MODAL_TITLE_MEDICAL.textContent = 'Estado físico del jugador'
+
+    try {
+        cargarTabla.innerHTML = '';
+        const FORM = new FormData();
+        FORM.append('idJugador', id)
+
+        const DATA = await fetchData(ESTADO_API, 'readAll', FORM);
+        if (DATA.status) {
+            DATA.dataset.forEach(row => {
+                const tablaHtml = `
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-md-3">
+                        <p>${row.altura_jugador} ctm</p>
+                    </div>
+                    <div class="col-md-3">
+                        <p>${row.peso_jugador} lbs</p>
+                    </div>
+                    <div class="col-md-3">
+                        <p>${row.indice_masa_corporal}</p>
+                    </div>
+                    <div class="col-md-3">
+                       <p>${row.fecha_creacion_format}</p>
+                    </div>   
+                </div>
+                <hr>
+            `;
+                cargarTabla.innerHTML += tablaHtml;
+            })
+        } else {
+            await sweetAlert(3, DATA.error, true)
+        }
+    }catch (error){
+        console.log('Error al obtener datos de la API')
+    }
 }
+
+const goToPage = () => {
+    // Cuando se haga clic en el botón, se redirigirá a la página de estado fisica específicas.
+    window.location.href = `../pages/physical_states.html?id=${idJugador}`;
+    idJugador = 0;
+}
+
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
 *   Parámetros: id (identificador del registro seleccionado).
@@ -280,6 +330,9 @@ window.onload = async function () {
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
+
+    SEE_MEDICAL = new bootstrap.Modal('#seeMedicalRecord'),
+        MODAL_TITLE_MEDICAL = document.getElementById('modalTitleMedical')
 
     // Constantes para establecer los elementos del formulario de guardar.
     SAVE_FORM = document.getElementById('saveForm'),
