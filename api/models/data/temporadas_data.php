@@ -29,8 +29,8 @@ class TemporadasData extends TemporadasHandler
     // Validación y asignación del nombre del rol.
     public function setNombre($value, $min = 2, $max = 50)
     {
-        if (!Validator::validateAlphanumeric($value)) {
-            $this->data_error = 'El nombre debe ser un valor alfanumerico';
+        if (!Validator::validateStringText($value)) {
+            $this->data_error = 'El nombre debe ser una cadena de texto que conste de (letras, dígitos, espacios en blanco, signos de puntuación y guiones)';
             return false;
         } elseif (Validator::validateLength($value, $min, $max)) {
             $this->nombre = $value;

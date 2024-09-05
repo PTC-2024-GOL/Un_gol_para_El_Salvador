@@ -67,7 +67,7 @@ class JugadoresHandler
     // Función que chequea el estado
     public function checkStatus()
     {
-        if ($this->estatusJ /*== "Activo"*/) {
+        if ($this->estatusJ == "Activo") {
             $_SESSION['idJugador'] = $this->id;
             $_SESSION['correoJugador'] = $this->correoJ;
             $_SESSION['fotoJugador'] = $this->fotoJ;
