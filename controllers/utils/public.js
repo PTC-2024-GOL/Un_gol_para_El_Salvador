@@ -6,9 +6,6 @@
 // Constante para establecer el elemento del contenido principal.
 const MAIN = document.querySelector('main');
 const FOOTER = document.querySelector('footer');
-MAIN.style.paddingTop = '50px';
-MAIN.style.paddingBottom = '100px';
-MAIN.classList.add('container');
 
 /* Función asíncrona para cargar el encabezado y pie del documento.
 * Parámetros: ninguno.
@@ -59,9 +56,8 @@ const loadTemplate = async () => {
 
     // Se agrega el encabezado de la página web antes del contenido principal.
     FOOTER.insertAdjacentHTML('afterbegin', `
-         <nav id="navbar" class="fixed-bottom navbar-expand-lg pb-4">
-             <div class="container-fluid ">
-           
+         <nav id="navbar" class="sticky-bottom navbar-expand-lg pb-4 pt-4">
+             <div class="container-fluid">
                 <div class="row mb-5 mt-4">
                     <div class="col-md-4">
                         <div class="d-flex justify-content-center align-items-center">
