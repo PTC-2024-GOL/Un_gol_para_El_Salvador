@@ -80,6 +80,12 @@ class PartidosHandler
         return Database::getRows($sql);
     }
 
+    public function readAllTheLast5()
+    {
+        $sql = "SELECT * FROM vista_detalle_partidos ORDER BY id_partido DESC LIMIT 6;";
+        return Database::getRows($sql);
+    }
+
     public function readAll2()
     {
         $sql = 'SELECT * FROM vista_detalle_partidos_tecnicos WHERE id_tecnico = ?';
