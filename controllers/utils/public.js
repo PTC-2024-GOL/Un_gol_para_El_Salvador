@@ -29,12 +29,6 @@ const loadTemplate = async () => {
               <!--/////////////////////////////////////////////////////////////////////////////-->
              
               <ul class="navbar-nav ">
-                 <div class="nav-item me-5">
-                      <a class="nav-link active text-light" aria-current="page" href="matches.html">
-                        <img src="../../../resources/img/svg/icons_menu/IconC.svg" class="me-3"
-                      alt="">Partidos</a>
-                 </div>
-                   
                  <div class="nav-item me-5">  
                    <a class="nav-link active text-light" aria-current="page" href="soccer_teams.html">
                       <img src="../../../resources/img/svg/icons_menu/IconF.svg" class="me-3"
@@ -48,7 +42,12 @@ const loadTemplate = async () => {
                  <div class="nav-item me-5">  
                    <a class="nav-link active text-light" aria-current="page" href="contact_us.html">Contáctanos</a>
                  </div>
-                      </ul>
+                 
+                 <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Buscar partido..." aria-label="Search">
+                    <button class="btn btn-outline-light me-3" type="submit">Buscar</button>
+                </form>
+              </ul>
                 </div>
           </div>
     </nav>
