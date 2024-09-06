@@ -120,6 +120,7 @@ class JornadasHandler
         j.numero_jornada AS NUMERO,
         p.nombre_plantilla AS PLANTILLA,
         j.id_plantilla AS ID_PLANTILLA,
+        t.nombre_temporada AS TEMPORADA,
         DATE_FORMAT(j.fecha_inicio_jornada, " %d de %M de %Y") AS FECHA_INICIO,
         DATE_FORMAT(j.fecha_fin_jornada, " %d de %M de %Y") AS FECHA_FIN
         FROM 
@@ -130,6 +131,8 @@ class JornadasHandler
         plantillas_equipos pe ON p.id_plantilla = pe.id_plantilla
         INNER JOIN 
         equipos e ON pe.id_equipo = e.id_equipo
+        INNER JOIN 
+        temporadas t ON t.id_temporada = pe.id_temporada
         WHERE 
         pe.id_jugador = ?
         ORDER BY NOMBRE;';
