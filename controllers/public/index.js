@@ -33,7 +33,7 @@ const showMatches = async () => {
                         </div>
                     </div>
                     <div class="d-flex justify-content-center pe-3 ps-3 mt-2 mb-2">
-                        <button class="btn btn-outline-secondary">Ir al partido</button>
+                        <a href="detail_match.html?id=${row.id_partido}" class="btn btn-outline-secondary">Ir al partido</a>
                     </div>
                 </div>
             </div>
