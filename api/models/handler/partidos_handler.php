@@ -485,6 +485,21 @@ class PartidosHandler
         return array_slice($mejores_notas, 0, 3, true);
     }
 
+    //Función para leer los partidos por el idEquipo
+
+    public function readAllByIdJugadorOld()
+    {
+        $sql = "SELECT * FROM vista_detalle_partidos_jugadores WHERE id_jugador = ? ORDER BY fecha ASC ;";
+        $params = array($_SESSION['idJugador']);
+        return Database::getRows($sql, $params);
+    }
+
+    public function readAllByIdJugadorNew()
+    {
+        $sql = "SELECT * FROM vista_detalle_partidos_jugadores WHERE id_jugador = ? ORDER BY fecha DESC ;";
+        $params = array($_SESSION['idJugador']);
+        return Database::getRows($sql, $params);
+    }
 
 
     public function generarMensajePrediccion()

@@ -36,7 +36,7 @@ const loadTemplate = async () => {
                  </div>
                  
                  <div class="nav-item me-5">  
-                   <a class="nav-link active text-light" aria-current="page" href="about_us">Sobre nosotros</a>
+                   <a class="nav-link active text-light" aria-current="page" href="about_us.html">Sobre nosotros</a>
                  </div>
                  
                  <div class="nav-item me-5">  
