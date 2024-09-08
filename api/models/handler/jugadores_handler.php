@@ -243,5 +243,36 @@ class JugadoresHandler
         return Database::getRows($sql, $params);
     }
 
+    public function promByPlayerMobilePlayers()
+    {
+        $sql = 'SELECT round(AVG(nota_caracteristica_analisis),1) AS notaGlobal FROM caracteristicas_analisis 
+                WHERE id_jugador = ?;';
+        $params = array($_SESSION['idJugador']);
+        return Database::getRow($sql, $params);
+    }
+
+    public function matchesByPlayeMobilePLayers()
+    {
+        $sql = 'SELECT COUNT(id_participacion) AS partidos FROM participaciones_partidos 
+                WHERE id_jugador = ?';
+        $params = array($_SESSION['idJugador']);
+        return Database::getRow($sql, $params);
+    }
+
+    public function notesByPlayerMobilePlayers()
+    {
+        $sql = 'SELECT * FROM notas_por_jugador WHERE id_jugador = ?';
+        $params = array($_SESSION['idJugador']);
+        return Database::getRows($sql, $params);
+    }
+
+    public function readOneMobile()
+    {
+        $sql = 'SELECT * FROM vista_jugadores
+                WHERE id_jugador= ?';
+        $params = array($_SESSION['idJugador']);
+        return Database::getRow($sql, $params);
+    }
+
 
 }
