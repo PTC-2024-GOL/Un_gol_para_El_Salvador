@@ -17,6 +17,8 @@ class AsistenciasrHandler
     protected $idAsistencia = null;
     protected $idAsistenciaBool = null;
     protected $idEquipo = null;
+    
+    protected $idJornada = null;
 
     //Función para insertar las asistencias
 
@@ -83,8 +85,8 @@ class AsistenciasrHandler
     //Función para leer las asistencias de un jugador
     public function readOnePlayer()
     {
-        $sql = "SELECT observacion_asistencia, asistencia, fecha FROM asistencias_por_jugador WHERE id_jugador = ? ORDER BY fecha_asistencia DESC;";
-        $params = array($this->idJugador);
+        $sql = "SELECT observacion_asistencia, asistencia, fecha FROM asistencias_por_jugador WHERE id_jugador = ? AND id_jornada = ? ORDER BY fecha_asistencia DESC;";
+        $params = array($this->idJugador, $this->idJornada);
         return Database::getRows($sql, $params);
     }
 
@@ -92,8 +94,8 @@ class AsistenciasrHandler
     public function readOnePlayerStadistic()
     {
         $sql = "SELECT cantidad_asistencia, porcentaje_asistencia, cantidad_ausencia_injustificada, porcentaje_ausencia_injustificada, cantidad_enfermedad,
-            porcentaje_enfermedad, cantidad_otro, porcentaje_otro, cantidad_estudio FROM vista_asistencias_por_jugador WHERE id_jugador = ?";
-        $params = array($this->idJugador);
+            porcentaje_enfermedad, cantidad_otro, porcentaje_otro, cantidad_estudio FROM vista_asistencias_por_jugador WHERE id_jugador = ? AND id_jornada = ?;";
+        $params = array($this->idJugador, $this->idJornada);
         return Database::getRow($sql, $params);
     }
 
