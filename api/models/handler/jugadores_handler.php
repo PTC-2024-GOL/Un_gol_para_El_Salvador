@@ -274,5 +274,15 @@ class JugadoresHandler
         return Database::getRow($sql, $params);
     }
 
+    public function readOneStats()
+    {
+        $sql = 'SELECT  COALESCE(SUM(goles), 0) AS TOTAL_GOLES,
+		COALESCE(SUM(asistencias), 0) AS TOTAL_ASISTENCIAS,
+        COUNT(id_partido) AS TOTAL_PARTIDOS
+        FROM participaciones_partidos
+        WHERE id_jugador = ? AND (titular = 1 OR sustitucion = 1);';
+        $params = array($_SESSION['idJugador']);
+        return Database::getRow($sql, $params);
+    }
 
 }
