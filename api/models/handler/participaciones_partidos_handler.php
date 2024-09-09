@@ -81,6 +81,30 @@ class ParticipacionesPartidosHandler
         $params = array($this->idParticipacion);
         return Database::getRow($sql, $params);
     }
+    
+    //Funcion que traera todos los juegadors
+    public function participationMatch()
+    {
+        $sql = 'SELECT  p.id_participacion,
+        CONCAT(j.nombre_jugador, " ", j.apellido_jugador) AS jugador,
+        j.foto_jugador,
+        j.dorsal_jugador,
+        p.id_partido,
+        p.titular,
+        p.sustitucion,
+        p.minutos_jugados,
+        p.goles,
+        p.asistencias,
+        p.estado_animo,
+        p.puntuacion,
+        po.posicion
+        FROM participaciones_partidos p
+        INNER JOIN jugadores j ON p.id_jugador = j.id_jugador
+        INNER JOIN posiciones po ON p.id_posicion = po.id_posicion
+        WHERE id_partido = ? ORDER BY puntuacion ASC ;';
+        $params = array($this->idPartido);
+        return Database::getRows($sql, $params);
+    }
 
     public function readByPlayerArea()
     {
