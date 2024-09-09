@@ -159,7 +159,7 @@ class EquiposHandler
 
     public function readAllEquipos()
     {
-        $sql = 'SELECT NOMBRE, ID, nombre_categoria FROM vista_equipos;';
+        $sql = 'SELECT NOMBRE, ID, nombre_categoria, logo_equipo FROM vista_equipos;';
         return Database::getRows($sql);
     }
 
