@@ -10,7 +10,7 @@ if (isset($_GET['action'])) {
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
     $result = array('status' => 0, 'message' => null, 'dataset' => null, 'error' => null, 'exception' => null, 'fileStatus' => null);
     switch ($_GET['action']) {
-        // Buscar
+            // Buscar
         case 'searchRows':
             if (!Validator::validateSearch($_POST['search'])) {
                 $result['error'] = Validator::getSearchError();
@@ -21,7 +21,7 @@ if (isset($_GET['action'])) {
                 $result['error'] = 'No hay coincidencias';
             }
             break;
-       // Leer todos
+            // Leer todos
         case 'readAll':
             if ($result['dataset'] = $partido->readAll()) {
                 $result['status'] = 1;
@@ -38,7 +38,7 @@ if (isset($_GET['action'])) {
                 $result['error'] = 'No existen partidos registrados';
             }
             break;
-        // Leer uno
+            // Leer uno
         case 'readAllByIdEquipos':
             if (!$partido->setIdEquipo($_POST['idEquipo'])) {
                 $result['error'] = $partido->getDataError();
@@ -48,7 +48,7 @@ if (isset($_GET['action'])) {
                 $result['error'] = 'El equipo seleccionado aún no ha tenido partidos';
             }
             break;
-        // Leer uno
+            // Leer uno
         case 'readOne':
             if (!$partido->setIdPartido($_POST['idPartido'])) {
                 $result['error'] = $partido->getDataError();
@@ -58,7 +58,17 @@ if (isset($_GET['action'])) {
                 $result['error'] = 'Partido inexistente';
             }
             break;
-        // Leer jornadas
+            // Leer uno
+        case 'readOnePublic':
+            if (!$partido->setIdPartido($_POST['idPartido'])) {
+                $result['error'] = $partido->getDataError();
+            } elseif ($result['dataset'] = $partido->readOnePublic()) {
+                $result['status'] = 1;
+            } else {
+                $result['error'] = 'Partido inexistente';
+            }
+            break;
+            // Leer jornadas
         case 'readJornadas':
             if ($result['dataset'] = $partido->readOneJornada()) {
                 $result['status'] = 1;
@@ -68,14 +78,14 @@ if (isset($_GET['action'])) {
             }
             break;
         default:
-                $result['error'] = 'Acción no disponible';
-        }
-        // Se obtiene la excepción del servidor de base de datos por si ocurrió un problema.
-        $result['exception'] = Database::getException();
-        // Se indica el tipo de contenido a mostrar y su respectivo conjunto de caracteres.
-        header('Content-type: application/json; charset=utf-8');
-        // Se imprime el resultado en formato JSON y se retorna al contplantillaador.
-        print(json_encode($result));
+            $result['error'] = 'Acción no disponible';
+    }
+    // Se obtiene la excepción del servidor de base de datos por si ocurrió un problema.
+    $result['exception'] = Database::getException();
+    // Se indica el tipo de contenido a mostrar y su respectivo conjunto de caracteres.
+    header('Content-type: application/json; charset=utf-8');
+    // Se imprime el resultado en formato JSON y se retorna al contplantillaador.
+    print(json_encode($result));
 } else {
     print(json_encode('Recurso no disponible'));
 }

@@ -85,6 +85,17 @@ class AsistenciasData extends AsistenciasrHandler
             return false;
         }
     }
+
+    public function setIdJornada($value)
+    {
+        if (Validator::validateNaturalNumber($value)) {
+            $this->idJornada = $value;
+            return true;
+        } else {
+            $this->data_error = 'El identificador de la jornada es incorrecto o esta nulo';
+            return false;
+        }
+    }
     // Método para obtener el error de los datos.
     public function getDataError()
     {

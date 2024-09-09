@@ -37,6 +37,34 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Nombre de Jugador indefinido';
                 }
                 break;
+            case 'promByPlayerMobilePlayers':
+                if ($result['dataset'] = $jugador->promByPlayerMobilePlayers()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Ocurrió un problema el promedio';
+                }
+                break;
+            case 'matchesByPlayeMobilePLayers':
+                if ($result['dataset'] = $jugador->matchesByPlayeMobilePLayers()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Ocurrió un problema al leer el jugador';
+                }
+                break;
+            case 'notesByPlayerMobilePlayers':
+                if ($result['dataset'] = $jugador->notesByPlayerMobilePlayers()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Ocurrió un problema al leer las notas del jugador';
+                }
+                break;
+            case 'readOneMobile':
+                if ($result['dataset'] = $jugador->readOneMobile()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Ocurrió un problema al leer el perfil';
+                }
+                break;
                 // Cambiar contraseña
             case 'changePassword':
                 $_POST = Validator::validateForm($_POST);
