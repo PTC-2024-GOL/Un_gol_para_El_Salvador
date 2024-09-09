@@ -10,6 +10,7 @@ const PARTICIPACIONES_API = 'services/public/participaciones.php';
 // Constante tipo objeto para obtener los parámetros disponibles en la URL.
 let PARAMS = new URLSearchParams(location.search);
 
+// Función para leer el detalle de partido
 async function readMatch() {
     // Constante tipo objeto con los datos del producto seleccionado.
     const FORM = new FormData();
@@ -73,7 +74,7 @@ async function readMatch() {
     }
 }
 
-
+// Función para cargar las estadisticas
 async function cargarEstadisticas() {
     try {
         const productCardsContainer = document.getElementById('stats-cards');
@@ -93,13 +94,14 @@ async function cargarEstadisticas() {
                         <div class="shadow rounded-5">
                                 <div class="row p-3 align-items-center">
                                     <div class="col-4 ">
-                                    <img src="${SERVER_URL}images/jugadores/${row.foto_jugador}" class="shadow" height="120px" width="120px" id="imgJugador">
+                                    <img src="${SERVER_URL}images/jugadores/${row.foto_jugador}" height="120px" width="120px" id="imgJugador">
                                     </div>
                                 <div class="col-8">
                                 <div class="row align-items-center">
                                     <div class="col-9">
                                         <small class="text-blue-color">${row.posicion}</small>
                                         <p class="fw-semibold mb-0">${row.jugador}</p>
+                                        <p class="mb-0">⏱️ ${row.minutos_jugados} ${getTitular(row.titular)}</p>
                                     </div>
                                     <div class="col-2 text-center">
                                         <div class="bg-blue-principal-color text-light rounded-circle" id="dorsal">
@@ -113,10 +115,13 @@ async function cargarEstadisticas() {
                                        ${row.goles} <img src="../../../resources/img/svg/icons_forms/ball.svg" width="20" height="20">
                                     </button>
                                     <button type="button" class="btn transparente mx-2">
-                                       ${row.asistencias} <img src="../../../resources/img/svg/icons_forms/ball.svg" width="20" height="20">
+                                       ${row.asistencias} <img src="../../../resources/img/png/public/shoes.png" width="35" height="35">
                                     </button>
-                                    <button type="button" class="btn transparente mx-2" id="btnOpenAmonestacion_${row.id_jugador}" onclick="openAmonestaciones(${row.idParticipacion})">
-                                        <img src="../../../resources/img/svg/icons_forms/amonestacion.svg" width="20" height="20">
+                                    <button type="button" class="btn bg-yellow-color mx-2" id="btnOpenAmonestacion_${row.id_jugador}" onclick="openAmonestaciones(${row.idParticipacion})">
+                                       ${row.tarjetas_amarillas} <img src="../../../resources/img/svg/icons_forms/amonestacion.svg" width="20" height="20">
+                                    </button>
+                                    <button type="button" class="btn bg-red-cream-color mx-2" id="btnOpenAmonestacion_${row.id_jugador}" onclick="openAmonestaciones(${row.idParticipacion})">
+                                       ${row.tarjetas_rojas} <img src="../../../resources/img/svg/icons_forms/amonestacion.svg" width="20" height="20">
                                     </button>
                                     </div>
                                 </div>
@@ -134,6 +139,117 @@ async function cargarEstadisticas() {
     }
 }
 
+// Función para verificar si el jugador fue titular o suplente
+function getTitular(titular) {
+    switch (titular) {
+        case "0":
+            return '🔄️ entro de cambio';
+        case "1":
+            return '🏃🏻‍♂️ titular';
+        default:
+            return '';
+    }
+}
+
+// Función para cargar los jugadores en la alineación
+async function cargarAlineacion() {
+    try {
+        const productCardsContainer = document.getElementById('players-cards');
+        productCardsContainer.innerHTML = '';
+        // Constante tipo objeto con los datos del producto seleccionado.
+        const FORM = new FormData();
+        FORM.append('idPartido', PARAMS.get('id'));
+        // Petición para obtener los registros disponibles.
+        const DATA = await fetchData(PARTICIPACIONES_API, "alineacionPartido", FORM);
+        console.log(DATA);
+        if (DATA.status) {
+            let defensa = 8;
+            let central = 25;
+            let mediocentro = 8;
+            let extremo = 8;
+            let delantero = 36;
+
+            // Mostrar cartas de productos obtenidos de la API
+            DATA.dataset.forEach(row => {
+                let golesHtml = '';
+                let asistenciasHtml = '';
+                let amarillasHtml = '';
+                let rojasHtml = '';
+
+                if (row.goles > 0) {
+                    for (let i = 0; i < row.goles; i++) {
+                        golesHtml += '⚽ ';
+                    }
+                }
+                
+                if (row.asistencias > 0) {
+                    for (let i = 0; i < row.asistencias; i++) {
+                        asistenciasHtml += '👟 '; 
+                    }
+                }
+
+                if (row.tarjetas_amarillas > 0) {
+                    for (let i = 0; i < row.tarjetas_amarillas; i++) {
+                        amarillasHtml += '🟨 '; 
+                    }
+                }
+
+                if (row.tarjetas_rojas > 0) {
+                    for (let i = 0; i < row.tarjetas_rojas; i++) {
+                        rojasHtml += '🟥 '; 
+                    }
+                }
+                const cardHtml = `
+                    <div class="card player-card" 
+                    style="
+                        top: ${row.posicion == "Portero" ? "40%" 
+                        : row.posicion == "Defensa" ? defensa + "%" 
+                        : row.posicion == "Central" ? central + "%" 
+                        : row.posicion == "Mediocampista" ? mediocentro + "%" 
+                        : row.posicion == "Extremo" ? extremo + "%" 
+                        : delantero + "%"}; 
+                        left: ${row.posicion == "Portero" ? "6%" 
+                        : row.posicion == "Defensa" ? "37%" 
+                        : row.posicion == "Central" ? "22%" 
+                        : row.posicion == "Mediocampista" ? "56%" 
+                        : row.posicion == "Extremo" ? "75%" : "75%"};">
+                        <div class="card-header p-1 text-center">
+                            <p class="card-text">${row.posicion}</p>
+                        </div>
+                        <div class="card-body p-1 text-center">
+                            <img src="${SERVER_URL}images/jugadores/${row.foto_jugador}" class="card-img-top" alt="${row.jugador}">
+                        </div>
+                        <div class="card-footer p-1 text-center">
+                            <p class="card-text">${row.jugador} 
+                            ${golesHtml} ${asistenciasHtml} ${amarillasHtml} ${rojasHtml}</p>
+                        </div>
+                    </div>
+                `;
+
+                productCardsContainer.innerHTML += cardHtml;
+
+                // Ajustar las posiciones de las cartas
+                if (row.posicion == "Defensa") {
+                    defensa += 60;
+                } else if (row.posicion == "Central") {
+                    central += 30;
+                } else if (row.posicion == "Mediocampista") {
+                    mediocentro += 30;
+                } else if (row.posicion == "Extremo") {
+                    extremo += 60;
+                } else if (row.posicion == "Delantero") {
+                    delantero += 20;
+                }
+            });
+        } else {
+            console.log("Error al obtener datos");
+        }
+    } catch (error) {
+        console.error('Error al obtener datos de la API:', error);
+    }
+}
+
+
 
 // window.onload
 window.onload = async function () {
@@ -149,4 +265,5 @@ window.onload = async function () {
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Detalle del partido';
     cargarEstadisticas();
+    cargarAlineacion();
 };

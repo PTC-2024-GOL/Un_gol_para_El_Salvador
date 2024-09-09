@@ -97,11 +97,43 @@ class ParticipacionesPartidosHandler
         p.asistencias,
         p.estado_animo,
         p.puntuacion,
-        po.posicion
+        po.posicion,
+        SUM(CASE WHEN da.amonestacion = "Tarjeta amarilla" THEN 1 ELSE 0 END) AS tarjetas_amarillas,
+        SUM(CASE WHEN da.amonestacion = "Tarjeta roja" THEN 1 ELSE 0 END) AS tarjetas_rojas
         FROM participaciones_partidos p
         INNER JOIN jugadores j ON p.id_jugador = j.id_jugador
         INNER JOIN posiciones po ON p.id_posicion = po.id_posicion
-        WHERE id_partido = ? ORDER BY puntuacion ASC ;';
+        LEFT JOIN detalles_amonestaciones da ON da.id_participacion = p.id_participacion
+        WHERE id_partido = ? 
+        GROUP BY jugador ORDER BY puntuacion ASC ;';
+        $params = array($this->idPartido);
+        return Database::getRows($sql, $params);
+    }
+
+    //Funcion que traera todos los juegadors
+    public function alineacionPartido()
+    {
+        $sql = 'SELECT  p.id_participacion,
+        CONCAT(j.nombre_jugador, " ", j.apellido_jugador) AS jugador,
+        j.foto_jugador,
+        j.dorsal_jugador,
+        p.id_partido,
+        p.titular,
+        p.sustitucion,
+        p.minutos_jugados,
+        p.goles,
+        p.asistencias,
+        p.estado_animo,
+        p.puntuacion,
+        po.posicion,
+        SUM(CASE WHEN da.amonestacion = "Tarjeta amarilla" THEN 1 ELSE 0 END) AS tarjetas_amarillas,
+        SUM(CASE WHEN da.amonestacion = "Tarjeta roja" THEN 1 ELSE 0 END) AS tarjetas_rojas
+        FROM participaciones_partidos p
+        INNER JOIN jugadores j ON p.id_jugador = j.id_jugador
+        INNER JOIN posiciones po ON p.id_posicion = po.id_posicion
+        LEFT JOIN detalles_amonestaciones da ON da.id_participacion = p.id_participacion
+        WHERE id_partido = ? AND titular = 1
+        GROUP BY jugador ORDER BY puntuacion ASC ;';
         $params = array($this->idPartido);
         return Database::getRows($sql, $params);
     }

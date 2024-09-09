@@ -21,6 +21,16 @@ if (isset($_GET['action'])) {
                 $result['error'] = 'Aún no hay jugadores agregados a este equipo';
             }
             break;
+            // Leer todos los jugadores de un equipo
+        case 'alineacionPartido':
+            if (!$participacion->setIdPartido($_POST['idPartido'])) {
+                $result['error'] = $participacion->getDataError();
+            } elseif ($result['dataset'] = $participacion->alineacionPartido()) {
+                $result['status'] = 1;
+            } else {
+                $result['error'] = 'Aún no hay jugadores agregados a este equipo';
+            }
+            break;
         default:
             $result['error'] = 'Acción no disponible dentro de la sesión';
     }
