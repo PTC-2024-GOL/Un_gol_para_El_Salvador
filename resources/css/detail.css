@@ -154,4 +154,15 @@
     width: 85px;
     z-index: 10;
     font-size: 10px;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.player-card:hover{
+    box-shadow: 0 16px 30px rgba(76, 152, 249, 0.5); /* Resplandor verde */
+    transform: scale(1.05); /* Efecto de zoom suave */
+}
+
+.logo{
+    max-width: 120px;
+    max-height: 120px;
 }

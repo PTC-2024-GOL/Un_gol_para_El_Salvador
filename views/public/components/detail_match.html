@@ -6,7 +6,7 @@
                 <div class="row text-center">
                     <div class="col-md-5">
                         <img id="logo_equipo" src="../../../resources/img/png/logo_default.png"
-                            alt="Logo del equipo local" class="img-fluid">
+                            alt="Logo del equipo local" class="img-fluid logo">
                         <h4 id="equipo" class="mt-2">Un gol para El Salvador</h4>
                         <p id="categoria">Nivel 2</p>
                     </div>
@@ -15,7 +15,7 @@
                     </div>
                     <div class="col-md-5">
                         <img id="logo_rival" src="../../../resources/img/png/logo_default.png"
-                            alt="Logo del equipo rival" class="img-fluid">
+                            alt="Logo del equipo rival" class="img-fluid logo">
                         <h4 id="rival" class="mt-2">Internacional de San Salvador</h4>
                     </div>
                 </div>
@@ -67,9 +67,14 @@
                 <div class="player-cards">
                     <!-- Carta del Portero -->
                     <div class="card player-card" style="top: 40%; left: 6%;">
-                        <img src="../../../resources/img/png/public/user.png" class="card-img-top" alt="Jugador 1">
-                        <div class="card-body p-1 text-center">
+                        <div class="card-header p-1 text-center">
                             <p class="card-text">Portero</p>
+                        </div>
+                        <div class="card-body p-1 text-center">
+                            <img src="../../../resources/img/png/public/user.png" class="card-img-top" alt="Jugador 1">
+                        </div>
+                        <div class="card-footer p-1 text-center">
+                            <p class="card-text">Denis Castillo</p>
                         </div>
                     </div>
 
@@ -193,7 +198,7 @@
                             <img src="../../../resources/img/png/public/soccer.png" class="img-fluid icon" alt="Futbol">
                             <p class="text-blue-secondary-color ms-1">Competición</p>
                         </div>
-                        <p>Liga Nacional sub 15</p>
+                        <p id="temporada">Liga Nacional sub 15</p>
                     </div>
                 </li>
                 <li class="list-group-item bg-blue-light-color d-flex justify-content-between">
@@ -202,7 +207,7 @@
                             <img src="../../../resources/img/png/public/reloj.png" class="img-fluid icon" alt="Fecha">
                             <p class="text-blue-secondary-color ms-1">Fecha del Partido</p>
                         </div>
-                        <p>19 de julio de 2024</p>
+                        <p id="fecha-partido">19 de julio de 2024</p>
                     </div>
                 </li>
                 </li>
@@ -212,7 +217,7 @@
                             <img src="../../../resources/img/png/public/gps.png" class="img-fluid icon" alt="Estadio">
                             <p class="text-blue-secondary-color ms-1">Estadio</p>
                         </div>
-                        <p>Cancha Bayer, Ciudad Merliot</p>
+                        <p id="campo">Cancha Bayer, Ciudad Merliot</p>
                     </div>
                 </li>
             </ul>

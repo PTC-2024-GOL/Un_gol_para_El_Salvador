@@ -2,10 +2,12 @@
 // Se incluye la clase para trabajar con la base de datos.
 require_once('../../helpers/database.php');
 require('C:/xampp/htdocs/sitio_gol_sv/vendor/autoload.php');
+
 use Phpml\Classification\KNearestNeighbors;
 /*
  *  Clase para manejar el comportamiento de los datos de la tabla Subcontenido.
  */
+
 class PartidosHandler
 {
     /*
@@ -108,6 +110,44 @@ class PartidosHandler
     public function readOne()
     {
         $sql = "SELECT * FROM vista_partidos_equipos WHERE id_partido = ?;";
+        $params = array($this->idPartido);
+        return Database::getRow($sql, $params);
+    }
+
+    //Función para leer un partido o varios. 
+
+    public function readOnePublic()
+    {
+        $sql = "SELECT
+        p.id_partido,
+        DATE_FORMAT(p.fecha_partido, '%e de %M del %Y') AS fecha,
+        p.localidad_partido,
+        p.resultado_partido,
+        i.logo_rival,
+        e.logo_equipo,
+        e.nombre_equipo,
+        i.nombre_rival AS nombre_rival,
+        p.tipo_resultado_partido,
+        e.id_equipo,
+        i.id_rival,
+        e.id_categoria,
+        c.nombre_categoria, 
+        p.cancha_partido,
+        t.nombre_temporada
+        FROM
+        partidos p
+        INNER JOIN
+        equipos e ON p.id_equipo = e.id_equipo
+        INNER JOIN
+	    rivales i ON p.id_rival = i.id_rival
+        INNER JOIN
+        categorias c ON e.id_categoria = c.id_categoria
+        INNER JOIN
+        plantillas_equipos pe ON pe.id_equipo = e.id_equipo
+        INNER JOIN 
+        temporadas t ON t.id_temporada = pe.id_temporada
+        WHERE id_partido = ?
+        ORDER BY p.fecha_partido DESC;";
         $params = array($this->idPartido);
         return Database::getRow($sql, $params);
     }
@@ -276,8 +316,7 @@ class PartidosHandler
         $sql = "SELECT COUNT(id_entrenamiento) AS frecuencia_entrenamientos FROM entrenamientos WHERE id_equipo = ? AND fecha_entrenamiento >= DATE_SUB(CURDATE(), INTERVAL 2 MONTH);";
         $params = array($this->idEquipo);
         $this->frecuenciaEntrenamientosUltimos2Meses = Database::getRows($sql, $params);
-        return Database::getRow($sql, $params);
-        ;
+        return Database::getRow($sql, $params);;
     }
 
     // 7. Logo, nombre del equipo y lo mismo del rival
@@ -536,6 +575,4 @@ class PartidosHandler
             'mensaje3' => $mensaje3
         ];
     }
-
-
 }
