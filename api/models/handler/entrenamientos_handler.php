@@ -59,6 +59,26 @@ class EntrenamientosHandler
         return Database::getRows($sql, $params);
     }
 
+    //Función para leer todas las un Subcontenido o varios. 
+    public function readAllPlayers()
+    {
+        $sql = 'SELECT 
+        j.id_jornada, 
+        e.id_entrenamiento,
+        e.fecha_entrenamiento,
+        a.id_jugador,
+        CONCAT(DATE_FORMAT(e.fecha_entrenamiento, "%e de %M del %Y"), " - ", e.sesion) AS detalle_entrenamiento
+        FROM 
+        jornadas j
+        JOIN 
+        entrenamientos e ON j.id_jornada = e.id_jornada
+        LEFT JOIN 
+	    asistencias a ON a.id_entrenamiento = e.id_entrenamiento
+        WHERE j.id_jornada = ? AND a.id_jugador = ? ORDER BY e.fecha_entrenamiento DESC;';
+        $params = array($this->idJornada, $_SESSION['idJugador']);
+        return Database::getRows($sql, $params);
+    }
+
     //Función para leer un Subcontenido o varios. 
 
     public function readOneDetalles()

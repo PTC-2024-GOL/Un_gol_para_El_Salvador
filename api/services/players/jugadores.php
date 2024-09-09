@@ -65,6 +65,13 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Ocurrió un problema al leer el perfil';
                 }
                 break;
+            case 'readOneStats':
+                if ($result['dataset'] = $jugador->readOneStats()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Ocurrió un problema al leer el perfil';
+                }
+                break;
                 // Cambiar contraseña
             case 'changePassword':
                 $_POST = Validator::validateForm($_POST);

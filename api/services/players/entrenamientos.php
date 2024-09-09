@@ -17,7 +17,7 @@ if (isset($_GET['action'])) {
             case 'readAll':
                 if (!$entrenamientos->setIdJornada($_POST['idJornada'])) {
                     $result['error'] = $entrenamientos->getDataError();
-                } elseif ($result['dataset'] = $entrenamientos->readAll()) {
+                } elseif ($result['dataset'] = $entrenamientos->readAllPlayers()) {
                     $result['status'] = 1;
                 } else {
                     $result['error'] = 'Entrenamientos inexistentes';
