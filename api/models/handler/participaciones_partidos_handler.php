@@ -46,13 +46,13 @@ class ParticipacionesPartidosHandler
         $params = array(
             $this->idPartido,
             $this->idJugador,
+            $this->idPosicion,
             $this->titular,
             $this->sustitucion,
             $this->minutosJugador,
             $this->asistencias,
             $this->estadoAnimo,
-            $this->puntuacion,
-            $this->idPosicion
+            $this->puntuacion
         );
         return Database::executeRow($sql, $params);
     }
