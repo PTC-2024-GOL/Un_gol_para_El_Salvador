@@ -26,6 +26,9 @@ async function envioCorreo() {
     const DATA = await fetchData(API, 'envioCorreo', FORM);
     if (DATA.status) {
         sweetAlert(1, DATA.message, true);
+        NOMBRE.value = "";
+        CORREO.value = "";
+        MENSAJE.value = "";
     } else {
         sweetAlert(2, DATA.error, false);
         console.error(DATA.exception);
