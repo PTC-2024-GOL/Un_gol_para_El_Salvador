@@ -157,4 +157,10 @@ class EquiposHandler
         return Database::getRows($sql,$params);
     }
 
+    public function readAllEquipos()
+    {
+        $sql = 'SELECT NOMBRE, ID, nombre_categoria FROM vista_equipos;';
+        return Database::getRows($sql);
+    }
+
 }

@@ -6,13 +6,14 @@
 // Constante para establecer el elemento del contenido principal.
 const MAIN = document.querySelector('main');
 const FOOTER = document.querySelector('footer');
+const EQUIPOS_API = 'services/public/equipos.php';
 
 /* Función asíncrona para cargar el encabezado y pie del documento.
 * Parámetros: ninguno.
 * Retorno: ninguno.
 */
 const loadTemplate = async () => {
-// Se agrega el encabezado de la página web antes del contenido principal.
+    // Se agrega el encabezado de la página web antes del contenido principal.
     MAIN.insertAdjacentHTML('beforebegin', `
     <nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary">
           <div class="container-fluid">
@@ -30,9 +31,10 @@ const loadTemplate = async () => {
              
               <ul class="navbar-nav ">
                  <div class="nav-item me-5">  
-                   <a class="nav-link active text-light" aria-current="page" href="soccer_teams.html">
-                      <img src="../../../resources/img/svg/icons_menu/IconF.svg" class="me-3"
-                   alt="">Equipos</a>
+                   <button class="nav-link active text-light" aria-current="page" href="soccer_teams.html" onClick = "mostrarEquipos()">
+                      <img src="../../../resources/img/svg/icons_menu/IconF.svg" class="me-3"> 
+                      Equipos
+                    </button>
                  </div>
                  
                  <div class="nav-item me-5">  
@@ -116,8 +118,56 @@ const loadTemplate = async () => {
 `);
 }
 
+const mostrarEquipos = async () => {
+    const DATA = await fetchData(EQUIPOS_API, 'readEquipos');
+    if (DATA.status) {
+        const EQUIPOS = DATA.dataset;
+
+        // Crear un objeto para agrupar los equipos por categoría
+        const equiposPorCategoria = {};
+
+        // Iterar sobre cada equipo y agruparlo por su 'nombre_categoria'
+        EQUIPOS.forEach(equipo => {
+            const { ID, NOMBRE, nombre_categoria } = equipo;
+
+            // Si la categoría no existe en el objeto, la creamos
+            if (!equiposPorCategoria[nombre_categoria]) {
+                equiposPorCategoria[nombre_categoria] = [];
+            }
+
+            // Agregamos el equipo a la categoría correspondiente
+            equiposPorCategoria[nombre_categoria].push({
+                id: ID,
+                nombre: NOMBRE
+            });
+        });
+
+        // Convertir el objeto en un arreglo de objetos
+        const equiposAgrupados = Object.keys(equiposPorCategoria).map(categoria => ({
+            categoria,
+            equipos: equiposPorCategoria[categoria]
+        }));
+
+        console.log(equiposAgrupados);
+
+        const anchoPantalla = window.innerWidth;
+        console.log(anchoPantalla);
+        if (anchoPantalla <= 990) {
+            equipos_dimension_menos_990();
+        } else {
+            equipos_dimension_mas_990();
+        }
+    }
+};
+
+const equipos_dimension_mas_990 = () => {
+    console.log('equipos_dimension_mas_990');
+};
+const equipos_dimension_menos_990 = () => {
+    console.log('equipos_dimension_menos_990');
+};
 //Cargamos el navbar cuando cargue la pagina.
-window.onload = async function() {
+window.onload = async function () {
     await loadTemplate()
 }
 
