@@ -201,8 +201,8 @@ const equipos_dimension_mas_990 = () => {
         // Iterar por cada equipo en la categoría
         categoriaObj.equipos.forEach(equipo => {
             // Agregar cada equipo como un item de lista con clases de Bootstrap
-            contenido += `<li class="align-items-center text-light fs-6">
-                <button class="btn btn-link p-0 text-light" onClick = "partidoEspecifico(${equipo.id})">
+            contenido += `<li class="align-items-center text-light fs-6 py-3">
+                <button class="btn p-0 text-light" onClick = "partidoEspecifico(${equipo.id})">
                 <img src="${SERVER_URL}images/equipos/${equipo.logo}" alt="logo" class="me-2 rounded-circle" style="width: 30px; height: 30px;">
                 ${equipo.nombre}
                 </button>
@@ -256,8 +256,8 @@ const equipos_dimension_menos_990 = () => {
         // Iterar por cada equipo en la categoría
         categoriaObj.equipos.forEach(equipo => {
             // Agregar cada equipo como un item de lista con clases de Bootstrap
-            contenido += `<li class="align-items-center text-light fs-6">
-                <button class="btn btn-link p-0 text-light" onClick = "partidoEspecifico(${equipo.id})">
+            contenido += `<li class="align-items-center text-light fs-6 py-3">
+                <button class="btn p-0 text-light" onClick = "partidoEspecifico(${equipo.id})">
                 <img src="${SERVER_URL}images/equipos/${equipo.logo}" alt="logo" class="me-2 rounded-circle" style="width: 30px; height: 30px;">
                 ${equipo.nombre}
                 </button>
