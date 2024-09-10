@@ -146,6 +146,27 @@ class ParticipacionesPartidosHandler
         return Database::getRows($sql, $params);
     }
 
+    //Funcion que treara la informacion del partido de un jugador (Para movil)
+    public function readParticipationPlayer()
+    {
+        $sql = 'SELECT  p.id_participacion,
+        p.id_jugador,
+        p.id_partido,
+        p.titular,
+        p.sustitucion,
+        p.minutos_jugados,
+        p.goles,
+        p.asistencias,
+        p.estado_animo,
+        p.puntuacion,
+        po.posicion
+        FROM participaciones_partidos p
+        INNER JOIN posiciones po ON p.id_posicion = po.id_posicion
+        WHERE id_partido = ? AND id_jugador = ?;';
+        $params = array($this->idPartido, $this->idJugador);
+        return Database::getRow($sql, $params);
+    }
+
 
     //Función para actualizar las participaciones.
     public function updateRow()
@@ -165,6 +186,20 @@ class ParticipacionesPartidosHandler
         );
         return Database::executeRow($sql, $params);
     }
+
+    //Función para actualizar el estado de animo de la participacion.
+    public function updateMoodRow()
+    {
+        $sql = 'UPDATE participaciones_partidos
+        SET estado_animo = ?
+        WHERE id_participacion = ?';
+        $params = array(
+            $this->estadoAnimo,
+            $this->idParticipacion
+        );
+        return Database::executeRow($sql, $params);
+    }
+
 
     //Función para eliminar una participacion
     public function deleteRow()
