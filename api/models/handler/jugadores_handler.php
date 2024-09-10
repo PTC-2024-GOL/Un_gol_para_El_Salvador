@@ -274,5 +274,25 @@ class JugadoresHandler
         return Database::getRow($sql, $params);
     }
 
+    public function readOneStats()
+    {
+        $sql = 'SELECT  COALESCE(SUM(goles), 0) AS TOTAL_GOLES,
+		COALESCE(SUM(asistencias), 0) AS TOTAL_ASISTENCIAS,
+        COUNT(id_partido) AS TOTAL_PARTIDOS
+        FROM participaciones_partidos
+        WHERE id_jugador = ? AND (titular = 1 OR sustitucion = 1);';
+        $params = array($_SESSION['idJugador']);
+        return Database::getRow($sql, $params);
+    }
 
+    public function graphicMobile()
+    {
+        $sql = 'SELECT cj.clasificacion_caracteristica_jugador AS caracteristica,
+        ROUND(AVG(C.nota_caracteristica_analisis), 2) AS promedio
+        FROM caracteristicas_analisis c
+        INNER JOIN caracteristicas_jugadores cj ON c.id_caracteristica_jugador = cj.id_caracteristica_jugador
+        WHERE c.id_jugador = ? GROUP BY cj.clasificacion_caracteristica_jugador;';
+        $params = array($_SESSION['idJugador']);
+        return Database::getRows($sql, $params);
+    }
 }

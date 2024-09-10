@@ -48,6 +48,16 @@ if (isset($_GET['action'])) {
                 $result['error'] = 'El equipo seleccionado aún no ha tenido partidos';
             }
             break;
+        // Leer uno
+        case 'readAllByIdEquiposTop20':
+            if (!$partido->setIdEquipo($_POST['idEquipo'])) {
+                $result['error'] = $partido->getDataError();
+            } elseif ($result['dataset'] = $partido->readAllByIdEquipoLimit20()) {
+                $result['status'] = 1;
+            } else {
+                $result['error'] = 'El equipo seleccionado aún no ha tenido partidos';
+            }
+            break;
             // Leer uno
         case 'readOne':
             if (!$partido->setIdPartido($_POST['idPartido'])) {

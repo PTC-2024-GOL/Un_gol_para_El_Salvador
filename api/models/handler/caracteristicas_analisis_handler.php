@@ -75,6 +75,15 @@ class CaracteristicasAnalisisHandler
         return Database::getRows($sql, $params);
     }
 
+    //Función para leer una característica.
+    public function readOnePlayers()
+    {
+        $sql = 'SELECT JUGADOR, CARACTERISTICA, ROUND(NOTA, 0) AS NOTA, IDC FROM vista_caracteristicas_analisis 
+                WHERE IDE = ? AND IDJ = ?;';
+        $params = array($this->entrenamiento, $_SESSION['idJugador']);
+        return Database::getRows($sql, $params);
+    }
+
     //Función para la gráfica de una característica.
     public function graphic()
     {

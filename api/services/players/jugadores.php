@@ -37,6 +37,13 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Nombre de Jugador indefinido';
                 }
                 break;
+            case 'graphicMobile':
+                if ($result['dataset'] = $jugador->graphicMobile()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'No se encontraron datos para la gráfica';
+                }
+                break;
             case 'promByPlayerMobilePlayers':
                 if ($result['dataset'] = $jugador->promByPlayerMobilePlayers()) {
                     $result['status'] = 1;
@@ -60,6 +67,13 @@ if (isset($_GET['action'])) {
                 break;
             case 'readOneMobile':
                 if ($result['dataset'] = $jugador->readOneMobile()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Ocurrió un problema al leer el perfil';
+                }
+                break;
+            case 'readOneStats':
+                if ($result['dataset'] = $jugador->readOneStats()) {
                     $result['status'] = 1;
                 } else {
                     $result['error'] = 'Ocurrió un problema al leer el perfil';

@@ -5,8 +5,54 @@
 
 // Constante para establecer el elemento del contenido principal.
 const MAIN = document.querySelector('main');
+let MAINCONTENT = ``;
 const FOOTER = document.querySelector('footer');
 const EQUIPOS_API = 'services/public/equipos.php';
+let equiposAgrupado = [];
+let EQUIPOS = 0;
+
+MAINCONTENT = `
+    <div id="menu">
+    <nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand fs-6 text-light fw-semibold" href="index.html">
+          <img src="../../../resources/img/svg/logos/logo_blanco.svg" width="60px"> Un gol para El Salvador
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        </ul>
+                
+        <!--/////////////////////////////////////////////////////////////////////////////-->
+       
+        <ul class="navbar-nav ">
+           <div class="nav-item me-5">  
+             <button class="nav-link active text-light" aria-current="page" href="soccer_teams.html" onClick = "mostrarEquipos()">
+                <img src="../../../resources/img/svg/icons_menu/IconF.svg" class="me-3"> 
+                Equipos
+              </button>
+           </div>
+           
+           <div class="nav-item me-5">  
+             <a class="nav-link active text-light" aria-current="page" href="about_us.html">Sobre nosotros</a>
+           </div>
+           
+           <div class="nav-item me-5">  
+             <a class="nav-link active text-light" aria-current="page" href="contact_us.html">Contáctanos</a>
+           </div>
+           
+           <form class="d-flex" role="search">
+              <input class="form-control me-2" type="search" placeholder="Buscar partido..." aria-label="Search">
+              <button class="btn btn-outline-light me-3" type="submit">Buscar</button>
+          </form>
+        </ul>
+          </div>
+    </div>
+</nav>
+</div>
+`;
 
 /* Función asíncrona para cargar el encabezado y pie del documento.
 * Parámetros: ninguno.
@@ -14,46 +60,9 @@ const EQUIPOS_API = 'services/public/equipos.php';
 */
 const loadTemplate = async () => {
     // Se agrega el encabezado de la página web antes del contenido principal.
-    MAIN.insertAdjacentHTML('beforebegin', `
-    <nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary">
-          <div class="container-fluid">
-            <a class="navbar-brand fs-6 text-light fw-semibold" href="index.html">
-                <img src="../../../resources/img/svg/logos/logo_blanco.svg" width="60px"> Un gol para El Salvador
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              </ul>
-                      
-              <!--/////////////////////////////////////////////////////////////////////////////-->
-             
-              <ul class="navbar-nav ">
-                 <div class="nav-item me-5">  
-                   <button class="nav-link active text-light" aria-current="page" href="soccer_teams.html" onClick = "mostrarEquipos()">
-                      <img src="../../../resources/img/svg/icons_menu/IconF.svg" class="me-3"> 
-                      Equipos
-                    </button>
-                 </div>
-                 
-                 <div class="nav-item me-5">  
-                   <a class="nav-link active text-light" aria-current="page" href="about_us.html">Sobre nosotros</a>
-                 </div>
-                 
-                 <div class="nav-item me-5">  
-                   <a class="nav-link active text-light" aria-current="page" href="contact_us.html">Contáctanos</a>
-                 </div>
-                 
-                 <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Buscar partido..." aria-label="Search">
-                    <button class="btn btn-outline-light me-3" type="submit">Buscar</button>
-                </form>
-              </ul>
-                </div>
-          </div>
-    </nav>
-`);
+    MAIN.insertAdjacentHTML('beforebegin',
+        MAINCONTENT
+    );
 
     // Se agrega el encabezado de la página web antes del contenido principal.
     FOOTER.insertAdjacentHTML('afterbegin', `
@@ -73,7 +82,7 @@ const loadTemplate = async () => {
                             <img src="../../../resources/img/png/WhatsApp.png" width="40px">
                            </a>
                            <a href="https://www.instagram.com/ungolparaelsalvador/?hl=es">
-                            <img src="../../../resources/img/png/Instagram.png" width=35px">
+                            <img src="../../../resources/img/png/Instagram.png" width="35px">
                            </a>
                            <a href="https://www.tiktok.com/@ungolparaelsalvador?lang=es">
                             <img class="ms-1" src="../../../resources/img/png/tik-tok.png" width=30px">
@@ -119,56 +128,225 @@ const loadTemplate = async () => {
 }
 
 const mostrarEquipos = async () => {
-    const DATA = await fetchData(EQUIPOS_API, 'readEquipos');
-    if (DATA.status) {
-        const EQUIPOS = DATA.dataset;
+    if (EQUIPOS === 0) {
 
-        // Crear un objeto para agrupar los equipos por categoría
-        const equiposPorCategoria = {};
+        EQUIPOS = 1;
+        const DATA = await fetchData(EQUIPOS_API, 'readEquipos');
+        if (DATA.status) {
+            const EQUIPOS = DATA.dataset;
 
-        // Iterar sobre cada equipo y agruparlo por su 'nombre_categoria'
-        EQUIPOS.forEach(equipo => {
-            const { ID, NOMBRE, nombre_categoria } = equipo;
+            // Crear un objeto para agrupar los equipos por categoría
+            const equiposPorCategoria = {};
 
-            // Si la categoría no existe en el objeto, la creamos
-            if (!equiposPorCategoria[nombre_categoria]) {
-                equiposPorCategoria[nombre_categoria] = [];
-            }
+            // Iterar sobre cada equipo y agruparlo por su 'nombre_categoria'
+            EQUIPOS.forEach(equipo => {
+                const { ID, NOMBRE, logo_equipo, nombre_categoria } = equipo;
 
-            // Agregamos el equipo a la categoría correspondiente
-            equiposPorCategoria[nombre_categoria].push({
-                id: ID,
-                nombre: NOMBRE
+                // Si la categoría no existe en el objeto, la creamos
+                if (!equiposPorCategoria[nombre_categoria]) {
+                    equiposPorCategoria[nombre_categoria] = [];
+                }
+
+                // Agregamos el equipo a la categoría correspondiente
+                equiposPorCategoria[nombre_categoria].push({
+                    id: ID,
+                    nombre: NOMBRE,
+                    logo: logo_equipo
+                });
             });
-        });
 
-        // Convertir el objeto en un arreglo de objetos
-        const equiposAgrupados = Object.keys(equiposPorCategoria).map(categoria => ({
-            categoria,
-            equipos: equiposPorCategoria[categoria]
-        }));
+            // Convertir el objeto en un arreglo de objetos
+            const equiposAgrupados = Object.keys(equiposPorCategoria).map(categoria => ({
+                categoria,
+                equipos: equiposPorCategoria[categoria]
+            }));
 
-        console.log(equiposAgrupados);
+            equiposAgrupado = equiposAgrupados;
+            const anchoPantalla = window.innerWidth;
 
-        const anchoPantalla = window.innerWidth;
-        console.log(anchoPantalla);
-        if (anchoPantalla <= 990) {
-            equipos_dimension_menos_990();
-        } else {
-            equipos_dimension_mas_990();
+            if (anchoPantalla <= 990) {
+                equipos_dimension_menos_990();
+            } else {
+                equipos_dimension_mas_990();
+            }
         }
+    }
+    else {
+        const ups = document.getElementsByClassName('equipos');
+        // Verificamos si hay elementos
+        if (ups.length > 0) {
+            // Eliminar todos los elementos con la clase 'equipos'
+            Array.from(ups).forEach(upsElement => {
+                upsElement.remove(); // Eliminar el elemento
+            });
+        }
+
+        EQUIPOS = 0;
     }
 };
 
 const equipos_dimension_mas_990 = () => {
-    console.log('equipos_dimension_mas_990');
+    let contenido = ``;
+
+    // Recorrer cada categoría y sus equipos
+    equiposAgrupado.forEach(categoriaObj => {
+        // Crear el contenedor de la categoría
+        contenido += `<div class="col-12 col-md-6 col-lg-2 mb-4">`; // 6 columnas en pantallas medianas, 2 en grandes
+        // Crear el título de la categoría
+        contenido += `<h5 class="text-light">${categoriaObj.categoria}</h5>`;
+
+        // Crear la lista de equipos sin puntos (list-unstyled)
+        contenido += `<ul class="list-unstyled">`;
+
+        // Iterar por cada equipo en la categoría
+        categoriaObj.equipos.forEach(equipo => {
+            // Agregar cada equipo como un item de lista con clases de Bootstrap
+            contenido += `<li class="align-items-center text-light fs-6">
+                <button class="btn btn-link p-0 text-light" onClick = "partidoEspecifico(${equipo.id})">
+                <img src="${SERVER_URL}images/equipos/${equipo.logo}" alt="logo" class="me-2 rounded-circle" style="width: 30px; height: 30px;">
+                ${equipo.nombre}
+                </button>
+            </li>`;
+        });
+
+        contenido += `</ul>`;
+        contenido += `</div>`;
+    });
+
+    // Insertar el contenido en el DOM
+    MAIN.insertAdjacentHTML('beforebegin', `
+        <nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary px-3 equipos esconder">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- El <p> ocupa toda la fila -->
+                    <p class="text-light fw-semibold fs-5 text-start col-12 mb-3">Equipos de la academia por categoría:</p>
+
+                    <!-- El contenido de las categorías -->
+                    <div class="col-12 row" id="contenedor">
+                        ${contenido}
+                    </div>
+
+                    <!-- Línea separadora blanca -->
+                    <div class="col-12">
+                        <hr class="text-white my-4" style="height: 3px; border: none; background-color: white;">
+                    </div>
+                </div>
+            </div>
+        </nav>
+    `);
 };
+
+const partidoEspecifico = async (id) => {
+    window.location.href = `matches.html?id=${id}`;
+}
+
 const equipos_dimension_menos_990 = () => {
-    console.log('equipos_dimension_menos_990');
+    let contenido = ``;
+
+    // Recorrer cada categoría y sus equipos
+    equiposAgrupado.forEach(categoriaObj => {
+        // Crear el contenedor de la categoría
+        contenido += `<div class="col-12 mb-4 nav-item me-5">`; // 1 columnas en pantallas pequeñas
+        // Crear el título de la categoría
+        contenido += `<h5 class="text-light">${categoriaObj.categoria}</h5>`;
+
+        // Crear la lista de equipos sin puntos (list-unstyled)
+        contenido += `<ul class="list-unstyled">`;
+
+        // Iterar por cada equipo en la categoría
+        categoriaObj.equipos.forEach(equipo => {
+            // Agregar cada equipo como un item de lista con clases de Bootstrap
+            contenido += `<li class="align-items-center text-light fs-6">
+                <button class="btn btn-link p-0 text-light" onClick = "partidoEspecifico(${equipo.id})">
+                <img src="${SERVER_URL}images/equipos/${equipo.logo}" alt="logo" class="me-2 rounded-circle" style="width: 30px; height: 30px;">
+                ${equipo.nombre}
+                </button>
+            </li>`;
+        });
+
+        contenido += `</ul>`;
+        contenido += `</div>`;
+    });
+    const div = document.getElementById('menu');
+    div.remove();
+    // Reemplazar el contenido de MAIN
+    MAIN.insertAdjacentHTML('beforebegin', `
+    <nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary row equipos equipo">
+        <div class="d-flex text-start col-12">
+            <a class="navbar-brand fs-6 text-light fw-semibold" href="index.html">
+          <img src="../../../resources/img/svg/logos/logo_blanco.svg" width="60px"> Un gol para El Salvador
+      </a>
+        </div>
+        <hr>
+        <button type="button" id="volver" class="btn btn-link text-white text-start col-12 mb-4 px-5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-left" viewBox="0 0 16 16">
+  <path d="M10 12.796V3.204L4.519 8zm-.659.753-5.48-4.796a1 1 0 0 1 0-1.506l5.48-4.796A1 1 0 0 1 11 3.204v9.592a1 1 0 0 1-1.659.753"/>
+</svg>  
+        </button>
+        <div class="container-fluid mb-4 px-5">
+            <ul class="navbar-nav">
+                ${contenido}
+            </ul>
+        </div>
+    </nav>
+    `);
+
+    // Manejar el evento click del botón "volver"
+    // Manejar el evento click del botón "volver"
+    const boton = document.getElementById('volver');
+    boton.addEventListener('click', () => {
+        const ups = document.getElementsByClassName('equipos');
+        // Verificamos si hay elementos
+        if (ups.length > 0) {
+            // Eliminar todos los elementos con la clase 'equipos'
+            Array.from(ups).forEach(upsElement => {
+                upsElement.remove(); // Eliminar el elemento
+            });
+            MAIN.insertAdjacentHTML('beforebegin', MAINCONTENT); // Insertar el navbar principal
+        }
+        EQUIPOS = 0; // Reiniciar el estado de EQUIPOS
+    });
+
 };
+
 //Cargamos el navbar cuando cargue la pagina.
 window.onload = async function () {
     await loadTemplate()
 }
 
 
+let lastScrollTop = 0; // Almacena la posición del scroll anterior
+
+window.addEventListener('scroll', () => {
+    const equiposBar = document.querySelector('.equipo');
+    const equipos2 = document.querySelector('.esconder');
+    if (window.scrollY > lastScrollTop) {
+        if (equiposBar !== null) {
+            // Usuario se desplaza hacia abajo
+            equiposBar.classList.add('hidden');
+        }
+        else {
+            //equipos2.classList.add('hidden');
+            //console.log('Entre 2', equiposBar);
+            const ups = document.getElementsByClassName('equipos');
+            // Verificamos si hay elementos
+            if (ups.length > 0) {
+                // Eliminar todos los elementos con la clase 'equipos'
+                Array.from(ups).forEach(upsElement => {
+                    upsElement.remove(); // Eliminar el elemento
+                });
+            }
+
+            EQUIPOS = 0;
+        }
+    } else {
+        if (equiposBar !== null) {
+            // Usuario se desplaza hacia abajo
+            equiposBar.classList.remove('hidden');
+        }
+        else {
+            equipos2.classList.remove('hidden');
+        }
+    }
+    lastScrollTop = window.scrollY; // Actualiza la posición anterior
+});
