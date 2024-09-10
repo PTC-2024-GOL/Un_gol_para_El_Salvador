@@ -201,10 +201,10 @@ const equipos_dimension_mas_990 = () => {
         // Iterar por cada equipo en la categoría
         categoriaObj.equipos.forEach(equipo => {
             // Agregar cada equipo como un item de lista con clases de Bootstrap
-            contenido += `<li class="align-items-center text-light fs-6 py-3">
-                <button class="btn p-0 text-light" onClick = "partidoEspecifico(${equipo.id})">
-                <img src="${SERVER_URL}images/equipos/${equipo.logo}" alt="logo" class="me-2 rounded-circle" style="width: 30px; height: 30px;">
-                ${equipo.nombre}
+            contenido += `<li class="text-light fs-6 py-3 d-flex align-items-center">
+                <button class="btn p-0 text-light d-flex align-items-center" onClick = "partidoEspecifico(${equipo.id})">
+                <img src="${SERVER_URL}images/equipos/${equipo.logo}" alt="logo" class="rounded-circle me-2" style="width: 30px; height: 30px;">
+                <span class="text-start">${equipo.nombre}</span>
                 </button>
             </li>`;
         });
@@ -243,30 +243,31 @@ const partidoEspecifico = async (id) => {
 const equipos_dimension_menos_990 = () => {
     let contenido = ``;
 
-    // Recorrer cada categoría y sus equipos
     equiposAgrupado.forEach(categoriaObj => {
         // Crear el contenedor de la categoría
-        contenido += `<div class="col-12 mb-4 nav-item me-5">`; // 1 columnas en pantallas pequeñas
+        contenido += `<div class="col-12 nav-item">`; // 1 columna en pantallas pequeñas
+        
         // Crear el título de la categoría
-        contenido += `<h5 class="text-light">${categoriaObj.categoria}</h5>`;
-
+        contenido += `<h5 class="text-light py-1 text-start">${categoriaObj.categoria}</h5>`;
+        
         // Crear la lista de equipos sin puntos (list-unstyled)
         contenido += `<ul class="list-unstyled">`;
-
+        
         // Iterar por cada equipo en la categoría
         categoriaObj.equipos.forEach(equipo => {
             // Agregar cada equipo como un item de lista con clases de Bootstrap
-            contenido += `<li class="align-items-center text-light fs-6 py-3">
-                <button class="btn p-0 text-light" onClick = "partidoEspecifico(${equipo.id})">
-                <img src="${SERVER_URL}images/equipos/${equipo.logo}" alt="logo" class="me-2 rounded-circle" style="width: 30px; height: 30px;">
-                ${equipo.nombre}
+            contenido += `<li class="text-light fs-6 py-1 d-flex align-items-center">
+                <button class="btn p-0 text-light d-flex align-items-center" onClick="partidoEspecifico(${equipo.id})" style="text-align: left;">
+                    <img src="${SERVER_URL}images/equipos/${equipo.logo}" alt="logo" class="rounded-circle me-2" style="width: 30px; height: 30px;">
+                    <span class="text-start">${equipo.nombre}</span>
                 </button>
             </li>`;
         });
-
+        
         contenido += `</ul>`;
         contenido += `</div>`;
-    });
+    });    
+    
     const div = document.getElementById('menu');
     div.remove();
     // Reemplazar el contenido de MAIN
