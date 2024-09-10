@@ -167,6 +167,70 @@ class ParticipacionesPartidosHandler
         return Database::getRow($sql, $params);
     }
 
+    public function readAllParticipationPublic()
+    {
+        $sql = 'SELECT
+                j.id_jugador,
+                j.foto_jugador,
+                CONCAT(j.nombre_jugador, " ", j.apellido_jugador) AS nombre,
+                j.id_posicion_principal,
+                p.posicion,
+                SUM(pp.asistencias) AS asistencias,
+                SUM(pp.goles) AS goles,
+                COUNT(pp.id_participacion) AS partidos,
+                SUM(CASE WHEN da.amonestacion = "Tarjeta amarilla" THEN da.numero_amonestacion ELSE 0 END) AS tarjetas_amarillas,
+                SUM(CASE WHEN da.amonestacion = "Tarjeta roja" THEN da.numero_amonestacion ELSE 0 END) AS tarjetas_rojas,
+                pe.id_equipo
+                FROM
+                    jugadores j
+                INNER JOIN
+                    posiciones p ON j.id_posicion_principal = p.id_posicion
+                INNER JOIN
+                    participaciones_partidos pp ON j.id_jugador = pp.id_jugador
+                INNER JOIN
+                    detalles_amonestaciones da ON pp.id_participacion = da.id_participacion
+                INNER JOIN
+                    plantillas_equipos pe ON j.id_jugador = pe.id_jugador    
+                WHERE id_equipo = ? GROUP BY id_jugador;';
+        $params = array($this->idEquipo);
+        return Database::getRows($sql, $params);
+    }
+
+    public function filterAllParticipationPublic()
+    {
+        $sql = 'SELECT
+                j.id_jugador,
+                j.foto_jugador,
+                CONCAT(j.nombre_jugador, " ", j.apellido_jugador) AS nombre,
+                j.id_posicion_principal,
+                p.posicion,
+                SUM(pp.asistencias) AS asistencias,
+                SUM(pp.goles) AS goles,
+                COUNT(pp.id_participacion) AS partidos,
+                SUM(CASE WHEN da.amonestacion = "Tarjeta amarilla" THEN da.numero_amonestacion ELSE 0 END) AS tarjetas_amarillas,
+                SUM(CASE WHEN da.amonestacion = "Tarjeta roja" THEN da.numero_amonestacion ELSE 0 END) AS tarjetas_rojas,
+                pe.id_equipo
+                FROM
+                    jugadores j
+                INNER JOIN
+                    posiciones p ON j.id_posicion_principal = p.id_posicion
+                INNER JOIN
+                    participaciones_partidos pp ON j.id_jugador = pp.id_jugador
+                INNER JOIN
+                    detalles_amonestaciones da ON pp.id_participacion = da.id_participacion
+                INNER JOIN
+                    plantillas_equipos pe ON j.id_jugador = pe.id_jugador    
+                WHERE id_equipo = ? AND p.id_posicion = ? GROUP BY id_jugador;';
+        $params = array($this->idEquipo, $this->idPosicion);
+        return Database::getRows($sql, $params);
+    }
+
+    public function readPositionParticipation()
+    {
+        $sql = 'SELECT posicion, id_posicion FROM posiciones';
+        return Database::getRows($sql);
+    }
+
 
     //Función para actualizar las participaciones.
     public function updateRow()

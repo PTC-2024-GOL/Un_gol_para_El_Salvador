@@ -31,6 +31,35 @@ if (isset($_GET['action'])) {
                 $result['error'] = 'Aún no hay jugadores agregados a este equipo';
             }
             break;
+        case 'readAllParticipation':
+            if (!$participacion->setIdEquipo($_POST['idEquipo'])) {
+                $result['error'] = $participacion->getDataError();
+            } elseif ($result['dataset'] = $participacion->readAllParticipationPublic()) {
+                $result['status'] = 1;
+            } else {
+                $result['error'] = 'Aún no hay jugadores agregados a este equipo';
+            }
+            break;
+        case 'filterAllParticipationPublic':
+            if (!$participacion->setIdEquipo($_POST['idEquipo']) or
+                !$participacion->setIdPosicion($_POST['idPosicion'])
+            ) {
+                $result['error'] = $participacion->getDataError();
+            } elseif ($result['dataset'] = $participacion->filterAllParticipationPublic()) {
+                $result['status'] = 1;
+            } else {
+                $result['error'] = 'Aún no hay jugadores agregados a este equipo';
+            }
+            break;
+        case 'positionParticipation':
+            if ($result['dataset'] = $participacion->readPositionParticipation()) {
+                $result['status'] = 1;
+                $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
+            } else {
+                $result['error'] = 'No existen equipos registrados';
+                $result['status'] = 0;
+            }
+            break;
         default:
             $result['error'] = 'Acción no disponible dentro de la sesión';
     }

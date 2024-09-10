@@ -1,15 +1,25 @@
-<div class="container-fluid p-5 mb-5" id="navbar">
-    <div class="row justify-content-center align-items-center ps-5 pt-5">
+<div class="container-fluid p-5 mb-4" id="navbar">
+    <div class="row justify-content-center align-items-center ps-5 pt-2">
         <div class="col-12">
-            <div class="row">
-            <div class="col-md-1 col-sm-12 " id="imagen"></div>
-            <h1 class="fw-bolder text-light col-md-11 col-sm-12 text-start py-3" id="nombreEquipo"></h1>
+            <div class="row align-items-center">
+            <div class="col-md-1 col-sm-12" id="imagen">
+
             </div>
-            <p class="text-light fs-4 mb-5 py-3" id="nombreCategoria"></p>
+            <div class="col-6">
+                <h1 class="fw-bolder text-light col-md-11 col-sm-12 text-start mb-2 py-2" id="nombreEquipo"></h1>
+                <p class="text-light fs-4 mb-4 mt-0" id="nombreCategoria"></p>
+                <div class="d-flex justify-content-start col-md-12 col-sm-12">
+                    <button type="button" id="partidos" class="btn btn-outline-light me-3 rounded-4" onclick="partidoClicked()">Partidos</button>
+                    <button type="button" id="jugadores" class="btn btn-outline-light rounded-4" onclick="jugadoresClicked()">Jugadores</button>
+                </div>
+            </div>
+            </div>
         </div>
     </div>
 </div>
-<div class="container mb-5">
+
+
+<div class="container mb-5" id="partidosContainer">
     <h3 class="text-blue-principal-color fw-bold">Nuestros partidos</h3>
     <p class="fs-5 fw-light">Revisa nuestros últimos partidos y mantente al pendiente de los resultados</p>
 
@@ -18,4 +28,24 @@
 
     </div>
 
+</div>
+
+
+<div class="container mb-5 d-none" id="jugadorContainer">
+    <div class="d-flex justify-content-center">
+        <p class="fw-semibold">Filtra los jugadores por su posición de juego:</p>
+    </div>
+    <div class="d-flex justify-content-center mb-5">
+        <ul class="nav nav-tabs" id="positionsNav">
+
+        </ul>
+    </div>
+
+<!--    Se mostrara un mensaje cuando no vengan datos-->
+    <div id="noData">
+
+    </div>
+    <div class="row" id="rowCards2">
+
+    </div>
 </div>

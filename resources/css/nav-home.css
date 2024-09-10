@@ -27,6 +27,18 @@
     transform: translateY(-100%); /* Mueve la barra fuera de la vista */
 }
 
+#totalRows {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.nav-item.active .nav-link {
+    color: white;
+    background-color: #e5e8e8; /* Puedes ajustar el color que prefieras */
+}
 
 @media only screen and (max-width: 768px) {
     /* For mobile phones: */

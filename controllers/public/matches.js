@@ -1,8 +1,19 @@
-const PARTIDO_API = 'services/public/partidos.php';
 let PARAMS = new URLSearchParams(location.search);
 let EQUIPO;
 let CATEGORIA;
 let IMAGEN;
+
+let BTN_PARTIDOS;
+let BTN_JUGADORES;
+
+const PARTIDO_API = 'services/public/partidos.php';
+const PARTICIPACION_API = 'services/public/participaciones.php';
+
+let cargarCards;
+let noData;
+
+let jugadoresContainer;
+let partidosContainer;
 
 //Función asíncrona para cargar un componente HTML.
 async function loadComponent(path) {
@@ -11,8 +22,122 @@ async function loadComponent(path) {
     return text;
 }
 
+const fillParticipations = async (idPosicion) => {
+    noData.innerHTML = '';
+    const cargarCards = document.getElementById('rowCards2');
+
+    let FORM = new FormData();
+    let option;
+
+    FORM.append('idEquipo', PARAMS.get('id'));
+
+    cargarCards.innerHTML = ''
+    if(idPosicion){
+        FORM.append('idPosicion', idPosicion);
+        option = 'filterAllParticipationPublic';
+    }else{
+        option = 'readAllParticipation'
+    }
+
+    const DATA = await fetchData(PARTICIPACION_API, option, FORM);
+    if(DATA.status){
+        let data = DATA.dataset;
+        data.forEach(row =>{
+            const cardsHtml = `
+            <div class="col-md-4 col-sm-12">
+            <div class="carta ps-3 pe-3 pt-3 pb-3 shadow rounded-4 mb-5">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <img class="rounded-circle" src="${SERVER_URL}images/jugadores/${row.foto_jugador}" width="80" height="80">
+                    </div>
+                    <div class="col">
+                        <h5>${row.nombre}</h5>
+                        <p class="mb-0">${row.posicion}</p>
+                    </div>
+                </div>
+                <div id="totalRows" class="mt-3">
+                    <div class="col-4 text-center bg-blue-light-color rounded-3">
+                        <p class="bg-blue-principal-color text-light p-1 rounded-3">Asistencias</p>
+                        <p>${row.asistencias}</p>
+                    </div>
+                    <div class="col-4 text-center bg-blue-light-color rounded-3 mx-1">
+                        <p class="bg-blue-principal-color text-light p-1 rounded-3">Goles</p>
+                        <p>${row.goles}</p>
+                    </div>
+                    <div class="col-4 text-center bg-blue-light-color rounded-3">
+                        <p class="bg-blue-principal-color text-light p-1 rounded-3">Partidos</p>
+                        <p>${row.partidos}</p>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <p class="text-light bg-yellow-principal-color p-2 rounded-3 mb-2">${row.tarjetas_amarillas} Tarjetas amarillas</p>
+                    <p class="text-light bg-red-cream-color p-2 rounded-3">${row.tarjetas_rojas} Tarjetas rojas</p>
+                </div>
+            </div>
+        </div>
+            `
+            cargarCards.innerHTML += cardsHtml;
+        })
+    }else{
+        noData.innerHTML = `
+            <div class="d-flex justify-content-center">
+                <p class="bg-blue-light-color rounded-3 p-3">No hay jugadores en esta posición</p>
+            <div/>
+        `
+    }
+}
+
+const selectedFilter = async (element) => {
+    // Remover la clase 'active' de cualquier elemento seleccionado previamente
+    const allNavItems = document.querySelectorAll('.nav-item');
+    allNavItems.forEach(item => item.classList.remove('active'));
+
+    // Agregar la clase 'active' al elemento seleccionado
+    element.classList.add('active');
+
+    // Obtener el ID de la posición del elemento seleccionado
+    const idPosicion = element.querySelector('p').innerText;
+    console.log('ID Posición seleccionado:', idPosicion);
+
+    if(idPosicion === '0') {
+        await fillParticipations();
+        console.log('Todos')
+    }else{
+        await fillParticipations(idPosicion);
+    }
+
+}
+
+const fillNav = async () => {
+    const cargarNav = document.getElementById('positionsNav');
+    cargarNav.innerHTML = '';
+
+    const staticItem = `
+        <li class="nav-item" onclick="selectedFilter(this)">
+            <p class="d-none">0</p> <!-- id fijo -->
+            <a class="nav-link text-dark" href="#">Todos</a> <!-- Texto fijo -->
+        </li>
+    `;
+    cargarNav.innerHTML += staticItem;
+
+    const DATA = await fetchData(PARTICIPACION_API, 'positionParticipation');
+    if(DATA.status){
+        let data = DATA.dataset;
+        data.forEach(row => {
+            const navigationHtml =`
+                <li class="nav-item" onclick="selectedFilter(this)">
+                    <p class="d-none">${row.id_posicion}</p>
+                    <a class="nav-link text-dark" href="#">${row.posicion}</a>
+                </li>
+            `
+            cargarNav.innerHTML += navigationHtml;
+        })
+    }else{
+        console.log(DATA.error)
+    }
+}
+
 const showMatches = async () => {
-    const cargarCards = document.getElementById('rowCards');
     cargarCards.innerHTML = '';
     let FORM = new FormData();
     FORM.append('idEquipo', PARAMS.get('id'));
@@ -56,7 +181,27 @@ const showMatches = async () => {
     } else {
         console.log('Algo paso')
     }
+}
 
+const jugadoresClicked = () => {
+    BTN_PARTIDOS.classList.remove('btn-light');
+    BTN_PARTIDOS.classList.add('btn-outline-light');
+
+    jugadoresContainer.classList.remove('d-none');
+    partidosContainer.classList.add('d-none');
+
+    BTN_JUGADORES.classList.remove('btn-outline-light');
+    BTN_JUGADORES.classList.add('btn-light');
+}
+const partidoClicked = () => {
+    BTN_JUGADORES.classList.remove('btn-light');
+    BTN_JUGADORES.classList.add('btn-outline-light')
+
+    partidosContainer.classList.remove('d-none');
+    jugadoresContainer.classList.add('d-none');
+
+    BTN_PARTIDOS.classList.remove('btn-outline-light');
+    BTN_PARTIDOS.classList.add('btn-light');
 }
 
 // window.onload
@@ -72,7 +217,17 @@ window.onload = async function () {
     const titleElement = document.getElementById('title');
     const nombreEquipo = document.getElementById('nombreEquipo');
     const nombreCategoria = document.getElementById('nombreCategoria');
+    cargarCards = document.getElementById('rowCards');
+    noData = document.getElementById('noData')
+    jugadoresContainer = document.getElementById('jugadorContainer');
+    partidosContainer = document.getElementById('partidosContainer');
+
+    BTN_PARTIDOS = document.getElementById('partidos');
+    BTN_JUGADORES = document.getElementById('jugadores')
+
     await showMatches();
+    await fillParticipations();
+    await fillNav();
     titleElement.textContent = 'Partidos de ' + EQUIPO;
     nombreEquipo.textContent = EQUIPO;
     nombreCategoria.textContent = CATEGORIA;
