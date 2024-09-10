@@ -104,6 +104,16 @@ class PartidosHandler
         return Database::getRows($sql, $params);
     }
 
+    //Función para leer un equipo sin partidos.
+    public function readPartidoSinEquipo()
+    {
+        $sql = "SELECT p.nombre_equipo, p.logo_equipo, c.nombre_categoria 
+        FROM equipos p 
+        INNER JOIN categorias c ON p.id_categoria = c.id_categoria 
+        WHERE p.id_equipo = ?;";
+        $params = array($this->idEquipo);
+        return Database::getRow($sql, $params);
+    }
     //Función para leer los partidos por el idEquipo
 
     public function readAllByIdEquipoLimit20()
@@ -324,7 +334,8 @@ class PartidosHandler
         $sql = "SELECT COUNT(id_entrenamiento) AS frecuencia_entrenamientos FROM entrenamientos WHERE id_equipo = ? AND fecha_entrenamiento >= DATE_SUB(CURDATE(), INTERVAL 2 MONTH);";
         $params = array($this->idEquipo);
         $this->frecuenciaEntrenamientosUltimos2Meses = Database::getRows($sql, $params);
-        return Database::getRow($sql, $params);;
+        return Database::getRow($sql, $params);
+        ;
     }
 
     // 7. Logo, nombre del equipo y lo mismo del rival

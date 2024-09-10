@@ -179,7 +179,22 @@ const showMatches = async () => {
             cargarCards.innerHTML += cardsHtml;
         })
     } else {
-        console.log('Algo paso')
+        const DATA = await fetchData(PARTIDO_API, 'readPartidoSinEquipo', FORM);
+        if(DATA.status)
+        {
+            
+        let data = DATA.dataset;
+        console.log(data, ' Esta es la data');
+        //Agarra el primer elemento del array para obtener el nombre del equipo y la categoria
+        EQUIPO = data.nombre_equipo;
+        CATEGORIA = data.nombre_categoria;
+        IMAGEN = data.logo_equipo;
+        cargarCards.innerHTML = `
+        <div class="d-flex justify-content-center">
+            <p class="bg-blue-light-color rounded-3 p-3">No hay partidos registrados</p>
+        <div/>
+    `;
+        }
     }
 }
 
