@@ -118,7 +118,7 @@ class PartidosHandler
 
     public function readAllByIdEquipoLimit20()
     {
-        $sql = "SELECT * FROM vista_detalle_partidos WHERE id_equipo = ? ORDER BY id_partido DESC LIMIT 20;";
+        $sql = "SELECT * FROM vista_detalle_partidos WHERE id_equipo = ? ORDER BY fecha_partido DESC LIMIT 20;";
         $params = array($this->idEquipo);
         return Database::getRows($sql, $params);
     }
