@@ -280,8 +280,8 @@ class JugadoresHandler
 		COALESCE(SUM(asistencias), 0) AS TOTAL_ASISTENCIAS,
         COALESCE(SUM(minutos_jugados), 0) AS MINUTOS_JUGADOS,
         COUNT(id_partido) AS TOTAL_PARTIDOS,
-        SUM(CASE WHEN da.amonestacion = "Tarjeta amarilla" THEN 1 ELSE 0 END) AS TARJETAS_AMARILLAS,
-        SUM(CASE WHEN da.amonestacion = "Tarjeta roja" THEN 1 ELSE 0 END) AS TARJETAS_ROJAS
+        COALESCE(SUM(CASE WHEN da.amonestacion = "Tarjeta amarilla" THEN 1 ELSE 0 END),0) AS TARJETAS_AMARILLAS,
+        COALESCE(SUM(CASE WHEN da.amonestacion = "Tarjeta roja" THEN 1 ELSE 0 END),0) AS TARJETAS_ROJAS
         FROM participaciones_partidos p
         LEFT JOIN detalles_amonestaciones da ON da.id_participacion = p.id_participacion
         WHERE id_jugador = ? AND (titular = 1 OR sustitucion = 1);';
