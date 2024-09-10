@@ -84,7 +84,7 @@ class PartidosHandler
 
     public function readAllTheLast5()
     {
-        $sql = "SELECT * FROM vista_detalle_partidos ORDER BY id_partido DESC LIMIT 6;";
+        $sql = "SELECT * FROM vista_detalle_partidos ORDER BY fecha_partido DESC LIMIT 6;";
         return Database::getRows($sql);
     }
 
