@@ -56,7 +56,7 @@ window.onload = async function () {
     loadTemplate();
     // Agrega el HTML del encabezado
     appContainer.innerHTML = homeHtml;
-    const titleEl|||ement = document.getElementById('title');
+    const titleElement = document.getElementById('title');
     titleElement.textContent = 'Inicio';
     await showMatches();
 };
