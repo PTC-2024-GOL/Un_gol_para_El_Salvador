@@ -217,7 +217,7 @@ async function cargarAlineacion() {
                             <p class="card-text">${row.posicion}</p>
                         </div>
                         <div class="card-body p-1 text-center">
-                            <img src="${SERVER_URL}images/jugadores/${row.foto_jugador}" class="card-img-top" alt="${row.jugador}">
+                            <img src="${SERVER_URL}images/jugadores/${row.foto_jugador}" class="card-img-top avatar" alt="${row.jugador}">
                         </div>
                         <div class="card-footer p-1 text-center">
                             <p class="card-text">${row.jugador} 

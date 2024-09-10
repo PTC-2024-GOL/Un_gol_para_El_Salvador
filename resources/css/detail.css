@@ -167,3 +167,8 @@
     max-height: 120px;
     border-radius: 25%;
 }
+
+.avatar{
+    max-width: 40px;
+    max-height: 40px;
+}

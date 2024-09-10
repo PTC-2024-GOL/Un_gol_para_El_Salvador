@@ -278,11 +278,31 @@ class JugadoresHandler
     {
         $sql = 'SELECT  COALESCE(SUM(goles), 0) AS TOTAL_GOLES,
 		COALESCE(SUM(asistencias), 0) AS TOTAL_ASISTENCIAS,
-        COUNT(id_partido) AS TOTAL_PARTIDOS
-        FROM participaciones_partidos
+        COALESCE(SUM(minutos_jugados), 0) AS MINUTOS_JUGADOS,
+        COUNT(id_partido) AS TOTAL_PARTIDOS,
+        SUM(CASE WHEN da.amonestacion = "Tarjeta amarilla" THEN 1 ELSE 0 END) AS TARJETAS_AMARILLAS,
+        SUM(CASE WHEN da.amonestacion = "Tarjeta roja" THEN 1 ELSE 0 END) AS TARJETAS_ROJAS
+        FROM participaciones_partidos p
+        LEFT JOIN detalles_amonestaciones da ON da.id_participacion = p.id_participacion
         WHERE id_jugador = ? AND (titular = 1 OR sustitucion = 1);';
         $params = array($_SESSION['idJugador']);
         return Database::getRow($sql, $params);
+    }
+    
+    public function maximosGoleadores()
+    {
+        $sql = 'SELECT * FROM vista_maximos_goleadores 
+        WHERE IDE = (SELECT id_equipo FROM plantillas_equipos WHERE id_jugador = ? LIMIT 1) AND TOTAL_GOLES > 0;';
+        $params = array($_SESSION['idJugador']);
+        return Database::getRows($sql, $params);
+    }
+    
+    public function maximosAsistentes()
+    {
+        $sql = 'SELECT * FROM vista_maximos_asistentes 
+        WHERE IDE = (SELECT id_equipo FROM plantillas_equipos WHERE id_jugador = ? LIMIT 1) AND TOTAL_ASISTENCIAS > 0;';
+        $params = array($_SESSION['idJugador']);
+        return Database::getRows($sql, $params);
     }
 
     public function graphicMobile()

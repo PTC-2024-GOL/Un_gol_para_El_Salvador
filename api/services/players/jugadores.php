@@ -76,7 +76,21 @@ if (isset($_GET['action'])) {
                 if ($result['dataset'] = $jugador->readOneStats()) {
                     $result['status'] = 1;
                 } else {
-                    $result['error'] = 'Ocurrió un problema al leer el perfil';
+                    $result['error'] = 'Ocurrió un problema al leer las estadisticas del jugador';
+                }
+                break;
+            case 'maximosGoleadores':
+                if ($result['dataset'] = $jugador->maximosGoleadores()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Ocurrió un problema al mostrar los maximos goleadores';
+                }
+                break;
+            case 'maximosAsistentes':
+                if ($result['dataset'] = $jugador->maximosAsistentes()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Ocurrió un problema al mostrar los maximos asistentes';
                 }
                 break;
                 // Cambiar contraseña
