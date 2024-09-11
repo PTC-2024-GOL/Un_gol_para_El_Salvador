@@ -280,8 +280,8 @@ class JugadoresHandler
 		COALESCE(SUM(asistencias), 0) AS TOTAL_ASISTENCIAS,
         COALESCE(SUM(minutos_jugados), 0) AS MINUTOS_JUGADOS,
         COUNT(id_partido) AS TOTAL_PARTIDOS,
-        COALESCE(SUM(CASE WHEN da.amonestacion = "Tarjeta amarilla" THEN 1 ELSE 0 END),0) AS TARJETAS_AMARILLAS,
-        COALESCE(SUM(CASE WHEN da.amonestacion = "Tarjeta roja" THEN 1 ELSE 0 END),0) AS TARJETAS_ROJAS
+        COALESCE(SUM(CASE WHEN da.amonestacion = "Tarjeta amarilla" THEN da.numero_amonestacion ELSE 0 END),0) AS TARJETAS_AMARILLAS,
+        COALESCE(SUM(CASE WHEN da.amonestacion = "Tarjeta roja" THEN da.numero_amonestacion ELSE 0 END),0) AS TARJETAS_ROJAS
         FROM participaciones_partidos p
         LEFT JOIN detalles_amonestaciones da ON da.id_participacion = p.id_participacion
         WHERE id_jugador = ? AND (titular = 1 OR sustitucion = 1);';
@@ -292,7 +292,7 @@ class JugadoresHandler
     public function maximosGoleadores()
     {
         $sql = 'SELECT * FROM vista_maximos_goleadores 
-        WHERE IDE = (SELECT id_equipo FROM plantillas_equipos WHERE id_jugador = ? LIMIT 1) AND TOTAL_GOLES > 0;';
+        WHERE IDE = (SELECT id_equipo FROM plantillas_equipos WHERE id_jugador = ? LIMIT 1) AND TOTAL_GOLES > 0 LIMIT 5;';
         $params = array($_SESSION['idJugador']);
         return Database::getRows($sql, $params);
     }
@@ -300,10 +300,157 @@ class JugadoresHandler
     public function maximosAsistentes()
     {
         $sql = 'SELECT * FROM vista_maximos_asistentes 
-        WHERE IDE = (SELECT id_equipo FROM plantillas_equipos WHERE id_jugador = ? LIMIT 1) AND TOTAL_ASISTENCIAS > 0;';
+        WHERE IDE = (SELECT id_equipo FROM plantillas_equipos WHERE id_jugador = ? LIMIT 1) AND TOTAL_ASISTENCIAS > 0 LIMIT 5;';
         $params = array($_SESSION['idJugador']);
         return Database::getRows($sql, $params);
     }
+
+    public function partidosJugados()
+    {
+        $sql = 'SELECT 
+        pt.id_partido,
+        DATE_FORMAT(pt.fecha_partido, "%e de %M del %Y") AS fecha,
+        pt.fecha_partido,
+        pt.localidad_partido,
+        pt.resultado_partido,
+        r.logo_rival,
+        e.logo_equipo,
+        e.nombre_equipo,
+        r.nombre_rival AS nombre_rival,
+        pt.tipo_resultado_partido,
+        e.id_equipo,
+        r.id_rival,
+        e.id_categoria,
+        p.id_jugador 
+        FROM participaciones_partidos p 
+        INNER JOIN partidos pt ON pt.id_partido = p.id_partido
+        INNER JOIN equipos e ON e.id_equipo = pt.id_equipo
+        INNER JOIN rivales r ON r.id_rival = pt.id_rival
+        WHERE id_jugador = ? AND (titular = 1 OR sustitucion = 1)
+        ORDER BY pt.fecha_partido DESC;';
+        $params = array($_SESSION['idJugador']);
+        return Database::getRows($sql, $params);
+    }
+
+    public function golesMarcados()
+    {
+        $sql = 'SELECT 
+        pt.id_partido,
+        DATE_FORMAT(pt.fecha_partido, "%e de %M del %Y") AS fecha,
+        pt.fecha_partido,
+        pt.localidad_partido,
+        pt.resultado_partido,
+        r.logo_rival,
+        r.nombre_rival AS nombre_rival,
+        pt.tipo_resultado_partido,
+        dg.cantidad_tipo_gol AS CANTIDAD,
+        tg.nombre_tipo_gol AS TIPO
+        FROM participaciones_partidos p 
+        INNER JOIN partidos pt ON pt.id_partido = p.id_partido
+        INNER JOIN equipos e ON e.id_equipo = pt.id_equipo
+        INNER JOIN rivales r ON r.id_rival = pt.id_rival
+        LEFT JOIN detalles_goles dg ON dg.id_participacion = p.id_participacion
+        INNER JOIN tipos_goles tg ON dg.id_tipo_gol = tg.id_tipo_gol
+        WHERE id_jugador = ? AND (titular = 1 OR sustitucion = 1) AND p.goles > 0
+        ORDER BY pt.fecha_partido DESC;';
+        $params = array($_SESSION['idJugador']);
+        return Database::getRows($sql, $params);
+    }
+
+    public function asistenciasHechas()
+    {
+        $sql = 'SELECT 
+        pt.id_partido,
+        DATE_FORMAT(pt.fecha_partido, "%e de %M del %Y") AS fecha,
+        pt.fecha_partido,
+        pt.localidad_partido,
+        pt.resultado_partido,
+        r.logo_rival,
+        r.nombre_rival AS nombre_rival,
+        pt.tipo_resultado_partido,
+        p.asistencias
+        FROM participaciones_partidos p 
+        INNER JOIN partidos pt ON pt.id_partido = p.id_partido
+        INNER JOIN equipos e ON e.id_equipo = pt.id_equipo
+        INNER JOIN rivales r ON r.id_rival = pt.id_rival
+        WHERE id_jugador = ? AND (titular = 1 OR sustitucion = 1) AND p.asistencias > 0
+        ORDER BY pt.fecha_partido DESC;';
+        $params = array($_SESSION['idJugador']);
+        return Database::getRows($sql, $params);
+    }
+
+    public function minutosJugados()
+    {
+        $sql = 'SELECT 
+        pt.id_partido,
+        DATE_FORMAT(pt.fecha_partido, "%e de %M del %Y") AS fecha,
+        pt.fecha_partido,
+        pt.localidad_partido,
+        pt.resultado_partido,
+        r.logo_rival,
+        r.nombre_rival AS nombre_rival,
+        pt.tipo_resultado_partido,
+        p.minutos_jugados
+        FROM participaciones_partidos p 
+        INNER JOIN partidos pt ON pt.id_partido = p.id_partido
+        INNER JOIN equipos e ON e.id_equipo = pt.id_equipo
+        INNER JOIN rivales r ON r.id_rival = pt.id_rival
+        WHERE id_jugador = ? AND (titular = 1 OR sustitucion = 1) AND p.minutos_jugados > 0
+        ORDER BY pt.fecha_partido DESC;';
+        $params = array($_SESSION['idJugador']);
+        return Database::getRows($sql, $params);
+    }
+
+    public function contarTarjetasAmarillas()
+    {
+        $sql = 'SELECT 
+        pt.id_partido,
+        DATE_FORMAT(pt.fecha_partido, "%e de %M del %Y") AS fecha,
+        pt.fecha_partido,
+        pt.localidad_partido,
+        pt.resultado_partido,
+        r.logo_rival,
+        r.nombre_rival AS nombre_rival,
+        pt.tipo_resultado_partido,
+        p.minutos_jugados,
+        da.amonestacion,
+        da.numero_amonestacion
+        FROM participaciones_partidos p 
+        INNER JOIN partidos pt ON pt.id_partido = p.id_partido
+        INNER JOIN equipos e ON e.id_equipo = pt.id_equipo
+        INNER JOIN rivales r ON r.id_rival = pt.id_rival
+        LEFT JOIN detalles_amonestaciones da ON da.id_participacion = p.id_participacion
+        WHERE id_jugador = ? AND da.amonestacion = "Tarjeta amarilla"
+        ORDER BY pt.fecha_partido DESC;';
+        $params = array($_SESSION['idJugador']);
+        return Database::getRows($sql, $params);
+    }
+
+    public function contarTarjetasRojas()
+    {
+        $sql = 'SELECT 
+        pt.id_partido,
+        DATE_FORMAT(pt.fecha_partido, "%e de %M del %Y") AS fecha,
+        pt.fecha_partido,
+        pt.localidad_partido,
+        pt.resultado_partido,
+        r.logo_rival,
+        r.nombre_rival AS nombre_rival,
+        pt.tipo_resultado_partido,
+        p.minutos_jugados,
+        da.amonestacion,
+        da.numero_amonestacion
+        FROM participaciones_partidos p 
+        INNER JOIN partidos pt ON pt.id_partido = p.id_partido
+        INNER JOIN equipos e ON e.id_equipo = pt.id_equipo
+        INNER JOIN rivales r ON r.id_rival = pt.id_rival
+        LEFT JOIN detalles_amonestaciones da ON da.id_participacion = p.id_participacion
+        WHERE id_jugador = ? AND da.amonestacion = "Tarjeta roja"
+        ORDER BY pt.fecha_partido DESC;';
+        $params = array($_SESSION['idJugador']);
+        return Database::getRows($sql, $params);
+    }
+
 
     public function graphicMobile()
     {

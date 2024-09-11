@@ -79,6 +79,48 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Ocurrió un problema al leer las estadisticas del jugador';
                 }
                 break;
+            case 'partidosJugados':
+                if ($result['dataset'] = $jugador->partidosJugados()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'No hay partidos disponibles';
+                }
+                break;
+            case 'golesMarcados':
+                if ($result['dataset'] = $jugador->golesMarcados()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'No hay goles marcados';
+                }
+                break;
+            case 'asistenciasHechas':
+                if ($result['dataset'] = $jugador->asistenciasHechas()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'No hay asistencias hechas';
+                }
+                break;
+            case 'minutosJugados':
+                if ($result['dataset'] = $jugador->minutosJugados()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'No hay minutos jugados';
+                }
+                break;
+            case 'contarTarjetasAmarillas':
+                if ($result['dataset'] = $jugador->contarTarjetasAmarillas()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'No hay tarjetas amarillas';
+                }
+                break;
+            case 'contarTarjetasRojas':
+                if ($result['dataset'] = $jugador->contarTarjetasRojas()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'No hay tarjetas rojas';
+                }
+                break;
             case 'maximosGoleadores':
                 if ($result['dataset'] = $jugador->maximosGoleadores()) {
                     $result['status'] = 1;
