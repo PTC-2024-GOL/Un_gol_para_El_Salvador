@@ -151,6 +151,40 @@ class RegistrosHandler{
            return Database::getRows($sql, $params);
        }
 
+       //Función para leer todas los registros médicos.
+       public function readAllPlayers()
+       {
+           $sql = 'SELECT DISTINCT
+           rm.id_registro_medico,
+           rm.id_jugador,
+           rm.fecha_lesion,
+           rm.fecha_registro,
+           rm.dias_lesionado,
+           rm.id_lesion,
+           l.id_tipo_lesion,
+           l.id_sub_tipologia,
+           st.nombre_sub_tipologia,
+           rm.retorno_entreno,
+           rm.retorno_partido,
+           p.fecha_partido
+           FROM
+           registros_medicos rm
+           INNER JOIN
+           jugadores j ON rm.id_jugador = j.id_jugador
+           INNER JOIN
+           lesiones l ON rm.id_lesion = l.id_lesion
+           INNER JOIN
+           sub_tipologias st ON l.id_sub_tipologia = st.id_sub_tipologia
+           LEFT JOIN
+           partidos p ON rm.retorno_partido = p.id_partido;
+           WHERE
+           rm.id_jugador = ?
+           ORDER BY
+           rm.id_jugador;';
+           $params = array($_SESSION['idJugador']);
+           return Database::getRows($sql, $params);
+       }
+
     //Función para leer un registro médico.
     public function readOne()
     {
