@@ -59,6 +59,30 @@ class PagoHandler
         return Database::getRows($sql);
     }
 
+    //Función para leer todos los pagos disponibles para el jugador.
+    public function readAllPlayers()
+    {
+        $sql = 'SELECT p.id_pago AS ID,
+        p.fecha_pago AS FECHA,
+        p.cantidad_pago AS CANTIDAD,
+        p.mora_pago AS MORA,
+        p.mes_pago AS MES,
+        CONCAT(j.nombre_jugador," ",j.apellido_jugador) AS NOMBRE,
+		CASE
+		WHEN p.pago_tardio = 1 THEN Si
+        WHEN p.pago_tardio = 0 THEN No
+		END AS "TARDIO",
+        ROUND(P.cantidad_pago + P.mora_pago, 2) AS TOTAL
+        FROM pagos p
+        INNER JOIN jugadores j ON p.id_jugador = j.id_jugador
+        WHERE
+        j.id_jugador = ?
+        ORDER BY
+        j.id_jugador;';
+        $params = array($_SESSION['idJugador']);
+        return Database::getRows($sql, $params);
+    }
+
     //Función para leer un pago.
     public function readOne()
     {
@@ -162,7 +186,7 @@ class PagoHandler
         return Database::getRow($sql);
     }
 
-     //Función para la gráfica Barra.
+    //Función para la gráfica Barra.
     public function graphic()
     {
         $sql = 'SELECT mes_pago AS MES, COUNT(DISTINCT id_jugador) AS NUM_JUGADOR, AVG(cantidad_pago) AS CANTIDAD
@@ -184,5 +208,4 @@ class PagoHandler
         $sql = 'SELECT id_jugador, YEAR(fecha_creacion) FROM jugadores GROUP BY YEAR(fecha_creacion);';
         return Database::getRows($sql);
     }
-
 }
