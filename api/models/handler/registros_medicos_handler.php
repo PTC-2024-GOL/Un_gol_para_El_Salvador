@@ -176,7 +176,7 @@ class RegistrosHandler{
            INNER JOIN
            sub_tipologias st ON l.id_sub_tipologia = st.id_sub_tipologia
            LEFT JOIN
-           partidos p ON rm.retorno_partido = p.id_partido;
+           partidos p ON rm.retorno_partido = p.id_partido
            WHERE
            rm.id_jugador = ?
            ORDER BY
