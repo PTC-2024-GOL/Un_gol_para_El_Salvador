@@ -39,7 +39,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
-                    $result['error'] = 'No existen jornadas registrados';
+                    $result['error'] = 'No existen registros médicos registrados';
                 }
                 break;
             // Leer uno

@@ -182,7 +182,7 @@ class RegistrosHandler{
            ORDER BY
            rm.id_jugador;';
            $params = array($_SESSION['idJugador']);
-           return Database::getRow($sql, $params);
+           return Database::getRows($sql, $params);
        }
 
     //Función para leer un registro médico.
