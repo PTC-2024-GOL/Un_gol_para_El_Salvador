@@ -36,6 +36,27 @@ class PagoHandler
         return Database::getRows($sql, $params);
     }
 
+    public function searchRowsMobile()
+    {
+        $value = '%' . Validator::getSearchValue() . '%';
+        $sql = 'SELECT p.id_pago AS ID,
+        p.fecha_pago AS FECHA,
+        p.cantidad_pago AS CANTIDAD,
+        p.mora_pago AS MORA,
+        p.mes_pago AS MES,
+        CONCAT(j.nombre_jugador," ",j.apellido_jugador) AS NOMBRE,
+		p.pago_tardio AS "TARDIO",
+        ROUND(P.cantidad_pago + P.mora_pago, 2) AS TOTAL
+        FROM pagos p
+        INNER JOIN jugadores j ON p.id_jugador = j.id_jugador
+        WHERE
+        j.id_jugador = ? AND (p.fecha_pago LIKE ? OR p.mes_pago LIKE ?)
+        ORDER BY
+        j.id_jugador;';
+        $params = array($_SESSION['idJugador'],$value,$value);
+        return Database::getRows($sql, $params);
+    }
+
     //Función para insertar una subtipología.
     public function createRow()
     {
