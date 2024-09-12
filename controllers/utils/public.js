@@ -43,12 +43,12 @@ MAINCONTENT = `
              <a class="nav-link active text-light" aria-current="page" href="contact_us.html">Contáctanos</a>
            </div>
            
-           <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Buscar partido..." aria-label="Search">
-              <button class="btn btn-outline-light me-3" type="submit">Buscar</button>
-          </form>
-        </ul>
+           <div class="d-flex" id="searchDiv">
+              <input class="form-control me-2" type="search" id="search" placeholder="Buscar partido..." aria-label="Search">
+              <button class="btn btn-outline-light me-3" id="btnBuscar">Buscar</button>
           </div>
+        </ul>
+        </div>
     </div>
 </nav>
 </div>
@@ -58,7 +58,15 @@ MAINCONTENT = `
 * Parámetros: ninguno.
 * Retorno: ninguno.
 */
+
+const isSearchPage = () => {
+    const currentPage = window.location.pathname.split('/').pop();
+    return currentPage === 'search.html';
+};
+
 const loadTemplate = async () => {
+    let searchDiv;
+
     // Se agrega el encabezado de la página web antes del contenido principal.
     MAIN.insertAdjacentHTML('beforebegin',
         MAINCONTENT
@@ -124,7 +132,29 @@ const loadTemplate = async () => {
                 </div>
              </div>
          </nav>
-`);
+`)
+
+    const searchButton = document.getElementById('btnBuscar'); // Selecciona el botón por su ID
+    const searchField = document.getElementById('search'); // Campo de búsqueda
+    searchDiv =  document.getElementById('searchDiv');
+
+    // Verifica si está en la página de búsqueda y oculta el campo de búsqueda si es necesario
+    if (isSearchPage()) {
+        searchDiv.classList.add('d-none'); // Oculta el contenedor del buscador
+    }
+
+
+    searchButton.addEventListener('click', (event) => {
+        event.preventDefault(); // Evita cualquier comportamiento predeterminado
+        const search = searchField.value; // Obtiene el valor de búsqueda
+        if (search) {
+            window.location.href = `search.html?search=${search}`; // Redirige a la página de búsqueda con la consulta
+            searchDiv.classList.add('d-none');
+
+        } else {
+            alert('Por favor, ingrese un término de búsqueda'); // Muestra un mensaje si el campo está vacío
+        }
+    });
 }
 
 const mostrarEquipos = async () => {
