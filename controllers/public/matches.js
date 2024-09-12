@@ -162,12 +162,14 @@ const showMatches = async () => {
                     <div class="row justify-content-center text-center">
                         <div class="col-md-4">
                             <img class="rounded-circle img-fluid" src="${SERVER_URL}images/equipos/${row.logo_equipo}" width="80px">
+                            <p>${row.nombre_equipo}</p>
                         </div>
                         <div class="col-md-4">
                             <h1 class="fw-bold text-secondary">${row.resultado_partido}</h1>
                         </div>
                         <div class="col-md-4">
                             <img class="rounded-circle img-fluid" src="${SERVER_URL}images/rivales/${row.logo_rival}" width="80px">
+                            <p>${row.nombre_rival}</p>
                         </div>
                     </div>
                     <div class="d-flex justify-content-center pe-3 ps-3 mt-2 mb-2">
