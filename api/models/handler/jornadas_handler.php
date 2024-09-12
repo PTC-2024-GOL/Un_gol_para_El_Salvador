@@ -61,6 +61,36 @@ class JornadasHandler
         return Database::getRows($sql, $params);
     }
 
+    //Función para buscar un cuerpo técnico o varias.
+    public function searchRowsPlayers()
+    {
+        $value = '%' . Validator::getSearchValue() . '%';
+        $sql = 'SELECT DISTINCT
+        j.id_jornada AS ID,
+        j.nombre_jornada AS NOMBRE,
+        j.numero_jornada AS NUMERO,
+        p.nombre_plantilla AS PLANTILLA,
+        j.id_plantilla AS ID_PLANTILLA,
+        t.nombre_temporada AS TEMPORADA,
+        DATE_FORMAT(j.fecha_inicio_jornada, " %d de %M de %Y") AS FECHA_INICIO,
+        DATE_FORMAT(j.fecha_fin_jornada, " %d de %M de %Y") AS FECHA_FIN
+        FROM 
+        jornadas j
+        INNER JOIN 
+        plantillas p ON j.id_plantilla = p.id_plantilla
+        INNER JOIN 
+        plantillas_equipos pe ON p.id_plantilla = pe.id_plantilla
+        INNER JOIN 
+        equipos e ON pe.id_equipo = e.id_equipo
+        INNER JOIN 
+        temporadas t ON t.id_temporada = pe.id_temporada
+        WHERE 
+        pe.id_jugador = ? AND (p.nombre_plantilla LIKE ? OR j.nombre_jornada LIKE ?)
+        ORDER BY NOMBRE;';
+        $params = array($_SESSION['idJugador'], $value, $value);
+        return Database::getRows($sql, $params);
+    }
+
     //Función para insertar una cuerpo técnico.
     public function createRow()
     {
