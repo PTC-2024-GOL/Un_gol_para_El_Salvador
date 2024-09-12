@@ -68,10 +68,7 @@ class PagoHandler
         p.mora_pago AS MORA,
         p.mes_pago AS MES,
         CONCAT(j.nombre_jugador," ",j.apellido_jugador) AS NOMBRE,
-		CASE
-		WHEN p.pago_tardio = 1 THEN Si
-        WHEN p.pago_tardio = 0 THEN No
-		END AS "TARDIO",
+		p.pago_tardio AS "TARDIO",
         ROUND(P.cantidad_pago + P.mora_pago, 2) AS TOTAL
         FROM pagos p
         INNER JOIN jugadores j ON p.id_jugador = j.id_jugador
