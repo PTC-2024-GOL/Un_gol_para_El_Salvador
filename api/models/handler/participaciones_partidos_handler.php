@@ -187,7 +187,7 @@ class ParticipacionesPartidosHandler
                     posiciones p ON j.id_posicion_principal = p.id_posicion
                 INNER JOIN
                     participaciones_partidos pp ON j.id_jugador = pp.id_jugador
-                INNER JOIN
+                LEFT JOIN
                     detalles_amonestaciones da ON pp.id_participacion = da.id_participacion
                 INNER JOIN
                     plantillas_equipos pe ON j.id_jugador = pe.id_jugador    
