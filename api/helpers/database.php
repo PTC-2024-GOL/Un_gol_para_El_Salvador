@@ -103,10 +103,10 @@ class Database
                 self::$error = 'Acceso denegado';
                 break;
             case '42S02':
-                self::$error = 'Tabla no encontrada';
+                self::$error;
                 break;
             case '42S22':
-                self::$error = 'Columna no encontrada';
+                self::$error;
                 break;
             case '45000':
                 self::$error;

@@ -279,7 +279,7 @@ class JugadoresHandler
         $sql = 'SELECT  COALESCE(SUM(goles), 0) AS TOTAL_GOLES,
 		COALESCE(SUM(asistencias), 0) AS TOTAL_ASISTENCIAS,
         COALESCE(SUM(minutos_jugados), 0) AS MINUTOS_JUGADOS,
-        COUNT(id_partido) AS TOTAL_PARTIDOS,
+        COUNT(DISTINCT id_partido) AS TOTAL_PARTIDOS,
         COALESCE(SUM(CASE WHEN da.amonestacion = "Tarjeta amarilla" THEN da.numero_amonestacion ELSE 0 END),0) AS TARJETAS_AMARILLAS,
         COALESCE(SUM(CASE WHEN da.amonestacion = "Tarjeta roja" THEN da.numero_amonestacion ELSE 0 END),0) AS TARJETAS_ROJAS
         FROM participaciones_partidos p

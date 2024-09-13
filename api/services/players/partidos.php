@@ -13,9 +13,20 @@ if (isset($_GET['action'])) {
     if (isset($_SESSION['idJugador']) /*and Validator::validateSessionTime()*/) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
-            // Leer todos
+                // Buscar
+            case 'searchRowsByIdJugador':
+                if (!Validator::validateSearch2($_POST['search'])) {
+                    $result['error'] = Validator::getSearchError();
+                } elseif ($result['dataset'] = $partido->searchRowsByIdJugador()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Existen ' . count($result['dataset']) . ' coincidencias';
+                } else {
+                    $result['error'] = 'No hay coincidencias';
+                }
+                break;
+                // Leer todos
             case 'readAllByIdJugadorOld':
-                if ($result['dataset'] =$partido->readAllByIdJugadorOld()) {
+                if ($result['dataset'] = $partido->readAllByIdJugadorOld()) {
                     $result['status'] = 1;
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
@@ -23,23 +34,23 @@ if (isset($_GET['action'])) {
                 }
                 break;
             case 'readAllByIdJugadorNew':
-                if ($result['dataset'] =$partido->readAllByIdJugadorNew()) {
+                if ($result['dataset'] = $partido->readAllByIdJugadorNew()) {
                     $result['status'] = 1;
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
                     $result['error'] = 'No existen jornadas registrados';
                 }
                 break;
-//            // Leer uno
-//            case 'readOne':
-//                if (!$partido->setId($_POST['idJornada'])) {
-//                    $result['error'] = $jornada->getDataError();
-//                } elseif ($result['dataset'] = $jornada->readOne()) {
-//                    $result['status'] = 1;
-//                } else {
-//                    $result['error'] = 'Jornada inexistente';
-//                }
-//                break;
+                //            // Leer uno
+                //            case 'readOne':
+                //                if (!$partido->setId($_POST['idJornada'])) {
+                //                    $result['error'] = $jornada->getDataError();
+                //                } elseif ($result['dataset'] = $jornada->readOne()) {
+                //                    $result['status'] = 1;
+                //                } else {
+                //                    $result['error'] = 'Jornada inexistente';
+                //                }
+                //                break;
             default:
                 $result['error'] = 'Acción no disponible dentro de la sesión';
         }

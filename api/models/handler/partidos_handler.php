@@ -545,6 +545,15 @@ class PartidosHandler
 
     //Función para leer los partidos por el idEquipo
 
+    
+    public function searchRowsByIdJugador()
+    {
+        $value = '%' . Validator::getSearchValue() . '%';
+        $sql = "SELECT * FROM vista_detalle_partidos_jugadores WHERE id_jugador = ? AND (nombre_equipo LIKE ? OR nombre_rival LIKE ? OR fecha LIKE ?) ORDER BY fecha DESC ;";
+        $params = array($_SESSION['idJugador'], $value, $value, $value);
+        return Database::getRows($sql, $params);
+    }
+
     public function readAllByIdJugadorOld()
     {
         $sql = "SELECT * FROM vista_detalle_partidos_jugadores WHERE id_jugador = ? ORDER BY fecha ASC ;";
