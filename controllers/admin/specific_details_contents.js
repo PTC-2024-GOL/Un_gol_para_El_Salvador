@@ -103,6 +103,7 @@ const fillSelected = (data, selectId, idcontenedorbotones, selectedValue = null)
     let options = [];
     data.forEach(item => {
         options.push(item.posicion);
+        options.push(item.posicion_secundaria); // Esto lo agregue para que también sume lo de la posición secundaria
     });
     console.log(options);
     // Crear opción por defecto
@@ -192,7 +193,9 @@ const generarBotones = (texto, valor) =>{
         console.log(OPCIONES, 'Estas son las opciones');
         esOpcionValida = OPCIONES.some(opcion => opcion == valor);
         if (esOpcionValida) {
-            const jugadoresConPosicion = lista_datos.filter(jugador => jugador.posicion === valor);
+            const jugadoresConPosicion = lista_datos.filter(jugador => 
+                jugador.posicion === valor || jugador.posicion_secundaria === valor
+            );            
 
             if (jugadoresConPosicion.length > 0) {
                 // Aquí puedes manejar los jugadores que coinciden con la posición
@@ -770,6 +773,7 @@ async function fillTable(form = null, actions = 0) {
             DATA.dataset.forEach(row => {
                 const tablaHtml = `
                 <tr>
+                    <td>${row.dorsal_jugador}</td>
                     <td>${row.nombre_jugador}</td>
                     <td>${row.nombre_subtema}</td>
                     <td>${row.nombre_tarea}<td>

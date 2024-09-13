@@ -49,7 +49,8 @@ class DetalleContenidoHandler
                 id_detalle_contenido,
                 nombre_subtema,
                 nombre_jugador,
-                nombre_tarea
+                nombre_tarea,
+                dorsal_jugador
                 FROM vista_detalle_entrenamiento
                 WHERE nombre_jugador LIKE ? OR nombre_subtema LIKE ?
                 ORDER BY nombre_jugador;";
@@ -190,6 +191,7 @@ class DetalleContenidoHandler
                 id_detalle_contenido,
                 nombre_subtema,
                 nombre_jugador,
+                dorsal_jugador,
                 nombre_tarea
                 FROM vista_detalle_entrenamiento WHERE id_entrenamiento = ?;";
         $params = array($this->idEntrenamiento);
@@ -226,7 +228,8 @@ class DetalleContenidoHandler
         $sql = "SELECT 
                 id,
                 jugadores,
-                posicion
+                posicion,
+                posicion_secundaria
                 FROM vista_equipos_jugadores WHERE id_equipo = ?;";
         $params = array($this->idEquipo);
         return Database::getRows($sql, $params);
