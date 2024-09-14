@@ -1,6 +1,7 @@
 <?php
 // Se incluye la clase del modelo.
 require_once('../../models/data/administradores_data.php');
+require_once('../../models/data/recuperacion_data.php');
 
 // Se comprueba si existe una acción a realizar, de lo contrario se finaliza el script con un mensaje de error.
 if (isset($_GET['action'])) {
@@ -8,8 +9,9 @@ if (isset($_GET['action'])) {
     session_start();
     // Se instancia la clase correspondiente.
     $administrador = new AdministradoresData;
+    $cambio_contra = new RecuperacionData;
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
-    $result = array('status' => 0, 'session' => 0, 'message' => null, 'dataset' => null, 'error' => null, 'exception' => null, 'username' => null);
+    $result = array('status' => 0, 'fecha' => null, 'session' => 0, 'message' => null, 'dataset' => null, 'error' => null, 'exception' => null, 'username' => null);
     // Se verifica si existe una sesión iniciada como administrador, de lo contrario se finaliza el script con un mensaje de error.
     // También se verifica que el tiempo de su sesión no haya caducado aun.
     if (isset($_SESSION['idAdministrador'])/*and Validator::validateSessionTime()*/) {
@@ -66,7 +68,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                 } else {
                     $result['error'] = 'Ocurrió un problema al leer el perfil';
-                    }
+                }
                 break;
                 // Ver uno
             case 'readOne':
@@ -254,8 +256,38 @@ if (isset($_GET['action'])) {
                 if ($administrador->checkUser($_POST['alias'], $_POST['clave'])) {
 
                     if ($administrador->getCondicion() == 'temporizador') {
-                        //el usuario tiene un contador de tiempo para iniciar sesión
-                        $result['error'] = 'Intento iniciar sesión varias veces y su tiempo de bloqueo aun no ha acabado';
+                        if ($result['fecha'] = $administrador->getHoy()) {
+                            //el usuario tiene un contador de tiempo para iniciar sesión
+                            $result['error'] = 'Intento iniciar sesión varias veces y su tiempo de bloqueo aun no ha acabado';
+                        }
+                    } elseif ($administrador->getCondicion() == 'clave') {
+                        $correos = $administrador->getCorreo();
+                        $fecha = new DateTime(); // Si deseas obtener la fecha actual
+                        $nivel = 1; // Asignas un valor predeterminado al nivel
+                        if (
+                            !$cambio_contra->setFecha($fecha->format('Y-m-d H:i:s')) or
+                            !$cambio_contra->setNivel($nivel) or
+                            !$cambio_contra->setCorreo($correos)
+                        ) {
+                            $result['error'] = $cambio_contra->getDataError();
+                        } elseif ($cambio_contra->readIdUsuario()) {
+                            if ($cambio_contra->createHash()) {
+                                if ($cambio_contra->updateHash()) {
+                                    //aqui pondré lo del envio del correo y allí acaba el proceso
+                                    if ($cambio_contra->envioCorreo()) {
+                                        $result['error'] = 'Debes cambiar la contraseña, porque ya son 90 dias, se te envio un correo al gmail para que hagas el proceso';
+                                    } else {
+                                        $result['error'] = 'Ocurrió un problema al enviar el correo';
+                                    }
+                                } else {
+                                    $result['error'] = 'Ocurrió un problema al agregar a la base el hash';
+                                }
+                            } else {
+                                $result['error'] = 'Ocurrió un problema al crear el hash';
+                            }
+                        } else {
+                            $result['error'] = 'Ocurrió un problema al leer el id del usuario';
+                        }
                     } elseif ($administrador->getCondicion() == 'tiempo') {
                         //el usuario intento iniciar sesión demasiadas veces por lo que se le pondra un contador de tiempo
                         if ($administrador->uploadTimeAttempt()) {
@@ -268,10 +300,15 @@ if (isset($_GET['action'])) {
                         } else {
                             $result['exception'] = 'Error en el servidor';
                         }
-                    } elseif ($administrador->getCondicion() == 'bloquear') {
                     } else {
-
                         if ($administrador->getCondicion() == 'bloqueado') {
+                            //el usuario será bloqueado por acumular intentos fallidos.
+                            if ($administrador->blockUser2()) {
+                                //El usuario esta bloqueado
+                                $result['error'] = 'Su cuenta ha sido bloqueada. Contacte a los administradores.';
+                            } else {
+                                $result['exception'] = 'Error en el servidor';
+                            }
                             //El usuario esta bloqueado
                             $result['error'] = 'Su cuenta ha sido bloqueada. Contacte a los administradores.';
                         } else {

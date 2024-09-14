@@ -174,7 +174,7 @@ class RecuperacionHandler
     //Función para actualizar la contraseña en la tabla administradores.
     public function updatePassword1()
     {
-        $sql = 'UPDATE administradores SET clave_administrador = ?, recovery_code = ? WHERE id_administrador = ?;';
+        $sql = 'UPDATE administradores SET clave_administrador = ?, recovery_code = ?, fecha_clave = NOW() WHERE id_administrador = ?;';
         $params = array(
             $this->contrasena,
             $this->hash,

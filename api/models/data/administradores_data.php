@@ -217,4 +217,16 @@ class AdministradoresData extends AdministradoresHandler
     {
         return $this->condicion;
     }
+
+    // Método para obtener la fecha de hoy.
+    public function getHoy()
+    {
+        return $this->fecha_hoy;
+    }
+
+    // Método para obtener el correo.
+    public function getCorreo()
+    {
+        return $this->correo;
+    }
 }
