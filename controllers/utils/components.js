@@ -2,7 +2,7 @@
 *   CONTROLADOR DE USO GENERAL EN TODAS LAS PÁGINAS WEB.
 */
 // Constante para establecer la ruta base del servidor.
-const SERVER_URL = 'http://localhost/sitio_gol_sv/api/';
+const SERVER_URL = 'https://huellitaspets.shop/sitio_gol_sv/api/';
 
 /*
 *   Función para mostrar un mensaje de confirmación. Requiere la librería sweetalert para funcionar.

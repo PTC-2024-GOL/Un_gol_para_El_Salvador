@@ -2,7 +2,7 @@
 
 use Phpml\Regression\LeastSquares;
 
-require('C:/xampp/htdocs/sitio_gol_sv/vendor/autoload.php');
+require('/var/www/html/sitio_gol_sv/vendor/autoload.php');
 // Se incluye la clase para trabajar con la base de datos.
 require_once('../../helpers/database.php');
 
