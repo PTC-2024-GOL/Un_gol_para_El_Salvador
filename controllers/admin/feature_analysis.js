@@ -350,7 +350,7 @@ async function cargarNav() {
                     input.className = 'form-control';
                     input.min = '1';
                     input.max = '10';
-                    input.step = '1'
+                    input.step = '0.1'
                     input.placeholder = 'Ingrese la nota';
                     input.setAttribute('data-id-caracteristica-jugador', caracteristica.ID);
 
