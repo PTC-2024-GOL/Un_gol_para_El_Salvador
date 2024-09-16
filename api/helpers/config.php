@@ -7,5 +7,5 @@ date_default_timezone_set('America/El_Salvador');
 define('SERVER', 'localhost');
 define('DATABASE', 'db_gol_sv');
 define('USERNAME', 'root'); //Poner dbGol de usuario
-define('PASSWORD', ''); //Poner de clave del 1 al 4  prueba
+define('PASSWORD', ''); //Poner de clave del 1 al 4
 ?>
