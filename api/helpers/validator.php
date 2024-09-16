@@ -417,9 +417,11 @@ class Validator
 
         //Compraración para redirigir página, si la vida de sesión sea mayor a el tiempo insertado en inactivo.
         if ($vida_session > $inactivo) {
+            http_response_code(401); // 401 Unauthorized
+            echo json_encode(['error' => 'Sesión expirada por inactividad']);
             //Destruimos sesión.
             session_destroy();
-            return false;
+            exit();
         } else { // si no ha caducado la sesion, actualizamos
             $_SESSION['tiempo'] = time();
             return true;

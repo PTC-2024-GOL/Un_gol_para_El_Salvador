@@ -298,6 +298,12 @@ const fetchData = async (filename, action, form = null) => {
         PATH.searchParams.append('action', action);
         // Se define una constante tipo objeto con la respuesta de la petición.
         const RESPONSE = await fetch(PATH.href, OPTIONS);
+
+        // Verificar si la respuesta tiene el código 401 (sesión expirada).
+        if (RESPONSE.status === 401) {
+            sweetAlert(2,'Tu sesión ha expirado por inactividad. Serás redirigido al inicio de sesión.', true);
+            return;
+        }
         // Se retorna el resultado en formato JSON.
         return await RESPONSE.json();
     } catch (error) {

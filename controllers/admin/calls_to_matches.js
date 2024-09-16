@@ -70,8 +70,10 @@ const guardar = async () => {
             if (DATA.status) {
                 await sweetAlert(1, DATA.message, true);
                 fillTable();
-            } else {
+            } else if (!DATA.exception) {
                 sweetAlert(2, DATA.error, false);
+            } else {
+                sweetAlert(2, DATA.exception, false);
             }
         }
     } catch (Error) {
