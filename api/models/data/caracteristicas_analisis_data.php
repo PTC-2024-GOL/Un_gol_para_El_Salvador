@@ -32,7 +32,7 @@ class CaracteristicasAnalisisData extends CaracteristicasAnalisisHandler
     // Validación y asignación del ID de la caracteristica del jugador.
     public function setNota($value)
     {
-        if (Validator::validateNaturalNumber($value)) {
+        if (Validator::validatePositiveDecimal2($value)) {
             $this->nota = $value;
             return true;
         } else {

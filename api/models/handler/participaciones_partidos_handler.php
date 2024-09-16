@@ -141,7 +141,7 @@ class ParticipacionesPartidosHandler
     //Función para mostrar todos los jugadores de un equipo
     public function readAllByIdEquipo()
     {
-        $sql = 'SELECT * FROM vista_jugadores_por_equipo
+        $sql = 'SELECT * FROM vista_jugadores_por_equipo2
                 WHERE id_equipo= ? ORDER BY dorsal_jugador ASC ';
         $params = array($this->idEquipo);
         return Database::getRows($sql, $params);
