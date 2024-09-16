@@ -136,7 +136,10 @@ class AdministradoresHandler
         $sql = 'SELECT id_administrador AS ID, alias_administrador AS ALIAS, correo_administrador AS CORREO,
         CONCAT(nombre_administrador, " ", apellido_administrador) AS NOMBRECOMPLETO,
         clave_administrador AS CLAVE, foto_administrador AS FOTO, 
-        estado_administrador AS ESTADO, apellido_administrador AS APELLIDO,
+        CASE 
+            WHEN estado_administrador = 1 THEN "Activo"
+            WHEN estado_administrador = 0 THEN "Bloqueado"
+        END AS ESTADO, apellido_administrador AS APELLIDO,
         intentos_administrador AS INTENTOS, DATEDIFF(CURRENT_DATE, fecha_clave) as DIAS, 
         tiempo_intento AS TIEMPO, fecha_bloqueo AS BLOQUEO
         FROM administradores WHERE (BINARY alias_administrador = ? OR BINARY correo_administrador = ?)';
@@ -196,7 +199,7 @@ class AdministradoresHandler
             }
         } else {
             // Verificar si esta bloqueado el usuario
-            if ($data['ESTADO'] == false) {
+            if ($data['ESTADO'] == "Bloqueado") {
                 //el usuario esta bloqueado
                 return $this->condicion = 'bloqueado';
             } else {
