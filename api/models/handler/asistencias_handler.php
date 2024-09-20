@@ -79,7 +79,7 @@ class AsistenciasrHandler
         return Database::getRow($sql, $params);
     }
 
-    // Función para leer las asistencias de un jugador por jornada
+    //Función para leer las asistencias de un jugador, en base a su idJugador y su idJornada
     public function readOnePlayerJugadores()
     {
         $sql = "SELECT observacion_asistencia, asistencia, fecha 
@@ -88,31 +88,28 @@ class AsistenciasrHandler
         return Database::getRows($sql, $params);
     }
 
-    // Función para leer las asistencias de un jugador
+    //Función para leer las asistencias de un jugador
     public function readOnePlayer()
     {
-        $sql = "SELECT observacion_asistencia, asistencia, fecha 
-                FROM asistencias_por_jugador WHERE id_jugador = ? ORDER BY fecha_asistencia DESC;";
+        $sql = "SELECT observacion_asistencia, asistencia, fecha FROM asistencias_por_jugador WHERE id_jugador = ? ORDER BY fecha_asistencia DESC;";
         $params = array($this->idJugador);
         return Database::getRows($sql, $params);
     }
-
-    // Función para leer estadísticas de asistencia de un jugador
+    
+    //Función para leer las estadisticas de un jugador en torno a asistencias (esto pertenece a movil)
     public function readOnePlayerStadistic()
     {
-        $sql = "SELECT cantidad_asistencia, porcentaje_asistencia, cantidad_ausencia_injustificada, porcentaje_ausencia_injustificada, 
-                cantidad_enfermedad, porcentaje_enfermedad, cantidad_otro, porcentaje_otro, cantidad_estudio 
-                FROM vista_asistencias_por_jugador WHERE id_jugador = ?;";
+        $sql = "SELECT cantidad_asistencia, porcentaje_asistencia, cantidad_ausencia_injustificada, porcentaje_ausencia_injustificada, cantidad_enfermedad,
+            porcentaje_enfermedad, cantidad_otro, porcentaje_otro, cantidad_estudio FROM vista_asistencias_por_jugador WHERE id_jugador = ?";
         $params = array($this->idJugador);
         return Database::getRow($sql, $params);
     }
 
-    // Función para leer estadísticas de asistencia de un jugador por jornada
+    //Función para leer las estadisticas de un jugador en torno a asistencias (esto pertenece a movil)
     public function readOnePlayerStadisticJugadores()
     {
-        $sql = "SELECT cantidad_asistencia, porcentaje_asistencia, cantidad_ausencia_injustificada, porcentaje_ausencia_injustificada, 
-                cantidad_enfermedad, porcentaje_enfermedad, cantidad_otro, porcentaje_otro, cantidad_estudio 
-                FROM vista_asistencias_por_jugador WHERE id_jugador = ? AND id_jornada = ?;";
+        $sql = "SELECT cantidad_asistencia, porcentaje_asistencia, cantidad_ausencia_injustificada, porcentaje_ausencia_injustificada, cantidad_enfermedad,
+            porcentaje_enfermedad, cantidad_otro, porcentaje_otro, cantidad_estudio FROM vista_asistencias_por_jugador WHERE id_jugador = ? AND id_jornada = ?;";
         $params = array($this->idJugador, $this->idJornada);
         return Database::getRow($sql, $params);
     }

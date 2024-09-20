@@ -20,11 +20,14 @@ let SAVE_FORM,
     CORREO_JUGADOR,
     TIPO_SANGRE,
     OBSERVACION_MEDICA,
+    ZONA1,
+    ZONA2,
     REPETIR_CLAVE;
 let SEARCH_FORM;
 let IMAGEN;
 let SELECT_GENER0;
 
+let BTN_ESTADO_FISICO;
 let BOX_ALIAS;
 
 
@@ -33,6 +36,7 @@ const JUGADOR_API = 'services/admin/jugadores.php';
 const POSICIONES_API = 'services/admin/posiciones.php';
 // Constantes para completar las rutas de la API.
 const ESTADO_API = 'services/admin/estado_fisico_jugador.php';
+const TEST_API = 'services/admin/test_fisico_jugador.php';
 
 async function loadComponent(path) {
     const response = await fetch(path);
@@ -66,46 +70,144 @@ const openCreate = async () => {
 
 let idJugador;
 const openPage = async (id) => {
-    const cargarTabla = document.getElementById('tableEstadoFisico');
     idJugador = id;
     SEE_MEDICAL.show();
-    MODAL_TITLE_MEDICAL.textContent = 'Estado físico del jugador'
-
-    try {
-        cargarTabla.innerHTML = '';
-        const FORM = new FormData();
-        FORM.append('idJugador', id)
-
-        const DATA = await fetchData(ESTADO_API, 'readAll', FORM);
-        if (DATA.status) {
-            DATA.dataset.forEach(row => {
-                const tablaHtml = `
-                <div class="row justify-content-center align-items-center">
-                    <div class="col-md-3">
-                        <p>${row.altura_jugador} ctm</p>
-                    </div>
-                    <div class="col-md-3">
-                        <p>${row.peso_jugador} lbs</p>
-                    </div>
-                    <div class="col-md-3">
-                        <p>${row.indice_masa_corporal}</p>
-                    </div>
-                    <div class="col-md-3">
-                       <p>${row.fecha_creacion_format}</p>
-                    </div>   
-                </div>
-                <hr>
-            `;
-                cargarTabla.innerHTML += tablaHtml;
-            })
-        } else {
-            await sweetAlert(3, DATA.error, true)
-        }
-    }catch (error){
-        console.log('Error al obtener datos de la API')
-    }
+    MODAL_TITLE_MEDICAL.textContent = 'Rendimiento físico del jugador'
+    await estadofisico(id);
 }
 
+const zona1func = async () => {
+    ZONA1.classList.add('active');
+    ZONA2.classList.remove('active');
+    await estadofisico(idJugador);
+}
+
+
+const zona2func = async () => {
+    ZONA1.classList.remove('active');
+    ZONA2.classList.add('active');
+    await rendimientoFisico(idJugador);
+}
+
+const estadofisico = async (id) => {
+    const contenedorOne = document.getElementById('contenedor_estados');
+    const cargarTabla = document.getElementById('tableEstadoFisico');
+        contenedorOne.innerHTML = `<div class="ps-5 pe-5 mt-3">
+                    <div class="p-3 mb-0">
+                        <div class="row justify-content-center align-items-center bg-blue-light-color">
+                            <div class="col-md-3">
+                                <p class="mt-3 fw-semibold">Altura(cm)</p>
+                            </div>
+                            <div class="col-md-3">
+                                <p class="mt-3 fw-semibold">Peso(lbs)</p>
+                            </div>
+                            <div class="col-md-3">
+                                <p class="mt-3 fw-semibold">IMC</p>
+                            </div>
+                            <div class="col-md-3">
+                                <p class="mt-3 fw-semibold">Fecha de registro</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Insertamos la tabla con los registro del estado fisico del jugador-->
+                    <div class="p-3" id="tableEstadoFisico">
+
+                    </div>
+                    <div class="modal-footer col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center">
+                        <button type="submit" class="btn bg-blue-principal-color text-white"
+                            onclick="goToPage()">Agregar estado físico</button>
+                    </div>
+                </div>`;
+        try {
+            cargarTabla.innerHTML = '';
+            const FORM = new FormData();
+            FORM.append('idJugador', id)
+
+            const DATA = await fetchData(ESTADO_API, 'readAll', FORM);
+            if (DATA.status) {
+                DATA.dataset.forEach(row => {
+                    const tablaHtml = `
+                            <div class="row justify-content-center align-items-center">
+                                <div class="col-md-3">
+                                    <p>${row.altura_jugador} ctm</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <p>${row.peso_jugador} lbs</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <p>${row.indice_masa_corporal}</p>
+                                </div>
+                                <div class="col-md-3">
+                                   <p>${row.fecha_creacion_format}</p>
+                                </div>   
+                            </div>
+                            <hr>
+                        `;
+                    cargarTabla.innerHTML += tablaHtml;
+                })
+            } else {
+                await sweetAlert(3, DATA.error, true)
+            }
+        } catch (error) {
+            console.log('Error al obtener datos de la API')
+        }
+}
+
+const rendimientoFisico = async (id) => {
+    const contenedorOne = document.getElementById('contenedor_estados');
+    const cargarTabla = document.getElementById('tableEstadoFisico');
+        contenedorOne.innerHTML = `<div class="ps-5 pe-5 mt-3">
+                    <div class="p-3 mb-0">
+                        <div class="row justify-content-center align-items-center bg-blue-light-color">
+                            <div class="col-md-3">
+                                <p class="mt-3 fw-semibold">Pregunta</p>
+                            </div>
+                            <div class="col-md-3">
+                                <p class="mt-3 fw-semibold">Fecha</p>
+                            </div>
+                            <div class="col-md-3">
+                                <p class="mt-3 fw-semibold">Puntuación</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Insertamos la tabla con los registro del estado fisico del jugador-->
+                    <div class="p-3" id="tableEstadoFisico">
+
+                    </div>
+                </div>`;
+        try {
+            cargarTabla.innerHTML = '';
+            const FORM = new FormData();
+            FORM.append('idJugador', id)
+
+            const DATA = await fetchData(TEST_API, 'readAll', FORM);
+            if (DATA.status) {
+                DATA.dataset.forEach(row => {
+                    const tablaHtml = `
+                            <div class="row justify-content-center align-items-center">
+                                <div class="col-md-3">
+                                    <p>${row.pregunta} ctm</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <p>${row.fecha} lbs</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <p>${row.respuesta}</p>
+                                </div>   
+                            </div>
+                            <hr>
+                        `;
+                    cargarTabla.innerHTML += tablaHtml;
+                })
+            } else {
+                await sweetAlert(3, DATA.error, true)
+            }
+        } catch (error) {
+            console.log('Error al obtener datos de la API')
+        }
+}
 const goToPage = () => {
     // Cuando se haga clic en el botón, se redirigirá a la página de estado fisica específicas.
     window.location.href = `../pages/physical_states.html?id=${idJugador}`;
@@ -344,16 +446,18 @@ window.onload = async function () {
         DORSAL_JUGADOR = document.getElementById('Dorsal'),
         BECADO = document.getElementById('beca'),
         ESTATUS_JUGADOR = document.getElementById('estadoJugador');
-        GENERO_JUGADOR = document.getElementById('generoJugador'),
+    GENERO_JUGADOR = document.getElementById('generoJugador'),
         IMAGEN_JUGADOR = document.getElementById('imagen_jugador'),
         IMAGEN = document.getElementById('imagenJugador'),
         CLAVE_JUGADOR = document.getElementById('claveJugador'),
         REPETIR_CLAVE = document.getElementById('repetirclaveJugador'),
         TELEFONO_JUGADOR = document.getElementById('telefonoJugador'),
-        TELEFONO_EMERGENCIA_JUGADOR =  document.getElementById('telefonoEmergencia'),
-        CORREO_JUGADOR =  document.getElementById('correoContacto'),
+        TELEFONO_EMERGENCIA_JUGADOR = document.getElementById('telefonoEmergencia'),
+        CORREO_JUGADOR = document.getElementById('correoContacto'),
         TIPO_SANGRE = document.getElementById('tipoSangre'),
         OBSERVACION_MEDICA = document.getElementById('observacionMedica'),
+        ZONA1 = document.getElementById('zona1'),
+        ZONA2 = document.getElementById('zona2'),
         ALIAS = document.getElementById('alias');
 
     SELECT_GENER0 = document.getElementById('selectGenero');
