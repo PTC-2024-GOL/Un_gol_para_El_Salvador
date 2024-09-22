@@ -5,7 +5,7 @@
             <div class="col-sm-12 col-md-6">
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
-                           name="search" placeholder="Buscar por el nombre o apellido del jugador" required>
+                           name="search" placeholder="Buscar por el nombre o apellido del jugador" autocomplete="off" required>
                     <button type="submit"
                             class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
@@ -101,7 +101,7 @@
                     <div class="col-sm-12 col-md-6 mb-3">
                         <label for="minutos" class="form-label fw-semibold">Minutos jugados</label>
                         <input id="minutos" type="number" min="0" step="1" name="minutos" class="form-control"
-                               placeholder="Escriba la cantidad de minutos jugados" required>
+                               placeholder="Escriba la cantidad de minutos jugados" autocomplete="off" required>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-3 d-none" id="golesDiv">
                         <label for="goles" class="form-label fw-semibold">Total de goles</label>
@@ -110,13 +110,13 @@
                     <div class="col-sm-12 col-md-6 mb-3">
                         <label for="asistencias" class="form-label fw-semibold">Asistencias</label>
                         <input id="asistencias" type="number" min="0" step="1" name="asistencia" class="form-control"
-                               placeholder="Escriba la cantidad de asistencias del jugador" required>
+                               placeholder="Escriba la cantidad de asistencias del jugador" autocomplete="off" required>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-3">
                         <label for="puntuacion" class="form-label fw-semibold">Puntuación</label>
                         <input id="puntuacion" type="number" min="0" max="10" step=".1" name="puntuacion"
                                class="form-control" placeholder="Escribe la puntuación del jugador en este partido"
-                               required>
+                               autocomplete="off" required>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
                         <label for="posicionPrincipal" class="form-label fw-semibold">Posición en el juego</label>
@@ -184,11 +184,11 @@
                     <div class="col-sm-12 col-md-6">
                         <label for="cantidadGol" class="form-label fw-semibold">Cantidad de goles</label>
                         <input id="cantidadGol" type="number" min="0" step="1" name="cantidadGol" class="form-control"
-                               placeholder="Escribe la cantidad de goles" required>
+                               placeholder="Escribe la cantidad de goles" autocomplete="off" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="tipoGol" class="form-label fw-semibold">Tipo de goles</label>
-                        <select id="tipoGol" name="tipoGol" class="form-select" required></select>
+                        <select id="tipoGol" name="tipoGol" class="form-select" autocomplete="off" required></select>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center">
@@ -247,11 +247,11 @@
                         <label for="cantidadAmonestacion" class="form-label fw-semibold">Cantidad de
                             amonestación</label>
                         <input id="cantidadAmonestacion" type="number" min="0" step="1" name="numeroAmonestacion"
-                               class="form-control" placeholder="Escribe la cantidad de amonestaciones" required>
+                               class="form-control" placeholder="Escribe la cantidad de amonestaciones" autocomplete="off" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="tipoAmonestacion" class="form-label fw-semibold">Tipo de amonestación</label>
-                        <select id="tipoAmonestacion" name="amonestacion" class="form-select" required>
+                        <select id="tipoAmonestacion" name="amonestacion" class="form-select" autocomplete="off" required>
                             <option>Selecciona una opción</option>
                             <option>Tarjeta roja</option>
                             <option>Tarjeta amarilla</option>

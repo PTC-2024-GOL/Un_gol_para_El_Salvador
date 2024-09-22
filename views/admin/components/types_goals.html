@@ -5,7 +5,7 @@
             <div class="col-sm-12 col-md-6">
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
-                        name="search" placeholder="Buscar por el tipo de gol o jugada" required>
+                        name="search" placeholder="Buscar por el tipo de gol o jugada" autocomplete="off" required>
                     <button type="submit"
                         class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
@@ -69,12 +69,12 @@
                     <input type="hidden" id="idGol" name="idGol">
                     <div class="col-sm-12 col-md-6 mb-3">
                         <label for="jugadaSelect" class="form-label fw-semibold">Selecciona el tipo de jugada</label>
-                        <select id="jugadaSelect" type="text" name="idJugada" class="form-select" required></select>
+                        <select id="jugadaSelect" type="text" name="idJugada" class="form-select" autocomplete="off" required></select>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="tipoGol" class="form-label fw-semibold">Tipo de gol</label>
                         <input id="tipoGol" type="text" name="nombreGol" class="form-control"
-                            placeholder="Escribe el nombre de tipo del gol" required>
+                            placeholder="Escribe el nombre de tipo del gol" autocomplete="off" required>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">

@@ -5,7 +5,7 @@
             <div class="col-sm-12 col-md-6">
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
-                        name="search" placeholder="Buscar por la fecha del entrenamiento" required>
+                        name="search" placeholder="Buscar por la fecha del entrenamiento" autocomplete="off" required>
                     <button type="submit"
                         class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
@@ -80,7 +80,7 @@
                     <input type="hidden" id="idCategoria">
                     <div class="col-sm-12 col-md-12">
                         <label for="horario" class="form-label fw-semibold">Selecciona un jugador</label>
-                        <select id="horario" type="text" name="horario" class="form-select" required></select>
+                        <select id="horario" type="text" name="horario" class="form-select" autocomplete="off" required></select>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
@@ -306,15 +306,15 @@
                     <div class="col-sm-12 col-md-6">
                         <label for="fecha" class="form-label fw-semibold">Fecha</label>
                         <input id="fecha" type="date" name="fecha" class="form-control"
-                            placeholder="Escribe la fecha del entrenamiento" required>
+                            placeholder="Escribe la fecha del entrenamiento" autocomplete="off" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="idCategoriaa" class="form-label fw-semibold">Selecciona el horario de la categoria</label>
-                        <select id="idCategoriaa" type="text" name="idCategoria" class="form-select" required></select>
+                        <select id="idCategoriaa" type="text" name="idCategoria" class="form-select" autocomplete="off" required></select>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="sesion" class="form-label fw-semibold">Selecciona el número de la sesión</label>
-                        <select id="sesion" type="text" name="sesion" class="form-select" required>
+                        <select id="sesion" type="text" name="sesion" class="form-select" autocomplete="off" required>
                             <option value="Sesion 1">Sesión 1</option>
                             <option value="Sesion 2">Sesión 2</option>
                             <option value="Sesion 3">Sesión 3</option>
@@ -322,11 +322,11 @@
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="idJornada" class="form-label fw-semibold">Selecciona la jornada</label>
-                        <select id="idJornada" type="text" name="idJornada" class="form-select" required></select>
+                        <select id="idJornada" type="text" name="idJornada" class="form-select" autocomplete="off" required></select>
                     </div>
                     <div class="col-sm-12 col-md-6" id="equipos">
                         <label for="idEquipo" class="form-label fw-semibold">Selecciona el equipo</label>
-                        <select id="idEquipo" type="text" name="idEquipo" class="form-select" required></select>
+                        <select id="idEquipo" type="text" name="idEquipo" class="form-select" autocomplete="off" required></select>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">

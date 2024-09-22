@@ -5,7 +5,7 @@
             <div class="col-sm-12 col-md-6">
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
-                        name="search" placeholder="Buscar por el nombre del jugador" required>
+                        name="search" placeholder="Buscar por el nombre del jugador" autocomplete="off" required>
                     <button type="submit"
                         class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
@@ -81,26 +81,26 @@
                     <input type="number" class="d-none" id="idMedico" name="idMedico">
                     <div class="col-sm-12 col-md-6">
                         <label for="jugador" class="form-label fw-semibold">Selecciona al jugador</label>
-                        <select id="jugador" type="text" name="jugador" class="form-select" required></select>
+                        <select id="jugador" type="text" name="jugador" class="form-select" autocomplete="off" required></select>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="fechaLesion" class="form-label fw-semibold">Fecha en que se hizo la
                             lesión</label>
-                        <input id="fechaLesion" type="date" name="fechaLesion" class="form-control" required>
+                        <input id="fechaLesion" type="date" name="fechaLesion" class="form-control" autocomplete="off" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="diasLesionado" class="form-label fw-semibold">Días lesionado</label>
                         <input id="diasLesionado" type="number" name="diasLesionado" class="form-control" min="1"
-                            placeholder="Escriba los días que estará lesionado" required>
+                            placeholder="Escriba los días que estará lesionado" autocomplete="off" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="lesion" class="form-label fw-semibold">Selecciona la lesión del jugador</label>
-                        <select id="lesion" type="text" name="lesion" class="form-select" required></select>
+                        <select id="lesion" type="text" name="lesion" class="form-select" autocomplete="off" required></select>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="retornoEntreno" class="form-label fw-semibold">Fecha de retorno a
                             entrenos</label>
-                        <input id="retornoEntreno" type="date" name="retornoEntreno" class="form-control" required>
+                        <input id="retornoEntreno" type="date" name="retornoEntreno" class="form-control" autocomplete="off" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="retornoPartido" class="form-label fw-semibold">Fecha de retorno a

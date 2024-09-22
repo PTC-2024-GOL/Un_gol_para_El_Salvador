@@ -5,7 +5,7 @@
             <div class="col-sm-12 col-md-6">
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
-                        name="search" placeholder="Buscar por el nombre de la categoría" required>
+                        name="search" placeholder="Buscar por el nombre de la categoría" autocomplete="off" required>
                     <button type="submit"
                         class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
@@ -74,17 +74,17 @@
                     <div class="col-sm-12 col-md-6">
                         <label for="nombreCategoria" class="form-label fw-semibold">Nombre de la categoría</label>
                         <input id="nombreCategoria" type="text" name="nombreCategoria" class="form-control"
-                            placeholder="Escribe el nombre de la categoría" required>
+                            placeholder="Escribe el nombre de la categoría" autocomplete="off" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="edadMin" class="form-label fw-semibold">Edad mínima</label>
                         <input id="edadMin" type="number" min="1" step="1" name="edadMin" class="form-control"
-                            placeholder="Escribe la edad mínima permitida" required>
+                            placeholder="Escribe la edad mínima permitida" autocomplete="off" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="edadMax" class="form-label fw-semibold">Edad máxima</label>
                         <input id="edadMax" type="number" min="1" step="1" name="edadMax" class="form-control"
-                            placeholder="Escribe la edad máxima permitida" required>
+                            placeholder="Escribe la edad máxima permitida" autocomplete="off" required>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
@@ -113,12 +113,12 @@
                     <input type="number" class="d-none" id="idHorarioCate" name="idHorarioCate">
                     <div class="col-sm-12 col-md-12">
                         <label for="horarioCat" class="form-label fw-semibold">Seleccione el horario</label>
-                        <select id="horarioCat" type="text" name="horarioCat" class="form-select" required></select>
+                        <select id="horarioCat" type="text" name="horarioCat" class="form-select" autocomplete="off" required></select>
                     </div>
                     <div class="col-sm-12 col-md-6 d-none">
                         <label for="categoriaHora" class="form-label fw-semibold">Selecciona la categoría</label>
                         <select id="categoriaHora" type="text" name="categoriaHora" class="form-select"
-                            required></select>
+                            autocomplete="off" required></select>
                     </div>
                 </div>
                 <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
