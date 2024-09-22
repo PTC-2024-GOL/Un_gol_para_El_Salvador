@@ -36,3 +36,32 @@
         </div>
     </div>
 </form>
+
+
+<!-- Componente Modal para guardar un registro -->
+<div class="modal fade" id="2faModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="modalTitleDetail" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-principal-color">
+                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                <h1 class="modal-title fs-5 text-white" id="modalTitle">2FA - Factor de autenticación</h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="p-5 text-center">
+                <img class="bg-blue-light-color rounded-circle p-3" src="../../../resources/img/png/candado.png" width="80px" height="80px">
+                <h4 class="mb-2 mt-3">Autenticación de dos factores</h4>
+                <label class="mb-3" for="code">Ingrese el código de tu app de tu atenticación</label>
+
+
+                <div class="d-flex justify-content-center">
+                    <input class="form-control form-control-lg text-center mt-2 w-50 " type="number" id="code" name="code" max="6" required placeholder="Ingresa 6 dígitos"/>
+                </div>
+                <button class="btn btn-blue-secondary-color text-light mt-4 w-50 " onclick="getCode()">Verificar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

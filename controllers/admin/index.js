@@ -6,7 +6,31 @@ async function loadComponent(path) {
 
 // Constante para establecer el formulario de inicio de sesión.
 let LOGIN_FORM;
+let MODAL;
+let CODE;
+let FORM;
 
+//Funcion que obtiene el codigo ingresado por el usuario y manda la peticion a la api.
+//Verifica si el codigo es correcto, de lo contrario no lo deja iniciar sesion
+const getCode = async () => {
+    CODE = document.getElementById('code').value;
+
+    if(CODE.length !== 6) {
+        await sweetAlert(2, "El código debe tener exactamente 6 dígitos", false);
+    }else{
+        //Agregamos al form el codigo ingresado.
+        FORM.append('code', CODE);
+
+        //Hace la peticion al servicio.
+        const DATA = await fetchData(USER_API, 'logIn', FORM);
+        //Si viene bien entonces inicia sesion, de lo contrario le tira el error.
+        if(DATA.status) {
+            await sweetAlert(1, DATA.message, true, 'dashboard.html');
+        }else{
+            await sweetAlert(2, DATA.error, false);
+        }
+    }
+}
 
 window.onload = async function () {
     // Obtiene el contenedor principal
@@ -15,6 +39,9 @@ window.onload = async function () {
     const adminHtml = await loadComponent('../components/index.html');
 
     appContainer.innerHTML = adminHtml;
+
+    //Obtenemos el valor del modal.
+    MODAL = new bootstrap.Modal('#2faModal');
 
     // Petición para consultar los usuarios registrados.
     const DATA = await fetchData(USER_API, 'readUsers');
@@ -31,17 +58,22 @@ window.onload = async function () {
             // Se evita recargar la página web después de enviar el formulario.
             event.preventDefault();
             // Constante tipo objeto con los datos del formulario.
-            const FORM = new FormData(LOGIN_FORM);
+            FORM = new FormData(LOGIN_FORM);
             try {
                 // Petición para iniciar sesión.
                 const DATA = await fetchData(USER_API, 'logIn', FORM);
-                console.log(DATA);
-                // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
-                if (DATA.status) {
-                    sweetAlert(1, DATA.message, true, 'dashboard.html');
-                } else {
-                    sweetAlert(2, DATA.error, false);
-                    console.log(DATA.exception);
+                //Se verifica si hay 2FA activado, si lo esta entonces se lo pedira, pero sino ingresara sesion normalmente.
+                if(DATA.TwoFA_required){
+                    MODAL.show();
+                }else{
+                    //Verifica que la respuesta venga bien, si las credenciales son correctas, de ser asi lo deja iniciar sesion
+                    //sino le tira el error.
+                    if (DATA.status) {
+                        await sweetAlert(1, DATA.message, true, 'dashboard.html');
+                    } else {
+                        await sweetAlert(2, DATA.error, false);
+                        console.log(DATA.exception);
+                    }
                 }
             } catch {
                 sweetAlert(2, "No se detecta un usuario", false);

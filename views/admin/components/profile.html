@@ -21,6 +21,14 @@
             <h2 class="user-name" id="nombre">Joel Mena</h2>
             <p class="user-email" id="email">joel@gmail.com</p>
             <p class="user-email" id="phone"></p>
+
+            <div class="shadow p-3 rounded-4 mt-5 d-none" id="2faDiv">
+                <p class="fw-semibold mb-0 fs-5 mt-3">Parece que aún no has activado el 2FA en tu cuenta. Actívalo aquí </p>
+                <p class="mb-">Activa el segundo factor de autenticación y ten más segura tu cuenta.</p>
+                <img src="../../../resources/img/png/candado.png" width="50" height="50"><br>
+                <button class="btn bg-red-cream-color text-light mb-3 mt-3" onclick="active2FA()">Activar 2FA</button>
+            </div>
+
         </div>
     </div>
 </section>
@@ -136,6 +144,39 @@
                     <button type="submit" class="btn bg-blue-principal-color text-white ">Guardar</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<!-- Componente Modal para guardar un registro -->
+<div class="modal fade" id="2faModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="modalTitleDetail" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-principal-color">
+                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                <h1 class="modal-title fs-5 text-white">2FA - Segundo factor de autenticación</h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="p-4">
+                <h4 class="mb-4 text-center">Activar segundo factor de autenticación</h4>
+                <p class="mb-0"><b>1</b>. Descarga una app de autenticación en tú teléfono.</p>
+                <small>(Como Authy, google authenticator o la app de tu preferencia)</small>
+
+                <p class="mt-3"><b>2</b>. Escánea el código qr.</p>
+
+                <p><b>3.</b> Cierra tu sesión.</p>
+
+                <p class="text-center fw-semibold mt-4">Escánea el qr con la app</p>
+                <div id="qr" class="d-flex justify-content-center">
+
+                </div>
+                <div class="text-center mt-2">
+                    <button class="btn btn-blue-secondary-color text-light mt-4 w-50 mb-3" onclick="logOutProgile()">Cerrar sesión</button>
+                    <p class="text-secondary small">Al iniciar sesión recuerda poner el código que te genere la app de autenticación para iniciar sesión.</p>
+                </div>
+            </div>
         </div>
     </div>
 </div>

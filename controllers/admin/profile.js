@@ -16,6 +16,12 @@ let EDIT_FORM,
     FOTO_PERFIL,
     IMAGEN_PERFIL;
 
+let CORREO;
+
+let TWOFA_DIV
+let CREATE_TWOFA
+let QR
+
 
 // Constantes para completar las rutas de la API.
 const ADMINISTRADOR_API = 'services/admin/administradores.php';
@@ -43,7 +49,7 @@ async function openProfile() {
         // Se colocan los datos en la página web de acuerdo con el producto seleccionado previamente.
         document.getElementById('foto').src = SERVER_URL.concat('images/administradores/', DATA.dataset.IMAGEN);
         document.getElementById('nombre').textContent = DATA.dataset.NOMBRE;
-        document.getElementById('email').textContent = DATA.dataset.CORREO;
+        CORREO.textContent = DATA.dataset.CORREO;
         document.getElementById('phone').textContent = '(+503) ' + DATA.dataset.TELÉFONO;
     }
 }
@@ -82,6 +88,41 @@ const openEdit = async (id) => {
     }
 }
 
+//Funcion que verifica si el usuario logueado tiene el 2FA activado o no.
+const verify2FA = async () => {
+    const data = await fetchData(ADMINISTRADOR_API, 'verify2Fa');
+    if(data.status){
+        TWOFA_DIV.classList.add('d-none');
+    }else{
+        TWOFA_DIV.classList.remove('d-none');
+    }
+}
+
+
+const active2FA = async () => {
+    CREATE_TWOFA.show();
+    const form = new FormData();
+    form.append('correo', CORREO.textContent);
+
+    const data = await fetchData(ADMINISTRADOR_API, 'newAuthenticationCode', form);
+
+    if(data.status){
+        const qrCodeURL = data.dataset;
+        QR.innerHTML = `<img src="${qrCodeURL}">`;
+    }else{
+        console.log(data.error);
+    }
+}
+
+const logOutProgile = async () => {
+    const data = await fetchData(ADMINISTRADOR_API, 'logOut');
+    if(data.status){
+        await sweetAlert(1, data.message, true, 'index.html');
+    }else{
+        await sweetAlert(2, data.error, true);
+    }
+}
+
 // window.onload
 window.onload = async function () {
     // Obtiene el contenedor principal
@@ -93,7 +134,15 @@ window.onload = async function () {
     // Agrega el HTML del encabezado
     appContainer.innerHTML += profileHtml;
 
-    openProfile();
+    CORREO = document.getElementById('email');
+    await openProfile();
+
+    TWOFA_DIV = document.getElementById('2faDiv');
+    await verify2FA();
+
+    CREATE_TWOFA = new bootstrap.Modal('#2faModal');
+    QR = document.getElementById('qr');
+
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
         MODAL_TITLE = document.getElementById('modalTitle');
