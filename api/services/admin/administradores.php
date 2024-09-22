@@ -209,6 +209,15 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Ocurrió un problema al cambiar la contraseña';
                 }
                 break;
+            // Verifica si el usuario ya tiene segundo factor de autenticacion activado
+            case 'verify2Fa':
+                if ($administrador->getCode()) {
+                    $result['status'] = 1;
+                    $result['message'] = '2FA activado.';
+                } else {
+                    $result['error'] = 'Aún no tienes el 2FA activado.';
+                }
+                break;
             default:
                 $result['error'] = 'Acción no disponible dentro de la sesión';
         }
@@ -332,12 +341,13 @@ if (isset($_GET['action'])) {
                             if ($administrador->resetAttempts()) {
                             // Verifica si el usuario tiene activada la autenticación de dos factores
                                 if($administrador->getCode() !== null){
-                                    // Si no se ha enviado aún el código 2FA desde el frontend
+                                    // Verifica si no se ha enviado aún el código 2FA desde el frontend
                                     if (!isset($_POST['code'])) {
                                         // Enviar respuesta al frontend para indicar que se requiere 2FA
-                                        $result['status'] = 1;
                                         $result['TwoFA_required'] = true;
-                                        $result['error'] = 'Se requiere autenticación de dos factores.';
+                                        $result['error'] = 'Se requiere autenticación de dos factores. Ingresa tu código';
+                                        //Se destruye la sesion si verifica que no viene el codigo.
+                                        session_destroy();
                                     } else {
                                         // El código de 2FA debe venir del frontend, ingresado por el usuario, se verifica que viene bien
                                         if($administrador->checkAuthenticationCode($_POST['code'])){
@@ -351,6 +361,8 @@ if (isset($_GET['action'])) {
                                             }else{
                                                 // El código de 2FA es incorrecto
                                                 $result['error'] = 'Código de autenticación incorrecto.';
+                                                //se destruye la sesion si el codigo esta mal.
+                                                session_destroy();
                                             }
                                         }else{
                                             $result['error'] = $administrador->getDataError();
