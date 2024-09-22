@@ -453,14 +453,21 @@ class Validator
      *   Retorno: booleano (true si el valor es correcto o false en caso contrario).
      */
     public static function validateTime($value)
-    {
-        // Se verifica que el formato sea HH:MM usando expresiones regulares.
-        if (preg_match('/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/', $value)) {
-            return true;
-        } else {
-            return false;
-        }
+{
+    // Expresión regular para verificar el formato de hora HH:MM[:SS], donde los segundos son opcionales
+    if (preg_match('/^(2[0-3]|[01][0-9]):([0-5][0-9])(?::([0-5][0-9]))?$/', $value, $matches)) {
+        $hour = $matches[1];
+        $minute = $matches[2];
+        $second = isset($matches[3]) ? $matches[3] : '00'; // Si los segundos no están presentes, se asigna '00'
+
+        // Retorna la hora en formato HH:MM:SS
+        return "$hour:$minute:$second";
     }
+
+    // Si no cumple con el formato, retorna false
+    return false;
+}
+
 
     /*
      *   Método para validar una fecha (mayor a 18 años).
