@@ -101,17 +101,22 @@ class RegistrosData extends RegistrosHandler
         }
     }
 
-    // Validación y asignación del retorno a partido.
     public function setRetornoPartido($value)
     {
+        if ($value === "" || Validator::validateString($value)) {
             $this->retornoPartido = $value;
             return true;
+        } else {
+            $this->data_error = 'El identificador de retorno partido es incorrecto';
+            return false;
+        }
     }
+
+
 
     // Método para obtener el error de los datos.
     public function getDataError()
     {
         return $this->data_error;
     }
-
 }

@@ -48,7 +48,7 @@ if ($dataCuerpoTecnico = $cuerpotecnico->readAll()) {
             $pdf->setFont('Arial', 'B', 11);
             // Vuelve a imprimir los encabezados en la nueva página
             $pdf->cell(36, 10, 'Foto', 1, 0, 'C', 1); // Nueva columna para imagen
-            $pdf->cell(110, 10, 'Jugador', 1, 0, 'C', 1);
+            $pdf->cell(110, 10, 'Cuerpo técnico', 1, 0, 'C', 1);
             $pdf->cell(40, 10, 'Rol', 1, 1, 'C', 1);
         }
 
@@ -78,7 +78,7 @@ if ($dataCuerpoTecnico = $cuerpotecnico->readAll()) {
                         $pdf->setFont('Arial', 'B', 11);
                         // Vuelve a imprimir los encabezados en la nueva página
                         $pdf->cell(36, 10, 'Foto', 1, 0, 'C', 1); // Nueva columna para imagen
-                        $pdf->cell(110, 10, 'Jugador', 1, 0, 'C', 1);
+                        $pdf->cell(110, 10, 'Cuerpo técnico', 1, 0, 'C', 1);
                         $pdf->cell(40, 10, 'Rol', 1, 1, 'C', 1);
                     }
                     $currentY = $pdf->getY(); // Obtén la coordenada Y actual

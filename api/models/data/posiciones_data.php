@@ -44,11 +44,20 @@ class PosicionesData extends PosicionesHandler
         }
     }
 
-    public function setAreaJuego($value)
+    public function setAreaJuego($value, $min = 2, $max = 30)
     {
-        $this->areaJuego = $value;
-        return true;
+        if (!Validator::validateAlphabetic($value)) {
+            $this->data_error = 'El nombre del area de juego debe ser un valor alfabético';
+            return false;
+        } elseif (Validator::validateLength($value, $min, $max)) {
+            $this->areaJuego = $value;
+            return true;
+        } else {
+            $this->data_error = 'El nombre del area de juego debe tener una longitud entre ' . $min . ' y ' . $max;
+            return false;
+        }
     }
+
 
     // Método para obtener el error de los datos.
     public function getDataError()

@@ -31,9 +31,15 @@ class PagoData extends PagoHandler
 
     public function setAño($value)
     {
-        $this -> año = $value;
-        return true;
+        if (Validator::validateNaturalNumber($value)) {
+            $this->año = $value;
+            return true;
+        } else {
+            $this->data_error = 'El identificador de año es incorrecto';
+            return false;
+        }
     }
+
 
     // Validación y asignación de la fecha de pago .
     public function setFecha($value)

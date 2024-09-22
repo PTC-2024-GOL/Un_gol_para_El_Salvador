@@ -41,25 +41,42 @@ class HorariosData extends HorariosHandler
         }
     }
 
-    public function setDia($value)
+    public function setDia($value, $min = 2, $max = 20)
     {
-        $this->dia = $value;
-        return true;
+        if (!Validator::validateAlphabetic($value)) {
+            $this->data_error = 'El dia debe ser un valor alfabético';
+            return false;
+        } elseif (Validator::validateLength($value, $min, $max)) {
+            $this->dia = $value;
+            return true;
+        } else {
+            $this->data_error = 'El dia debe tener una longitud entre ' . $min . ' y ' . $max;
+            return false;
+        }
     }
 
-    // Validación y asignación de la hora de inicio del horario.
     public function setHoraInicio($value)
     {
-        $this->horaInicial = $value;
-        return true;
+        if (Validator::validateTime($value)) {
+            $this->horaInicial = $value;
+            return true;
+        } else {
+            $this->data_error = 'La hora de incio  no es valida';
+            return false;
+        }
     }
 
-    // Validación y asignación de la hora de inicio del horario.
     public function setHoraFinal($value)
     {
-        $this->horaFinal = $value;
-        return true;
+        if (Validator::validateTime($value)) {
+            $this->horaFinal = $value;
+            return true;
+        } else {
+            $this->data_error = 'La hora final no es valida';
+            return false;
+        }
     }
+
 
     // Validación y asignación del nombre del campo de entrenamiento.
     public function setCampo($value, $min = 2, $max = 100)

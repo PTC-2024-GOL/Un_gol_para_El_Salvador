@@ -27,19 +27,7 @@ class ContenidosData extends ContenidosHandler
     }
 
     // Validación y asignación del nombre del contenido.
-    public function setContenido($value, $min = 5, $max = 60)
-    {
-        if (!Validator::validateAlphanumeric($value)) {
-            $this->data_error = 'El nombre debe ser un valor alfanumerico';
-            return false;
-        } elseif (Validator::validateLength($value, $min, $max)) {
-            $this->contenido = $value;
-            return true;
-        } else {
-            $this->data_error = 'El nombre debe tener una longitud entre ' . $min . ' y ' . $max;
-            return false;
-        }
-    }
+   
 
     public function setMomento($value)
     {

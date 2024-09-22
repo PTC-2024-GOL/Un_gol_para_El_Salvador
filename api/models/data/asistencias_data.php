@@ -57,22 +57,40 @@ class AsistenciasData extends AsistenciasrHandler
         }
     }
 
-    public function setAsistencia($value)
+    public function setAsistencia($value, $min = 2, $max = 60)
     {
-        $this->asistencia = $value;
-        return true;
+        if (!Validator::validateAlphabetic($value)) {
+            $this->data_error = 'El nombre de la asistecia debe ser un valor alfabético';
+            return false;
+        } elseif (Validator::validateLength($value, $min, $max)) {
+            $this->asistencia = $value;
+            return true;
+        } else {
+            $this->data_error = 'La asistencia debe tener una longitud entre ' . $min . ' y ' . $max;
+            return false;
+        }
     }
 
     public function setIdObservacion($value)
     {
-        $this->observacion = $value;
-        return true;
+        if (Validator::validateAlphabetic($value)) {
+            $this->observacion = $value;
+            return true;
+        } else {
+            $this->data_error = 'La observación debe ser un valor alfabético';
+            return false;
+        }
     }
 
     public function setIdAsistenciaBool($value)
     {
-        $this->idAsistenciaBool = $value;
-        return true;
+        if (Validator::validateBoolean($value)) {
+            $this->idAsistenciaBool = $value;
+            return true;
+        } else {
+            $this->data_error = 'El identificador es incorrecto';
+            return false;
+        }
     }
 
     public function setIdEquipo($value)

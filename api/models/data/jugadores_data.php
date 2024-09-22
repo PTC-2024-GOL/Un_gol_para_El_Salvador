@@ -106,11 +106,20 @@ class JugadoresData extends JugadoresHandler
         }
     }
 
-    public function setTipoSangre($value)
+    public function setTipoSangre($value, $min = 2, $max = 10)
     {
-        $this->tipo_sangreJ = $value;
-        return true;
+        if (!Validator::validateStringText($value)) {
+            $this->data_error = 'El tipo de sangre debe ser un valor alfabético';
+            return false;
+        } elseif (Validator::validateLength($value, $min, $max)) {
+            $this->tipo_sangreJ = $value;
+            return true;
+        } else {
+            $this->data_error = 'El tipo de sangre debe tener una longitud entre ' . $min . ' y ' . $max;
+            return false;
+        }
     }
+
 
     public function setDorsal($value)
     {
@@ -123,29 +132,62 @@ class JugadoresData extends JugadoresHandler
         }
     }
 
-    public function setEstatus($value)
+    public function setEstatus($value, $min = 2, $max = 30)
     {
-        $this->estatusJ = $value;
-        return true;
+        if (!Validator::validateAlphabetic($value)) {
+            $this->data_error = 'El estatus debe ser un valor alfabético';
+            return false;
+        } elseif (Validator::validateLength($value, $min, $max)) {
+            $this->estatusJ = $value;
+            return true;
+        } else {
+            $this->data_error = 'El estatus debe tener una longitud entre ' . $min . ' y ' . $max;
+            return false;
+        }
     }
 
-    public function setGenero($value)
+    public function setGenero($value, $min = 2, $max = 30)
     {
-        $this->generoJ = $value;
-        return true;
+        if (!Validator::validateAlphabetic($value)) {
+            $this->data_error = 'El nombre del género debe ser un valor alfabético';
+            return false;
+        } elseif (Validator::validateLength($value, $min, $max)) {
+            $this->generoJ = $value;
+            return true;
+        } else {
+            $this->data_error = 'El nombre del género debe tener una longitud entre ' . $min . ' y ' . $max;
+            return false;
+        }
     }
 
-    public function setPerfil($value)
+    public function setPerfil($value, $min = 2, $max = 30)
     {
-        $this->perfilJ = $value;
-        return true;
+        if (!Validator::validateAlphabetic($value)) {
+            $this->data_error = 'El perfil del jugador debe ser un valor alfabético';
+            return false;
+        } elseif (Validator::validateLength($value, $min, $max)) {
+            $this->perfilJ = $value;
+            return true;
+        } else {
+            $this->data_error = 'El perfil del jugador debe tener una longitud entre ' . $min . ' y ' . $max;
+            return false;
+        }
     }
 
-    public function setBecado($value)
+    public function setBecado($value, $min = 2, $max = 30)
     {
-        $this->becado = $value;
-        return true;
+        if (!Validator::validateAlphabetic($value)) {
+            $this->data_error = 'El nombre de la beca debe ser un valor alfabético';
+            return false;
+        } elseif (Validator::validateLength($value, $min, $max)) {
+            $this->becado = $value;
+            return true;
+        } else {
+            $this->data_error = 'El nombre de la beca debe tener una longitud entre ' . $min . ' y ' . $max;
+            return false;
+        }
     }
+
 
     // Validación para la fecha de nacimiento.
     public function setNacimiento($value)

@@ -44,10 +44,19 @@ class EquiposData extends EquiposHandler
         }
     }
 
-    public function setGeneroEquipo($value)
+
+    public function setGeneroEquipo($value, $min = 2, $max = 30)
     {
-        $this->generoEquipo = $value;
-        return true;
+        if (!Validator::validateAlphabetic($value)) {
+            $this->data_error = 'El nombre del género debe ser un valor alfabético';
+            return false;
+        } elseif (Validator::validateLength($value, $min, $max)) {
+            $this->generoEquipo = $value;
+            return true;
+        } else {
+            $this->data_error = 'El nombre del género debe tener una longitud entre ' . $min . ' y ' . $max;
+            return false;
+        }
     }
 
     public function setTelefono($value)
