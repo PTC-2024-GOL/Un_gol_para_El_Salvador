@@ -11,7 +11,7 @@ if (isset($_GET['action'])) {
     $administrador = new AdministradoresData;
     $cambio_contra = new RecuperacionData;
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
-    $result = array('status' => 0, 'fecha' => null, 'session' => 0, 'message' => null, 'dataset' => null, 'error' => null, 'exception' => null, 'username' => null);
+    $result = array('status' => 0, 'fecha' => null, 'session' => 0, 'message' => null, 'dataset' => null, 'error' => null, 'exception' => null, 'username' => null, 'TwoFA_required' => null);
     // Se verifica si existe una sesión iniciada como administrador, de lo contrario se finaliza el script con un mensaje de error.
     // También se verifica que el tiempo de su sesión no haya caducado aun.
     if (isset($_SESSION['idAdministrador']) and Validator::validateSessionTime()) {
@@ -332,27 +332,36 @@ if (isset($_GET['action'])) {
                             if ($administrador->resetAttempts()) {
                             // Verifica si el usuario tiene activada la autenticación de dos factores
                                 if($administrador->getCode() !== null){
-                                    // El código de 2FA debe venir del frontend, ingresado por el usuario, se verifica que viene bien
-                                    if($administrador->checkAuthenticationCode($_POST['code'])){
-                                        $codigo = $_POST['code'];
-                                        // Verificamos el código TOTP
-                                        if($administrador->getAuthenticationCode($codigo)){
-                                            // Código 2FA correcto, procedemos a la autenticación completa
-                                            $result['status'] = 1;
-                                            $result['message'] = 'Autenticación correcta';
-                                            $_SESSION['tiempo'] = time();
+                                    // Si no se ha enviado aún el código 2FA desde el frontend
+                                    if (!isset($_POST['code'])) {
+                                        // Enviar respuesta al frontend para indicar que se requiere 2FA
+                                        $result['status'] = 1;
+                                        $result['TwoFA_required'] = true;
+                                        $result['error'] = 'Se requiere autenticación de dos factores.';
+                                    } else {
+                                        // El código de 2FA debe venir del frontend, ingresado por el usuario, se verifica que viene bien
+                                        if($administrador->checkAuthenticationCode($_POST['code'])){
+                                            $codigo = $_POST['code'];
+                                            // Verificamos el código TOTP
+                                            if($administrador->getAuthenticationCode($codigo)){
+                                                // Código 2FA correcto, procedemos a la autenticación completa
+                                                $result['status'] = 1;
+                                                $result['message'] = 'Autenticación correcta';
+                                                $_SESSION['tiempo'] = time();
+                                            }else{
+                                                // El código de 2FA es incorrecto
+                                                $result['error'] = 'Código de autenticación incorrecto.';
+                                            }
                                         }else{
-                                            // El código de 2FA es incorrecto
-                                            $result['error'] = 'Código de autenticación incorrecto.';
+                                            $result['error'] = $administrador->getDataError();
                                         }
-                                    }else{
-                                        $result['error'] = $administrador->getDataError();
                                     }
                                 }else{
-                                    // Si no hay autenticación de dos factores activada
+                                    // Si no hay autenticación de dos factores activada inicia normalmente
                                     $result['status'] = 1;
                                     $result['message'] = 'Autenticación correcta';
                                     $_SESSION['tiempo'] = time();
+                                    $result['TwoFA_required'] = false; //Segundo factor de autenticacion desactivado.
                                 }
                             }
                             //Se controla algún error en el servidor al reiniciar los intentos 

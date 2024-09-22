@@ -235,12 +235,7 @@ class AdministradoresData extends AdministradoresHandler
 
     public function checkAuthenticationCode($value)
     {
-        if (Validator::validateNumberArray($value)) {
-            return true;
-        } else {
-            $this->data_error = 'Ingresa solo números y verifica que tu código tenga como máximo 4 números.';
-            return false;
-        }
+        return true;
     }
     //////////////////////////////////////////////////////////////////////////
 
@@ -256,17 +251,20 @@ class AdministradoresData extends AdministradoresHandler
         $secret_code = $google2fa->generateSecretKey();
 
         //Guarda el codigo secreto en la base de datos.
-        $this->saveCode($secret_code);
+        if($this->saveCode($secret_code)){
+            //Genera el url  del codigo QR que el usuario escaneará.
+            $qrCodeUrl = $google2fa->getQRCodeInline(
+                'OneGoal',
+                $this->correo,
+                $secret_code
+            );
 
-        //Genera el url  del codigo QR que el usuario escaneará.
-        $qrCodeUrl = $google2fa->getQRCodeInline(
-            'OneGoal',
-            $this->correo,
-            $secret_code
-        );
-
-        //Devuelve el codigo QR.
-        return $qrCodeUrl;
+            echo '<img src="' . $qrCodeUrl . '" />';
+            //Devuelve el codigo QR.
+            return $qrCodeUrl;
+        }else{
+            throw new Exception("No se pudo actualizar el código secreto en la base de datos.");
+        }
     }
 
     public function getAuthenticationCode($value)
@@ -275,7 +273,7 @@ class AdministradoresData extends AdministradoresHandler
         $secret = $this->getCode();
 
         //Verifica el codigo ingresado.
-        $google2fa = new \PragmaRX\Google2FAQRCode\Google2FA();
+        $google2fa = new \PragmaRX\Google2FA\Google2FA();
         //Verifica que la clave ingresada por el usuario coincida con la que esta en la base de datos.
         $valid = $google2fa->verifyKey($secret, $value);
 
