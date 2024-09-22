@@ -1,6 +1,7 @@
 {
     "require": {
         "phpmailer/phpmailer": "^6.9",
-        "php-ai/php-ml": "^0.10.0"
+        "php-ai/php-ml": "^0.10.0",
+        "pragmarx/google2fa-qrcode": "^3.0"
     }
 }

@@ -165,6 +165,22 @@ class Validator
         }
     }
 
+    public static function validateNumberArray($value)
+    {
+        // Verifica si el valor es un array y tiene exactamente 4 elementos.
+        if (is_array($value) && count($value) === 4) {
+            // Recorre el array para verificar que cada elemento sea un número.
+            foreach ($value as $item) {
+                if (!is_numeric($item)) {
+                    return false; // Si algún elemento no es numérico, retorna false.
+                }
+            }
+            return true; // Si todos los elementos son numéricos y hay 4, retorna true.
+        } else {
+            return false; // Si no es un array o no tiene exactamente 4 elementos, retorna false.
+        }
+    }
+
     /*
  *   Método para validar una cadena de texto (letras, dígitos, espacios en blanco, signos de puntuación y guiones).
  *   Parámetros: $value (dato a validar).

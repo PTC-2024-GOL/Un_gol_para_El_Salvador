@@ -26,7 +26,6 @@ class AdministradoresHandler
     protected $condicion = null;
     protected $fecha_hoy = null;
 
-
     // Constante para establecer la ruta de las imágenes.
     const RUTA_IMAGEN = '../../images/administradores/';
 
@@ -188,6 +187,7 @@ class AdministradoresHandler
                         $_SESSION['fotoAdministrador'] = $data['FOTO'];
                         $_SESSION['nombreAdministrador'] = $data['NOMBRECOMPLETO'];
                         $_SESSION['apellidoAdministrador'] = $data['APELLIDO'];
+                        $_SESSION['correoAdministrador'] = $data['CORREO'];
                         $this->dias = $data['DIAS'];
                         $this->estado = $data['ESTADO'];
                         return true;
@@ -221,6 +221,7 @@ class AdministradoresHandler
                             $_SESSION['fotoAdministrador'] = $data['FOTO'];
                             $_SESSION['nombreAdministrador'] = $data['NOMBRECOMPLETO'];
                             $_SESSION['apellidoAdministrador'] = $data['APELLIDO'];
+                            $_SESSION['correoAdministrador'] = $data['CORREO'];
                             $this->dias = $data['DIAS'];
                             $this->estado = $data['ESTADO'];
                             return true;
@@ -539,5 +540,24 @@ class AdministradoresHandler
         );
         $_SESSION['fotoAdministrador'] = $this->imagen;
         return Database::executeRow($sql, $params);
+    }
+
+    //Funcion para guardar el codigo de autenticacion
+    public function saveCode($codigo_autenticacion)
+    {
+        $sql = 'UPDATE administradores SET codigo_autenticacion = ? WHERE correo_administrador = ?';
+        $params = array($codigo_autenticacion, $this->correo);
+        return Database::executeRow($sql, $params);
+    }
+
+    //Funcion para obtener el codigo de autenticacion
+    public function getCode()
+    {
+        $sql = 'SELECT codigo_autenticacion FROM administradores WHERE id_administrador = ?';
+        $params = array( $_SESSION['idAdministrador']);
+        $data = Database::getRow($sql, $params);
+
+        // Si no hay datos o el campo es null, retorna null
+        return $data ? $data['codigo_autenticacion'] : null;
     }
 }

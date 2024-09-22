@@ -9,15 +9,35 @@ class ComposerStaticInit2185d2f99bcd56787481d9357a5972d3
     public static $prefixLengthsPsr4 = array (
         'P' => 
         array (
+            'PragmaRX\\Google2FA\\' => 19,
+            'PragmaRX\\Google2FAQRCode\\Tests\\' => 31,
+            'PragmaRX\\Google2FAQRCode\\' => 25,
             'Phpml\\' => 6,
+            'ParagonIE\\ConstantTime\\' => 23,
             'PHPMailer\\PHPMailer\\' => 20,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'PragmaRX\\Google2FA\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pragmarx/google2fa/src',
+        ),
+        'PragmaRX\\Google2FAQRCode\\Tests\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pragmarx/google2fa-qrcode/tests',
+        ),
+        'PragmaRX\\Google2FAQRCode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pragmarx/google2fa-qrcode/src',
+        ),
         'Phpml\\' => 
         array (
             0 => __DIR__ . '/..' . '/php-ai/php-ml/src',
+        ),
+        'ParagonIE\\ConstantTime\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/paragonie/constant_time_encoding/src',
         ),
         'PHPMailer\\PHPMailer\\' => 
         array (

@@ -3,6 +3,9 @@
 require_once('../../helpers/validator.php');
 // Se incluye la clase padre.
 require_once('../../models/handler/administradores_handler.php');
+//Llamada a la libreria que genera los codigos de autenticacion
+require_once('C:/xampp/htdocs/sitio_gol_sv/vendor/autoload.php');
+
 /*
  *  Clase para manejar el encapsulamiento de los datos de la tabla administradores.
  */
@@ -228,5 +231,58 @@ class AdministradoresData extends AdministradoresHandler
     public function getCorreo()
     {
         return $this->correo;
+    }
+
+    public function checkAuthenticationCode($value)
+    {
+        if (Validator::validateNumberArray($value)) {
+            return true;
+        } else {
+            $this->data_error = 'Ingresa solo números y verifica que tu código tenga como máximo 4 números.';
+            return false;
+        }
+    }
+    //////////////////////////////////////////////////////////////////////////
+
+    //Funcion para generar y guardar el codigo de autenticacion.
+    //Devuelve el codigo QR.
+    public function saveAuthenticationCode()
+    {
+
+        //Iniciamos la clase de la libreria Google2FA.
+        $google2fa = new \PragmaRX\Google2FAQRCode\Google2FA();
+
+        //Genera el codigo secreto
+        $secret_code = $google2fa->generateSecretKey();
+
+        //Guarda el codigo secreto en la base de datos.
+        $this->saveCode($secret_code);
+
+        //Genera el url  del codigo QR que el usuario escaneará.
+        $qrCodeUrl = $google2fa->getQRCodeInline(
+            'OneGoal',
+            $this->correo,
+            $secret_code
+        );
+
+        //Devuelve el codigo QR.
+        return $qrCodeUrl;
+    }
+
+    public function getAuthenticationCode($value)
+    {
+        //Obtenemos el codigo que esta en la base de datos.
+        $secret = $this->getCode();
+
+        //Verifica el codigo ingresado.
+        $google2fa = new \PragmaRX\Google2FAQRCode\Google2FA();
+        //Verifica que la clave ingresada por el usuario coincida con la que esta en la base de datos.
+        $valid = $google2fa->verifyKey($secret, $value);
+
+        if($valid){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
