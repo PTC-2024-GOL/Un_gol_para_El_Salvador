@@ -233,6 +233,7 @@ class AdministradoresData extends AdministradoresHandler
         return $this->correo;
     }
 
+    //Metodo para validar el codigo de autenticacion
     public function checkAuthenticationCode($value)
     {
         return true;
@@ -243,7 +244,6 @@ class AdministradoresData extends AdministradoresHandler
     //Devuelve el codigo QR.
     public function saveAuthenticationCode()
     {
-
         //Iniciamos la clase de la libreria Google2FA.
         $google2fa = new \PragmaRX\Google2FAQRCode\Google2FA();
 
