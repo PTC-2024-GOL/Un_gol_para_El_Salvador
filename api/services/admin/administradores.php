@@ -209,6 +209,22 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Ocurrió un problema al cambiar la contraseña';
                 }
                 break;
+            //Metodo para crear el codigo de autenticacion por primera vez.
+            case 'newAuthenticationCode':
+                $_POST = Validator::validateForm($_POST);
+                if (!$administrador->setCorreo($_POST['correo'])){
+                    $result['error'] = $administrador->getDataError();
+                }else{
+                    //Generamos y guardamos el codigo de autenticacion.
+                    $qrCodeUrl = $administrador->saveAuthenticationCode();
+
+                    if($qrCodeUrl){
+                        $result['status'] = 1;
+                        $result['dataset'] = $qrCodeUrl;
+                    }else{
+                        $result['error'] = 'No se pudo generar el código de autenticación.';
+                    }
+                }
             // Verifica si el usuario ya tiene segundo factor de autenticacion activado
             case 'verify2Fa':
                 if ($administrador->getCode()) {
@@ -233,22 +249,6 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Debe crear un administrador para comenzar';
                 }
                 break;
-            //Metodo para crear el codigo de autenticacion por primera vez.
-            case 'newAuthenticationCode':
-                $_POST = Validator::validateForm($_POST);
-                if (!$administrador->setCorreo($_POST['correo'])){
-                    $result['error'] = $administrador->getDataError();
-                }else{
-                    //Generamos y guardamos el codigo de autenticacion.
-                    $qrCodeUrl = $administrador->saveAuthenticationCode();
-
-                    if($qrCodeUrl){
-                        $result['status'] = 1;
-                        $result['dataset'] = $qrCodeUrl;
-                    }else{
-                        $result['error'] = 'No se pudo generar el código de autenticación.';
-                    }
-                }
                 // Metodo para el primer uso
             case 'signUp':
                 $_POST = Validator::validateForm($_POST);

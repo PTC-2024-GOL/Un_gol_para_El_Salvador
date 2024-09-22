@@ -259,7 +259,7 @@ class AdministradoresData extends AdministradoresHandler
                 $secret_code
             );
 
-            echo '<img src="' . $qrCodeUrl . '" />';
+            //echo '<img src="' . $qrCodeUrl . '" />';
             //Devuelve el codigo QR.
             return $qrCodeUrl;
         }else{
