@@ -15,8 +15,10 @@ let FORM;
 const getCode = async () => {
     CODE = document.getElementById('code').value;
 
-    if(CODE.length !== 6) {
-        await sweetAlert(2, "El código debe tener exactamente 6 dígitos", false);
+    if(CODE.trim() === "") {
+        await sweetAlert(3, "Campo vacío. Ingresa el código", false);
+    }else if(CODE.length !== 6) {
+        await sweetAlert(3, "El código debe tener exactamente 6 dígitos", false);
     }else{
         //Agregamos al form el codigo ingresado.
         FORM.append('code', CODE);
