@@ -19,6 +19,7 @@ let EDIT_FORM,
 let CORREO;
 
 let TWOFA_DIV
+let TWOFA_DIVW2
 let CREATE_TWOFA
 let QR
 
@@ -93,8 +94,10 @@ const verify2FA = async () => {
     const data = await fetchData(ADMINISTRADOR_API, 'verify2Fa');
     if(data.status){
         TWOFA_DIV.classList.add('d-none');
+        TWOFA_DIVW2.classList.remove('d-none');
     }else{
         TWOFA_DIV.classList.remove('d-none');
+        TWOFA_DIVW2.classList.add('d-none');
     }
 }
 
@@ -138,6 +141,7 @@ window.onload = async function () {
     await openProfile();
 
     TWOFA_DIV = document.getElementById('2faDiv');
+    TWOFA_DIVW2 = document.getElementById('2faDiv2');
     await verify2FA();
 
     CREATE_TWOFA = new bootstrap.Modal('#2faModal');

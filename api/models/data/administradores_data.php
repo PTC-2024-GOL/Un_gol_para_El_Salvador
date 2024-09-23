@@ -260,12 +260,12 @@ class AdministradoresData extends AdministradoresHandler
     public function checkAuthenticationCode($value)
     {
         return true;
-        //        if (Validator::validateNumberArray($value)) {
-        //            return true;
-        //        } else {
-        //            $this->data_error = 'Ingresa solo números y verifica que tu código tenga como máximo  números.';
-        //            return false;
-        //        }
+        // if (Validator::validateNumberArray($value)) {
+        //     return true;
+        // } else {
+        //     $this->data_error = 'Ingresa solo números y verifica que tu código tenga como máximo  números.';
+        //     return false;
+        // }
     }
     //////////////////////////////////////////////////////////////////////////
 
