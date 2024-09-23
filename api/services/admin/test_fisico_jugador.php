@@ -7,10 +7,12 @@ if (isset($_GET['action'])) {
     session_start();
     // Se instancia la clase correspondiente.
     $testFisico = new TestData();
+    // Se instancia la clase de validación.
+    $spider = new SpiderWeb();
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
     $result = array('status' => 0, 'message' => null, 'dataset' => null, 'error' => null, 'exception' => null, 'fileStatus' => null);
     // Se verifica si existe una sesión iniciada como administrador, de lo contrario se finaliza el script con un mensaje de error.
-    if (isset($_SESSION['idAdministrador']) and Validator::validateSessionTime()) {
+    if (isset($_SESSION['idAdministrador']) and Validator::validateSessionTime() and $spider->validateKey($_GET['key'])) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
             // Crear
@@ -18,35 +20,36 @@ if (isset($_GET['action'])) {
                 $_POST = Validator::validateForm($_POST);
 
                 // Decodificar el arreglo de jugadores
-                $arregloJugadores = json_decode($_POST['arregloJugadores'], true);
+                $arregloPreguntas = json_decode($_POST['preguntasYRespuestas'], true);
 
-                if (is_array($arregloJugadores)) {
-                    foreach ($arregloJugadores as $idJugador) {
+                if (is_array($arregloPreguntas)) {
+                    foreach ($arregloPreguntas as $idTest) {
                         // Convertir el ID del jugador a un entero
-                        $idJugador = intval($idJugador);
+                        $idTest = intval($idTest);
 
                         if (
-                            !$testFisico->setIdSubContenido($_POST['idSubContenido']) or
-                            !$testFisico->setCantidadSubContenido($_POST['CantidadSubContenido']) or
-                            !$testFisico->setIdTarea($_POST['IdTarea']) or
-                            !$testFisico->setCantidadTarea($_POST['CantidadTarea']) or
-                            !$testFisico->setIdJugador($idJugador) or
-                            !$testFisico->setIdEntrenamiento($_POST['idEntrenamiento'])
+                            !$testFisico->setPregunta($_POST['pregunta']) or
+                            !$testFisico->setRespuesta($_POST['respuesta']) or
+                            !$testFisico->setIdTest($idTest)
                         ) {
                             $result['error'] = $testFisico->getDataError();
                             break;
                         } elseif (!$testFisico->createRow()) {
-                            $result['error'] = 'Ocurrió un problema al crear el detalle del contenido para el jugador con ID ' . $idJugador;
+                            $result['error'] = 'Ocurrió un problema al crear la pregunta y su respuesta ' . $idTest;
                             break;
                         }
                     }
 
+                    if (!$testFisico->updateRow()) {
+                        $result['error'] = 'Ocurrió un error al actualizar el test fisico';
+                        break;
+                    }
                     if (!isset($result['error'])) {
                         $result['status'] = 1;
-                        $result['message'] = 'Detalle contenido creado correctamente para todos los jugadores.';
+                        $result['message'] = '!Preguntas y respuestas guardadas con éxito!';
                     }
                 } else {
-                    $result['error'] = 'Formato de arregloJugadores no es válido.';
+                    $result['error'] = 'Formato de arregloPreguntas no es válido.';
                 }
                 break;
             // Leer todos

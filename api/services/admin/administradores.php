@@ -2,19 +2,23 @@
 // Se incluye la clase del modelo.
 require_once('../../models/data/administradores_data.php');
 require_once('../../models/data/recuperacion_data.php');
+// Se incluye la clase de validación.
+require_once('../../helpers/spiderWeb.php');
 
 // Se comprueba si existe una acción a realizar, de lo contrario se finaliza el script con un mensaje de error.
-if (isset($_GET['action'])) {
+if (isset($_GET['action']) && isset($_GET['key'])) {
     // Se crea una sesión o se reanuda la actual para poder utilizar variables de sesión en el script.
     session_start();
     // Se instancia la clase correspondiente.
     $administrador = new AdministradoresData;
     $cambio_contra = new RecuperacionData;
+    // Se instancia la clase de validación.
+    $spider = new SpiderWeb();
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
     $result = array('status' => 0, 'fecha' => null, 'session' => 0, 'message' => null, 'dataset' => null, 'error' => null, 'exception' => null, 'username' => null, 'TwoFA_required' => null);
     // Se verifica si existe una sesión iniciada como administrador, de lo contrario se finaliza el script con un mensaje de error.
-    // También se verifica que el tiempo de su sesión no haya caducado aun.
-    if (isset($_SESSION['idAdministrador']) and Validator::validateSessionTime()) {
+   // Se verifica si existe una sesión iniciada como administrador, de lo contrario se finaliza el script con un mensaje de error.
+   if (isset($_SESSION['idAdministrador']) and Validator::validateSessionTime() and $spider->validateKey($_GET['key'])) {
         $result['session'] = 1;
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
@@ -239,7 +243,7 @@ if (isset($_GET['action'])) {
         }
     } else {
         // Se compara la acción a realizar cuando el administrador no ha iniciado sesión.
-        switch ($_GET['action']) {
+        switch ($_GET['action'] and $_GET['key']) {
                 // Leer usuarios para verificar que hayan en la base de datos
             case 'readUsers':
                 if ($administrador->readAll()) {
