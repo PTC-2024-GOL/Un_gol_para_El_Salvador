@@ -39,6 +39,7 @@ window.onload = async function () {
     const adminHtml = await loadComponent('../components/index.html');
 
     appContainer.innerHTML = adminHtml;
+    
 
     //Obtenemos el valor del modal.
     MODAL = new bootstrap.Modal('#2faModal');

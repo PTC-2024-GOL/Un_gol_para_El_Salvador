@@ -292,7 +292,7 @@ const fetchData = async (filename, action, form = null) => {
     }
 
     // Asegúrate de que spiderWeb retorne la variable key
-    const { key } = await spiderWeb(); // Desestructuración para obtener la key
+    let { key } = await spiderWeb(); // Desestructuración para obtener la key
     console.log('Esto es lo que se envia al servidor: ', key);
     try {
         // Se declara una constante tipo objeto con la ruta específica del servidor.
@@ -301,9 +301,8 @@ const fetchData = async (filename, action, form = null) => {
         PATH.searchParams.append('action', action);
         // Se agrega un parámetro con el valor de la key.
         PATH.searchParams.append('key', key);
-
         // Se define una constante tipo objeto con la respuesta de la petición.
-        const RESPONSE = await fetch(PATH.href, OPTIONS);
+        let RESPONSE = await fetch(PATH.href, OPTIONS);
         return await RESPONSE.json();
     } catch (error) {
         // Se muestra un mensaje en la consola del navegador web cuando ocurre un problema.
@@ -318,6 +317,7 @@ const fetchData = async (filename, action, form = null) => {
 *
 */
 async function spiderWeb() {
+    try{
     // Crear variables con el día, mes y año actuales
     const now = new Date();
     const dia = now.getDate();
@@ -351,6 +351,11 @@ async function spiderWeb() {
 
     // Retornar la variable key como un arreglo, es decir { key: key }
     return { key };
+
+    }catch(error){
+        console.log('Error en spiderWeb: ', error);
+    }
+    
 }
 
 const stackedBarLineGraph = (canvas, xAxis, data, barLegend, title) => {

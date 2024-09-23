@@ -17,12 +17,12 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
     $result = array('status' => 0, 'fecha' => null, 'session' => 0, 'message' => null, 'dataset' => null, 'error' => null, 'exception' => null, 'username' => null, 'TwoFA_required' => null);
     // Se verifica si existe una sesión iniciada como administrador, de lo contrario se finaliza el script con un mensaje de error.
-   // Se verifica si existe una sesión iniciada como administrador, de lo contrario se finaliza el script con un mensaje de error.
-   if (isset($_SESSION['idAdministrador']) and Validator::validateSessionTime() and $spider->validateKey($_GET['key'])) {
+    // Se verifica si existe una sesión iniciada como administrador, de lo contrario se finaliza el script con un mensaje de error.
+    if (isset($_SESSION['idAdministrador']) and Validator::validateSessionTime() and $spider->validateKey($_GET['key'])) {
         $result['session'] = 1;
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
-                // Buscar
+            // Buscar
             case 'searchRows':
                 if (!Validator::validateSearch2($_POST['search'])) {
                     $result['error'] = Validator::getSearchError();
@@ -33,7 +33,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     $result['error'] = 'No hay coincidencias';
                 }
                 break;
-                // Agregar
+            // Agregar
             case 'createRow':
                 $_POST = Validator::validateForm($_POST);
                 if (
@@ -58,7 +58,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     $result['error'] = 'Ocurrió un problema al crear el administrador';
                 }
                 break;
-                // Ver todo
+            // Ver todo
             case 'readAll':
                 if ($result['dataset'] = $administrador->readAll()) {
                     $result['status'] = 1;
@@ -74,7 +74,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     $result['error'] = 'Ocurrió un problema al leer el perfil';
                 }
                 break;
-                // Ver uno
+            // Ver uno
             case 'readOne':
                 if (!$administrador->setId($_POST['idAdministrador'])) {
                     $result['error'] = 'Administrador incorrecto';
@@ -84,7 +84,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     $result['error'] = 'Administrador inexistente';
                 }
                 break;
-                // Ver uno en perfil
+            // Ver uno en perfil
             case 'readOneProfile':
                 if ($result['dataset'] = $administrador->readOneProfile()) {
                     $result['status'] = 1;
@@ -92,7 +92,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     $result['error'] = 'Perfil inexistente';
                 }
                 break;
-                // Actualizar
+            // Actualizar
             case 'updateRow':
                 $_POST = Validator::validateForm($_POST);
                 if (
@@ -116,7 +116,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     $result['error'] = 'Ocurrió un problema al modificar el administrador';
                 }
                 break;
-                // Actualizar perfil
+            // Actualizar perfil
             case 'updateRowProfile':
                 $_POST = Validator::validateForm($_POST);
                 if (
@@ -141,7 +141,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     $result['error'] = 'Ocurrió un problema al modificar el perfil';
                 }
                 break;
-                // Eliminar
+            // Eliminar
             case 'deleteRow':
                 if ($_POST['idAdministrador'] == $_SESSION['idAdministrador']) {
                     $result['error'] = 'No se puede eliminar a sí mismo';
@@ -159,7 +159,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     $result['error'] = 'Ocurrió un problema al eliminar el administrador';
                 }
                 break;
-                // Estado
+            // Estado
             case 'changeState':
                 if ($_POST['idAdministrador'] == $_SESSION['idAdministrador']) {
                     $result['error'] = 'No se puede bloquear a sí mismo';
@@ -174,7 +174,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     $result['error'] = 'Ocurrió un problema al alterar el estado del administrador';
                 }
                 break;
-                // Traer datos del usuario
+            // Traer datos del usuario
             case 'getUser':
                 if (isset($_SESSION['aliasAdministrador'])) {
                     $result['status'] = 1;
@@ -186,7 +186,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     $result['error'] = 'Alias de administrador indefinido';
                 }
                 break;
-                // Cerrar sesión
+            // Cerrar sesión
             case 'logOut':
                 if (session_destroy()) {
                     $result['status'] = 1;
@@ -195,7 +195,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     $result['error'] = 'Ocurrió un problema al cerrar la sesión';
                 }
                 break;
-                // Cambiar contraseña
+            // Cambiar contraseña
             case 'changePassword':
                 $_POST = Validator::validateForm($_POST);
                 if (!$administrador->checkPassword($_POST['claveActual'])) {
@@ -216,16 +216,16 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
             //Metodo para crear el codigo de autenticacion por primera vez.
             case 'newAuthenticationCode':
                 $_POST = Validator::validateForm($_POST);
-                if (!$administrador->setCorreo($_POST['correo'])){
+                if (!$administrador->setCorreo($_POST['correo'])) {
                     $result['error'] = $administrador->getDataError();
-                }else{
+                } else {
                     //Generamos y guardamos el codigo de autenticacion.
                     $qrCodeUrl = $administrador->saveAuthenticationCode();
 
-                    if($qrCodeUrl){
+                    if ($qrCodeUrl) {
                         $result['status'] = 1;
                         $result['dataset'] = $qrCodeUrl;
-                    }else{
+                    } else {
                         $result['error'] = 'No se pudo generar el código de autenticación.';
                     }
                 }
@@ -242,166 +242,172 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                 $result['error'] = 'Acción no disponible dentro de la sesión';
         }
     } else {
-        // Se compara la acción a realizar cuando el administrador no ha iniciado sesión.
-        switch ($_GET['action'] and $spider->validateKey($_GET['key'])) {
 
+        if ($spider->validateKey($_GET['key'])) {
+            // Se compara la acción a realizar cuando el administrador no ha iniciado sesión.
+            switch ($_GET['action']) {
                 // Leer usuarios para verificar que hayan en la base de datos
-            case 'readUsers':
-                if ($administrador->readAll()) {
-                    $result['status'] = 1;
-                    $result['message'] = 'Debe autenticarse para ingresar oa';
-                } else {
-                    $result['error'] = 'Debe crear un administrador para comenzar';
-                }
-                break;
+                case 'readUsers':
+                    if ($administrador->readAll()) {
+                        $result['status'] = 1;
+                        $result['message'] = 'Debe autenticarse para ingresar';
+                    } else {
+                        $result['error'] = 'Debe crear un administrador para comenzar';
+                    }
+                    break;
                 // Metodo para el primer uso
-            case 'signUp':
-                $_POST = Validator::validateForm($_POST);
-                if (
-                    !$administrador->setNombre($_POST['nombreAdministrador']) or
-                    !$administrador->setApellido($_POST['apellidoAdministrador']) or
-                    !$administrador->setClave($_POST['claveAdministrador']) or
-                    !$administrador->setCorreo($_POST['correoAdministrador']) or
-                    !$administrador->setTelefono($_POST['telefonoAdministrador']) or
-                    !$administrador->setDUI($_POST['duiAdministrador']) or
-                    !$administrador->setNacimiento($_POST['nacimientoAdministrador']) or
-                    !$administrador->setImagen($_FILES['imagenAdministrador'])
-                ) {
-                    $result['error'] = $administrador->getDataError();
-                } elseif ($_POST['claveAdministrador'] != $_POST['confirmarClave']) {
-                    $result['error'] = 'Contraseñas diferentes';
-                } elseif ($administrador->firstUser()) {
-                    $result['status'] = 1;
-                    $result['message'] = 'Primer administrador registrado correctamente';
-                    // Se asigna el estado del archivo después de insertar.
-                    $result['fileStatus'] = Validator::saveFile($_FILES['imagenAdministrador'], $administrador::RUTA_IMAGEN);
-                } else {
-                    $result['error'] = 'Ocurrió un problema al registrar al primer administrador';
-                }
-                break;
+                case 'signUp':
+                    $_POST = Validator::validateForm($_POST);
+                    if (
+                        !$administrador->setNombre($_POST['nombreAdministrador']) or
+                        !$administrador->setApellido($_POST['apellidoAdministrador']) or
+                        !$administrador->setClave($_POST['claveAdministrador']) or
+                        !$administrador->setCorreo($_POST['correoAdministrador']) or
+                        !$administrador->setTelefono($_POST['telefonoAdministrador']) or
+                        !$administrador->setDUI($_POST['duiAdministrador']) or
+                        !$administrador->setNacimiento($_POST['nacimientoAdministrador']) or
+                        !$administrador->setImagen($_FILES['imagenAdministrador'])
+                    ) {
+                        $result['error'] = $administrador->getDataError();
+                    } elseif ($_POST['claveAdministrador'] != $_POST['confirmarClave']) {
+                        $result['error'] = 'Contraseñas diferentes';
+                    } elseif ($administrador->firstUser()) {
+                        $result['status'] = 1;
+                        $result['message'] = 'Primer administrador registrado correctamente';
+                        // Se asigna el estado del archivo después de insertar.
+                        $result['fileStatus'] = Validator::saveFile($_FILES['imagenAdministrador'], $administrador::RUTA_IMAGEN);
+                    } else {
+                        $result['error'] = 'Ocurrió un problema al registrar al primer administrador';
+                    }
+                    break;
                 // Metodo para el inicio de sesión
-            case 'logIn':
-                $_POST = Validator::validateForm($_POST);
-                //Autenticación exitosa
-                if ($administrador->checkUser($_POST['alias'], $_POST['clave'])) {
-                    if ($administrador->getCondicion() == 'temporizador') {
-                        if ($result['fecha'] = $administrador->getHoy()) {
-                            //el usuario tiene un contador de tiempo para iniciar sesión
-                            $result['error'] = 'Intento iniciar sesión varias veces y su tiempo de bloqueo aun no ha acabado';
-                        }
-                    } elseif ($administrador->getCondicion() == 'clave') {
-                        $correos = $administrador->getCorreo();
-                        $fecha = new DateTime(); // Si deseas obtener la fecha actual
-                        $nivel = 1; // Asignas un valor predeterminado al nivel
-                        if (
-                            !$cambio_contra->setFecha($fecha->format('Y-m-d H:i:s')) or
-                            !$cambio_contra->setNivel($nivel) or
-                            !$cambio_contra->setCorreo($correos)
-                        ) {
-                            $result['error'] = $cambio_contra->getDataError();
-                        } elseif ($cambio_contra->readIdUsuario()) {
-                            if ($cambio_contra->createHash()) {
-                                if ($cambio_contra->updateHash()) {
-                                    //aqui pondré lo del envio del correo y allí acaba el proceso
-                                    if ($cambio_contra->envioCorreo()) {
-                                        $result['error'] = 'Debes cambiar la contraseña, porque ya son 90 dias, se te envio un correo al gmail para que hagas el proceso';
+                case 'logIn':
+                    $_POST = Validator::validateForm($_POST);
+                    //Autenticación exitosa
+                    if ($administrador->checkUser($_POST['alias'], $_POST['clave'])) {
+                        if ($administrador->getCondicion() == 'temporizador') {
+                            if ($result['fecha'] = $administrador->getHoy()) {
+                                //el usuario tiene un contador de tiempo para iniciar sesión
+                                $result['error'] = 'Intento iniciar sesión varias veces y su tiempo de bloqueo aun no ha acabado';
+                            }
+                        } elseif ($administrador->getCondicion() == 'clave') {
+                            $correos = $administrador->getCorreo();
+                            $fecha = new DateTime(); // Si deseas obtener la fecha actual
+                            $nivel = 1; // Asignas un valor predeterminado al nivel
+                            if (
+                                !$cambio_contra->setFecha($fecha->format('Y-m-d H:i:s')) or
+                                !$cambio_contra->setNivel($nivel) or
+                                !$cambio_contra->setCorreo($correos)
+                            ) {
+                                $result['error'] = $cambio_contra->getDataError();
+                            } elseif ($cambio_contra->readIdUsuario()) {
+                                if ($cambio_contra->createHash()) {
+                                    if ($cambio_contra->updateHash()) {
+                                        //aqui pondré lo del envio del correo y allí acaba el proceso
+                                        if ($cambio_contra->envioCorreo()) {
+                                            $result['error'] = 'Debes cambiar la contraseña, porque ya son 90 dias, se te envio un correo al gmail para que hagas el proceso';
+                                        } else {
+                                            $result['error'] = 'Ocurrió un problema al enviar el correo';
+                                        }
                                     } else {
-                                        $result['error'] = 'Ocurrió un problema al enviar el correo';
+                                        $result['error'] = 'Ocurrió un problema al agregar a la base el hash';
                                     }
                                 } else {
-                                    $result['error'] = 'Ocurrió un problema al agregar a la base el hash';
+                                    $result['error'] = 'Ocurrió un problema al crear el hash';
                                 }
                             } else {
-                                $result['error'] = 'Ocurrió un problema al crear el hash';
+                                $result['error'] = 'Ocurrió un problema al leer el id del usuario';
                             }
-                        } else {
-                            $result['error'] = 'Ocurrió un problema al leer el id del usuario';
-                        }
-                    } elseif ($administrador->getCondicion() == 'tiempo') {
-                        //el usuario intento iniciar sesión demasiadas veces por lo que se le pondra un contador de tiempo
-                        if ($administrador->uploadTimeAttempt()) {
-                            //el usuario será bloqueado por acumular intentos fallidos.
-                            if ($administrador->blockUser()) {
-                                $result['error'] = 'Ha intentado iniciar sesión demasiadas veces, su cuenta sera desactivada durante un día';
+                        } elseif ($administrador->getCondicion() == 'tiempo') {
+                            //el usuario intento iniciar sesión demasiadas veces por lo que se le pondra un contador de tiempo
+                            if ($administrador->uploadTimeAttempt()) {
+                                //el usuario será bloqueado por acumular intentos fallidos.
+                                if ($administrador->blockUser()) {
+                                    $result['error'] = 'Ha intentado iniciar sesión demasiadas veces, su cuenta sera desactivada durante un día';
+                                } else {
+                                    $result['exception'] = 'Error en el servidor';
+                                }
                             } else {
                                 $result['exception'] = 'Error en el servidor';
                             }
                         } else {
-                            $result['exception'] = 'Error en el servidor';
-                        }
-                    } else {
-                        if ($administrador->getCondicion() == 'bloqueado') {
-                            //el usuario será bloqueado por acumular intentos fallidos.
-                            if ($administrador->blockUser2()) {
+                            if ($administrador->getCondicion() == 'bloqueado') {
+                                //el usuario será bloqueado por acumular intentos fallidos.
+                                if ($administrador->blockUser2()) {
+                                    //El usuario esta bloqueado
+                                    $result['error'] = 'Su cuenta ha sido bloqueada. Contacte a los administradores.';
+                                } else {
+                                    $result['exception'] = 'Error en el servidor';
+                                }
                                 //El usuario esta bloqueado
                                 $result['error'] = 'Su cuenta ha sido bloqueada. Contacte a los administradores.';
                             } else {
-                                $result['exception'] = 'Error en el servidor';
-                            }
-                            //El usuario esta bloqueado
-                            $result['error'] = 'Su cuenta ha sido bloqueada. Contacte a los administradores.';
-                        } else {
-                            //Se reinician los intentos del inicio de sesión
-                            if ($administrador->resetAttempts()) {
-                            // Verifica si el usuario tiene activada la autenticación de dos factores
-                                if($administrador->getCode() !== null){
-                                    // Verifica si no se ha enviado aún el código 2FA desde el frontend
-                                    if (!isset($_POST['code'])) {
-                                        // Enviar respuesta al frontend para indicar que se requiere 2FA
-                                        $result['TwoFA_required'] = true;
-                                        $result['error'] = 'Se requiere autenticación de dos factores. Ingresa tu código';
-                                        //Se destruye la sesion si verifica que no viene el codigo.
-                                        session_destroy();
-                                    } else {
-                                        // El código de 2FA debe venir del frontend, ingresado por el usuario, se verifica que viene bien
-                                        if($administrador->checkAuthenticationCode($_POST['code'])){
-                                            $codigo = $_POST['code'];
-                                            // Verificamos el código TOTP
-                                            if($administrador->getAuthenticationCode($codigo)){
-                                                // Código 2FA correcto, procedemos a la autenticación completa
-                                                $result['status'] = 1;
-                                                $result['message'] = 'Autenticación correcta';
-                                                $_SESSION['tiempo'] = time();
-                                            }else{
-                                                // El código de 2FA es incorrecto
-                                                $result['error'] = 'Código de autenticación incorrecto.';
-                                                //se destruye la sesion si el codigo esta mal.
-                                                session_destroy();
+                                //Se reinician los intentos del inicio de sesión
+                                if ($administrador->resetAttempts()) {
+                                    // Verifica si el usuario tiene activada la autenticación de dos factores
+                                    if ($administrador->getCode() !== null) {
+                                        // Verifica si no se ha enviado aún el código 2FA desde el frontend
+                                        if (!isset($_POST['code'])) {
+                                            // Enviar respuesta al frontend para indicar que se requiere 2FA
+                                            $result['TwoFA_required'] = true;
+                                            $result['error'] = 'Se requiere autenticación de dos factores. Ingresa tu código';
+                                            //Se destruye la sesion si verifica que no viene el codigo.
+                                            session_destroy();
+                                        } else {
+                                            // El código de 2FA debe venir del frontend, ingresado por el usuario, se verifica que viene bien
+                                            if ($administrador->checkAuthenticationCode($_POST['code'])) {
+                                                $codigo = $_POST['code'];
+                                                // Verificamos el código TOTP
+                                                if ($administrador->getAuthenticationCode($codigo)) {
+                                                    // Código 2FA correcto, procedemos a la autenticación completa
+                                                    $result['status'] = 1;
+                                                    $result['message'] = 'Autenticación correcta';
+                                                    $_SESSION['tiempo'] = time();
+                                                } else {
+                                                    // El código de 2FA es incorrecto
+                                                    $result['error'] = 'Código de autenticación incorrecto.';
+                                                    //se destruye la sesion si el codigo esta mal.
+                                                    session_destroy();
+                                                }
+                                            } else {
+                                                $result['error'] = $administrador->getDataError();
                                             }
-                                        }else{
-                                            $result['error'] = $administrador->getDataError();
                                         }
+                                    } else {
+                                        // Si no hay autenticación de dos factores activada inicia normalmente
+                                        $result['status'] = 1;
+                                        $result['message'] = 'Autenticación correcta';
+                                        $_SESSION['tiempo'] = time();
+                                        $result['TwoFA_required'] = false; //Segundo factor de autenticacion desactivado.
                                     }
-                                }else{
-                                    // Si no hay autenticación de dos factores activada inicia normalmente
-                                    $result['status'] = 1;
-                                    $result['message'] = 'Autenticación correcta';
-                                    $_SESSION['tiempo'] = time();
-                                    $result['TwoFA_required'] = false; //Segundo factor de autenticacion desactivado.
                                 }
-                            }
-                            //Se controla algún error en el servidor al reiniciar los intentos 
-                            else {
-                                $result['exception'] = 'Error en el servidor';
+                                //Se controla algún error en el servidor al reiniciar los intentos 
+                                else {
+                                    $result['exception'] = 'Error en el servidor';
+                                }
                             }
                         }
                     }
-                }
-                //Autenticación fallida 
-                else {
-                    //El usuario falló el intento de sesión al no introducir sus credenciales correctamente, se le añade un intento a su cuenta
-                    if ($administrador->addAttempt()) {
-                        $result['error'] = 'Credenciales incorrectas';
-                    }
-                    //Se controla algún error en el servidor al agregarle un intento de inicio de sesión
+                    //Autenticación fallida 
                     else {
-                        $result['exception'] = 'Error en el servidor';
+                        //El usuario falló el intento de sesión al no introducir sus credenciales correctamente, se le añade un intento a su cuenta
+                        if ($administrador->addAttempt()) {
+                            $result['error'] = 'Credenciales incorrectas';
+                        }
+                        //Se controla algún error en el servidor al agregarle un intento de inicio de sesión
+                        else {
+                            $result['exception'] = 'Error en el servidor';
+                        }
                     }
-                }
-                $administrador->resetCondition();
-                break;
-            default:
-                $result['error'] = 'Acción no disponible fuera de la sesión o key incorrecta ';
+                    $administrador->resetCondition();
+                    break;
+                default:
+                    $result['error'] = 'Acción no disponible fuera de la sesión o key incorrecta ';
+
+
+            }
+        } else {
+            $result['error'] = 'Key incorrecta';
         }
     }
     // Se obtiene la excepción del servidor de base de datos por si ocurrió un problema.
@@ -409,7 +415,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
     // Se indica el tipo de contenido a mostrar y su respectivo conjunto de caracteres.
     header('Content-type: application/json; charset=utf-8');
     // Se imprime el resultado en formato JSON y se retorna al controlador.
-    print(json_encode($result));
+    print (json_encode($result));
 } else {
-    print(json_encode('Recurso no disponible'));
+    print (json_encode('Recurso no disponible'));
 }
