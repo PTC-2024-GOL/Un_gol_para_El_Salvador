@@ -61,6 +61,7 @@ window.onload = async function () {
             event.preventDefault();
             // Constante tipo objeto con los datos del formulario.
             FORM = new FormData(LOGIN_FORM);
+            console.log('Acabo de presionar el boton de login');
             try {
                 // Petición para iniciar sesión.
                 const DATA = await fetchData(USER_API, 'logIn', FORM);

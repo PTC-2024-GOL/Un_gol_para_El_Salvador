@@ -304,8 +304,6 @@ const fetchData = async (filename, action, form = null) => {
 
         // Se define una constante tipo objeto con la respuesta de la petición.
         const RESPONSE = await fetch(PATH.href, OPTIONS);
-        // Se retorna el resultado en formato JSON.
-        console.log('Esto es lo que se devuelve al servidor: ', await RESPONSE.json(), 'Esto corresponde a la ruta: ', PATH.href, ' Y con la action: ', action);
         return await RESPONSE.json();
     } catch (error) {
         // Se muestra un mensaje en la consola del navegador web cuando ocurre un problema.
