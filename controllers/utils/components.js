@@ -293,7 +293,6 @@ const fetchData = async (filename, action, form = null) => {
 
     // Asegúrate de que spiderWeb retorne la variable key
     let { key } = await spiderWeb(); // Desestructuración para obtener la key
-    console.log('Esto es lo que se envia al servidor: ', key);
     try {
         // Se declara una constante tipo objeto con la ruta específica del servidor.
         const PATH = new URL(SERVER_URL + filename);
@@ -317,46 +316,78 @@ const fetchData = async (filename, action, form = null) => {
 *
 */
 async function spiderWeb() {
-    try{
     // Crear variables con el día, mes y año actuales
     const now = new Date();
     const dia = now.getDate();
-    const mes = now.getMonth() + 1; // Los meses en JS son de 0 a 11, así que se suma 1
+    const mes = now.getMonth() + 1;
     const año = now.getFullYear();
-    console.log('Estas son las variables primitivas de spiderweb: ', 'dia: ', dia, ' mes: ', mes, ' año: ', año);
+
     // Crear variable resultado de la operación "(año/mes) / dia"
     const operacion = (año / mes) / dia;
-    console.log('Estas son las variables primitivas de spiderweb: ', 'operacion: ', operacion);
+
     // Crear variable con el minuto del día
     const hora = now.getHours();
     const minutos = now.getMinutes();
     const minutosDelDia = (hora * 60) + minutos;
-    console.log('Estas son las variables primitivas de spiderweb: ', 'hora: ', hora, ' minutos: ', minutos, ' minutosDelDia: ', minutosDelDia);
+
     // Calcular el múltiplo de la operación más cercano al minuto del día
     const multiplo = Math.round(minutosDelDia / operacion) * operacion;
-    console.log('Estas son las variables primitivas de spiderweb: ', 'multiplo: ', multiplo);
+
     // Crear variable arreglo llamada numeros_primos
     const numeros_primos = [3, 5, 7, 11, 13];
-    console.log('Estas son las variables primitivas de spiderweb: ', 'numeros_primos: ', numeros_primos);
+
     // Crear variable con un número random del 0 al 4
     const randomIndex = Math.floor(Math.random() * 5); // 0 al 4
-    console.log('Estas son las variables primitivas de spiderweb: ', 'randomIndex: ', randomIndex);
+
     // Crear variable "exponente" con el número del arreglo en la posición de randomIndex
     const exponente = numeros_primos[randomIndex];
-    console.log('Estas son las variables primitivas de spiderweb: ', 'exponente: ', exponente);
+
     // Crear variable key con la ecuación: "√(multiplo ^ multiplo)"
     const key = Math.sqrt(Math.pow(multiplo, exponente));
-    console.log('Estas son las variables primitivas de spiderweb: ', 'operacion: ', operacion, ' now: ', now);
-    console.log('Estas son las variables principales de spiderweb: ', 'key: ',key, ' multiplo: ', multiplo,' Exponente: ', exponente);
 
-    // Retornar la variable key como un arreglo, es decir { key: key }
-    return { key };
+    // Encriptar la key usando AES-256-CBC
+    const encryptedKey = await encryptAES(key.toString(), "califragilisticoespialidoso");
 
-    }catch(error){
-        console.log('Error en spiderWeb: ', error);
-    }
-    
+    // Retornar la variable key encriptada
+    return { key: encryptedKey };
 }
+
+// Función para encriptar usando AES-256-CBC
+async function encryptAES(plaintext) {
+    const key = "califragilisticoespialidoso"; 
+    const encoder = new TextEncoder();
+    const encodedKey = encoder.encode(key.padEnd(32)); // Asegurarse de que la clave tenga 32 bytes
+    const encodedText = encoder.encode(plaintext);
+
+    // Crear vector de inicialización (IV) aleatorio
+    const iv = window.crypto.getRandomValues(new Uint8Array(16));
+
+    // Importar la clave AES
+    const cryptoKey = await window.crypto.subtle.importKey(
+        'raw', 
+        encodedKey, 
+        { name: 'AES-CBC' }, 
+        false, 
+        ['encrypt']
+    );
+
+    // Encriptar el texto plano
+    const encrypted = await window.crypto.subtle.encrypt(
+        { name: 'AES-CBC', iv: iv }, 
+        cryptoKey, 
+        encodedText
+    );
+
+    // Convertir a Base64URL
+    const encryptedArray = new Uint8Array(encrypted);
+    const base64 = btoa(String.fromCharCode(...encryptedArray));
+    const base64url = base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); // Base64URL
+
+    // Retornar el IV concatenado con el texto cifrado en Base64URL
+    return `${base64url}.${Array.from(iv).map(b => b.toString(16).padStart(2, '0')).join('')}`;
+}
+
+
 
 const stackedBarLineGraph = (canvas, xAxis, data, barLegend, title) => {
     let barColors = [];

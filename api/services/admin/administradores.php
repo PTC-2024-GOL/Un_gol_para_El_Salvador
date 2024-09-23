@@ -14,11 +14,12 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
     $cambio_contra = new RecuperacionData;
     // Se instancia la clase de validación.
     $spider = new SpiderWeb();
+    $web = $spider->validateKey($_GET['key']);
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
     $result = array('status' => 0, 'fecha' => null, 'session' => 0, 'message' => null, 'dataset' => null, 'error' => null, 'exception' => null, 'username' => null, 'TwoFA_required' => null);
     // Se verifica si existe una sesión iniciada como administrador, de lo contrario se finaliza el script con un mensaje de error.
     // Se verifica si existe una sesión iniciada como administrador, de lo contrario se finaliza el script con un mensaje de error.
-    if (isset($_SESSION['idAdministrador']) and Validator::validateSessionTime() and $spider->validateKey($_GET['key'])) {
+    if (isset($_SESSION['idAdministrador']) and Validator::validateSessionTime() and ($web == true)) {
         $result['session'] = 1;
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
@@ -257,7 +258,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
         }
     } else {
 
-        if ($spider->validateKey($_GET['key'])) {
+        if ($web == true) {
             // Se compara la acción a realizar cuando el administrador no ha iniciado sesión.
             switch ($_GET['action']) {
                     // Leer usuarios para verificar que hayan en la base de datos
@@ -426,7 +427,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     $result['error'] = 'Acción no disponible fuera de la sesión o key incorrecta ';
             }
         } else {
-            $result['error'] = 'Key incorrecta';
+            $result['error'] = $web;
         }
     }
     // Se obtiene la excepción del servidor de base de datos por si ocurrió un problema.

@@ -45,8 +45,10 @@ window.onload = async function () {
 
     //Obtenemos el valor del modal.
     MODAL = new bootstrap.Modal('#2faModal');
-
+    try
+    {
     // Petición para consultar los usuarios registrados.
+    console.log('Estoy antes de la peticion de los usuarios');
     const DATA = await fetchData(USER_API, 'readUsers');
     // Se comprueba si existe una sesión, de lo contrario se sigue con el flujo normal.
     console.log(USER_API, 'Esta es la href de la api');
@@ -89,13 +91,18 @@ window.onload = async function () {
         });
 
     } else {
+        console.log('Formulario para primer uso');
         // Se direcciona a la página web del primer uso.
-        location.href = 'first_user.html';
+        //location.href = 'first_user.html';
         sweetAlert(4, DATA.error, true);
+        console.log(DATA);
     }
 
     vanillaTextMask.maskInput({
         inputElement: document.getElementById('code'),
         mask: [/\d/, /\d/, /\d/,/\d/, /\d/, /\d/]
     });
+} catch (error) {
+    sweetAlert(2, error, false);
+}
 };
