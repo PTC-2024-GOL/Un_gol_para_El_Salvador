@@ -244,6 +244,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
     } else {
         // Se compara la acción a realizar cuando el administrador no ha iniciado sesión.
         switch ($_GET['action'] and $spider->validateKey($_GET['key'])) {
+
                 // Leer usuarios para verificar que hayan en la base de datos
             case 'readUsers':
                 if ($administrador->readAll()) {
@@ -401,7 +402,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                 $administrador->resetCondition();
                 break;
             default:
-                $result['error'] = 'Acción no disponible fuera de la sesión';
+                $result['error'] = 'Acción no disponible fuera de la sesión o key incorrecta ' . $spider->validateKey($_GET['key']);
         }
     }
     // Se obtiene la excepción del servidor de base de datos por si ocurrió un problema.
