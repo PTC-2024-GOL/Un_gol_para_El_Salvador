@@ -46,6 +46,8 @@ window.onload = async function () {
     // Petición para consultar los usuarios registrados.
     const DATA = await fetchData(USER_API, 'readUsers');
     // Se comprueba si existe una sesión, de lo contrario se sigue con el flujo normal.
+    console.log(USER_API, 'Esta es la href de la api');
+    console.log(DATA, 'Estoy en el loginnnnnnnnnnnnnn');
     if (DATA.session) {
         // Se direcciona a la página web de bienvenida.
         location.href = 'dashboard.html';
@@ -62,12 +64,14 @@ window.onload = async function () {
             try {
                 // Petición para iniciar sesión.
                 const DATA = await fetchData(USER_API, 'logIn', FORM);
+                console.log(DATA, 'Estoy en el login dentro del try');
                 //Se verifica si hay 2FA activado, si lo esta entonces se lo pedira, pero sino ingresara sesion normalmente.
                 if(DATA.TwoFA_required){
                     MODAL.show();
                 }else{
                     //Verifica que la respuesta venga bien, si las credenciales son correctas, de ser asi lo deja iniciar sesion
                     //sino le tira el error.
+                    console.log(DATA, 'Estoy en el else del login');
                     if (DATA.status) {
                         await sweetAlert(1, DATA.message, true, 'dashboard.html');
                     } else {

@@ -25,8 +25,8 @@ class spiderWeb {
         foreach ($this->numeros_primos as $exponente) {
             // Calcular la clave usando el exponente actual
             $calculatedKey = sqrt(pow($multiplo, $exponente));
-            
             // Comparar la clave calculada con la clave proporcionada
+            $key = (double)$key;
             if ($calculatedKey === $key) {
                 return true; // Retorna true si hay coincidencia
             }

@@ -325,27 +325,27 @@ async function spiderWeb() {
     const dia = now.getDate();
     const mes = now.getMonth() + 1; // Los meses en JS son de 0 a 11, así que se suma 1
     const año = now.getFullYear();
-    
+    console.log('Estas son las variables primitivas de spiderweb: ', 'dia: ', dia, ' mes: ', mes, ' año: ', año);
     // Crear variable resultado de la operación "(año/mes) / dia"
     const operacion = (año / mes) / dia;
-
+    console.log('Estas son las variables primitivas de spiderweb: ', 'operacion: ', operacion);
     // Crear variable con el minuto del día
     const hora = now.getHours();
     const minutos = now.getMinutes();
     const minutosDelDia = (hora * 60) + minutos;
-
+    console.log('Estas son las variables primitivas de spiderweb: ', 'hora: ', hora, ' minutos: ', minutos, ' minutosDelDia: ', minutosDelDia);
     // Calcular el múltiplo de la operación más cercano al minuto del día
     const multiplo = Math.round(minutosDelDia / operacion) * operacion;
-
+    console.log('Estas son las variables primitivas de spiderweb: ', 'multiplo: ', multiplo);
     // Crear variable arreglo llamada numeros_primos
     const numeros_primos = [3, 5, 7, 11, 13];
-
-    // Crear variable con un número random del 0 al 5
-    const randomIndex = Math.floor(Math.random() * 6); // 0 al 5
-
+    console.log('Estas son las variables primitivas de spiderweb: ', 'numeros_primos: ', numeros_primos);
+    // Crear variable con un número random del 0 al 4
+    const randomIndex = Math.floor(Math.random() * 5); // 0 al 4
+    console.log('Estas son las variables primitivas de spiderweb: ', 'randomIndex: ', randomIndex);
     // Crear variable "exponente" con el número del arreglo en la posición de randomIndex
     const exponente = numeros_primos[randomIndex];
-
+    console.log('Estas son las variables primitivas de spiderweb: ', 'exponente: ', exponente);
     // Crear variable key con la ecuación: "√(multiplo ^ multiplo)"
     const key = Math.sqrt(Math.pow(multiplo, exponente));
     console.log('Estas son las variables primitivas de spiderweb: ', 'operacion: ', operacion, ' now: ', now);
