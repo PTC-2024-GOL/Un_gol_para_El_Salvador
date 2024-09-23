@@ -44,26 +44,29 @@ if (isset($_GET['action'])) {
             break;
         case 'updatePass':
             $_POST = Validator::validateForm($_POST);
-            if ($result['message'] = $recuperacion->checkPassword()) {
-                $result['status'] = 1;
-            } elseif (
+            if (
                 !$recuperacion->setNivel($_POST['nivel']) or
-                !$recuperacion->setClave(
+                !$recuperacion->setIdUsuario($_POST['idUsuario'])
+            ) {
+                $result['error'] = $recuperacion->getDataError();
+            } elseif ($recuperacion->checkPassword()) {
+                if (!$recuperacion->setClave(
                     $_POST['clave'],
                     $recuperacion->getNombre(),
                     $recuperacion->getApellido(),
                     $recuperacion->getNacimiento(),
                     $recuperacion->getTelefono(),
                     $recuperacion->getCorreo()
-                ) or
-                !$recuperacion->setIdUsuario($_POST['idUsuario'])
-            ) {
-                $result['error'] = $recuperacion->getDataError();
-            } elseif ($recuperacion->updatePassword()) {
-                $result['status'] = 1;
-                $result['message'] = 'La contraseña fue actualizada correctamente';
+                )) {
+                    $result['error'] = $recuperacion->getDataError();
+                } elseif ($recuperacion->updatePassword()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'La contraseña fue actualizada correctamente';
+                } else {
+                    $result['error'] = 'Ocurrió un problema al leer el hash';
+                }
             } else {
-                $result['error'] = 'Ocurrió un problema al leer el hash';
+                $result['error'] = 'Ocurrió un problema al chequear la clave';
             }
             break;
         case 'readHash':

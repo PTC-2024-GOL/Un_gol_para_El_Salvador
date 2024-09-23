@@ -84,11 +84,11 @@ window.onload = async function () {
             const DATA = await fetchData(API, 'updatePass', FORM);
             if (DATA.status) {
                 if (NIVEL == 1) {
-                    sweetAlert(1, DATA.message, true, `../pages/index.html`);
+                    sweetAlert(1, DATA.message, false, `../pages/index.html`);
                     //window.location.href = `../pages/index.html`;
                 }
                 else if (NIVEL == 2) {
-                    sweetAlert(1, DATA.message, true, `../../technicals/pages/index.html`);
+                    sweetAlert(1, DATA.message, false, `../../technicals/pages/index.html`);
                     //window.location.href = `../../technicals/pages/index.html`;
                 }
                 else if (NIVEL == 3) {

@@ -27,23 +27,23 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Alias de Tecnico indefinido';
                 }
                 break;
-                case 'getUserMobile':
-                    if (isset($_SESSION['correoTecnico'])) {
-                        $result['status'] = 1;
-                        $result['username'] = $_SESSION['nombreTecnico'];
-                        $result['apellido'] = $_SESSION['apellidoTecnico'];
-                        $result['foto'] = $_SESSION['fotoTecnico'];
-                    } else {
-                        $result['error'] = 'Nombre de Tecnico indefinido';
-                    }
-                    break;
+            case 'getUserMobile':
+                if (isset($_SESSION['correoTecnico'])) {
+                    $result['status'] = 1;
+                    $result['username'] = $_SESSION['nombreTecnico'];
+                    $result['apellido'] = $_SESSION['apellidoTecnico'];
+                    $result['foto'] = $_SESSION['fotoTecnico'];
+                } else {
+                    $result['error'] = 'Nombre de Tecnico indefinido';
+                }
+                break;
                 //leer perfil
             case 'readProfile':
-                    if ($result['dataset'] = $tecnico->readProfile()) {
-                        $result['status'] = 1;
-                    } else {
-                        $result['error'] = 'Ocurrió un problema al leer el perfil';
-                        }
+                if ($result['dataset'] = $tecnico->readProfile()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Ocurrió un problema al leer el perfil';
+                }
                 break;
                 // Ver uno en perfil
             case 'readOneProfile':
@@ -70,12 +70,14 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'No puedes reutilizar la clave actual';
                 } elseif ($_POST['claveCliente'] != $_POST['repetirclaveCliente']) {
                     $result['error'] = 'Confirmación de contraseña diferente';
-                } elseif (!$tecnico->setClave($_POST['claveCliente'],
-                $tecnico->getNombre(),
-                $tecnico->getApellido(),
-                $tecnico->getNacimiento(),
-                $tecnico->getTelefono(),
-                $tecnico->getCorreo())) {
+                } elseif (!$tecnico->setClave(
+                    $_POST['claveCliente'],
+                    $tecnico->getNombre(),
+                    $tecnico->getApellido(),
+                    $tecnico->getNacimiento(),
+                    $tecnico->getTelefono(),
+                    $tecnico->getCorreo()
+                )) {
                     $result['error'] = $tecnico->getDataError();
                 } elseif ($tecnico->changePassword()) {
                     $result['status'] = 1;
@@ -84,7 +86,7 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Ocurrió un problema al cambiar la contraseña';
                 }
                 break;
-             // Actualizar perfil
+                // Actualizar perfil
             case 'updateRowProfile':
                 $_POST = Validator::validateForm($_POST);
                 if (
@@ -123,7 +125,7 @@ if (isset($_GET['action'])) {
     } else {
         // Se compara la acción a realizar cuando el cliente no ha iniciado sesión.
         switch ($_GET['action']) {
-            // Leer usuarios para verificar que hayan en la base de datos
+                // Leer usuarios para verificar que hayan en la base de datos
             case 'readUsers':
                 if ($tecnico->readAll()) {
                     $result['status'] = 1;
