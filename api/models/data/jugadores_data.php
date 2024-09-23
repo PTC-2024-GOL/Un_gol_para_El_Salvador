@@ -256,15 +256,45 @@ class JugadoresData extends JugadoresHandler
         }
     }
 
-    public function setClave($value)
+    public function setClave($value, $name, $lastname, $birthday, $phone, $email)
     {
-        if (Validator::validatePassword($value)) {
+        if (Validator::validatePassword($value, $name, $lastname, $birthday, $phone, $email)) {
             $this->claveJ = password_hash($value, PASSWORD_DEFAULT);
             return true;
         } else {
             $this->data_error = Validator::getPasswordError();
             return false;
         }
+    }
+
+
+    // Método para obtener el nombre.
+    public function getNombre()
+    {
+        return $this->nombreJ;
+    }
+
+    // Método para obtener el apellido.
+    public function getApellido()
+    {
+        return $this->apellidoJ;
+    }
+
+    // Método para obtener la fecha de nacimiento.
+    public function getNacimiento()
+    {
+        return $this->nacimientoJ;
+    }
+
+    // Método para obtener el correo.
+    public function getTelefono()
+    {
+        return $this->telefono;
+    }
+    // Método para obtener el correo.
+    public function getCorreo()
+    {
+        return $this->correoJ;
     }
 
     // Método para obtener el error de los datos.

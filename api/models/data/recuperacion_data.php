@@ -42,8 +42,8 @@ class RecuperacionData extends RecuperacionHandler
     // Validación y asignación del apellido del administrador.
     public function setFecha($value, $min = 2, $max = 50)
     {
-            $this->fechaRegistro = $value;
-            return true;
+        $this->fechaRegistro = $value;
+        return true;
     }
 
     // Validación y asignación del correo del administrador.
@@ -61,10 +61,10 @@ class RecuperacionData extends RecuperacionHandler
         }
     }
 
-    // Validación y asignación de la clave de los niveles.
-    public function setClave($value)
+    // Validación y asignación de la clave de los niveles
+    public function setClave($value, $name, $lastname, $birthday, $phone, $email)
     {
-        if (Validator::validatePassword($value)) {
+        if (Validator::validatePassword($value, $name, $lastname, $birthday, $phone, $email)) {
             $this->contrasena = password_hash($value, PASSWORD_DEFAULT);
             return true;
         } else {
@@ -74,6 +74,34 @@ class RecuperacionData extends RecuperacionHandler
     }
 
 
+    // Método para obtener el nombre.
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    // Método para obtener el apellido.
+    public function getApellido()
+    {
+        return $this->apellido;
+    }
+
+    // Método para obtener la fecha de nacimiento.
+    public function getNacimiento()
+    {
+        return $this->nacimiento;
+    }
+
+    // Método para obtener el correo.
+    public function getTelefono()
+    {
+        return $this->telefono;
+    }
+    // Método para obtener el correo.
+    public function getCorreo()
+    {
+        return $this->correo;
+    }
 
     // Método para obtener el error de los datos.
     public function getDataError()
@@ -86,6 +114,4 @@ class RecuperacionData extends RecuperacionHandler
     {
         return $this->filename;
     }
-
-    
 }

@@ -251,16 +251,26 @@ class AdministradoresHandler
         }
     }
 
-    //Función para chequear la contraseña de un admministrador.
+    //Función para chequear la contraseña de un administrador.
     public function checkPassword($password)
     {
-        $sql = 'SELECT clave_administrador AS CLAVE
+        $sql = 'SELECT clave_administrador AS CLAVE,
+                nombre_administrador AS NOMBRE,
+                apellido_administrador AS APELLIDO,
+                correo_administrador AS CORREO,
+                telefono_administrador AS TELÉFONO,
+                fecha_nacimiento_administrador AS NACIMIENTO
                 FROM administradores
                 WHERE id_administrador = ?';
         $params = array($_SESSION['idAdministrador']);
         $data = Database::getRow($sql, $params);
         // Se verifica si la contraseña coincide con el hash almacenado en la base de datos.
         if (password_verify($password, $data['CLAVE'])) {
+            $this->nombre = $data['NOMBRE'];
+            $this->apellido = $data['APELLIDO'];
+            $this->correo = $data['CORREO'];
+            $this->telefono = $data['TELÉFONO'];
+            $this->nacimiento = $data['NACIMIENTO'];
             return true;
         } else {
             return false;

@@ -22,7 +22,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
         $result['session'] = 1;
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
-            // Buscar
+                // Buscar
             case 'searchRows':
                 if (!Validator::validateSearch2($_POST['search'])) {
                     $result['error'] = Validator::getSearchError();
@@ -33,13 +33,20 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     $result['error'] = 'No hay coincidencias';
                 }
                 break;
-            // Agregar
+                // Agregar
             case 'createRow':
                 $_POST = Validator::validateForm($_POST);
                 if (
                     !$administrador->setNombre($_POST['nombreAdministrador']) or
                     !$administrador->setApellido($_POST['apellidoAdministrador']) or
-                    !$administrador->setClave($_POST['claveAdministrador']) or
+                    !$administrador->setClave(
+                        $_POST['claveAdministrador'],
+                        $_POST['nombreAdministrador'],
+                        $_POST['apellidoAdministrador'],
+                        $_POST['nacimientoAdministrador'],
+                        $_POST['telefonoAdministrador'],
+                        $_POST['correoAdministrador']
+                    ) or
                     !$administrador->setCorreo($_POST['correoAdministrador']) or
                     !$administrador->setTelefono($_POST['telefonoAdministrador']) or
                     !$administrador->setDUI($_POST['duiAdministrador']) or
@@ -58,7 +65,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     $result['error'] = 'Ocurrió un problema al crear el administrador';
                 }
                 break;
-            // Ver todo
+                // Ver todo
             case 'readAll':
                 if ($result['dataset'] = $administrador->readAll()) {
                     $result['status'] = 1;
@@ -74,7 +81,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     $result['error'] = 'Ocurrió un problema al leer el perfil';
                 }
                 break;
-            // Ver uno
+                // Ver uno
             case 'readOne':
                 if (!$administrador->setId($_POST['idAdministrador'])) {
                     $result['error'] = 'Administrador incorrecto';
@@ -84,7 +91,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     $result['error'] = 'Administrador inexistente';
                 }
                 break;
-            // Ver uno en perfil
+                // Ver uno en perfil
             case 'readOneProfile':
                 if ($result['dataset'] = $administrador->readOneProfile()) {
                     $result['status'] = 1;
@@ -92,7 +99,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     $result['error'] = 'Perfil inexistente';
                 }
                 break;
-            // Actualizar
+                // Actualizar
             case 'updateRow':
                 $_POST = Validator::validateForm($_POST);
                 if (
@@ -116,7 +123,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     $result['error'] = 'Ocurrió un problema al modificar el administrador';
                 }
                 break;
-            // Actualizar perfil
+                // Actualizar perfil
             case 'updateRowProfile':
                 $_POST = Validator::validateForm($_POST);
                 if (
@@ -141,7 +148,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     $result['error'] = 'Ocurrió un problema al modificar el perfil';
                 }
                 break;
-            // Eliminar
+                // Eliminar
             case 'deleteRow':
                 if ($_POST['idAdministrador'] == $_SESSION['idAdministrador']) {
                     $result['error'] = 'No se puede eliminar a sí mismo';
@@ -159,7 +166,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     $result['error'] = 'Ocurrió un problema al eliminar el administrador';
                 }
                 break;
-            // Estado
+                // Estado
             case 'changeState':
                 if ($_POST['idAdministrador'] == $_SESSION['idAdministrador']) {
                     $result['error'] = 'No se puede bloquear a sí mismo';
@@ -174,7 +181,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     $result['error'] = 'Ocurrió un problema al alterar el estado del administrador';
                 }
                 break;
-            // Traer datos del usuario
+                // Traer datos del usuario
             case 'getUser':
                 if (isset($_SESSION['aliasAdministrador'])) {
                     $result['status'] = 1;
@@ -186,7 +193,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     $result['error'] = 'Alias de administrador indefinido';
                 }
                 break;
-            // Cerrar sesión
+                // Cerrar sesión
             case 'logOut':
                 if (session_destroy()) {
                     $result['status'] = 1;
@@ -195,7 +202,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     $result['error'] = 'Ocurrió un problema al cerrar la sesión';
                 }
                 break;
-            // Cambiar contraseña
+                // Cambiar contraseña
             case 'changePassword':
                 $_POST = Validator::validateForm($_POST);
                 if (!$administrador->checkPassword($_POST['claveActual'])) {
@@ -204,7 +211,14 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     $result['error'] = 'No puedes reutilizar la clave actual';
                 } elseif ($_POST['claveAdministrador'] != $_POST['repetirclaveAdministrador']) {
                     $result['error'] = 'Confirmación de contraseña diferente';
-                } elseif (!$administrador->setClave($_POST['claveAdministrador'])) {
+                } elseif (!$administrador->setClave(
+                    $_POST['claveAdministrador'],
+                    $administrador->getNombre(),
+                    $administrador->getApellido(),
+                    $administrador->getNacimiento(),
+                    $administrador->getTelefono(),
+                    $administrador->getCorreo()
+                )) {
                     $result['error'] = $administrador->getDataError();
                 } elseif ($administrador->changePassword()) {
                     $result['status'] = 1;
@@ -213,7 +227,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     $result['error'] = 'Ocurrió un problema al cambiar la contraseña';
                 }
                 break;
-            //Metodo para crear el codigo de autenticacion por primera vez.
+                //Metodo para crear el codigo de autenticacion por primera vez.
             case 'newAuthenticationCode':
                 $_POST = Validator::validateForm($_POST);
                 if (!$administrador->setCorreo($_POST['correo'])) {
@@ -229,7 +243,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                         $result['error'] = 'No se pudo generar el código de autenticación.';
                     }
                 }
-            // Verifica si el usuario ya tiene segundo factor de autenticacion activado
+                // Verifica si el usuario ya tiene segundo factor de autenticacion activado
             case 'verify2Fa':
                 if ($administrador->getCode()) {
                     $result['status'] = 1;
@@ -246,7 +260,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
         if ($spider->validateKey($_GET['key'])) {
             // Se compara la acción a realizar cuando el administrador no ha iniciado sesión.
             switch ($_GET['action']) {
-                // Leer usuarios para verificar que hayan en la base de datos
+                    // Leer usuarios para verificar que hayan en la base de datos
                 case 'readUsers':
                     if ($administrador->readAll()) {
                         $result['status'] = 1;
@@ -255,13 +269,20 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                         $result['error'] = 'Debe crear un administrador para comenzar';
                     }
                     break;
-                // Metodo para el primer uso
+                    // Metodo para el primer uso
                 case 'signUp':
                     $_POST = Validator::validateForm($_POST);
                     if (
                         !$administrador->setNombre($_POST['nombreAdministrador']) or
                         !$administrador->setApellido($_POST['apellidoAdministrador']) or
-                        !$administrador->setClave($_POST['claveAdministrador']) or
+                        !$administrador->setClave(
+                            $_POST['claveAdministrador'],
+                            $_POST['nombreAdministrador'],
+                            $_POST['apellidoAdministrador'],
+                            $_POST['nacimientoAdministrador'],
+                            $_POST['telefonoAdministrador'],
+                            $_POST['correoAdministrador']
+                        ) or
                         !$administrador->setCorreo($_POST['correoAdministrador']) or
                         !$administrador->setTelefono($_POST['telefonoAdministrador']) or
                         !$administrador->setDUI($_POST['duiAdministrador']) or
@@ -280,7 +301,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                         $result['error'] = 'Ocurrió un problema al registrar al primer administrador';
                     }
                     break;
-                // Metodo para el inicio de sesión
+                    // Metodo para el inicio de sesión
                 case 'logIn':
                     $_POST = Validator::validateForm($_POST);
                     //Autenticación exitosa
@@ -403,8 +424,6 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                     break;
                 default:
                     $result['error'] = 'Acción no disponible fuera de la sesión o key incorrecta ';
-
-
             }
         } else {
             $result['error'] = 'Key incorrecta';
@@ -415,7 +434,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
     // Se indica el tipo de contenido a mostrar y su respectivo conjunto de caracteres.
     header('Content-type: application/json; charset=utf-8');
     // Se imprime el resultado en formato JSON y se retorna al controlador.
-    print (json_encode($result));
+    print(json_encode($result));
 } else {
-    print (json_encode('Recurso no disponible'));
+    print(json_encode('Recurso no disponible'));
 }

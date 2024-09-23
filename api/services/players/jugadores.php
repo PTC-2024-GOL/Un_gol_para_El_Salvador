@@ -144,7 +144,14 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'No puedes reutilizar la clave actual';
                 } elseif ($_POST['claveCliente'] != $_POST['repetirclaveCliente']) {
                     $result['error'] = 'Confirmación de contraseña diferente';
-                } elseif (!$jugador->setClave($_POST['claveCliente'])) {
+                } elseif (!$jugador->setClave(
+                    $_POST['claveCliente'],
+                    $jugador->getNombre(),
+                    $jugador->getApellido(),
+                    $jugador->getNacimiento(),
+                    $jugador->getTelefono(),
+                    $jugador->getCorreo()
+                )) {
                     $result['error'] = $jugador->getDataError();
                 } elseif ($jugador->changePassword()) {
                     $result['status'] = 1;

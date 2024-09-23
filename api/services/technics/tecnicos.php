@@ -70,7 +70,12 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'No puedes reutilizar la clave actual';
                 } elseif ($_POST['claveCliente'] != $_POST['repetirclaveCliente']) {
                     $result['error'] = 'Confirmación de contraseña diferente';
-                } elseif (!$tecnico->setClave($_POST['claveCliente'])) {
+                } elseif (!$tecnico->setClave($_POST['claveCliente'],
+                $tecnico->getNombre(),
+                $tecnico->getApellido(),
+                $tecnico->getNacimiento(),
+                $tecnico->getTelefono(),
+                $tecnico->getCorreo())) {
                     $result['error'] = $tecnico->getDataError();
                 } elseif ($tecnico->changePassword()) {
                     $result['status'] = 1;

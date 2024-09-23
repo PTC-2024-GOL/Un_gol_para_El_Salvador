@@ -47,7 +47,13 @@ if (isset($_GET['action'])) {
                     !$jugador->setCorreo($_POST['correo']) or
                     !$jugador->setTipoSangre($_POST['tipoSangre']) or
                     !$jugador->setObservacionMedica($_POST['observacionMedica']) or
-                    !$jugador->setClave($_POST['clave']) or
+                    !$jugador->setClave($_POST['clave'],
+                    $_POST['nombre'],
+                    $_POST['apellido'],
+                    $_POST['nacimiento'],
+                    $_POST['telefono'],
+                    $_POST['correo']
+                ) or
                     !$jugador->setImagen($_FILES['imagen'])
                 ) {
                     $result['error'] = $jugador->getDataError();

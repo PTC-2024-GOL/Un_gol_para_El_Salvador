@@ -1,9 +1,9 @@
 <?php
 
 // Se incluye la clase para trabajar con la base de datos.
-require_once ('../../helpers/database.php');
+require_once('../../helpers/database.php');
 // Se incluye la clase para enviar el correo.
-require_once ('../../helpers/emailConnexion.php');
+require_once('../../helpers/emailConnexion.php');
 
 /*
  *  Clase para manejar el comportamiento de los datos de la tabla tipos de jugadas.
@@ -19,6 +19,9 @@ class RecuperacionHandler
     protected $hash = null;
     protected $correo = null;
     protected $nombre = null;
+    protected $apellido = null;
+    protected $telefono = null;
+    protected $nacimiento = null;
 
     protected $contrasena = null;
 
@@ -38,7 +41,7 @@ class RecuperacionHandler
     public function envioCorreo()
     {
         $titulo = '¡Bienvenid@ ' . $this->nombre . ', estamos aquí para ayudarte!';
-        $mailSubject = 'Recuperación de contraseña';	
+        $mailSubject = 'Recuperación de contraseña';
         $mailAltBody = 'Cambia tu contraseña con un solo click';
         $link = 'http://localhost/sitio_gol_sv/views/admin/pages/change_passwords.html?c=' . urlencode($this->hash) . '&id=' . urlencode($this->idUsuario) . '&n=' . urlencode($this->nivel);
         $message1 = '¡ingresa aquí!';
@@ -51,7 +54,7 @@ class RecuperacionHandler
             ['{{subject}}', '{{title}}', '{{body}}', '{{link}}', '{{message1}}', '{{message2}}', '{{footer}}'],
             [$mailSubject, $titulo, $mailAltBody, $link, $message1, $message2, $footer],
             $template
-        );        
+        );
         return Props::sendMail($this->correo, $mailSubject, $mailBody);
     }
     public function readHash()
@@ -62,6 +65,16 @@ class RecuperacionHandler
             return $this->readHash2();
         } elseif ($this->nivel == 3) {
             return $this->readHash3();
+        }
+    }
+    public function checkPassword()
+    {
+        if ($this->nivel == 1) {
+            return $this->checkPassword1();
+        } elseif ($this->nivel == 2) {
+            return $this->checkPassword2();
+        } elseif ($this->nivel == 3) {
+            return $this->checkPassword3();
         }
     }
     public function updateHash()
@@ -75,7 +88,7 @@ class RecuperacionHandler
         }
     }
 
-    
+
     public function updatePassword()
     {
         $this->hash = '0000';
@@ -90,13 +103,13 @@ class RecuperacionHandler
 
     //Función para crear el has
     public function createHash()
-{   
-    // Crea una variable que contenga un string aleatorio de 10 caracteres.
-    $this->hash = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10);
-    // Crea una variable que contenga la variable hash y la variable fechaRegistro, separadas por un $.
-    $this->hash = $this->hash . 'QQQ' . $this->fechaRegistro;
-    return $this->hash;
-} 
+    {
+        // Crea una variable que contenga un string aleatorio de 10 caracteres.
+        $this->hash = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10);
+        // Crea una variable que contenga la variable hash y la variable fechaRegistro, separadas por un $.
+        $this->hash = $this->hash . 'QQQ' . $this->fechaRegistro;
+        return $this->hash;
+    }
 
     //Función para leer id en base a su correo, versión admin.
     public function readOne1()
@@ -182,7 +195,7 @@ class RecuperacionHandler
         );
         return Database::executeRow($sql, $params);
     }
-    
+
     //Función para actualizar la contraseña en la tabla tecnico.
     public function updatePassword2()
     {
@@ -207,6 +220,29 @@ class RecuperacionHandler
         return Database::executeRow($sql, $params);
     }
 
+
+    //Función para chequear la contraseña de un administrador.
+    public function checkPassword1()
+    {
+        $sql = 'SELECT clave_administrador AS CLAVE,
+                nombre_administrador AS NOMBRE,
+                apellido_administrador AS APELLIDO,
+                correo_administrador AS CORREO,
+                telefono_administrador AS TELÉFONO,
+                fecha_nacimiento_administrador AS NACIMIENTO
+                FROM administradores
+                WHERE id_administrador = ?';
+        $params = array($this->idUsuario);
+        $data = Database::getRow($sql, $params);
+        // Se verifica si la contraseña coincide con el hash almacenado en la base de datos.
+        $this->nombre = $data['NOMBRE'];
+        $this->apellido = $data['APELLIDO'];
+        $this->correo = $data['CORREO'];
+        $this->telefono = $data['TELÉFONO'];
+        $this->nacimiento = $data['NACIMIENTO'];
+        return true;
+    }
+
     //Función para leer el hash en la tabla administradores.
     public function readHash1()
     {
@@ -216,6 +252,28 @@ class RecuperacionHandler
         $this->hash = Database::getRow($sql, $params);
         $this->hash = $this->hash['recovery_code'];
         return $this->hash;
+    }
+
+    //Función para chequear la contraseña de un admministrador.
+    public function checkPassword2()
+    {
+        $sql = 'SELECT clave_tecnico AS CLAVE,
+                nombre_tecnico AS NOMBRE,
+                apellido_tecnico AS APELLIDO,
+                correo_tecnico AS CORREO,
+                telefono_tecnico AS TELÉFONO,
+                fecha_nacimiento_tecnico AS NACIMIENTO
+                FROM tecnicos
+                WHERE id_tecnico = ?';
+        $params = array($_SESSION['idTecnico']);
+        $data = Database::getRow($sql, $params);
+        // Se verifica si la contraseña coincide con el hash almacenado en la base de datos.
+        $this->nombre = $data['NOMBRE'];
+        $this->apellido = $data['APELLIDO'];
+        $this->correo = $data['CORREO'];
+        $this->telefono = $data['TELÉFONO'];
+        $this->nacimiento = $data['NACIMIENTO'];
+        return true;
     }
 
     //Función para leer el hash en la tabla tecnico.
@@ -229,6 +287,29 @@ class RecuperacionHandler
         return $this->hash;
     }
 
+
+    //Función para chequear la contraseña de un admministrador.
+    public function checkPassword3()
+    {
+        $sql = 'SELECT clave_jugador AS CLAVE,
+                nombre_jugador AS NOMBRE,
+                apellido_jugador AS APELLIDO,
+                correo_jugador AS CORREO,
+                telefono AS TELÉFONO,
+                fecha_nacimiento_jugador AS NACIMIENTO
+                FROM jugadores
+                WHERE id_jugador = ?';
+        $params = array($_SESSION['idJugador']);
+        $data = Database::getRow($sql, $params);
+        // Se verifica si la contraseña coincide con el hash almacenado en la base de datos.
+        $this->nombre = $data['NOMBRE'];
+        $this->apellido = $data['APELLIDO'];
+        $this->correo = $data['CORREO'];
+        $this->telefono = $data['TELÉFONO'];
+        $this->nacimiento = $data['NACIMIENTO'];
+        return true;
+    }
+
     //Función para leer el hash en la tabla jugador.
     public function readHash3()
     {
@@ -239,6 +320,4 @@ class RecuperacionHandler
         $this->hash = $this->hash['recovery_code'];
         return $this->hash;
     }
-
 }
-

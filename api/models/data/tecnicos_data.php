@@ -89,9 +89,9 @@ class TecnicosData extends TecnicosHandler
     }
 
     // Validación y asignación de la clave del administrador.
-    public function setClave($value)
+    public function setClave($value, $name, $lastname, $birthday, $phone, $email)
     {
-        if (Validator::validatePassword($value)) {
+        if (Validator::validatePassword($value, $name, $lastname, $birthday, $phone, $email)) {
             $this->clave = password_hash($value, PASSWORD_DEFAULT);
             return true;
         } else {
@@ -216,5 +216,34 @@ class TecnicosData extends TecnicosHandler
     public function getCondicion()
     {
         return $this->condicion;
+    }
+    
+    // Método para obtener el nombre.
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    // Método para obtener el apellido.
+    public function getApellido()
+    {
+        return $this->apellido;
+    }
+
+    // Método para obtener la fecha de nacimiento.
+    public function getNacimiento()
+    {
+        return $this->nacimiento;
+    }
+
+    // Método para obtener el correo.
+    public function getTelefono()
+    {
+        return $this->telefono;
+    }
+    // Método para obtener el correo.
+    public function getCorreo()
+    {
+        return $this->correo;
     }
 }

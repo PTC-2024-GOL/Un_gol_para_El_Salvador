@@ -83,13 +83,23 @@ class JugadoresHandler
     //Función para chequear la contraseña de un admministrador.
     public function checkPassword($password)
     {
-        $sql = 'SELECT clave_jugador AS CLAVE
+        $sql = 'SELECT clave_jugador AS CLAVE,
+                nombre_jugador AS NOMBRE,
+                apellido_jugador AS APELLIDO,
+                correo_jugador AS CORREO,
+                telefono AS TELÉFONO,
+                fecha_nacimiento_jugador AS NACIMIENTO
                 FROM jugadores
                 WHERE id_jugador = ?';
         $params = array($_SESSION['idJugador']);
         $data = Database::getRow($sql, $params);
         // Se verifica si la contraseña coincide con el hash almacenado en la base de datos.
         if (password_verify($password, $data['CLAVE'])) {
+            $this->nombreJ = $data['NOMBRE'];
+            $this->apellidoJ = $data['APELLIDO'];
+            $this->correoJ = $data['CORREO'];
+            $this->telefono = $data['TELÉFONO'];
+            $this->nacimientoJ = $data['NACIMIENTO'];
             return true;
         } else {
             return false;

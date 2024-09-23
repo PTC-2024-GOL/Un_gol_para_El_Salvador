@@ -35,7 +35,12 @@ if (isset($_GET['action'])) {
                 if (
                     !$Tecnico->setNombre($_POST['nombreTecnico']) or
                     !$Tecnico->setApellido($_POST['apellidoTecnico']) or
-                    !$Tecnico->setClave($_POST['claveTecnico']) or
+                    !$Tecnico->setClave($_POST['claveTecnico'],
+                    $_POST['nombreTecnico'],
+                    $_POST['apellidoTecnico'],
+                    $_POST['nacimientoTecnico'],
+                    $_POST['telefonoTecnico'],
+                    $_POST['correoTecnico']) or
                     !$Tecnico->setCorreo($_POST['correoTecnico']) or
                     !$Tecnico->setTelefono($_POST['telefonoTecnico']) or
                     !$Tecnico->setDUI($_POST['duiTecnico']) or
@@ -146,7 +151,12 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'No puedes reutilizar la clave actual';
                 } elseif ($_POST['claveTecnico'] != $_POST['repetirclaveTecnico']) {
                     $result['error'] = 'Confirmación de contraseña diferente';
-                } elseif (!$Tecnico->setClave($_POST['claveTecnico'])) {
+                } elseif (!$Tecnico->setClave($_POST['claveTecnico'],
+                $Tecnico->getNombre(),
+                $Tecnico->getApellido(),
+                $Tecnico->getNacimiento(),
+                $Tecnico->getTelefono(),
+                $Tecnico->getCorreo())) {
                     $result['error'] = $Tecnico->getDataError();
                 } elseif ($Tecnico->changePassword()) {
                     $result['status'] = 1;

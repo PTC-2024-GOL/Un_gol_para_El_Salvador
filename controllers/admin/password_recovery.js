@@ -83,12 +83,13 @@ window.onload = async function () {
             FORM.append('idUsuario', ID_USUARIO);
             const DATA = await fetchData(API, 'updatePass', FORM);
             if (DATA.status) {
-                sweetAlert(1, DATA.message, true);
                 if (NIVEL == 1) {
-                    window.location.href = `../pages/index.html`;
+                    sweetAlert(1, DATA.message, true, `../pages/index.html`);
+                    //window.location.href = `../pages/index.html`;
                 }
                 else if (NIVEL == 2) {
-                    window.location.href = `../../technicals/pages/index.html`;
+                    sweetAlert(1, DATA.message, true, `../../technicals/pages/index.html`);
+                    //window.location.href = `../../technicals/pages/index.html`;
                 }
                 else if (NIVEL == 3) {
                     console.log('Ni de pedo bro: ' + NIVEL);

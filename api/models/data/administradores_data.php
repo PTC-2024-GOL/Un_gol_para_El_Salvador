@@ -92,9 +92,9 @@ class AdministradoresData extends AdministradoresHandler
     }
 
     // Validación y asignación de laW clave del administrador.
-    public function setClave($value)
+    public function setClave($value, $name, $lastname, $birthday, $phone, $email)
     {
-        if (Validator::validatePassword($value)) {
+        if (Validator::validatePassword($value, $name, $lastname, $birthday, $phone, $email)) {
             $this->clave = password_hash($value, PASSWORD_DEFAULT);
             return true;
         } else {
@@ -227,6 +227,29 @@ class AdministradoresData extends AdministradoresHandler
         return $this->fecha_hoy;
     }
 
+    // Método para obtener el nombre.
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    // Método para obtener el apellido.
+    public function getApellido()
+    {
+        return $this->apellido;
+    }
+
+    // Método para obtener la fecha de nacimiento.
+    public function getNacimiento()
+    {
+        return $this->nacimiento;
+    }
+
+    // Método para obtener el correo.
+    public function getTelefono()
+    {
+        return $this->telefono;
+    }
     // Método para obtener el correo.
     public function getCorreo()
     {
@@ -237,12 +260,12 @@ class AdministradoresData extends AdministradoresHandler
     public function checkAuthenticationCode($value)
     {
         return true;
-//        if (Validator::validateNumberArray($value)) {
-//            return true;
-//        } else {
-//            $this->data_error = 'Ingresa solo números y verifica que tu código tenga como máximo  números.';
-//            return false;
-//        }
+        //        if (Validator::validateNumberArray($value)) {
+        //            return true;
+        //        } else {
+        //            $this->data_error = 'Ingresa solo números y verifica que tu código tenga como máximo  números.';
+        //            return false;
+        //        }
     }
     //////////////////////////////////////////////////////////////////////////
 
@@ -257,7 +280,7 @@ class AdministradoresData extends AdministradoresHandler
         $secret_code = $google2fa->generateSecretKey();
 
         //Guarda el codigo secreto en la base de datos.
-        if($this->saveCode($secret_code)){
+        if ($this->saveCode($secret_code)) {
             //Genera el url  del codigo QR que el usuario escaneará.
             $qrCodeUrl = $google2fa->getQRCodeInline(
                 'OneGoal',
@@ -268,7 +291,7 @@ class AdministradoresData extends AdministradoresHandler
             //echo '<img src="' . $qrCodeUrl . '" />';
             //Devuelve el codigo QR.
             return $qrCodeUrl;
-        }else{
+        } else {
             throw new Exception("No se pudo actualizar el código secreto en la base de datos.");
         }
     }
@@ -283,9 +306,9 @@ class AdministradoresData extends AdministradoresHandler
         //Verifica que la clave ingresada por el usuario coincida con la que esta en la base de datos.
         $valid = $google2fa->verifyKey($secret, $value);
 
-        if($valid){
+        if ($valid) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }

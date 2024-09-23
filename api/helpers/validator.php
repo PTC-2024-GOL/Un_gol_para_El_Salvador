@@ -257,11 +257,11 @@ class Validator
     }
 
     /*
-     *   Método para validar una contraseña.
-     *   Parámetros: $value (dato a validar).
-     *   Retorno: booleano (true si el valor es correcto o false en caso contrario).
-     */
-    public static function validatePassword($value)
+    *   Método para validar una contraseña.
+   *   Parámetros: $value (dato a validar).
+   *   Retorno: booleano (true si el valor es correcto o false en caso contrario).
+   */
+    public static function validatePassword($value, $name, $lastname, $birthday, $phone, $email)
     {
         // Se verifica la longitud mínima.
         if (strlen($value) < 8) {
@@ -271,7 +271,7 @@ class Validator
             self::$password_error = 'Clave mayor a 72 caracteres';
             return false;
         } elseif (preg_match('/\s/', $value)) {
-            self::$password_error = 'Clave contiene espacios en blancos ';
+            self::$password_error = 'Clave contiene espacios en blanco';
             return false;
         } elseif (!preg_match('/\W/', $value)) {
             self::$password_error = 'Clave debe contener al menos un caracter especial';
@@ -282,12 +282,36 @@ class Validator
         } elseif (!preg_match('/[a-z]/', $value)) {
             self::$password_error = 'Clave debe contener al menos una letra en minúsculas';
             return false;
-        } elseif (preg_match('/[A-Z]/', $value)) {
-            return true;
-        } else {
-            self::$password_error = 'Clave debe contener al menos una letra en mayusculas';
+        } elseif (!preg_match('/[A-Z]/', $value)) {
+            self::$password_error = 'Clave debe contener al menos una letra en mayúsculas';
             return false;
         }
+
+        $sensitiveData = [
+            'nombre' => $name,
+            'apellido' => $lastname,
+            'fecha de nacimiento' => $birthday,
+            'teléfono' => $phone,
+            'email' => $email
+        ];
+
+        $valueLower = strtolower($value); // Convertir la contraseña a minúsculas para evitar problemas con mayúsculas/minúsculas
+
+        foreach ($sensitiveData as $dataLabel => $data) {
+            if ($data) {
+                $dataLower = strtolower($data); // Convertir también el dato personal a minúsculas
+                // Verificamos si alguna subcadena de 3 caracteres o más del dato personal está en la contraseña
+                for ($i = 0; $i <= strlen($dataLower) - 3; $i++) {
+                    $substring = substr($dataLower, $i, 3); // Extraer una subcadena de 3 caracteres
+                    if (strpos($valueLower, $substring) !== false) {
+                        self::$password_error = "Clave contiene parte del $dataLabel del usuario: '$substring'";
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
     }
 
     /*
