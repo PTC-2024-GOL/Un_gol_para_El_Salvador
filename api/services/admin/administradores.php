@@ -284,7 +284,6 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                 $_POST = Validator::validateForm($_POST);
                 //Autenticación exitosa
                 if ($administrador->checkUser($_POST['alias'], $_POST['clave'])) {
-                        $result['message'] = $spider->validateKey($_GET['key']);
                     if ($administrador->getCondicion() == 'temporizador') {
                         if ($result['fecha'] = $administrador->getHoy()) {
                             //el usuario tiene un contador de tiempo para iniciar sesión
@@ -362,7 +361,6 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                                                 // Código 2FA correcto, procedemos a la autenticación completa
                                                 $result['status'] = 1;
                                                 $result['message'] = 'Autenticación correcta';
-                                                $result['username'] = $spider->validateKey($_GET['key']); 
                                                 $_SESSION['tiempo'] = time();
                                             }else{
                                                 // El código de 2FA es incorrecto
@@ -404,8 +402,6 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
                 break;
             default:
                 $result['error'] = 'Acción no disponible fuera de la sesión o key incorrecta ';
-                $result['exception'] =  $spider->validateKey($_GET['key']);
-                $result['message'] =  $_GET['key'];
         }
     }
     // Se obtiene la excepción del servidor de base de datos por si ocurrió un problema.

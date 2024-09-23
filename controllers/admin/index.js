@@ -64,20 +64,20 @@ window.onload = async function () {
             console.log('Acabo de presionar el boton de login');
             try {
                 // Petición para iniciar sesión.
-                const DATA = await fetchData(USER_API, 'logIn', FORM);
-                console.log(DATA, 'Estoy en el login dentro del try');
+                const DATA2 = await fetchData(USER_API, 'logIn', FORM);
+                console.log(DATA2, 'Estoy en el login dentro del tryyyyyyyyyyyy');
                 //Se verifica si hay 2FA activado, si lo esta entonces se lo pedira, pero sino ingresara sesion normalmente.
-                if(DATA.TwoFA_required){
+                if(DATA2.TwoFA_required){
                     MODAL.show();
                 }else{
                     //Verifica que la respuesta venga bien, si las credenciales son correctas, de ser asi lo deja iniciar sesion
                     //sino le tira el error.
-                    console.log(DATA, 'Estoy en el else del login');
-                    if (DATA.status) {
-                        await sweetAlert(1, DATA.message, true, 'dashboard.html');
+                    console.log(DATA2, 'Estoy en el else del login');
+                    if (DATA2.status) {
+                        await sweetAlert(1, DATA2.message, true, 'dashboard.html');
                     } else {
-                        await sweetAlert(2, DATA.error, false);
-                        console.log(DATA.exception);
+                        await sweetAlert(2, DATA2.error, false);
+                        console.log(DATA2.exception);
                     }
                 }
             } catch {
