@@ -167,8 +167,8 @@ class Validator
 
     public static function validateNumberArray($value)
     {
-        // Verifica si el valor es un array y tiene exactamente 4 elementos.
-        if (is_array($value) && count($value) === 4) {
+        // Verifica si el valor es un array y tiene exactamente 6 elementos.
+        if (is_array($value) && count($value) === 6) {
             // Recorre el array para verificar que cada elemento sea un número.
             foreach ($value as $item) {
                 if (!is_numeric($item)) {
