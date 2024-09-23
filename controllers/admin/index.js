@@ -85,4 +85,9 @@ window.onload = async function () {
         location.href = 'first_user.html';
         sweetAlert(4, DATA.error, true);
     }
+
+    vanillaTextMask.maskInput({
+        inputElement: document.getElementById('code'),
+        mask: [/\d/, /\d/, /\d/,/\d/, /\d/, /\d/]
+    });
 };
