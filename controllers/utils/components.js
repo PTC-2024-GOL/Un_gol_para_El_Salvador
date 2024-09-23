@@ -293,7 +293,7 @@ const fetchData = async (filename, action, form = null) => {
 
     // Asegúrate de que spiderWeb retorne la variable key
     const { key } = await spiderWeb(); // Desestructuración para obtener la key
-
+    console.log('Esto es lo que se envia al servidor: ', key);
     try {
         // Se declara una constante tipo objeto con la ruta específica del servidor.
         const PATH = new URL(SERVER_URL + filename);
@@ -301,10 +301,11 @@ const fetchData = async (filename, action, form = null) => {
         PATH.searchParams.append('action', action);
         // Se agrega un parámetro con el valor de la key.
         PATH.searchParams.append('key', key);
-        
+
         // Se define una constante tipo objeto con la respuesta de la petición.
         const RESPONSE = await fetch(PATH.href, OPTIONS);
         // Se retorna el resultado en formato JSON.
+        console.log('Esto es lo que se envia al servidor: ', RESPONSE.json());
         return await RESPONSE.json();
     } catch (error) {
         // Se muestra un mensaje en la consola del navegador web cuando ocurre un problema.

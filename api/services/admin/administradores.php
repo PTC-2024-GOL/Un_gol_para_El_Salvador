@@ -243,7 +243,7 @@ if (isset($_GET['action']) && isset($_GET['key'])) {
         }
     } else {
         // Se compara la acción a realizar cuando el administrador no ha iniciado sesión.
-        switch ($_GET['action'] and $_GET['key']) {
+        switch ($_GET['action'] and $spider->validateKey($_GET['key'])) {
                 // Leer usuarios para verificar que hayan en la base de datos
             case 'readUsers':
                 if ($administrador->readAll()) {
