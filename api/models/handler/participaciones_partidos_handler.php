@@ -32,8 +32,8 @@ class ParticipacionesPartidosHandler
     public function searchRows()
     {
         $value = '%' . Validator::getSearchValue() . '%';
-        $sql = "SELECT * FROM vista_jugadores_por_equipo
-                WHERE (nombre_jugador LIKE ? OR apellido_jugador LIKE ?) AND id_partido = ?";
+        $sql = "SELECT * FROM vista_jugadores_por_equipo2
+                WHERE (nombre_jugador LIKE ? OR apellido_jugador LIKE ?) AND id_equipo = ?";
         $params = array($value, $value, $this->idEquipo);
         return Database::getRows($sql, $params);
     }
