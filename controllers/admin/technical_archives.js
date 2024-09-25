@@ -153,7 +153,7 @@ function mostrarArchivos(pagina) {
     ArchivosPagina.forEach(row => {
         const tablaHtml = `
             <tr>
-                <td><img src="${SERVER_URL}images/archivos/${row.ARCHIVO}" height="50" width="50" class="circulo"></td>
+                <td><img src="${SERVER_URL}images/archivos/${row.ARCHIVO}" height="50" width="50"></td>
                 <td>${row.NOMBRE}</td>
                 <td>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
