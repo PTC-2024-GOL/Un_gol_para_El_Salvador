@@ -6,6 +6,7 @@ let SAVE_FORM,
     FOTO;
 let SEARCH_FORM;
 let ROWS_FOUND;
+let ZOOM_IMG;
 
 // Constante tipo objeto para obtener los parámetros disponibles en la URL.
 let PARAMS = new URLSearchParams(location.search);
@@ -57,6 +58,7 @@ const openUpdate = async (id) => {
             ID_DOCUMENTO.value = ROW.ID;
             NOMBRE_ARCHIVO.value = ROW.NOMBRE;
             FOTO.src = SERVER_URL.concat('images/archivos/', ROW.ARCHIVO);
+            ZOOM_IMG.src = `${SERVER_URL}/images/archivos/${ROW.ARCHIVO}`;
         } else {
             sweetAlert(2, DATA.error, false);
         }
@@ -206,6 +208,7 @@ window.onload = async function () {
     console.log(TECNICO);
     // Agrega el HTML del encabezado
     appContainer.innerHTML = adminHtml;
+
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
     titleElement.textContent = 'Archivos';
@@ -246,6 +249,19 @@ window.onload = async function () {
             sweetAlert(2, DATA.exception, false);
         }
     });
+
+    // Cerrar el zoom de la imagen
+    document.getElementById('closeZoom').addEventListener('click', function () {
+        document.getElementById('imageZoom').style.display = 'none';
+    });
+
+    document.getElementById('img').addEventListener('click', function () {
+        document.getElementById('imageZoom').style.display = 'block';
+        SAVE_MODAL.hide();
+    })
+
+    ZOOM_IMG = document.getElementById('zoomImg');
+
     // Constante para establecer el formulario de buscar.
     SEARCH_FORM = document.getElementById('searchForm');
     // Verificar si SEARCH_FORM está seleccionado correctamente
@@ -271,5 +287,16 @@ window.onload = async function () {
             }
             reader.readAsDataURL(file);
         }
+    });
+
+    // Descargar la imagen
+    document.getElementById('downloadBtn').addEventListener('click', function () {
+        let imageUrl = document.getElementById('img').src;
+        let link = document.createElement('a');
+        link.href = imageUrl;
+        link.download = `${NOMBRE_ARCHIVO.value}.jpg`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     });
 };

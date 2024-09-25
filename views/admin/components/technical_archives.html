@@ -71,8 +71,8 @@
                     <div class="container text-center text-md-start text-lg-start">
                         <div class="row align-items-center justify-content-center gy-3 mt-3 mb-2">
                             <div class="col-sm-12 col-md-auto">
-                                <img class="circulo" id="img" src="../../../resources/img/png/default.jpg" width="130px"
-                                    height="130px">
+                                <img id="img" src="../../../resources/img/png/default.jpg" width="130px"
+                                    height="130px" style="cursor: pointer;">
                             </div>
                             <div class="col-sm-12 text-center">
                                 <!-- Botón para cargar imagen -->
@@ -95,5 +95,14 @@
                 </div>
             </form>
         </div>
+    </div>
+</div>
+
+<!--//Contenedor para el zoom de la imagen-->
+<div id="imageZoom">
+    <img id="zoomImg" src="../../../resources/img/png/default.jpg" alt="Descripción de la imagen">
+    <div class="col mt-4 mb-5">
+        <button id="downloadBtn" class="btn btn-light me-2">Descargar</button>
+        <button id="closeZoom" class="btn btn-red-cream-color text-light">Cerrar</button>
     </div>
 </div>

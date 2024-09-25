@@ -94,7 +94,7 @@ window.onload = async function () {
         console.log('Formulario para primer uso');
         // Se direcciona a la página web del primer uso.
         //location.href = 'first_user.html';
-        sweetAlert(4, DATA.error, true);
+        sweetAlert(4, DATA.error, true, 'first_user.html');
         console.log(DATA);
     }
 
