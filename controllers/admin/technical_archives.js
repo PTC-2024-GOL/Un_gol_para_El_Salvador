@@ -293,10 +293,16 @@ window.onload = async function () {
     document.getElementById('downloadBtn').addEventListener('click', function () {
         let imageUrl = document.getElementById('img').src;
         let link = document.createElement('a');
+        // Establecer la propiedad `href` del enlace con el URL de la imagen.
+        // Esto define el destino del enlace, que es el archivo que queremos descargar.
         link.href = imageUrl;
+        // Establecer el atributo `download` del enlace con el nombre deseado para el archivo descargado.
         link.download = `${NOMBRE_ARCHIVO.value}.jpg`;
+        // Agregar el elemento `a` (enlace) al `body` del documento.
         document.body.appendChild(link);
+        // Simular un clic en el enlace para iniciar la descarga del archivo.
         link.click();
+        // Eliminar el enlace del `body` después de hacer clic en él.
         document.body.removeChild(link);
     });
 };
