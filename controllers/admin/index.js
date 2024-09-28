@@ -79,6 +79,7 @@ window.onload = async function () {
                     //sino le tira el error.
                     console.log(DATA2, 'Estoy en el else del login');
                     if (DATA2.status) {
+                        history.replaceState(null, null, 'dashboard.html');
                         await sweetAlert(1, DATA2.message, true, 'dashboard.html');
                     } else {
                         await sweetAlert(2, DATA2.error, false);
