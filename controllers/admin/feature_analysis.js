@@ -220,7 +220,7 @@ const seeModal = async (id) => {
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const openCreate = async (id) => {
+const openCreate = async (id, nombre) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
@@ -234,7 +234,7 @@ const openCreate = async (id) => {
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
-            MODAL_TITLE.textContent = 'Actualizar análisis del jugador';
+            MODAL_TITLE.textContent = `Actualizar análisis del jugador: ${nombre}`;
 
             // Se prepara el formulario.
             SAVE_FORM.reset();
@@ -259,7 +259,7 @@ const openCreate = async (id) => {
         } else {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
-            MODAL_TITLE.textContent = 'Crear análisis del jugador';
+            MODAL_TITLE.textContent = `Crear análisis del jugador: ${nombre}`;
             // Se prepara el formulario.
             SAVE_FORM.reset();
             JUGADOR.value = id;
@@ -393,7 +393,7 @@ async function buscarAnalisis(FORM) {
                 <td>${row.PROMEDIO}</td>
                 <td>${row.JUGADOR}</td>
                 <td>
-                    <button type="button" class="btn transparente" onclick="openCreate(${row.IDJ})">
+                    <button type="button" class="btn transparente" onclick="openCreate(${row.IDJ}, '${row.JUGADOR}')">
                     <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18px" height="18px">
                     </button>
                 </td>
@@ -463,7 +463,7 @@ async function cargarTabla() {
                 <td>${row.PROMEDIO}</td>
                 <td>${row.JUGADOR}</td>
                 <td>
-                    <button type="button" class="btn transparente" onclick="openCreate(${row.IDJ})">
+                    <button type="button" class="btn transparente" onclick="openCreate(${row.IDJ}, '${row.JUGADOR}')">
                     <img src="../../../resources/img/svg/icons_forms/cuerpo_tecnico.svg" width="18px" height="18px">
                     </button>
                 </td>

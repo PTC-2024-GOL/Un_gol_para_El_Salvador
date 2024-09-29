@@ -50,11 +50,11 @@ const openUpdate = async (id) => {
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
-            MODAL_TITLE.textContent = 'Actualizar cuerpo técnico';
-            // Se prepara el formulario.
-            SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
+            MODAL_TITLE.textContent = `Actualizar cuerpo técnico ${ROW.NOMBRE}`;
+            // Se prepara el formulario.
+            SAVE_FORM.reset();
             ID_CUERPOTECNICO.value = ROW.ID;
             CUERPOTECNICO.value = ROW.NOMBRE;
         } else {
@@ -81,9 +81,9 @@ const openReport = () => {
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const openDelete = async (id) => {
+const openDelete = async (id, nombre) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar el cuerpo técnico de forma permanente?');
+    const RESPONSE = await confirmAction(`¿Desea eliminar el cuerpo técnico ${nombre} de forma permanente?`);
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
@@ -132,7 +132,7 @@ const openCreateD = (id) => {
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const openUpdateD = async (id) => {
+const openUpdateD = async (id, nombre) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
@@ -143,7 +143,7 @@ const openUpdateD = async (id) => {
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL_DETAIL.show();
-            MODAL_TITLE_DETAIL.textContent = 'Actualizar cuerpo técnico';
+            MODAL_TITLE_DETAIL.textContent = `Actualizar a ${nombre} del cuerpo técnico`;
             // Se prepara el formulario.
             SAVE_FORM_DETAIL.reset();
             // Se inicializan los campos con los datos.
@@ -164,9 +164,9 @@ const openUpdateD = async (id) => {
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const openDeleteD = async (id) => {
+const openDeleteD = async (id, nombre) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar del cuerpo técnico?');
+    const RESPONSE = await confirmAction(`¿Desea eliminar a ${nombre} del cuerpo técnico?` );
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
@@ -248,7 +248,7 @@ async function mostrarCuerpoTecnico(pagina) {
                                 <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
                                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                                 </button>
-                                <button type="button" class="btn transparente" onclick="openDelete(${row.ID})">
+                                <button type="button" class="btn transparente" onclick="openDelete(${row.ID}, '${row.NOMBRE}')">
                                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                                 </button>
                             </div>
@@ -318,10 +318,10 @@ async function cargarCarrouselParaCuerpoTecnico(id) {
                                     <p class="card-text">${technic.ROL_TECNICO}</p>
                                 </div>
                                 <div class="card-footer p-3">  
-                                   <button type="button" class="btn botones me-3" onclick="openUpdateD(${technic.ID})">
+                                   <button type="button" class="btn botones me-3" onclick="openUpdateD(${technic.ID}, '${technic.TECNICO}')">
                                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                                    </button>
-                                   <button type="button" class="btn botones" onclick="openDeleteD(${technic.ID})">
+                                   <button type="button" class="btn botones" onclick="openDeleteD(${technic.ID}, '${technic.TECNICO}')">
                                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                                    </button>
                                 </div>

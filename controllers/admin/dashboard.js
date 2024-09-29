@@ -268,9 +268,9 @@ const calendar = async () => {
                 const DATA = await fetchData(CALENDAR_API, 'readOne', FORM);
                 if(DATA.status){
                     SAVE_MODAL.show();
-                    MODAL_TITLE.textContent = 'Actualizar evento';
-                    SAVE_FORM.reset();
                     const ROW = DATA.dataset;
+                    MODAL_TITLE.textContent = `Actualizar evento: ${ROW.titulo}`;
+                    SAVE_FORM.reset();
                     ID_CALENDARIO.value = ROW.id_calendario;
                     TITULO.value = ROW.titulo;
                     FECHA_INICIO.value = ROW.fecha_inicio;
@@ -287,7 +287,7 @@ const calendar = async () => {
             //Eliminar el evento
             DELETE_BUTTON.addEventListener('click', async function() {
                 SELECT_MODAL.hide();
-                const RESPONSE = await confirmAction('¿Seguro que quieres eliminar este evento?');
+                const RESPONSE = await confirmAction(`¿Seguro que quieres eliminar el evento ${info.event.title}?`);
 
                 // Se verifica la respuesta del mensaje.
                 if (RESPONSE) {

@@ -54,11 +54,11 @@ const openUpdate = async (id) => {
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
-            MODAL_TITLE.textContent = 'Actualizar una categoría';
-            // Se prepara el formulario.
-            SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
+            MODAL_TITLE.textContent = `Actualizar la categoría ${ROW.nombre_categoria}`;
+            // Se prepara el formulario.
+            SAVE_FORM.reset();
             ID_CATEGORIAS.value = ROW.id_categoria;
             NOMBRE_CATEGORIA.value = ROW.nombre_categoria;
             EDAD_MIN.value = ROW.edad_minima_permitida;
@@ -78,9 +78,9 @@ const openUpdate = async (id) => {
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const openDelete = async (id) => {
+const openDelete = async (id, nombre) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar la categoría?');
+    const RESPONSE = await confirmAction(`¿Desea eliminar la categoría ${nombre}?`);
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
@@ -176,10 +176,10 @@ const openUpdateHc = async (id) => {
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SEE_MODAL.show();
+            const ROW = DATA.dataset;
             MODAL_TITLE1.textContent = 'Actualizar el horario a la categoría';
             // Se prepara el formulario.
             // Se inicializan los campos con los datos.
-            const ROW = DATA.dataset;
             ID_HORARIO_CAT.value = ROW.id_horario_categoria;
             fillSelect(API, 'readAll', 'categoriaHora', ROW.id_categoria);
             fillSelect(HORARIO_API, 'readAll', 'horarioCat', ROW.id_horario);
@@ -303,7 +303,7 @@ async function mostrarCategorias(pagina) {
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id_categoria})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_categoria})">
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_categoria}, '${row.nombre_categoria}')">
                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
                 </td>
