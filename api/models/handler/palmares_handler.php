@@ -26,9 +26,9 @@ class PalmaresHandler
                 FROM palmares p
                 INNER JOIN equipos e USING(id_equipo)
                 INNER JOIN temporadas t USING(id_temporada)
-                WHERE lugar LIKE ?
+                WHERE p.lugar LIKE ? OR e.nombre_equipo LIKE ?
                 ORDER BY lugar;';
-        $params = array($value);
+        $params = array($value,$value);
         return Database::getRows($sql, $params);
     }
 

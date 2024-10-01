@@ -38,13 +38,13 @@ const openCreate = () => {
 function actualizarMedalla(lugar) {
     switch (lugar) {
         case "Campeón":
-            LUGAR_IMG.src = "../../../resources/img/png/gold.png";
+            LUGAR_IMG.src = "../../../resources/img/png/primero.png";
             break;
         case "Subcampeón":
-            LUGAR_IMG.src = "../../../resources/img/png/plate.png";
+            LUGAR_IMG.src = "../../../resources/img/png/segundo.png";
             break;
         case "Tercer lugar":
-            LUGAR_IMG.src = "../../../resources/img/png/bronce.png";
+            LUGAR_IMG.src = "../../../resources/img/png/tercero.png";
             break;
         default:
             LUGAR_IMG.src = "../../../resources/img/png/default.png"; // Ruta de imagen predeterminada
@@ -161,11 +161,11 @@ async function fillTable(form = null) {
 function verMedalla(lugar) {
     switch (lugar) {
         case "Campeón":
-            return "../../../resources/img/png/gold.png";
+            return "../../../resources/img/png/primero.png";
         case "Subcampeón":
-            return "../../../resources/img/png/plate.png";
+            return "../../../resources/img/png/segundo.png";
         case "Tercer lugar":
-            return "../../../resources/img/png/bronce.png";
+            return "../../../resources/img/png/tercero.png";
         default:
             return "../../../resources/img/png/default.png";
     }
@@ -188,7 +188,7 @@ function mostrarpalmares(pagina) {
                     <td>${row.nombre_equipo}</td>
                     <td>${row.nombre_temporada}</td>
                     <td>
-                    <img src="${verMedalla(row.lugar)}" class="card-img-top logo_equipo_palmares text-end" alt="${row.lugar}">
+                    <img src="${verMedalla(row.lugar)}" class="card-img-top logo_medalla_palmares text-end" alt="${row.lugar}">
                     </td>
                     <td>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.ID}, '${row.nombre_equipo} fue ${row.lugar} en la ${row.nombre_temporada}')">
@@ -244,7 +244,7 @@ window.onload = async function () {
     appContainer.innerHTML = contentHtml;
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
-    titleElement.textContent = 'Palmares';
+    titleElement.textContent = 'Reconocimientos';
     ROWS_FOUND = document.getElementById('rowsFound');
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
