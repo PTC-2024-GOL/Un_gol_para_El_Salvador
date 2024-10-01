@@ -69,10 +69,10 @@ const openCreate = async () => {
 */
 
 let idJugador;
-const openPage = async (id) => {
+const openPage = async (id, nombre) => {
     idJugador = id;
     SEE_MEDICAL.show();
-    MODAL_TITLE_MEDICAL.textContent = 'Rendimiento físico del jugador'
+    MODAL_TITLE_MEDICAL.textContent = `Rendimiento físico de ${nombre}`
     await estadofisico(id);
 }
 
@@ -272,9 +272,9 @@ const openUpdate = async (id) => {
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const openDelete = async (id, nombre, apellido) => {
+const openDelete = async (id, nombre) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction(`¿Desea eliminar al jugador ${nombre} ${apellido}?`);
+    const RESPONSE = await confirmAction(`¿Desea eliminar al jugador ${nombre}?`);
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
@@ -325,7 +325,7 @@ function showPlayerSoccers(page) {
                     <td>${row.posicionPrincipal}</td>
                     <td>${row.fecha_creacion}</td>
                     <td>
-                <button type="button" class="btn transparente" onclick="openPage(${row.id_jugador})">
+                <button type="button" class="btn transparente" onclick="openPage(${row.id_jugador}, '${row.nombre_jugador} ${row.apellido_jugador}')">
                     <img src="../../../resources/img/svg/icons_forms/heart.svg" width="18" height="18">
                     </button>
                 </td>
@@ -333,7 +333,7 @@ function showPlayerSoccers(page) {
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id_jugador})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_jugador}, '${row.nombre_jugador}', '${row.apellido_jugador}')">
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_jugador}, '${row.nombre_jugador} ${row.apellido_jugador}')">
                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
                     </td>

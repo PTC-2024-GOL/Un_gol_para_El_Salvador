@@ -58,7 +58,7 @@ const openPag = () => {
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const seeModal = async (id) => {
+const seeModal = async (id, nombre) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
@@ -79,7 +79,7 @@ const seeModal = async (id) => {
     } catch (Error) {
         console.log(Error);
         SEE_MODAL.show();
-        MODAL_TITLE.textContent = 'Elegir horario';
+        MODAL_TITLE.textContent = `Elegir horario para el equipo ${nombre}`;
         SEE_FORM.reset();
     }
 }
@@ -110,7 +110,7 @@ function showInjuries(page) {
                 <td>${row.nombre_categoria}</td>
                 
                 <td>
-                    <button type="button" class="btn transparente" onclick="seeModal(${row.id_equipo})">
+                    <button type="button" class="btn transparente" onclick="seeModal(${row.id_equipo}, '${row.nombre_equipo}')">
                     <img src="../../../resources/img/svg/icons_forms/reloj.png" width="30" height="30">
                     </button>
                 </td>
@@ -173,7 +173,7 @@ async function cargarTabla(form = null) {
                 <td>${row.nombre_categoria}</td>
                 
                 <td>
-                    <button type="button" class="btn transparente" onclick="seeModal(${row.id_equipo})">
+                    <button type="button" class="btn transparente" onclick="seeModal(${row.id_equipo}, '${row.nombre_equipo}')">
                     <img src="../../../resources/img/svg/icons_forms/reloj.png" width="30" height="30">
                     </button>
                 </td>

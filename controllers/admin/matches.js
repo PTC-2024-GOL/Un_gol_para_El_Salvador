@@ -137,7 +137,7 @@ const seeModal = async (id) => {
 * Parámetros: id (identificador del registro seleccionado).
 * Retorno: ninguno.
 */
-const openUpdate = async (id) => {
+const openUpdate = async (id, nombre) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
@@ -148,7 +148,7 @@ const openUpdate = async (id) => {
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
-            MODAL_TITLE2.textContent = 'Actualizar partido';
+            MODAL_TITLE2.textContent = `Actualizar partido ${nombre}`;
             // Se prepara el formulario.
             SAVE_FORM.reset();
             MENSAJEALERT.classList.add('d-none');
@@ -180,9 +180,9 @@ const openUpdate = async (id) => {
 * Parámetros: id (identificador del registro seleccionado).
 * Retorno: ninguno.
 */
-const openDelete = async (id) => {
+const openDelete = async (id, nombre) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar el partido de forma permanente?');
+    const RESPONSE = await confirmAction(`¿Desea eliminar el partido entre ${nombre} de forma permanente?`);
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
@@ -262,13 +262,13 @@ function showInjuries(page) {
                             </div>
                         </div>
                         <hr>
-                        <button class="btn bg-yellow-principal-color text-white btn-sm rounded-3 mb-3" onclick="openUpdate(${row.id_partido})">
+                        <button class="btn bg-yellow-principal-color text-white btn-sm rounded-3 mb-3" onclick="openUpdate(${row.id_partido}, '${row.nombre_equipo} vs ${row.nombre_rival}')">
                             Editar partido
                         </button>
                         <button class="btn bg-blue-principal-color text-white btn-sm rounded-3 mb-3" onclick="seeModal(${row.id_partido})">
                             Más información
                         </button>
-                        <button class="btn bg-red-cream-color text-white btn-sm rounded-3 mb-3" onclick="openDelete(${row.id_partido})">
+                        <button class="btn bg-red-cream-color text-white btn-sm rounded-3 mb-3" onclick="openDelete(${row.id_partido}, '${row.nombre_equipo} vs ${row.nombre_rival}')">
                             Eliminar
                         </button>
                         <button class="btn bg-blue-color text-white btn-sm rounded-3 mb-3" onclick="openCalls(${row.id_partido})">

@@ -94,11 +94,11 @@ const openUpdate = async (id) => {
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
-            MODAL_TITLE.textContent = 'Actualizar tipo de posición';
-            // Se prepara el formulario.
-            SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
+            MODAL_TITLE.textContent = `Actualizar tipo de posición ${ROW.posicion}`;
+            // Se prepara el formulario.
+            SAVE_FORM.reset();
             ID_POSICION.value = ROW.id_posicion;
             NOMBRE_POSICION.value = ROW.posicion;
             fillSelected(lista_select, 'readAll', 'areaJuego', ROW.area_de_juego);
@@ -117,9 +117,9 @@ const openUpdate = async (id) => {
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const openDelete = async (id) => {
+const openDelete = async (id, nombre) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar la posición?');
+    const RESPONSE = await confirmAction(`¿Desea eliminar la posición ${nombre}?`);
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
@@ -252,7 +252,7 @@ function mostrarPosiciones(pagina) {
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id_posicion})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_posicion})">
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_posicion}, '${row.posicion}')">
                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
                     </td>
