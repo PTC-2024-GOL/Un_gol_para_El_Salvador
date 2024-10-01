@@ -91,7 +91,6 @@ const zona2func = async () => {
 
 const estadofisico = async (id) => {
     const contenedorOne = document.getElementById('contenedor_estados');
-    const cargarTabla = document.getElementById('tableEstadoFisico');
         contenedorOne.innerHTML = `<div class="ps-5 pe-5 mt-3">
                     <div class="p-3 mb-0">
                         <div class="row justify-content-center align-items-center bg-blue-light-color">
@@ -111,8 +110,11 @@ const estadofisico = async (id) => {
                     </div>
 
                     <!--Insertamos la tabla con los registro del estado fisico del jugador-->
-                    <div class="p-3" id="tableEstadoFisico">
+                    <div class="pt-3 pe-3 ps-3" id="tableEstadoFisico">
 
+                    </div>
+                    <div class="text-center d-none mb-4" id="noData">
+                        <p>Aún no hay registros para este jugador</p>
                     </div>
                     <div class="modal-footer col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center">
                         <button type="submit" class="btn bg-blue-principal-color text-white"
@@ -120,7 +122,8 @@ const estadofisico = async (id) => {
                     </div>
                 </div>`;
         try {
-            cargarTabla.innerHTML = '';
+            const cargarTabla = document.getElementById('tableEstadoFisico');
+            const noDataDiv = document.getElementById('noData');
             const FORM = new FormData();
             FORM.append('idJugador', id)
 
@@ -147,7 +150,7 @@ const estadofisico = async (id) => {
                     cargarTabla.innerHTML += tablaHtml;
                 })
             } else {
-                await sweetAlert(3, DATA.error, true)
+                noDataDiv.classList.remove('d-none');
             }
         } catch (error) {
             console.log('Error al obtener datos de la API')
