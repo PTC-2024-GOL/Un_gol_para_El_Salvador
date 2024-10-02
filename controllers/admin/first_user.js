@@ -57,11 +57,13 @@ window.onload = async function () {
     // Se comprueba si existe una sesión, de lo contrario se sigue con el flujo normal.
     if (DATA.session) {
         // Se direcciona a la página web de bienvenida.
+        history.replaceState(null, null, 'dashboard.html');
         location.href = 'dashboard.html';
     } else if (DATA.status) {
         // Se direcciona a la página web del login.
+        history.replaceState(null, null, 'index.html');
         location.href = 'index.html';
-        sweetAlert(4, DATA.error, true);
+        sweetAlert(4, DATA.error, true,);
     } else {
         // Se mantiene en el primer uso.
         SAVE_FORM = document.getElementById('saveForm');
@@ -74,6 +76,7 @@ window.onload = async function () {
             // Se comprueba si existe una sesión, de lo contrario se sigue con el flujo normal.
             if (DATA.session) {
                 // Se direcciona a la página web de bienvenida.
+                history.replaceState(null, null, 'dashboard.html');
                 sweetAlert(4, DATA.error, true, 'dashboard.html');
             } else if (DATA.status) {
                 sweetAlert(4, 'Ya existen administradores dentro del sistema', true, 'index.html');
@@ -85,6 +88,7 @@ window.onload = async function () {
                 console.log(DATA);
                 // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
                 if (DATA.status) {
+                    history.replaceState(null, null, 'index.html');
                     sweetAlert(1, DATA.message, true, 'index.html');
                 } else {
                     sweetAlert(2, DATA.error, false);
