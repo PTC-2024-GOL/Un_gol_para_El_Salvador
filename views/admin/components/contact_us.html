@@ -22,6 +22,68 @@
                     (503) 69839847
                 </div>
             </div>
+            <div class="row d-flex justify-content-center mt-4">
+                <div class="col-5">
+                    <button type="button"
+                        class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
+                        data-bs-toggle="modal" data-bs-target="#saveModal">
+                        <img src="../../../resources/img/png/manual.png" width="25px" class="me-1">
+                        Ver Manual Técnico
+                    </button>
+                </div>
+                <div class="col-5">
+                    <button type="button"
+                        class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
+                        data-bs-toggle="modal" data-bs-target="#userManualModal"> <!-- Cambiado el target para el nuevo modal -->
+                        <img src="../../../resources/img/png/manual.png" width="25px" class="me-1">
+                        Ver Manual de Usuario
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Componente Modal para el Manual Técnico -->
+<div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-principal-color">
+                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                <h1 class="modal-title fs-5 text-white">Manual Técnico</h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body row g-3">
+                <div class="d-flex justify-content-center">
+                    <iframe src="https://online.fliphtml5.com/wneko/yttu/" seamless="seamless" scrolling="no"
+                        frameborder="0" allowfullscreen="true" allowtransparency="true"
+                        style="width:100%; height:575px;"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Componente Modal para el Manual de Usuario -->
+<div class="modal fade" id="userManualModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="modalUserTitle" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-principal-color">
+                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                <h1 class="modal-title fs-5 text-white">Manual de Usuario</h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body row g-3">
+                <div class="d-flex justify-content-center">
+                    <iframe src="URL_DEL_MANUAL_DE_USUARIO" seamless="seamless" scrolling="no"
+                        frameborder="0" allowfullscreen="true" allowtransparency="true"
+                        style="width:100%; height:575px;"></iframe>
+                </div>
+            </div>
         </div>
     </div>
 </div>
