@@ -112,11 +112,11 @@ const openUpdate = async (id) => {
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
-            MODAL_TITLE.textContent = 'Actualizar un horario';
-            // Se prepara el formulario.
-            SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
+            MODAL_TITLE.textContent = `Actualizar el horario: ${ROW.nombre_horario}`;
+            // Se prepara el formulario.
+            SAVE_FORM.reset();
             ID_HORARIOS.value = ROW.id_horario;
             NOMBRE.value = ROW.nombre_horario;
             fillSelected(lista_select, 'readAll', 'diaEntreno', ROW.dia);
@@ -138,9 +138,9 @@ const openUpdate = async (id) => {
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const openDelete = async (id) => {
+const openDelete = async (id, nombre) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar el horario?');
+    const RESPONSE = await confirmAction(`¿Desea eliminar el horario: ${nombre}?`);
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
@@ -220,7 +220,7 @@ function mostrarHorarios(pagina) {
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id_horario})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_horario})">
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_horario}, '${row.nombre_horario}')">
                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
                     </td>

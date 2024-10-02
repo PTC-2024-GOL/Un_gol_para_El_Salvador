@@ -26,7 +26,7 @@ const openCreate = () => {
     //ID_CONTENIDO = ''
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
-    MODAL_TITLE.textContent = 'Agregar una contenido';
+    MODAL_TITLE.textContent = 'Agregar un nuevo momento de juego';
     // Se prepara el formulario.
     SAVE_FORM.reset();
     zona2func();
@@ -36,7 +36,7 @@ const openCreate = () => {
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const openUpdate = async (id) => {
+const openUpdate = async (id, nombre) => {
     try {
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
@@ -47,7 +47,7 @@ const openUpdate = async (id) => {
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
-            MODAL_TITLE.textContent = 'Actualizar el contenido';
+            MODAL_TITLE.textContent = `Actualizar el momento de juego: ${nombre}`;
             // Se prepara el formulario.
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
@@ -85,9 +85,9 @@ const openUpdate = async (id) => {
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const openDelete = async (id) => {
+const openDelete = async (id, nombre) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar el contenido?');
+    const RESPONSE = await confirmAction(`¿Desea eliminar el contenido: ${nombre} de forma definitiva?`);
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
@@ -138,10 +138,10 @@ function showInjuries(page) {
                 <td class="text-center">${row.momento_juego}</td>
                 <td class="text-center">${row.zona_campo}</td>
                 <td class="text-end">
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id_tema_contenido})">
+                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id_tema_contenido}, '${row.momento_juego}/${row.zona_campo}')">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_tema_contenido})">
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_tema_contenido}, '${row.momento_juego}/${row.zona_campo}')">
                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
                 </td>

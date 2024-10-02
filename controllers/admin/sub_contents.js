@@ -21,7 +21,7 @@ async function loadComponent(path) {
 const openCreate = async () => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
-    MODAL_TITLE.textContent = 'Agregar sub-contenido';
+    MODAL_TITLE.textContent = 'Agregar principio';
     // Se prepara el formulario.
     ID_SUBCONTENIDO.value = null;
     SAVE_FORM.reset();
@@ -43,11 +43,11 @@ const openUpdate = async (id) => {
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
-            MODAL_TITLE.textContent = 'Actualizar subcontenido';
+            const ROW = DATA.dataset;
+            MODAL_TITLE.textContent = `Actualizar el principio: ${ROW.sub_tema_contenido}`;
             // Se prepara el formulario.
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
-            const ROW = DATA.dataset;
             ID_SUBCONTENIDO.value = ROW.id_sub_tema_contenido;
             NOMBRE_SUBCONTENIDO.value = ROW.sub_tema_contenido;
             await fillSelect(API, 'readOneContents', 'contenido', ROW.id_tema_contenido);
@@ -66,9 +66,9 @@ const openUpdate = async (id) => {
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const openDelete = async (id) => {
+const openDelete = async (id, nombre) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar el subcontenido?');
+    const RESPONSE = await confirmAction(`¿Desea eliminar el principio: ${nombre}?`);
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
@@ -122,7 +122,7 @@ function showInjuries(page) {
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id_sub_tema_contenido})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_sub_tema_contenido})">
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_sub_tema_contenido}, '${row.sub_tema_contenido}')">
                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
                     </td>
@@ -186,7 +186,7 @@ async function fillTable(form = null) {
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id})">
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.id}, '${row.subcontenido} - ${row.contenido} ')">
                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
                     </td>
