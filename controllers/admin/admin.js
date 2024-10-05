@@ -199,7 +199,7 @@ function mostrarAdministradores(pagina) {
                 <td>${row.NOMBRE}</td>
                 <td>${row.CORREO}</td>
                 <td>${row.TELÉFONO}</td>
-                <td>${row.DUI}</td>
+                <td>${row.NACIMIENTO}</td>
                 <td>${row.ALIAS}</td>
                 <td class="${getRowColor(row.ESTADO)}">${row.ESTADO}</td>
                 <td>
