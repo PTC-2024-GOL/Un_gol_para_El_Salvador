@@ -321,6 +321,9 @@ async function fillCards(form = null) {
                         <button class="btn bg-red-cream-color text-white btn-sm rounded-3 mb-3" onclick="openDelete(${row.id_partido})">
                             Eliminar
                         </button>
+                        <button class="btn bg-blue-color text-white btn-sm rounded-3 mb-3" onclick="openCalls(${row.id_partido})">
+                            Convocatoria
+                        </button>
                     </div>
                 </div>`;
                 cargarCartas.innerHTML += cardsHtml;
@@ -376,6 +379,11 @@ async function fillCards(form = null) {
             cargarCartas.innerHTML += cardsHtml;
         });
     }
+}
+
+const openCalls = (idPartido) =>{
+    // Redirecciona a la otra pantalla y manda tambien el id del equipo
+    window.location.href = `../pages/calls_to_matches.html?idPartido=${idPartido}`;
 }
 
 // window.onload
