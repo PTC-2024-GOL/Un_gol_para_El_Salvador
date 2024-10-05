@@ -36,7 +36,7 @@ class JornadasHandler
     public function searchRowsTechnics()
     {
         $value = '%' . Validator::getSearchValue() . '%';
-        $sql = 'SELECT 
+        $sql = 'SELECT DISTINCT
         j.id_jornada AS ID,
         j.nombre_jornada AS NOMBRE,
         j.numero_jornada AS NUMERO,
