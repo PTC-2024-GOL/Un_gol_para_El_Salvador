@@ -609,7 +609,7 @@ class Validator
         }
         return false;
     }
-
+/* 
     public static function generar_salt($dui)
     {
         // Arreglo de caracteres especiales que serán utilizados en el salt.
@@ -733,5 +733,5 @@ class Validator
     public static function cbrt($n)
     {
         return pow($n, 1 / 3);
-    }
+    } */
 }

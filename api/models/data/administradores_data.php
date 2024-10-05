@@ -122,6 +122,7 @@ class AdministradoresData extends AdministradoresHandler
             $this->data_error = 'El DUI debe tener el formato ########-#';
             return false;
         } else {
+            /* 
             // Generar la salt utilizando el método de la clase Validator.
             $salt = Validator::generar_salt($value);
             // Aplicar el hash SHA-256 a la concatenación.
@@ -130,7 +131,9 @@ class AdministradoresData extends AdministradoresHandler
             $dui_con_salt = '$jp49$' . $salt . $hash;
             // Asignar el DUI al atributo.
             $this->dui = $dui_con_salt;
-            // O simplemente devolver el hash si no necesitas guardarlo en la clase.
+            // O simplemente devolver el hash si no necesitas guardarlo en la clase. 
+            */
+            $this->dui = $value;
             return true;
         }
     }
