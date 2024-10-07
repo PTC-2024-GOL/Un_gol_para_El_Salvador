@@ -127,7 +127,7 @@ class Database
                 }
                 // Revisa si el error está relacionado con una eliminación o actualización en conflicto por clave foránea.
                 elseif (preg_match("/Cannot delete or update a parent row: a foreign key constraint fails/", $message)) {
-                    self::$error = 'Por seguridad no puedes eliminar o actualizar el registro porque está siendo utilizado por otra tabla. Verifica la integridad referencial.';
+                    self::$error = 'Por seguridad no puedes eliminar o actualizar el registro porque está siendo utilizado por otra tabla. Verifica donde más lo utilizas.';
                 }
                 // Otras posibles violaciones de integridad que no se detecten específicamente.
                 else {
