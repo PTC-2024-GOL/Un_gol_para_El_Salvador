@@ -144,7 +144,7 @@ if (isset($_GET['action'])) {
                     // Se asigna el estado del archivo después de eliminar.
                     $result['fileStatus'] = Validator::deleteFile($jugador::RUTA_IMAGEN, $jugador->getFilename());
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminar al jugador. Por seguridad no puedes eliminar este jugador porque esta siendo utilizado en otras tablas.';
+                    $result['error'] = 'Ocurrió un problema al eliminar al jugador.';
                 }
                 break;
             default:

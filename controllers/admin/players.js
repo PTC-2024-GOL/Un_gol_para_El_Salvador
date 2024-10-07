@@ -296,7 +296,7 @@ const openDelete = async (id, nombre) => {
                 // Se carga nuevamente la tabla para visualizar los cambios.
                 await fillTable();
             } else {
-                await sweetAlert(2, DATA.error, false);
+                await sweetAlert(2, `${DATA.error} \n\n${DATA.exception}`, false);
             }
         }
     }
@@ -511,7 +511,7 @@ window.onload = async function () {
             // Se carga nuevamente la tabla para visualizar los cambios.
             await fillTable();
         } else {
-            await sweetAlert(2, DATA.error, false);
+            await sweetAlert(2, `${DATA.error} \n\n${DATA.exception}`, false);
         }
     });
 
