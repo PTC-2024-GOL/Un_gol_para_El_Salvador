@@ -140,7 +140,7 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Credenciales incorrectas';
                 } elseif ($tecnico->checkStatus()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Autenticación correcta';
+                    $result['message'] = 'Autenticación verificada correctamente';
                 } else {
                     $result['error'] = 'La cuenta ha sido desactivada';
                 }
