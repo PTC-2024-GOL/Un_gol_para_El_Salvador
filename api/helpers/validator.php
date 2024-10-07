@@ -553,7 +553,7 @@ class Validator
     {
         // Se dividen las partes de la fecha y se guardan en un arreglo en el siguiene orden: año, mes y día.
         $datev = strtotime($value);
-        $datem = strtotime('-6 years', time());
+        $datem = strtotime('-4 years', time());
         $datea = strtotime('-30 years', time());
         if ($datev > $datem) {
             return false;

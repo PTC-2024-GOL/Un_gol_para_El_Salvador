@@ -199,7 +199,7 @@ class JugadoresData extends JugadoresHandler
             $this->nacimientoJ = $value;
             return true;
         } else{
-            $this->data_error = 'El jugador debe ser mayor a los cinco años y menor a los 30 años';
+            $this->data_error = 'El jugador debe ser mayor a los tres años y menor a los 30 años';
             return false;
         }
     }
