@@ -44,7 +44,7 @@ class PlantillasHandler
                 WHERE 
                 dct.id_tecnico = ? AND p.nombre_plantilla LIKE ?
                 ORDER BY p.nombre_plantilla;';
-        $params = array($_SESSION['idTecnico'],$value);
+        $params = array($_SESSION['idTecnico'], $value);
         return Database::getRows($sql, $params);
     }
 
@@ -81,6 +81,7 @@ class PlantillasHandler
                 detalles_cuerpos_tecnicos dct ON e.id_cuerpo_tecnico = dct.id_cuerpo_tecnico
                 WHERE 
                 dct.id_tecnico = ?
+                AND p.id_plantilla IS NOT NULL
                 ORDER BY p.nombre_plantilla;';
         $params = array($_SESSION['idTecnico']);
         return Database::getRows($sql, $params);

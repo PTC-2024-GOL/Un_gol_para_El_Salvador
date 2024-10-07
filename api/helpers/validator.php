@@ -609,4 +609,129 @@ class Validator
         }
         return false;
     }
+/* 
+    public static function generar_salt($dui)
+    {
+        // Arreglo de caracteres especiales que serán utilizados en el salt.
+        $caracteres_especiales = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')'];
+
+        // Alfabeto para convertir resultados numéricos en letras si están en el rango 1-26.
+        $alfabeto = range('A', 'Z');
+
+        // Remover el guion del formato del DUI (ejemplo: "12345678-9" -> "123456789").
+        $dui = str_replace('-', '', $dui);
+
+        $salt = '';  // Variable que almacenará el salt final generado.
+
+        // Iterar a través de cada dígito del DUI.
+        for ($i = 0; $i < strlen($dui); $i++) {
+            // Convertir el dígito actual a un número entero.
+            $digito = (int)$dui[$i];
+            $resultado = 0;  // Inicializamos la variable que contendrá el resultado de la operación.
+
+            // Dependiendo de la posición del dígito (índice + 1), aplicar una operación distinta.
+            switch ($i + 1) {
+                case 1:
+                    // Para el primer dígito: aplicar una suma con una derivada.
+                    // Derivada de f(x) = x^2 + 3x -> f'(x) = 2x + 3
+                    // Si el dígito es 0, aplicamos el coseno para evitar 0 en el resultado.
+                    $resultado = ($digito == 0) ? cos(0) + pow(1, 1) : 2 * $digito + 3;
+                    break;
+                case 2:
+                    // Para el segundo dígito: aplicar una resta con función exponencial.
+                    // Exponencial: e^(x - 3) para aumentar la complejidad.
+                    // Si el dígito es 0, aplicamos el coseno.
+                    $resultado = ($digito == 0) ? cos(0) + pow(2, 2) : exp($digito - 3);
+                    break;
+                case 3:
+                    // Para el tercer dígito: aplicar una división con logaritmo natural.
+                    // Logaritmo natural: ln(x + 1) para evitar valores negativos o infinitos.
+                    $resultado = ($digito == 0) ? cos(0) + pow(3, 3) : log($digito + 1);
+                    break;
+                case 4:
+                    // Nueva operación: Suma con función factorial y logaritmo.
+                    // Aplicamos factorial al valor absoluto del dígito y le sumamos log(digito + 10)
+                    $resultado = ($digito == 0) ? cos(0) + pow(4, 4) : self::factorial($digito) + log($digito + 10);
+                    break;
+                case 5:
+                    // Nueva operación: Potencia elevada con raíz cúbica.
+                    // Elevar al cuadrado el dígito y tomar la raíz cúbica del resultado.
+                    $resultado = ($digito == 0) ? cos(0) + pow(5, 5) : pow($digito, 2) * self::cbrt($digito);
+                    break;
+                case 6:
+                    // Nueva operación: Logaritmo en base 10 combinado con función exponencial.
+                    // Aplicamos logaritmo base 10 y luego exponencial.
+                    $resultado = ($digito == 0) ? cos(0) + pow(6, 6) : exp(log10($digito + 1));
+                    break;
+                case 7:
+                    // Nueva operación: Tangente hiperbólica con coseno inverso.
+                    // Calculamos el coseno inverso y combinamos con tangente hiperbólica.
+                    $resultado = ($digito == 0) ? cos(0) + pow(7, 7) : atanh($digito / 10) + acos($digito / 10);
+                    break;
+                case 8:
+                    // Nueva operación: Logaritmo de raíz cuadrada y multiplicación por pi.
+                    // Tomamos la raíz cuadrada del dígito y multiplicamos por pi.
+                    $resultado = ($digito == 0) ? cos(0) + pow(8, 8) : sqrt($digito) * M_PI;
+                    break;
+                case 9:
+                    // Nueva operación: Potencia de euler (e^x) combinada con tangente inversa.
+                    // Aplicamos la potencia de Euler y luego la tangente inversa.
+                    $resultado = ($digito == 0) ? cos(0) + pow(9, 9) : atan($digito) + exp($digito / 10);
+                    break;
+            }
+
+            // Redondeamos el resultado para evitar valores con decimales.
+            $resultado = round($resultado);
+
+            // Validar si el resultado es demasiado grande o negativo.
+            if ($resultado < 0) {
+                // Si es negativo, tomamos los últimos dos dígitos y los convertimos a positivo.
+                $resultado = abs($resultado);
+                $resultado = (int)substr($resultado, -2);  // Tomamos los últimos dos dígitos.
+            } elseif ($resultado > 99) {
+                // Si es demasiado grande (más de 99), tomamos solo los primeros dos dígitos.
+                $resultado = (int)substr($resultado, 0, 2);  // Tomamos los primeros dos dígitos.
+            }
+
+            // Si el resultado es mayor a 27, solo usamos uno de los dos dígitos (para generar letras).
+            if ($resultado > 27) {
+                $resultado = (int)substr((string)$resultado, 0, 1);
+            }
+
+            // Obtener el primer dígito del resultado para seleccionar el carácter especial.
+            $primer_digito = abs((int)($resultado / 10)) % 10;
+
+            // Seleccionamos un carácter especial basado en el primer dígito.
+            $caracter_especial = $caracteres_especiales[$primer_digito % count($caracteres_especiales)];
+
+            // Convertimos el resultado en una letra si está en el rango 1-26; de lo contrario, dejamos el número.
+            $letra = ($resultado > 0 && $resultado <= 26)
+                ? $alfabeto[$resultado - 1]  // Convertimos a letra si está en el rango.
+                : $resultado;  // Si no, mantenemos el número.
+
+            // Redondeamos el resultado y obtenemos solo el primer dígito.
+            $resultado = abs((int)substr((string)round($resultado), 0, 1));
+            
+            // Construimos la sal combinando el carácter especial, el número y la letra.
+            $salt .= $caracter_especial . '.' . $resultado . '.' . $letra;
+        }
+
+        // Devolvemos la sal generada.
+        return $salt;
+    }
+
+    // Función auxiliar para calcular el factorial de un número.
+    public static function factorial($n)
+    {
+        if ($n <= 1) {
+            return 1;
+        }
+        return $n * self::factorial($n - 1);
+    }
+
+    // Función para calcular la raíz cúbica.
+    public static function cbrt($n)
+    {
+        return pow($n, 1 / 3);
+    } */
 }

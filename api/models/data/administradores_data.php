@@ -114,18 +114,30 @@ class AdministradoresData extends AdministradoresHandler
             return false;
         }
     }
-
     // Validación y asignación del DUI del administrador.
     public function setDUI($value)
     {
+        // Validar si el DUI tiene el formato correcto.
         if (!Validator::validateDUI($value)) {
             $this->data_error = 'El DUI debe tener el formato ########-#';
             return false;
         } else {
+            /* 
+            // Generar la salt utilizando el método de la clase Validator.
+            $salt = Validator::generar_salt($value);
+            // Aplicar el hash SHA-256 a la concatenación.
+            $hash = hash('sha256', $value);
+            // Concatenar el DUI con la salt generada.
+            $dui_con_salt = '$jp49$' . $salt . $hash;
+            // Asignar el DUI al atributo.
+            $this->dui = $dui_con_salt;
+            // O simplemente devolver el hash si no necesitas guardarlo en la clase. 
+            */
             $this->dui = $value;
             return true;
         }
     }
+
 
     // Validación y asignación de la fecha de nacimiento del administrador.
     public function setNacimiento($value)

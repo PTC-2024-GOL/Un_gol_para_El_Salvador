@@ -27,6 +27,7 @@ const getCode = async () => {
         const DATA = await fetchData(USER_API, 'logIn', FORM);
         //Si viene bien entonces inicia sesion, de lo contrario le tira el error.
         if (DATA.status) {
+            history.replaceState(null, null, 'dashboard.html');
             await sweetAlert(1, DATA.message, true, 'dashboard.html');
         } else {
             await sweetAlert(2, DATA.error, false);

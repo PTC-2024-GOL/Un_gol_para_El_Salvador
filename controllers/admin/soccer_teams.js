@@ -99,11 +99,11 @@ const openUpdate = async (id) => {
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
-            MODAL_TITLE.textContent = 'Actualizar equipo';
+            const ROW = DATA.dataset;
+            MODAL_TITLE.textContent = `Actualizar equipo ${ROW.NOMBRE}`;
             // Se prepara el formulario.
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
-            const ROW = DATA.dataset;
             ID_EQUIPO.value = ROW.ID;
             NOMBRE_EQUIPO.value = ROW.NOMBRE;
             TELEFONO_EQUIPO.value = ROW.telefono_contacto;
@@ -126,9 +126,9 @@ const openUpdate = async (id) => {
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const openDelete = async (id) => {
+const openDelete = async (id, nombre) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar el equipo?');
+    const RESPONSE = await confirmAction(`¿Desea eliminar el equipo: ${nombre}?`);
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
@@ -184,7 +184,7 @@ function showSoccerTeam(page) {
                         <button type="button" class="btn transparente" onclick="openUpdate(${row.ID})">
                         <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                         </button>
-                        <button type="button" class="btn transparente" onclick="openDelete(${row.ID})">
+                        <button type="button" class="btn transparente" onclick="openDelete(${row.ID}, '${row.NOMBRE}')">
                             <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                         </button>
                     </td>
