@@ -198,9 +198,9 @@ const openUpdate = async (id, idJugador) => {
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const openDelete = async (id) => {
+const openDelete = async (id, name, lastName) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar la participación del jugador?');
+    const RESPONSE = await confirmAction(`¿Desea eliminar la participación del jugador ${name} ${lastName}?`);
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
@@ -218,7 +218,10 @@ const openDelete = async (id) => {
                 // Se carga nuevamente la tabla para visualizar los cambios.
                 await cargarTabla();
             } else {
-                await sweetAlert(4, DATA.error, false);
+                // Verificamos si DATA.exception no es null o vacío.
+                const exceptionMessage = DATA.exception ? `\n\n${DATA.exception}` : '';
+                // Mostramos el mensaje de error sin la excepción si esta es null o está vacía.
+                await sweetAlert(2, `${DATA.error}${exceptionMessage}`, false);
             }
         }
     }
@@ -282,7 +285,10 @@ const openDeleteGoles = async (id) => {
                 await cargarGolTarjetas(idParticipation);
                 SEE_GOLES_MODAL.show();
             } else {
-                await sweetAlert(2, DATA.error, false);
+                // Verificamos si DATA.exception no es null o vacío.
+                const exceptionMessage = DATA.exception ? `\n\n${DATA.exception}` : '';
+                // Mostramos el mensaje de error sin la excepción si esta es null o está vacía.
+                await sweetAlert(2, `${DATA.error}${exceptionMessage}`, false);
             }
         }
     }
@@ -346,7 +352,10 @@ const openDeleteAmonestacion = async (id) => {
                 // Se carga nuevamente la tabla para visualizar los cambios.
                 await cargarAmonestacionTarjetas(idParticipation);
             } else {
-                await sweetAlert(2, DATA.error, false);
+                // Verificamos si DATA.exception no es null o vacío.
+                const exceptionMessage = DATA.exception ? `\n\n${DATA.exception}` : '';
+                // Mostramos el mensaje de error sin la excepción si esta es null o está vacía.
+                await sweetAlert(2, `${DATA.error}${exceptionMessage}`, false);
             }
         }
     }
@@ -426,7 +435,7 @@ async function showParticipation(page) {
                                     <img src="../../../resources/img/svg/icons_forms/amonestacion.svg" width="20" height="20">
                                 </button>
                                 
-                                <button type="button" class="btn transparente d-none mx-2" id="btnOpenDelete_${row.id_jugador}" onclick="openDelete(${idParticipacion})">
+                                <button type="button" class="btn transparente d-none mx-2" id="btnOpenDelete_${row.id_jugador}" onclick="openDelete(${idParticipacion}, '${row.nombre_jugador}', '${row.apellido_jugador}')">
                                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="20" height="20">
                                 </button>
 
@@ -808,6 +817,11 @@ window.onload = async function () {
         const titular = TITULAR.checked ? 1 : 0;
         const sustitucion = SUSTITUCION.checked ? 1 : 0;
 
+        if(titular && sustitucion === 1) {
+            await sweetAlert(3,'¿El jugador fue sustitución o titular? Pero no puede ser ambas.', false);
+            return;
+        }
+
         FORM.set('titular', titular);
         FORM.set('sustitucion', sustitucion);
         FORM.append('animo', animo);
@@ -819,7 +833,7 @@ window.onload = async function () {
 
         // Validación de los minutos jugados.
         if (minutos >= 116) {
-            await sweetAlert(2, 'Los minutos jugados no pueden superar los 90 min.', false);
+            await sweetAlert(2, 'Los minutos jugados no pueden superar los 116 min (Se toma en cuenta el tiempo extra).', false);
         } else if(asistencias > splitResultado) {
             await sweetAlert(2, `El resultado del partido es ${splitResultado}. El máximo de asistencias por jugador no puede ser más que el resultado del partido.`, false);
         } else {
@@ -834,8 +848,10 @@ window.onload = async function () {
                 // Se carga nuevamente la tabla para visualizar los cambios.
                 await cargarTabla();
             } else {
-                await sweetAlert(2, DATA.error, false);
-                console.error(DATA.exception);
+                // Verificamos si DATA.exception no es null o vacío.
+                const exceptionMessage = DATA.exception ? `\n\n${DATA.exception}` : '';
+                // Mostramos el mensaje de error sin la excepción si esta es null o está vacía.
+                await sweetAlert(2, `${DATA.error}${exceptionMessage}`, false);
             }
         }
     });
@@ -897,8 +913,10 @@ window.onload = async function () {
                 await cargarGolTarjetas(idParticipation);
                 console.log('Goles totales:', totalGoles);
             } else {
-                await sweetAlert(2, DATA.error, false);
-                console.error(DATA.exception);
+                // Verificamos si DATA.exception no es null o vacío.
+                const exceptionMessage = DATA.exception ? `\n\n${DATA.exception}` : '';
+                // Mostramos el mensaje de error sin la excepción si esta es null o está vacía.
+                await sweetAlert(2, `${DATA.error}${exceptionMessage}`, false);
             }
         }
     });
@@ -958,8 +976,10 @@ window.onload = async function () {
                 // Se carga nuevamente la tabla para visualizar los cambios.
                 await cargarAmonestacionTarjetas(idParticipation);
             } else {
-                await sweetAlert(2, DATA.error, false);
-                console.error(DATA.exception);
+                // Verificamos si DATA.exception no es null o vacío.
+                const exceptionMessage = DATA.exception ? `\n\n${DATA.exception}` : '';
+                // Mostramos el mensaje de error sin la excepción si esta es null o está vacía.
+                await sweetAlert(2, `${DATA.error}${exceptionMessage}`, false);
             }
         }
     });
