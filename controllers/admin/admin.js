@@ -368,5 +368,20 @@ window.onload = async function () {
     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
     var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
         return new bootstrap.Popover(popoverTriggerEl)
-    })
+    });
+
+    const hoy = new Date();
+
+    // Cálculo para la fecha máxima (mayores de 18 años)
+    const fechaMaxima = new Date(hoy.getFullYear() - 18, hoy.getMonth(), hoy.getDate());
+
+    // Cálculo para la fecha mínima (máximo 122 años de antigüedad)
+    const fechaMinima = new Date(hoy.getFullYear() - 122, hoy.getMonth(), hoy.getDate());
+
+    // Convertir a formato YYYY-MM-DD para los atributos min y max
+    const formatoISO = (fecha) => fecha.toISOString().split('T')[0];
+
+    // Asignar el valor al campo de fecha
+    NACIMIENTO_ADMINISTRADOR.min = formatoISO(fechaMinima);
+    NACIMIENTO_ADMINISTRADOR.max = formatoISO(fechaMaxima);
 };
