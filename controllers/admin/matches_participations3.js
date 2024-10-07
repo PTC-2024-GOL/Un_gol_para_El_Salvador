@@ -581,7 +581,7 @@ async function cargarAmonestacionTarjetas(idParticipacion) {
     const DATA1 = await fetchData(AMONESTACIONES_API, 'readTarjetaRojas', form);
 
     if (DATA1.status) {
-        total_rojas = DATA1.dataset.totalRojas;
+        total_rojas = parseInt(DATA1.dataset.totalRojas);
         console.log(total_rojas);
     } else {
         console.log('No tiene tarjetas rojas')
@@ -933,13 +933,14 @@ window.onload = async function () {
         FORM.append('idParticipacion', idParticipation);
 
         // Validación para tarjetas amarillas
-        if (total_amarillas >= 2) {
+        if (parseInt(total_amarillas) === 2) {
             // Si el jugador ya tiene dos tarjetas amarillas, muestra mensaje y bloquea la adición de más amarillas
             await sweetAlert(2, 'El jugador seleccionado ya tiene dos tarjetas amarillas, por lo que es necesario asignarle tarjeta roja', false);
 
+            console.log('Total de roja: ' + parseInt(total_rojas));
             // Si el jugador no tiene una tarjeta roja, permitir agregar una roja
             if (total_rojas === 0) {
-                const confirmRedCard = await sweetAlert(2, 'Asignar una tarjeta roja al jugador.', true);
+                const confirmRedCard = await confirmAction('Asignar una tarjeta roja al jugador.');
                 if (confirmRedCard) {
                     // Aquí puedes manejar la lógica para asignar la tarjeta roja
                     const DATA = await fetchData(AMONESTACIONES_API, action, FORM);
@@ -960,7 +961,7 @@ window.onload = async function () {
             } else {
                 await sweetAlert(2, 'El jugador seleccionado ya tiene una tarjeta roja asignada', false);
             }
-        } else if (total_rojas >= 1) {
+        } else if (total_rojas === 1) {
             // Validación de tarjetas rojas
             await sweetAlert(2, 'El jugador seleccionado ya tiene una tarjeta roja asignada', false);
         } else {
