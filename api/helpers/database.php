@@ -116,7 +116,23 @@ class Database
                 self::$error;
                 break;
             case '23000':
-                self::$error;
+                // Revisa si el mensaje de error corresponde a una entrada duplicada.
+                if (preg_match("/Duplicate entry .* for key '(.+)'/", $message, $matches)) {
+                    $columna_duplicada = $matches[1]; // La columna duplicada está en el grupo 1
+                    self::$error = 'Uno de los datos ya se encuentra registrado en el sistema, en el campo: ' . $columna_duplicada . ', recuerda no duplicar datos.';
+                }
+                // Revisa si el error está relacionado con una clave foránea.
+                elseif (preg_match("/Cannot add or update a child row: a foreign key constraint fails/", $message)) {
+                    self::$error = 'No se puede agregar o actualizar el registro porque falla la restricción de clave foránea. Verifica que el valor exista en la tabla referenciada.';
+                }
+                // Revisa si el error está relacionado con una eliminación o actualización en conflicto por clave foránea.
+                elseif (preg_match("/Cannot delete or update a parent row: a foreign key constraint fails/", $message)) {
+                    self::$error = 'Por seguridad no puedes eliminar o actualizar el registro porque está siendo utilizado por otra tabla. Verifica la integridad referencial.';
+                }
+                // Otras posibles violaciones de integridad que no se detecten específicamente.
+                else {
+                    self::$error = 'Uno de los datos ya se encuentra registrado en el sistema o hay un conflicto de integridad de datos. Revisa los datos ingresados.';
+                }
                 break;
             default:
                 self::$error;

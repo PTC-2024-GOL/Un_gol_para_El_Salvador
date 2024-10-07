@@ -89,7 +89,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Lesión eliminada correctamente';
                 } else {
-                    $result['error'] = 'Ocurrió un problema al eliminarla. Por seguridad no la puedes eliminar porque esta siendo ocupada en el registro médico.';
+                    $result['error'] = 'Ocurrió un problema al eliminar la lesión.';
                 }
                 break;
             default:

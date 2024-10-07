@@ -69,9 +69,9 @@ const openUpdate = async (id) => {
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const openDelete = async (id) => {
+const openDelete = async (id, name) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar el tipo de gol?');
+    const RESPONSE = await confirmAction(`¿Desea eliminar el tipo de gol: ${name}?`);
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
@@ -89,7 +89,7 @@ const openDelete = async (id) => {
                 // Se carga nuevamente la tabla para visualizar los cambios.
                 await fillTable();
             } else {
-                await sweetAlert(2, DATA.error, false);
+                await sweetAlert(2, `${DATA.error} \n\n${DATA.exception}`, false);
             }
         }
     }
@@ -121,7 +121,7 @@ function showTypesGoles(page) {
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id_tipo_gol})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_tipo_gol})">
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_tipo_gol}, '${row.gol}')">
                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
                     </td>
@@ -226,7 +226,7 @@ window.onload = async function () {
                 // Se carga nuevamente la tabla para visualizar los cambios.
                 await fillTable();
             } else {
-                await sweetAlert(2, DATA.error, false);
+                await sweetAlert(2, `${DATA.error} \n\n${DATA.exception}`, false);
                 console.error(DATA.exception);
             }
         });

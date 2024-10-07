@@ -88,7 +88,7 @@ const openDelete = async (id, nombre) => {
                 // Se carga nuevamente la tabla para visualizar los cambios.
                 await fillTable();
             } else {
-                await sweetAlert(2, DATA.error, false);
+                await sweetAlert(2, `${DATA.error} \n\n${DATA.exception}`, false);
             }
         }
     }
@@ -227,8 +227,7 @@ window.onload = async function () {
                 // Se carga nuevamente la tabla para visualizar los cambios.
                 await fillTable();
             } else {
-                await sweetAlert(2, DATA.error, false);
-                console.error(DATA.exception);
+                await sweetAlert(2, `${DATA.error} \n\n${DATA.exception}`, false);
             }
         });
     // Constante para establecer el formulario de buscar.
