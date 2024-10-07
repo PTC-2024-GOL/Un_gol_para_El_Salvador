@@ -113,6 +113,16 @@
                         <select id="posicionSecundaria" name="posicion2" class="form-control" disabled></select>
                     </div>
                     <div class="col-sm-12 col-md-6 mb-2">
+                        <label for="telefonoJugador" class="form-label fw-semibold">Teléfono de contacto</label>
+                        <input id="telefonoJugador" type="text" name="telefono" class="form-control"
+                               placeholder="Ingresa un teléfono de contacto" autocomplete="off" disabled>
+                    </div>
+                    <div class="col-sm-12 col-md-6 mb-2">
+                        <label for="correoContacto" class="form-label fw-semibold">Correo de contácto</label>
+                        <input id="correoContacto" type="email" name="correo" class="form-control"
+                               placeholder="Ingresa un correo de contácto" autocomplete="off" disabled>
+                    </div>
+                    <div class="col-sm-12 col-md-6 mb-2">
                         <label for="Dorsal" class="form-label fw-semibold">Dorsal</label>
                         <input id="Dorsal" type="number" name="dorsal"
                                min="1" class="form-control" disabled>
@@ -130,7 +140,100 @@
                         <input id="beca" name="beca" class="form-control" disabled>
                     </div>
                 </div>
+
+                <div class="border border-secondary-subtle p-4 rounded-3">
+                    <div class="row align-items-center">
+                        <label class="form-label fw-semibold mb-0">Información médica</label>
+                        <small>En este apartado podrás ingresar información médica importante para el bienestar del
+                            jugador.</small>
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <label for="telefonoEmergencia" class="form-label fw-semibold mb-0">Teléfono de
+                                    emergencia</label>
+                                <div class="input-group flex-nowrap">
+                                        <span class="input-group-text" id="addon-wrapping"><img
+                                                src="../../../node_modules/bootstrap-icons/icons/exclamation-circle.svg"></span>
+                                    <input type="text" class="form-control" name="telefonoEmergencia"
+                                           id="telefonoEmergencia" placeholder="Teléfono de emergencia"
+                                           aria-label="Username" aria-describedby="addon-wrapping" autocomplete="off" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="tipoSangre" class="form-label fw-semibold mb-0">Tipo de sangre</label>
+                                <div class="input-group flex-nowrap">
+                                        <span class="input-group-text" id="addon-wrapping"><img
+                                                src="../../../node_modules/bootstrap-icons/icons/droplet.svg"></span>
+                                    <select class="form-select" name="tipoSangre" id="tipoSangre"
+                                            aria-label="Username" aria-describedby="addon-wrapping" disabled>
+                                        <option selected>Seleccionar una opción</option>
+                                        <option>A+</option>
+                                        <option>A-</option>
+                                        <option>B+</option>
+                                        <option>B-</option>
+                                        <option>AB+</option>
+                                        <option>AB-</option>
+                                        <option>O+</option>
+                                        <option>O-</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-4">
+                                <div class="col mb-2">
+                                    <label for="observacionMedica" class="form-label fw-semibold mb-0">Notas
+                                        extras</label><br>
+                                    <small>En el siguiente apartado podrás agregar notas extras que sean importantes
+                                        para el jugador en caso de emergencia. Ejem. Si es alérgico etc. En caso de
+                                        no tener dejar el texto que esta por defecto</small>
+                                </div>
+                                <div class="input-group flex-nowrap">
+                                        <span class="input-group-text" id="addon-wrapping"><img
+                                                src="../../../node_modules/bootstrap-icons/icons/heart-pulse.svg"></span>
+                                    <textarea type="text" id="observacionMedica" name="observacionMedica"
+                                              class="form-control" maxlength="200" rows="3"
+                                              placeholder="Notas extras. Ejem: Si es alérgico a algo etc."
+                                              aria-label="Username" aria-describedby="addon-wrapping" disabled>Ninguna</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="seeMedicalRecord" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="modalTitle1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable rounded-3">
+        <div class="modal-content">
+            <div class="modal-header bg-blue-principal-color text-light">
+                <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
+                <h1 class="modal-title fs-5" id="modalTitleMedical"></h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <!-- Espacio para poner la grafica -->
+            <h3 class="mt-5 text-center">Estado físico - Registro histórico</h3>
+            <small class="text-center">En este apartado podrás observar el registro histórico del estado físico del
+                jugador seleccionado</small>
+            <div class="row justify-content-center mt-4">
+                <div class="col-auto">
+                    <button href="#" class="btn btn-outline-primary" role="button" data-bs-toggle="button"
+                            onclick="zona1func()" id="zona1">
+                        Estado físico
+                    </button>
+                </div>
+                <div class="col-auto">
+                    <button href="#" class="btn btn-outline-primary" role="button" data-bs-toggle="button"
+                            onclick="zona2func()" id="zona2">
+                        Rendimiento físico
+                    </button>
+                </div>
+            </div>
+            <div id="contenedor_estados">
+
+            </div>
         </div>
     </div>
 </div>

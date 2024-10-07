@@ -8,6 +8,7 @@ let BTN_JUGADORES;
 
 const PARTIDO_API = 'services/public/partidos.php';
 const PARTICIPACION_API = 'services/public/participaciones.php';
+const RECONOCIMIENTOS_API = 'services/public/palmares.php';
 
 let cargarCards;
 let noData;
@@ -32,17 +33,17 @@ const fillParticipations = async (idPosicion) => {
     FORM.append('idEquipo', PARAMS.get('id'));
 
     cargarCards.innerHTML = ''
-    if(idPosicion){
+    if (idPosicion) {
         FORM.append('idPosicion', idPosicion);
         option = 'filterAllParticipationPublic';
-    }else{
+    } else {
         option = 'readAllParticipation'
     }
 
     const DATA = await fetchData(PARTICIPACION_API, option, FORM);
-    if(DATA.status){
+    if (DATA.status) {
         let data = DATA.dataset;
-        data.forEach(row =>{
+        data.forEach(row => {
             const cardsHtml = `
             <div class="col-md-4 col-sm-12">
             <div class="carta ps-3 pe-3 pt-3 pb-3 shadow rounded-4 mb-5">
@@ -78,7 +79,7 @@ const fillParticipations = async (idPosicion) => {
             `
             cargarCards.innerHTML += cardsHtml;
         })
-    }else{
+    } else {
         noData.innerHTML = `
             <div class="d-flex justify-content-center">
                 <p class="bg-blue-light-color rounded-3 p-3">No hay jugadores en esta posición</p>
@@ -99,10 +100,10 @@ const selectedFilter = async (element) => {
     const idPosicion = element.querySelector('p').innerText;
     console.log('ID Posición seleccionado:', idPosicion);
 
-    if(idPosicion === '0') {
+    if (idPosicion === '0') {
         await fillParticipations();
         console.log('Todos')
-    }else{
+    } else {
         await fillParticipations(idPosicion);
     }
 
@@ -121,10 +122,10 @@ const fillNav = async () => {
     cargarNav.innerHTML += staticItem;
 
     const DATA = await fetchData(PARTICIPACION_API, 'positionParticipation');
-    if(DATA.status){
+    if (DATA.status) {
         let data = DATA.dataset;
         data.forEach(row => {
-            const navigationHtml =`
+            const navigationHtml = `
                 <li class="nav-item" onclick="selectedFilter(this)">
                     <p class="d-none">${row.id_posicion}</p>
                     <a class="nav-link text-dark" href="#">${row.posicion}</a>
@@ -132,7 +133,7 @@ const fillNav = async () => {
             `
             cargarNav.innerHTML += navigationHtml;
         })
-    }else{
+    } else {
         console.log(DATA.error)
     }
 }
@@ -182,21 +183,65 @@ const showMatches = async () => {
         })
     } else {
         const DATA = await fetchData(PARTIDO_API, 'readPartidoSinEquipo', FORM);
-        if(DATA.status)
-        {
-            
-        let data = DATA.dataset;
-        console.log(data, ' Esta es la data');
-        //Agarra el primer elemento del array para obtener el nombre del equipo y la categoria
-        EQUIPO = data.nombre_equipo;
-        CATEGORIA = data.nombre_categoria;
-        IMAGEN = data.logo_equipo;
-        cargarCards.innerHTML = `
+        if (DATA.status) {
+
+            let data = DATA.dataset;
+            console.log(data, ' Esta es la data');
+            //Agarra el primer elemento del array para obtener el nombre del equipo y la categoria
+            EQUIPO = data.nombre_equipo;
+            CATEGORIA = data.nombre_categoria;
+            IMAGEN = data.logo_equipo;
+            cargarCards.innerHTML = `
         <div class="d-flex justify-content-center">
             <p class="bg-blue-light-color rounded-3 p-3">No hay partidos registrados</p>
         <div/>
     `;
         }
+    }
+}
+
+function verMedalla(lugar) {
+    switch (lugar) {
+        case "Campeón":
+            return "../../../resources/img/png/primero.png";
+        case "Subcampeón":
+            return "../../../resources/img/png/segundo.png";
+        case "Tercer lugar":
+            return "../../../resources/img/png/tercero.png";
+        default:
+            return "../../../resources/img/png/default.png";
+    }
+}
+
+const showHonors = async () => {
+    try {
+        const cargarCards = document.getElementById('trofeos');
+        cargarCards.innerHTML = '';
+        let FORM = new FormData();
+        FORM.append('idEquipo', PARAMS.get('id'));
+        console.log(PARAMS.get('id'));
+        const DATA = await fetchData(RECONOCIMIENTOS_API, 'readAllByIdEquipo', FORM);
+        console.log(DATA);
+        if (DATA.status) {
+            let data = DATA.dataset;
+            //Agarra el primer elemento del array para obtener el nombre del equipo y la categoria
+            EQUIPO = data[0].nombre_equipo;
+            CATEGORIA = data[0].nombre_categoria;
+            IMAGEN = data[0].logo_equipo;
+            console.log(data);
+            data.forEach(row => {
+                const cardsHtml = `
+                        <img class="trofeo" id="lugar-img" src="${verMedalla(row.lugar)}"
+                            alt="Imagen de lugar" data-bs-toggle="tooltip" data-bs-placement="top"
+                            title="${row.lugar} en ${row.nombre_temporada}">
+            `;
+                cargarCards.innerHTML += cardsHtml;
+            })
+        } else {
+            console.log('El equipo no posee trofeos');
+        }
+    } catch (error) {
+        console.error(error);
     }
 }
 
@@ -240,11 +285,16 @@ window.onload = async function () {
     partidosContainer = document.getElementById('partidosContainer');
 
     BTN_PARTIDOS = document.getElementById('partidos');
-    BTN_JUGADORES = document.getElementById('jugadores')
+    BTN_JUGADORES = document.getElementById('jugadores');
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
 
     await showMatches();
     await fillParticipations();
     await fillNav();
+    await showHonors();
     titleElement.textContent = 'Partidos de ' + EQUIPO;
     nombreEquipo.textContent = EQUIPO;
     nombreCategoria.textContent = CATEGORIA;

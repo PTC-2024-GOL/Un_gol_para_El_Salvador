@@ -266,7 +266,7 @@ window.onload = async function () {
             // Se carga nuevamente la tabla para visualizar los cambios.
             fillTable();
         } else {
-            sweetAlert(2, DATA.error, false);
+            sweetAlert(3, DATA.error, false);
             console.error(DATA.exception);
         }
     });

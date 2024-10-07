@@ -23,9 +23,9 @@ class ContenidosHandler
     {
         $value = '%' . Validator::getSearchValue() . '%';
         $sql = 'SELECT * FROM temas_contenidos
-        WHERE nombre_tema_contenido LIKE ?
-        ORDER BY nombre_tema_contenido;';
-        $params = array($value);
+        WHERE momento_juego LIKE ? or zona_campo LIKE ?
+        ORDER BY momento_juego;';
+        $params = array($value, $value);
         return Database::getRows($sql, $params);
     }
 

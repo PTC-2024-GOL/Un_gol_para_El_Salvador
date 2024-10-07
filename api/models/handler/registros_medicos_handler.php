@@ -111,6 +111,7 @@ class RegistrosHandler{
         detalles_cuerpos_tecnicos dct ON ct.id_cuerpo_tecnico = dct.id_cuerpo_tecnico
         WHERE
         dct.id_tecnico = ? AND (j.nombre_jugador LIKE ? OR j.apellido_jugador LIKE ?)
+        AND rm.id_registro_medico IS NOT NULL
         ORDER BY j.nombre_jugador, j.apellido_jugador;';
         $params = array($_SESSION['idTecnico'], $value, $value);
         return Database::getRows($sql, $params);
@@ -180,6 +181,7 @@ class RegistrosHandler{
            detalles_cuerpos_tecnicos dct ON ct.id_cuerpo_tecnico = dct.id_cuerpo_tecnico
            WHERE
            dct.id_tecnico = ?
+           AND rm.id_registro_medico IS NOT NULL
            ORDER BY
            j.nombre_jugador, j.apellido_jugador;';
            $params = array($_SESSION['idTecnico']);
