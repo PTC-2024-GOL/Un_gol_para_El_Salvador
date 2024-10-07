@@ -40,7 +40,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Contenido creado correctamente';
                 } else {
-                    $result['error'] = 'El nombre del contenido debe ser único';
+                    $result['error'] = 'Esta combinación de zona y momento ya existe';
                 }
                 break;
                 // Leer todos
@@ -75,7 +75,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Contenido modificado correctamente';
                 } else {
-                    $result['error'] = 'El nombre del contenido debe ser único';
+                    $result['error'] = 'Esta combinación de zona y momento ya existe';
                 }
                 break;
                 // Eliminar

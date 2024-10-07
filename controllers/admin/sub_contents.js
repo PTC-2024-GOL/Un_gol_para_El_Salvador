@@ -116,8 +116,8 @@ function showInjuries(page) {
     injuriesPage.forEach(row => {
         const tablaHtml = `
                 <tr>
-                    <td>${row.momento_juego}</td>
                     <td>${row.sub_tema_contenido}</td>
+                    <td>${row.momento_juego}</td>
                     <td>
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id_sub_tema_contenido})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">

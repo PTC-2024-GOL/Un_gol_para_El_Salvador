@@ -307,7 +307,6 @@ window.onload = async function () {
             // Se carga nuevamente la tabla para visualizar los cambios.
         } else {
             sweetAlert(2, DATA.error, false);
-            console.error(DATA.exception);
         }
     });
     // Constante para establecer el formulario de buscar.
