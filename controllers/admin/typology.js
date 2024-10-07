@@ -220,9 +220,10 @@ window.onload = async function () {
             sweetAlert(1, DATA.message, true);
             // Se carga nuevamente la tabla para visualizar los cambios.
             fillTable();
-        } else {
+        } else if (!DATA.exception) {
             sweetAlert(2, DATA.error, false);
-            console.error(DATA.exception);
+        }else {
+            sweetAlert(2, DATA.exception, false);
         }
     });
     // Constante para establecer el formulario de buscar.

@@ -43,15 +43,20 @@ class PagoData extends PagoHandler
 
     // Validación y asignación de la fecha de pago .
     public function setFecha($value)
-    {
-        if (Validator::validateDate($value)) {
-            $this->fecha = $value;
-            return true;
-        } else {
-            $this->data_error = 'La fecha de pago es valida';
-            return false;
-        }
+{
+    // Obtén la fecha actual en formato Y-m-d
+    $fecha_actual = date('Y-m-d');
+
+    // Comprueba si la fecha proporcionada es igual a la fecha actual
+    if ($value === $fecha_actual) {
+        $this->fecha = $value;
+        return true;
+    } else {
+        $this->data_error = 'La fecha debe ser la fecha actual: ' . $fecha_actual;
+        return false;
     }
+}
+
 
     // Validación y asignación del pago.
     public function setCantidad($value, $min = 1)

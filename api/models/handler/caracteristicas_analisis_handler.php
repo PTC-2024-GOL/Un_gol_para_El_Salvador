@@ -88,7 +88,7 @@ class CaracteristicasAnalisisHandler
     public function graphic()
     {
         $sql = 'SELECT CARACTERISTICA, NOTA FROM vista_caracteristicas_analisis 
-                WHERE IDE = ? AND IDJ = ?;';
+                WHERE IDE = ? AND IDJ = ? AND CARACTERISTICA IS NOT NULL;';
         $params = array($this->entrenamiento, $this->jugador);
         return Database::getRows($sql, $params);
     }
