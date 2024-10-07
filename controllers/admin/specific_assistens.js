@@ -320,8 +320,17 @@ window.onload = async function () {
 
         // Constante tipo objeto con los datos del formulario.
         let id = ID_ASISTENCIA.value;
-        let newObservation = OBSERVACION.value;
-
+        let newObservatio = OBSERVACION.value;
+        if (newObservatio.trim() == '') {
+            console.error('Observación vacía');
+            newObservatio = null;
+        }
+        else
+        {
+            console.error('Observación no vacía');
+            newObservatio = OBSERVACION.value;
+        }
+        let newObservation = newObservatio;
         console.log('ID ASISTENCIA:', id);
         console.log('OBSERVACION:', newObservation);
         // Encuentra el objeto en el arreglo que corresponde al id dado.

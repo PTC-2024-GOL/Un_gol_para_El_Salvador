@@ -111,7 +111,8 @@ class PagoHandler
                 p.pago_tardio AS TARDIO,
                 p.mora_pago AS MORA,
                 p.mes_pago AS MES,
-                CONCAT(nombre_jugador, " " ,apellido_jugador) AS NOMBRE,
+                j.id_jugador AS ID_JUGADOR,
+                CONCAT(j.nombre_jugador, " " ,j.apellido_jugador) AS NOMBRE,
                 J.foto_jugador AS FOTO,
                 ROUND(P.cantidad_pago + P.mora_pago, 2) AS SUBTOTAL,
                 ROUND((p.cantidad_pago + p.mora_pago) * 1.13, 2) AS TOTAL

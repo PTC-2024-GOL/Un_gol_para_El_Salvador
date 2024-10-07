@@ -171,6 +171,7 @@ function verMedalla(lugar) {
     }
 }
 
+
 // Función para mostrar técnicos en una página específica
 function mostrarpalmares(pagina) {
     const inicio = (pagina - 1) * palmaresPorPagina;

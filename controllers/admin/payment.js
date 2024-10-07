@@ -229,12 +229,13 @@ const openUpdate = async (id, nombre) => {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
             MODAL_TITLE.textContent = `Actualizar el pago de ${nombre}`;
+            updateMoraPago();
             // Se prepara el formulario.
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
             ID_PAGO.value = ROW.ID;
-            await fillSelect(JUGADOR_API, 'readAll', 'nombreJugador', ROW.NOMBRE);
+            await fillSelect(JUGADOR_API, 'readAll', 'nombreJugador', ROW.ID_JUGADOR);
             FECHA_PAGO.value = ROW.FECHA;
             CANTIDAD_PAGO.value = ROW.CANTIDAD;
             SelectedPago(lista_pago, 'readAll', 'tardioPago', ROW.TARDIO);
