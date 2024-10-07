@@ -306,7 +306,7 @@ window.onload = async function () {
             sweetAlert(1, DATA.message, true);
             // Se carga nuevamente la tabla para visualizar los cambios.
         } else {
-            sweetAlert(2, DATA.error, false);
+            sweetAlert(3, DATA.error, false);
         }
     });
     // Constante para establecer el formulario de buscar.
