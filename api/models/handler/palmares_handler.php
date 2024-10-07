@@ -52,6 +52,20 @@ class PalmaresHandler
         return Database::getRows($sql);
     }
 
+    //Función para mostrar todas las palmares
+    public function readAllByIdEquipo()
+    {
+        $sql = 'SELECT p.lugar, p.id_equipo, p.id_temporada, p.id_palmares AS ID,
+                e.logo_equipo, e.nombre_equipo, t.nombre_temporada
+                FROM palmares p
+                INNER JOIN equipos e USING(id_equipo)
+                INNER JOIN temporadas t USING(id_temporada)
+                WHERE p.id_equipo = ?
+                ORDER BY lugar;';
+        $params = array($this->equipo);
+        return Database::getRows($sql, $params);
+    }
+
     //Función para mostrar una de las palmares
     public function readOne()
     {
