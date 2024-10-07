@@ -63,7 +63,8 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Este jugador no tiene registros de test fisico';
                 }
                 break;
-            //Función para saber si el jugador tiene test sin contestar. devuelve id_partido para saber si es el test del partido, si viene null es del entrenamiento.
+            //Función para saber si el jugador tiene test sin contestar. 
+            //devuelve id_partido para saber si es el test del partido, si viene null es del entrenamiento.
             case 'testSinContestar':
                 if (!$testFisico->setIdJugador($_POST['idJugador'])) {
                     $result['error'] = $testFisico->getDataError();

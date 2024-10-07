@@ -42,7 +42,7 @@ class EstadoFisicoJugadorData extends EstadoFisicoJugadorHandler
     // Validación y asignación del peso
     public function setPeso($value, $min = 40, $max = 200)
     {
-        if ((Validator::validateNaturalNumber($value)) && ($value > $min && $value < $max)) {
+        if ((is_numeric($value)) && ($value > $min && $value < $max)) {
             $this->altura = $value;
             $this->peso = $value;
             return true;
@@ -55,7 +55,7 @@ class EstadoFisicoJugadorData extends EstadoFisicoJugadorHandler
     // Validación y asignación de la altura
     public function setAltura($value, $min = 100, $max = 210)
     {
-        if ((Validator::validateNaturalNumber($value)) && ($value > $min && $value < $max)) {
+        if ((is_numeric($value)) && ($value > $min && $value < $max)) {
             $this->altura = $value;
             return true;
         } else {
