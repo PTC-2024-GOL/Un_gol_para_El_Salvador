@@ -73,6 +73,11 @@ class AsistenciasData extends AsistenciasrHandler
 
     public function setIdObservacion($value)
     {
+        if ($value == null) {
+            $this->observacion = $value;
+            return true;
+        } else
+        {
         if (Validator::validateAlphabetic($value)) {
             $this->observacion = $value;
             return true;
@@ -80,6 +85,7 @@ class AsistenciasData extends AsistenciasrHandler
             $this->data_error = 'La observación debe ser un valor alfabético';
             return false;
         }
+    }
     }
 
     public function setIdAsistenciaBool($value)

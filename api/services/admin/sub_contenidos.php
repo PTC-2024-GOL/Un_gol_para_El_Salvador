@@ -38,9 +38,9 @@ if (isset($_GET['action'])) {
                     $result['error'] = $subcontenidos->getDataError();
                 } elseif ($subcontenidos->createRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Subcontenido creado correctamente';
+                    $result['message'] = 'Principio creado correctamente';
                 } else {
-                    $result['error'] = 'El nombre del subcontenido debe ser único';
+                    $result['error'] = 'La combinación de principio y momento de juego ya existen';
                 }
                 break;
                 // Leer todos
@@ -49,7 +49,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
-                    $result['error'] = 'No existen subcontenidos registrados';
+                    $result['error'] = 'No existen principios registrados';
                 }
                 break;
                 // Leer todos
@@ -68,7 +68,7 @@ if (isset($_GET['action'])) {
                 } elseif ($result['dataset'] = $subcontenidos->readOne()) {
                     $result['status'] = 1;
                 } else {
-                    $result['error'] = 'Subcontenido inexistente';
+                    $result['error'] = 'Principio inexistente';
                 }
                 break;
                 // Actualizar
@@ -82,9 +82,9 @@ if (isset($_GET['action'])) {
                     $result['error'] = $subcontenidos->getDataError();
                 } elseif ($subcontenidos->updateRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Subcontenido modificado correctamente';
+                    $result['message'] = 'Principio modificado correctamente';
                 } else {
-                    $result['error'] = 'El nombre del subcontenido debe ser único';
+                    $result['error'] = 'La combinación de principio y momento de juego ya existen';
                 }
                 break;
                 // Eliminar
@@ -95,9 +95,9 @@ if (isset($_GET['action'])) {
                     $result['error'] = $subcontenidos->getDataError();
                 } elseif ($subcontenidos->deleteRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Subcontenido eliminado correctamente';
+                    $result['message'] = 'Principio eliminado correctamente';
                 } else {
-                    $result['error'] = 'No puedes eliminar este subcontenido porque esta siendo utilizado por contenido por entrenamiento';
+                    $result['error'] = 'No puedes eliminar este principio porque esta siendo utilizado por contenido por entrenamiento';
                 }
                 break;
             default:

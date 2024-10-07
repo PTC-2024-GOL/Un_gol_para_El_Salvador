@@ -30,7 +30,7 @@ if (isset($_GET['action'])) {
                             !$asistencias->setIdAsistenciaBool($_POST['idAsistenciaBool']) or
                             !$asistencias->setIdAsistencia($asistencia['id_asistencia'])
                         ) {
-                            $result['error'] = $asistencias->getDataError();
+                            $result['error'] = $asistencias->getDataError() . 'Esta es la observacion: ' . $asistencia['observacion'] . 'y este es el id del jugador: ' . $asistencia['id'];
                             break;
                         } elseif (!$asistencias->createRow()) {
                             $result['error'] = 'Ocurrió un problema al guardar la asistencia del jugador con ID ' . $asistencia['id'];

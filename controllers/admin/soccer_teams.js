@@ -146,7 +146,10 @@ const openDelete = async (id, nombre) => {
                 // Se carga nuevamente la tabla para visualizar los cambios.
                 await cargarTabla();
             } else {
-                await sweetAlert(2, DATA.error, false);
+                // Verificamos si DATA.exception no es null o vacío.
+                const exceptionMessage = DATA.exception ? `\n\n${DATA.exception}` : '';
+                // Mostramos el mensaje de error sin la excepción si esta es null o está vacía.
+                await sweetAlert(2, `${DATA.error}${exceptionMessage}`, false);
             }
         }
     }
@@ -370,7 +373,10 @@ window.onload = async function () {
             // Se carga nuevamente la tabla para visualizar los cambios.
             await cargarTabla();
         } else {
-            await sweetAlert(2, DATA.error, false);
+            // Verificamos si DATA.exception no es null o vacío.
+            const exceptionMessage = DATA.exception ? `\n\n${DATA.exception}` : '';
+            // Mostramos el mensaje de error sin la excepción si esta es null o está vacía.
+            await sweetAlert(2, `${DATA.error}${exceptionMessage}`, false);
         }
     });
 
