@@ -266,7 +266,7 @@ async function mostrarCategorias(pagina) {
     const inicio = (pagina - 1) * categoriasPorPagina;
     const fin = inicio + categoriasPorPagina;
     const categoriasPagina = categorias.slice(inicio, fin);
-
+ 
     const cargarTabla = document.getElementById('tabla_categorias');
     cargarTabla.innerHTML = '';
     for (const row of categoriasPagina) {
@@ -286,6 +286,14 @@ async function mostrarCategorias(pagina) {
                                     <div class="col">
                                         ${row.edad_maxima_permitida}
                                     </div>
+                                    <div class="col">
+                                        <button type="button" class="btn transparente" onclick="openUpdate(${row.id_categoria})">
+                                            <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                                        </button>
+                                        <button type="button" class="btn transparente" onclick="openDelete(${row.id_categoria}, '${row.nombre_categoria}')">
+                                            <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </h2>
@@ -299,20 +307,12 @@ async function mostrarCategorias(pagina) {
                         </div>
                     </div>
                 </td>
-                <td>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id_categoria})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                    </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_categoria}, '${row.nombre_categoria}')">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
-                </td>
             </tr>
         `;
         cargarTabla.innerHTML += tablaHtml;
         await cargarCarrouselParaCategoria(row.id_categoria);
     }
-
+ 
     actualizarPaginacion();
 }
 
