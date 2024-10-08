@@ -56,6 +56,16 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'No existen participaciones registradas';
                 }
                 break;
+            // Leer todos los jugadores convocados al partido en especifico
+            case 'readAllByIdPartido':
+                if (!$participacion->setIdPartido($_POST['idPartido'])) {
+                    $result['error'] = $participacion->getDataError();
+                } elseif ($result['dataset'] = $participacion->readAllByIdPartido()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Aún no hay jugadores convocados para este partido';
+                }
+                break;
             // Leer todos los jugadores de un equipo
             case 'readAllByIdEquipo':
                 if (!$participacion->setIdEquipo($_POST['idEquipo'])) {
