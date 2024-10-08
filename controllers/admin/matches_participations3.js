@@ -593,10 +593,10 @@ async function cargarAmonestacionTarjetas(idParticipacion) {
     const DATA2 = await fetchData(AMONESTACIONES_API, 'readTarjetaAmarillas', form1);
 
     if (DATA2.status) {
-        total_amarillas = DATA2.dataset.totalAmarillas;
+        total_amarillas = parseInt(DATA2.dataset.totalAmarillas);
         console.log(total_amarillas);
     } else {
-        console.log('No tiene tarjetas amarillas')
+        console.log('No tiene tarjetas amarillas');
     }
     ///////////////////////////////////////////////////////////////////////////////////
 
@@ -933,15 +933,18 @@ window.onload = async function () {
         FORM.append('idParticipacion', idParticipation);
 
         // Validación para tarjetas amarillas
-        if (parseInt(total_amarillas) === 2) {
+        if (total_amarillas === 2) {
             // Si el jugador ya tiene dos tarjetas amarillas, muestra mensaje y bloquea la adición de más amarillas
-            await sweetAlert(2, 'El jugador seleccionado ya tiene dos tarjetas amarillas, por lo que es necesario asignarle tarjeta roja', false);
+            await sweetAlert(3, 'El jugador seleccionado ya tiene dos tarjetas amarillas, por lo que es necesario asignarle tarjeta roja', false);
 
-            console.log('Total de roja: ' + parseInt(total_rojas));
+            console.log('Total de roja: ' + total_rojas);
             // Si el jugador no tiene una tarjeta roja, permitir agregar una roja
             if (total_rojas === 0) {
                 const confirmRedCard = await confirmAction('Asignar una tarjeta roja al jugador.');
                 if (confirmRedCard) {
+                    //Al tener las dos tarjetas amarillas, se asigna una tarjeta roja.
+                    let amonestacion = 'Tarjeta roja';
+                    FORM.set('amonestacion', amonestacion)
                     // Aquí puedes manejar la lógica para asignar la tarjeta roja
                     const DATA = await fetchData(AMONESTACIONES_API, action, FORM);
                     // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
@@ -959,11 +962,13 @@ window.onload = async function () {
                     }
                 }
             } else {
-                await sweetAlert(2, 'El jugador seleccionado ya tiene una tarjeta roja asignada', false);
+                await sweetAlert(3, 'El jugador seleccionado ya tiene una tarjeta roja asignada.', false);
+                SAVE_AMONESTACION_MODAL.hide();
             }
         } else if (total_rojas === 1) {
             // Validación de tarjetas rojas
-            await sweetAlert(2, 'El jugador seleccionado ya tiene una tarjeta roja asignada', false);
+            await sweetAlert(3, 'El jugador seleccionado ya tiene una tarjeta roja asignada', false);
+            SAVE_AMONESTACION_MODAL.hide();
         } else {
             // Aquí puedes manejar la lógica para asignar una tarjeta amarilla o roja si las condiciones anteriores no se cumplen
             const DATA = await fetchData(AMONESTACIONES_API, action, FORM);
@@ -1001,6 +1006,23 @@ window.onload = async function () {
         } else {
             await sweetAlert(3, DATA.error, true);
         }
+    });
+
+
+    //Evita escribir en el input de tipo number y solo permitir las flechitas del input.
+    const input = document.getElementById('cantidadAmonestacion');
+
+    input.addEventListener('keydown', function(e) {
+        // Permitir: teclas especiales como backspace, delete, tab, escape, enter, y las flechas
+        if (
+            [46, 8, 9, 27, 13].indexOf(e.keyCode) !== -1 ||
+            (e.keyCode >= 35 && e.keyCode <= 39) // Flechas
+        ) {
+            return;
+        }
+
+        // Bloquear cualquier otra entrada del teclado
+        e.preventDefault();
     });
 };
 
