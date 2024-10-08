@@ -50,14 +50,14 @@ class detallesAmonestacionesHandler
 
     public function readYellowCard()
     {
-        $sql = 'SELECT SUM(numero_amonestacion) AS totalAmarillas from detalles_amonestaciones WHERE amonestacion = "Tarjeta amarilla" AND id_participacion = ?';
+        $sql = 'SELECT COALESCE(SUM(numero_amonestacion), 0) AS totalAmarillas from detalles_amonestaciones WHERE amonestacion = "Tarjeta amarilla" AND id_participacion = ?';
         $params = array($this->idParticipacion);
         return Database::getRow($sql, $params);
     }
 
     public function readRedCard()
     {
-        $sql = 'SELECT SUM(numero_amonestacion) AS totalRojas from detalles_amonestaciones WHERE amonestacion = "Tarjeta roja" AND id_participacion = ?';
+        $sql = 'SELECT COALESCE(SUM(numero_amonestacion), 0) AS totalRojas from detalles_amonestaciones WHERE amonestacion = "Tarjeta roja" AND id_participacion = ?';
         $params = array($this->idParticipacion);
         return Database::getRow($sql, $params);
     }
