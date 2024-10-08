@@ -359,4 +359,28 @@ window.onload = async function () {
         // Llamada a la función para llenar la tabla con los resultados de la búsqueda.
         fillTable(FORM);
     });
+
+    const hoy = new Date();
+ 
+    // Cálculo para la fecha mínima (1 de enero de 2019)
+    const fechaMinima = new Date(2019, 0, 1);
+ 
+    // Cálculo para la fecha máxima (2 años en el futuro)
+    const fechaMaxima = new Date(hoy.getFullYear() + 2, hoy.getMonth(), hoy.getDate());
+ 
+    // Convertir a formato YYYY-MM-DD para los atributos min y max
+    const formatoISO = (fecha) => fecha.toISOString().split('T')[0];
+ 
+    // Asignar el valor al campo de fecha
+    FECHA_LESION.min = formatoISO(fechaMinima);
+    FECHA_LESION.max = formatoISO(fechaMaxima);
+ 
+    // Asignar el valor al campo de fecha
+    FECHA_REGISTRO.min = formatoISO(fechaMinima);
+    FECHA_REGISTRO.max = formatoISO(fechaMaxima);
+ 
+    // Asignar el valor al campo de fecha
+    RETORNO_ENTRENO.min = formatoISO(fechaMinima);
+    RETORNO_ENTRENO.max = formatoISO(fechaMaxima);
+ 
 };
