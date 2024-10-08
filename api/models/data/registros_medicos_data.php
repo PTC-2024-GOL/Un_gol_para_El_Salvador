@@ -66,10 +66,16 @@ class RegistrosData extends RegistrosHandler
     }
 
     // Validación y asignación de los días lesionado.
-    public function setDiasLesionado($value)
+    public function setDiasLesionado($value, $min = 1, $max = 500)
     {
         if (Validator::validateNaturalNumber($value)) {
             $this->diasLesionado = $value;
+            if ($this->diasLesionado >= $min && $this->diasLesionado <= $max) {
+                return true;
+            } else {
+                $this->data_error = 'El valor mínimo de los días lesionados debe ser de ' . $min . ' día y el máximo de ' . $max;
+                return false;
+            }
             return true;
         } else {
             $this->data_error = 'El número de los días lesionado es incorrecto';
