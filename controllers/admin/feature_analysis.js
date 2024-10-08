@@ -640,35 +640,37 @@ window.onload = async function () {
     SAVE_FORM.addEventListener('submit', async (event) => {
         // Evitar recargar la página al enviar el formulario
         event.preventDefault();
-
+ 
         // Determinar la acción a realizar (crear o actualizar)
         const action = (ID_ANALISIS.value) ? 'updateRow' : 'createRow';
-
+ 
         // Crear un objeto FormData con los datos del formulario
         const formData = new FormData(SAVE_FORM);
-
+ 
         // Crear un arreglo para las características
         const caracteristicas = [];
-
+ 
         // Recorrer los inputs del formulario y agregar las características válidas
         SAVE_FORM.querySelectorAll('input[type="number"]').forEach(input => {
             const idCaracteristicaJugador = input.getAttribute('data-id-caracteristica-jugador');
-            const notaCaracteristicaAnalisis = input.value;
-
-            if (idCaracteristicaJugador && notaCaracteristicaAnalisis) {
+            let notaCaracteristicaAnalisis = parseFloat(input.value);
+ 
+            // Verificar que el valor esté entre 0 y 10
+            if (idCaracteristicaJugador && !isNaN(notaCaracteristicaAnalisis) && notaCaracteristicaAnalisis >= 0 && notaCaracteristicaAnalisis <= 10) {
                 caracteristicas.push({
                     id_caracteristica_jugador: idCaracteristicaJugador,
                     nota_caracteristica_analisis: notaCaracteristicaAnalisis
                 });
             }
         });
-
+ 
         // Agregar los datos adicionales al FormData
         formData.append('caracteristicas', JSON.stringify(caracteristicas));
         console.log(JSON.stringify(caracteristicas));
+ 
         // Enviar la solicitud para guardar los datos
         const DATA = await fetchData(API, action, formData);
-
+ 
         // Comprobar si la respuesta es satisfactoria
         if (DATA.status) {
             // Cerrar la caja de diálogo

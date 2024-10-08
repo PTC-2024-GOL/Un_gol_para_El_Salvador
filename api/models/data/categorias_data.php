@@ -56,10 +56,16 @@ class CategoriasData extends CategoriasHandler
      }
 
     // Validación y asignación de la edad minima permitida.
-    public function setEdadMaxima($value)
+    public function setEdadMaxima($value, $min = 3, $max = 23)
     {
         if (Validator::validateNaturalNumber($value)) {
             $this->edadMaxima = $value;
+            if ($this->edadMaxima >= $min && $this->edadMaxima <= $max) {
+                return true;
+            } else {
+                $this->data_error = 'El valor mínimo de la edad debe ser ' . $min . ' y el máximo ' . $max;
+                return false;
+            }
             return true;
         } else {
             $this->data_error = 'La edad máxima permitida de la categoría es incorrecta';
