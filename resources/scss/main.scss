@@ -18,6 +18,10 @@ $skyBlue-pastel-color: (
   "skyBlue-pastel-color": rgb(242, 247, 255)
 );
 
+$skyBlue2-pastel-color: (
+  "skyBlue2-pastel-color": rgb(230, 237, 255)
+);
+
 $red-cream-color: (
   "red-cream-color": rgb(235, 88, 88)
 );
@@ -87,7 +91,7 @@ $theme-colors: map-merge($theme-colors, $red-cream-color);
 $theme-colors: map-merge($theme-colors, $blue-principal-color);
 $theme-colors: map-merge($theme-colors, $blue-secondary-color);
 $theme-colors: map-merge($theme-colors, $green-w-color);
-
+$theme-colors: map-merge($theme-colors, $skyBlue2-pastel-color);
 
 //Colores de la pantalla de ingresos
 $theme-colors: map-merge($theme-colors, $blue-light-color);

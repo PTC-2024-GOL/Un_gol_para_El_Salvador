@@ -26,7 +26,10 @@ MAIN.insertAdjacentHTML('beforebegin', `
                 aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand fw-semibold titulo" href="#" id='title'></a>
+            <div class="d-flex align-items-center">
+                <img src="../../../resources/img/png/soccer.png" width="25" height="25">
+                <a class="navbar-brand fw-semibold titulo ms-2" href="#" id='title'></a>
+            </div>
             <!-- Imagen de perfil y nombre -->
             <div class="d-none d-sm-block">
                 <div class="row align-items-center justify-content-center">

@@ -21,13 +21,16 @@ const loadTemplate = async () => {
 // Se agrega el encabezado de la página web antes del contenido principal.
 MAIN.insertAdjacentHTML('beforebegin', `
 <header class="margen">
-    <nav class="navbar bg-skyBlue-pastel-color fixed-top">
+    <nav class="navbar bg-skyBlue2-pastel-color fixed-top">
         <div class="container-fluid">
             <button class="navbar-toggler " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
                 aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand fw-semibold titulo" href="#" id='title'></a>
+            <div class="d-flex align-items-center">
+                <img src="../../../resources/img/png/setting.png" width="26" height="26">
+                <a class="navbar-brand fw-semibold titulo ms-2" href="#" id='title'></a>
+            </div>
             <!-- Imagen de perfil y nombre -->
             <div class="d-none d-sm-block">
                 <div class="row align-items-center justify-content-center">
