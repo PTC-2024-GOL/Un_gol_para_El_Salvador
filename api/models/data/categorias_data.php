@@ -37,17 +37,23 @@ class CategoriasData extends CategoriasHandler
         }
     }
 
-    // Validación y asignación de la edad minima permitida.
-    public function setEdadMinima($value)
-    {
-        if (Validator::validateNaturalNumber($value)) {
-            $this->edadMinima = $value;
-            return true;
-        } else {
-            $this->data_error = 'La edad mínima permitida de la categoría es incorrecta';
-            return false;
-        }
-    }
+     // Validación y asignación de la edad minima permitida.
+     public function setEdadMinima($value, $min = 3, $max = 23)
+     {
+         if (Validator::validateNaturalNumber($value)) {
+             $this->edadMinima = $value;
+             if ($this->edadMinima >= $min && $this->edadMinima <= $max) {
+                 return true;
+             } else {
+                 $this->data_error = 'El valor mínimo de la edad debe ser ' . $min . ' y el máximo ' . $max;
+                 return false;
+             }
+             return true;
+         } else {
+             $this->data_error = 'La edad mínima permitida de la categoría es incorrecta';
+             return false;
+         }
+     }
 
     // Validación y asignación de la edad minima permitida.
     public function setEdadMaxima($value)
