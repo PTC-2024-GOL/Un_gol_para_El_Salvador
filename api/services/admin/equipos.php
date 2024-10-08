@@ -128,9 +128,7 @@ if (isset($_GET['action'])) {
                 break;
             // Leer uno
             case 'countTeamsByCategory':
-                if (!$equipo->setIdCategoria($_POST['idCategoria'])) {
-                    $result['error'] = $equipo->getDataError();
-                } elseif ($result['dataset'] = $equipo->countTeamsByCategory()) {
+                if ($result['dataset'] = $equipo->countTeamsByCategory()) {
                     $result['status'] = 1;
                 } else {
                     $result['error'] = 'Aún no hay equipos en esta categoría';

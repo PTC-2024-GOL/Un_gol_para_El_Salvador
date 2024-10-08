@@ -266,17 +266,11 @@ const FilterByGender = async () => {
 const openGraphic = async () => {
     SEE_GRAPHIC.show();
     MODAL_TITLE_GRAPHIC.textContent = 'Gráfico'
-    await fillSelect(CATEGORIA_API, 'readAll', 'selectCategory');
+    await selectCategory();
 }
 
 const selectCategory = async () => {
-    SELECT_CATEGORY = document.getElementById('selectCategory').value;
-
-    console.log(SELECT_CATEGORY);
-    const FORM = new FormData();
-    FORM.append('idCategoria', SELECT_CATEGORY);
-
-    const DATA = await fetchData(EQUIPO_API, 'countTeamsByCategory', FORM);
+    const DATA = await fetchData(EQUIPO_API, 'countTeamsByCategory');
     console.log(DATA)
     if(DATA.status){
         SHOW_GRAPHIC.classList.add('d-none');
