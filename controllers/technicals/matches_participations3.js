@@ -198,9 +198,9 @@ const openUpdate = async (id, idJugador) => {
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const openDelete = async (id) => {
+const openDelete = async (id, name, lastName) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar la participación del jugador?');
+    const RESPONSE = await confirmAction(`¿Desea eliminar la participación del jugador ${name} ${lastName}?`);
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
@@ -218,7 +218,10 @@ const openDelete = async (id) => {
                 // Se carga nuevamente la tabla para visualizar los cambios.
                 await cargarTabla();
             } else {
-                await sweetAlert(4, DATA.error, false);
+                // Verificamos si DATA.exception no es null o vacío.
+                const exceptionMessage = DATA.exception ? `\n\n${DATA.exception}` : '';
+                // Mostramos el mensaje de error sin la excepción si esta es null o está vacía.
+                await sweetAlert(2, `${DATA.error}${exceptionMessage}`, false);
             }
         }
     }
@@ -282,7 +285,10 @@ const openDeleteGoles = async (id) => {
                 await cargarGolTarjetas(idParticipation);
                 SEE_GOLES_MODAL.show();
             } else {
-                await sweetAlert(2, DATA.error, false);
+                // Verificamos si DATA.exception no es null o vacío.
+                const exceptionMessage = DATA.exception ? `\n\n${DATA.exception}` : '';
+                // Mostramos el mensaje de error sin la excepción si esta es null o está vacía.
+                await sweetAlert(2, `${DATA.error}${exceptionMessage}`, false);
             }
         }
     }
@@ -346,7 +352,10 @@ const openDeleteAmonestacion = async (id) => {
                 // Se carga nuevamente la tabla para visualizar los cambios.
                 await cargarAmonestacionTarjetas(idParticipation);
             } else {
-                await sweetAlert(2, DATA.error, false);
+                // Verificamos si DATA.exception no es null o vacío.
+                const exceptionMessage = DATA.exception ? `\n\n${DATA.exception}` : '';
+                // Mostramos el mensaje de error sin la excepción si esta es null o está vacía.
+                await sweetAlert(2, `${DATA.error}${exceptionMessage}`, false);
             }
         }
     }
@@ -426,7 +435,7 @@ async function showParticipation(page) {
                                     <img src="../../../resources/img/svg/icons_forms/amonestacion.svg" width="20" height="20">
                                 </button>
                                 
-                                <button type="button" class="btn transparente d-none mx-2" id="btnOpenDelete_${row.id_jugador}" onclick="openDelete(${idParticipacion})">
+                                <button type="button" class="btn transparente d-none mx-2" id="btnOpenDelete_${row.id_jugador}" onclick="openDelete(${idParticipacion}, '${row.nombre_jugador}', '${row.apellido_jugador}')">
                                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="20" height="20">
                                 </button>
 
@@ -470,9 +479,9 @@ async function cargarTabla() {
     try {
         cargarTabla.innerHTML = '';
         const form = new FormData();
-        form.append('idEquipo', idEquipo)
+        form.append('idPartido', idPartido)
         // Petición para obtener los registros disponibles.
-        const DATA = await fetchData(PARTICIPACION_API, 'readAllByIdEquipo', form);
+        const DATA = await fetchData(PARTICIPACION_API, 'readAllByIdPartido', form);
 
 
         if (DATA.status) {
@@ -572,7 +581,7 @@ async function cargarAmonestacionTarjetas(idParticipacion) {
     const DATA1 = await fetchData(AMONESTACIONES_API, 'readTarjetaRojas', form);
 
     if (DATA1.status) {
-        total_rojas = DATA1.dataset.totalRojas;
+        total_rojas = parseInt(DATA1.dataset.totalRojas);
         console.log(total_rojas);
     } else {
         console.log('No tiene tarjetas rojas')
@@ -584,10 +593,10 @@ async function cargarAmonestacionTarjetas(idParticipacion) {
     const DATA2 = await fetchData(AMONESTACIONES_API, 'readTarjetaAmarillas', form1);
 
     if (DATA2.status) {
-        total_amarillas = DATA2.dataset.totalAmarillas;
+        total_amarillas = parseInt(DATA2.dataset.totalAmarillas);
         console.log(total_amarillas);
     } else {
-        console.log('No tiene tarjetas amarillas')
+        console.log('No tiene tarjetas amarillas');
     }
     ///////////////////////////////////////////////////////////////////////////////////
 
@@ -808,6 +817,11 @@ window.onload = async function () {
         const titular = TITULAR.checked ? 1 : 0;
         const sustitucion = SUSTITUCION.checked ? 1 : 0;
 
+        if(titular && sustitucion === 1) {
+            await sweetAlert(3,'¿El jugador fue sustitución o titular? Pero no puede ser ambas.', false);
+            return;
+        }
+
         FORM.set('titular', titular);
         FORM.set('sustitucion', sustitucion);
         FORM.append('animo', animo);
@@ -819,7 +833,7 @@ window.onload = async function () {
 
         // Validación de los minutos jugados.
         if (minutos >= 116) {
-            await sweetAlert(2, 'Los minutos jugados no pueden superar los 90 min.', false);
+            await sweetAlert(2, 'Los minutos jugados no pueden superar los 116 min (Se toma en cuenta el tiempo extra).', false);
         } else if(asistencias > splitResultado) {
             await sweetAlert(2, `El resultado del partido es ${splitResultado}. El máximo de asistencias por jugador no puede ser más que el resultado del partido.`, false);
         } else {
@@ -834,8 +848,10 @@ window.onload = async function () {
                 // Se carga nuevamente la tabla para visualizar los cambios.
                 await cargarTabla();
             } else {
-                await sweetAlert(2, DATA.error, false);
-                console.error(DATA.exception);
+                // Verificamos si DATA.exception no es null o vacío.
+                const exceptionMessage = DATA.exception ? `\n\n${DATA.exception}` : '';
+                // Mostramos el mensaje de error sin la excepción si esta es null o está vacía.
+                await sweetAlert(2, `${DATA.error}${exceptionMessage}`, false);
             }
         }
     });
@@ -897,8 +913,10 @@ window.onload = async function () {
                 await cargarGolTarjetas(idParticipation);
                 console.log('Goles totales:', totalGoles);
             } else {
-                await sweetAlert(2, DATA.error, false);
-                console.error(DATA.exception);
+                // Verificamos si DATA.exception no es null o vacío.
+                const exceptionMessage = DATA.exception ? `\n\n${DATA.exception}` : '';
+                // Mostramos el mensaje de error sin la excepción si esta es null o está vacía.
+                await sweetAlert(2, `${DATA.error}${exceptionMessage}`, false);
             }
         }
     });
@@ -915,14 +933,18 @@ window.onload = async function () {
         FORM.append('idParticipacion', idParticipation);
 
         // Validación para tarjetas amarillas
-        if (total_amarillas >= 2) {
+        if (total_amarillas === 2) {
             // Si el jugador ya tiene dos tarjetas amarillas, muestra mensaje y bloquea la adición de más amarillas
-            await sweetAlert(2, 'El jugador seleccionado ya tiene dos tarjetas amarillas, por lo que es necesario asignarle tarjeta roja', false);
+            await sweetAlert(3, 'El jugador seleccionado ya tiene dos tarjetas amarillas, por lo que es necesario asignarle tarjeta roja', false);
 
+            console.log('Total de roja: ' + total_rojas);
             // Si el jugador no tiene una tarjeta roja, permitir agregar una roja
             if (total_rojas === 0) {
-                const confirmRedCard = await sweetAlert(2, 'Asignar una tarjeta roja al jugador.', true);
+                const confirmRedCard = await confirmAction('Asignar una tarjeta roja al jugador.');
                 if (confirmRedCard) {
+                    //Al tener las dos tarjetas amarillas, se asigna una tarjeta roja.
+                    let amonestacion = 'Tarjeta roja';
+                    FORM.set('amonestacion', amonestacion)
                     // Aquí puedes manejar la lógica para asignar la tarjeta roja
                     const DATA = await fetchData(AMONESTACIONES_API, action, FORM);
                     // Se comprueba si la respuesta es satisfactoria, de lo contrario se muestra un mensaje con la excepción.
@@ -940,11 +962,13 @@ window.onload = async function () {
                     }
                 }
             } else {
-                await sweetAlert(2, 'El jugador seleccionado ya tiene una tarjeta roja asignada', false);
+                await sweetAlert(3, 'El jugador seleccionado ya tiene una tarjeta roja asignada.', false);
+                SAVE_AMONESTACION_MODAL.hide();
             }
-        } else if (total_rojas >= 1) {
+        } else if (total_rojas === 1) {
             // Validación de tarjetas rojas
-            await sweetAlert(2, 'El jugador seleccionado ya tiene una tarjeta roja asignada', false);
+            await sweetAlert(3, 'El jugador seleccionado ya tiene una tarjeta roja asignada', false);
+            SAVE_AMONESTACION_MODAL.hide();
         } else {
             // Aquí puedes manejar la lógica para asignar una tarjeta amarilla o roja si las condiciones anteriores no se cumplen
             const DATA = await fetchData(AMONESTACIONES_API, action, FORM);
@@ -958,8 +982,10 @@ window.onload = async function () {
                 // Se carga nuevamente la tabla para visualizar los cambios.
                 await cargarAmonestacionTarjetas(idParticipation);
             } else {
-                await sweetAlert(2, DATA.error, false);
-                console.error(DATA.exception);
+                // Verificamos si DATA.exception no es null o vacío.
+                const exceptionMessage = DATA.exception ? `\n\n${DATA.exception}` : '';
+                // Mostramos el mensaje de error sin la excepción si esta es null o está vacía.
+                await sweetAlert(2, `${DATA.error}${exceptionMessage}`, false);
             }
         }
     });
@@ -981,5 +1007,21 @@ window.onload = async function () {
             await sweetAlert(3, DATA.error, true);
         }
     });
-};
 
+
+    //Evita escribir en el input de tipo number y solo permitir las flechitas del input.
+    const input = document.getElementById('cantidadAmonestacion');
+
+    input.addEventListener('keydown', function(e) {
+        // Permitir: teclas especiales como backspace, delete, tab, escape, enter, y las flechas
+        if (
+            [46, 8, 9, 27, 13].indexOf(e.keyCode) !== -1 ||
+            (e.keyCode >= 35 && e.keyCode <= 39) // Flechas
+        ) {
+            return;
+        }
+
+        // Bloquear cualquier otra entrada del teclado
+        e.preventDefault();
+    });
+};
