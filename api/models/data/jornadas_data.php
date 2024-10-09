@@ -42,11 +42,16 @@ class JornadasData extends JornadasHandler
     }
 
     // Validación y asignación del IDl cuerpo técnico.
-    public function setNumero($value)
+    public function setNumero($value, $min = 1 , $max = 100)
     {
         if (Validator::validateNaturalNumber($value)) {
             $this->numero = $value;
-            return true;
+            if ($this->numero >= $min && $this->numero <= $max) {
+                return true;
+            } else {
+                $this->data_error = 'El valor minimo del número de la jornada es ' . $min . ' y el maximo ' . $max;
+                return false;
+            }
         } else {
             $this->data_error = 'El número de la jornada es incorrecto';
             return false;
