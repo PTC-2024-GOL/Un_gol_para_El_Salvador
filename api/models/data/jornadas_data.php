@@ -25,7 +25,7 @@ class JornadasData extends JornadasHandler
             return false;
         }
     }
-    
+
     // Validación y asignación del nombre del rol.
     public function setNombre($value, $min = 2, $max = 50)
     {
@@ -64,11 +64,13 @@ class JornadasData extends JornadasHandler
             return false;
         }
     }
-    
+
     // Validación y asignación de la fecha de inicio de la jornada.
     public function setFechaInicio($value)
     {
-        if (Validator::validateDate($value)) {
+        $minDate = '2019-01-01';
+        $maxDate = date('Y-m-d', strtotime("+2 years"));
+        if (Validator::validateDate($value) && $value >= $minDate && $value <= $maxDate) {
             $this->fechaInicio = $value;
             return true;
         } else {
@@ -81,7 +83,9 @@ class JornadasData extends JornadasHandler
     // Validación y asignación de la fecha de inicio de la jornada.
     public function setFechaFin($value)
     {
-        if (Validator::validateDate($value)) {
+        $minDate = '2019-01-01';
+        $maxDate = date('Y-m-d', strtotime("+2 years"));
+        if (Validator::validateDate($value) && $value >= $minDate && $value <= $maxDate) {
             $this->fechaFinal = $value;
             return true;
         } else {
