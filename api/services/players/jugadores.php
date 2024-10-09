@@ -86,6 +86,13 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'No hay partidos disponibles';
                 }
                 break;
+            case 'MejoresPartidos':
+                if ($result['dataset'] = $jugador->MejoresPartidos()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'No hay partidos disponibles';
+                }
+                break;
             case 'golesMarcados':
                 if ($result['dataset'] = $jugador->golesMarcados()) {
                     $result['status'] = 1;

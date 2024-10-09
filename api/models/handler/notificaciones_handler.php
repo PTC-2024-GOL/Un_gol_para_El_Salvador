@@ -12,11 +12,10 @@ class NotificacionesHandler
     protected $id = null;
     protected $tipo = null;
 
-    // Constante para establecer la ruta de las imágenes.
-
     /*
      *  Métodos para realizar las operaciones SCRUD (search, create, read, update, and delete).
      */
+     // Función para filtrar mis notificaciones
     public function filterNotis()
     {
         $sql = 'SELECT n.id_notificacion AS ID,
@@ -34,6 +33,7 @@ class NotificacionesHandler
         return Database::getRows($sql, $params);
     }
 
+    // Función para leer mis notificaciones
     public function readMyNotis()
     {
         $sql = 'SELECT n.id_notificacion AS ID,
@@ -46,7 +46,7 @@ class NotificacionesHandler
         JOIN 
         jugadores j ON n.id_jugador = j.id_jugador
         WHERE n.id_jugador = ? AND n.fecha_notificacion >= DATE_SUB(CURDATE(), INTERVAL 2 WEEK)
-        ORDER BY n.fecha_notificacion ASC LIMIT 10;';
+        ORDER BY n.fecha_notificacion DESC LIMIT 10;';
         $params = array($_SESSION['idJugador']);
         return Database::getRows($sql, $params);
     }

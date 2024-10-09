@@ -291,7 +291,8 @@ class JugadoresHandler
         COALESCE(SUM(minutos_jugados), 0) AS MINUTOS_JUGADOS,
         COUNT(DISTINCT id_partido) AS TOTAL_PARTIDOS,
         COALESCE(SUM(CASE WHEN da.amonestacion = "Tarjeta amarilla" THEN da.numero_amonestacion ELSE 0 END),0) AS TARJETAS_AMARILLAS,
-        COALESCE(SUM(CASE WHEN da.amonestacion = "Tarjeta roja" THEN da.numero_amonestacion ELSE 0 END),0) AS TARJETAS_ROJAS
+        COALESCE(SUM(CASE WHEN da.amonestacion = "Tarjeta roja" THEN da.numero_amonestacion ELSE 0 END),0) AS TARJETAS_ROJAS,
+        ROUND(AVG(puntuacion),2) AS PROMEDIO
         FROM participaciones_partidos p
         LEFT JOIN detalles_amonestaciones da ON da.id_participacion = p.id_participacion
         WHERE id_jugador = ? AND (titular = 1 OR sustitucion = 1);';
@@ -338,6 +339,33 @@ class JugadoresHandler
         INNER JOIN rivales r ON r.id_rival = pt.id_rival
         WHERE id_jugador = ? AND (titular = 1 OR sustitucion = 1)
         ORDER BY pt.fecha_partido DESC;';
+        $params = array($_SESSION['idJugador']);
+        return Database::getRows($sql, $params);
+    }
+    
+    public function MejoresPartidos()
+    {
+        $sql = 'SELECT 
+        pt.id_partido,
+        DATE_FORMAT(pt.fecha_partido, "%e de %M del %Y") AS fecha,
+        pt.fecha_partido,
+        pt.localidad_partido,
+        pt.resultado_partido,
+        r.logo_rival,
+        e.logo_equipo,
+        e.nombre_equipo,
+        r.nombre_rival AS nombre_rival,
+        pt.tipo_resultado_partido,
+        e.id_equipo,
+        r.id_rival,
+        e.id_categoria,
+        p.id_jugador 
+        FROM participaciones_partidos p 
+        INNER JOIN partidos pt ON pt.id_partido = p.id_partido
+        INNER JOIN equipos e ON e.id_equipo = pt.id_equipo
+        INNER JOIN rivales r ON r.id_rival = pt.id_rival
+        WHERE id_jugador = ? AND (titular = 1 OR sustitucion = 1)
+        ORDER BY p.asistencias DESC LIMIT 3;';
         $params = array($_SESSION['idJugador']);
         return Database::getRows($sql, $params);
     }
