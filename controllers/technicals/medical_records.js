@@ -33,7 +33,7 @@ const openCreate = () => {
     MODAL_TITLE.textContent = 'Agregar un registro médico';
     // Se prepara el formulario.
     SAVE_FORM.reset();
-    fillSelect(JUGADOR_API, 'readAll', 'jugador');
+    fillSelect(JUGADOR_API, 'readAllTechnicals', 'jugador');
     fillSelect(LESION_API, 'readAll', 'lesion');
     fillSelect(PARTIDO_API, 'readAll', 'retornoPartido');
 }
@@ -59,7 +59,7 @@ const openUpdate = async (id) => {
             // Se inicializan los campos con los datos.
             const ROW = DATA.dataset;
             ID_REGISTRO_MEDICO.value = ROW.id_registro_medico;
-            fillSelect(JUGADOR_API, 'readAll', 'jugador', ROW.id_jugador);
+            fillSelect(JUGADOR_API, 'readAllTechnicals', 'jugador', ROW.id_jugador);
             FECHA_LESION.value = ROW.fecha_lesion;
             DIAS_LESIONADO.value = ROW.dias_lesionado;
             fillSelect(LESION_API, 'readAll', 'lesion', ROW.id_lesion);
@@ -72,7 +72,7 @@ const openUpdate = async (id) => {
         console.log(Error);
         SAVE_MODAL.show();
         MODAL_TITLE.textContent = 'Actualizar un registro médico';
-        fillSelect(JUGADOR_API, 'readAll', 'jugador');
+        fillSelect(JUGADOR_API, 'readAllTechnicals', 'jugador');
         fillSelect(LESION_API, 'readAll', 'lesion');
         fillSelect(PARTIDO_API, 'readAll', 'retornoPartido');
     }

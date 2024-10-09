@@ -91,7 +91,7 @@ class CategoriasHandler
         INNER JOIN
             detalles_cuerpos_tecnicos dct ON ct.id_cuerpo_tecnico = dct.id_cuerpo_tecnico
         WHERE
-            dct.id_tecnico = ? AND c.nombre_categoria LIKE ?
+            dct.id_tecnico = ?
         ORDER BY
             c.nombre_categoria;';
         $params = array($_SESSION['idTecnico']);

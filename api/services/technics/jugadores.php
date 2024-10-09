@@ -32,6 +32,14 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'No existen jugadores registrados';
                 }
                 break;
+                case 'readAllTechnicals':
+                    if ($result['dataset'] = $jugador->readAllTechnicals()) {
+                        $result['status'] = 1;
+                        $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
+                    } else {
+                        $result['error'] = 'No existen jugadores registrados';
+                    }
+                    break;
             // Ver uno
             case 'readOne':
                 if (!$jugador->setId($_POST['idJugador'])) {

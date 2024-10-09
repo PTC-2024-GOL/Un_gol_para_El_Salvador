@@ -207,8 +207,8 @@ class JugadoresHandler
                 equipos e ON pe.id_equipo = e.id_equipo
                 INNER JOIN 
                 detalles_cuerpos_tecnicos dct ON e.id_cuerpo_tecnico = dct.id_cuerpo_tecnico
-                WHERE dct.id_tecnico = 1 AND j.id_jugador IS NOT NULL;';
-        $params = array($_SESSION['idTecnico'], $value);
+                WHERE dct.id_tecnico = ? AND j.id_jugador IS NOT NULL;';
+        $params = array($_SESSION['idTecnico']);
         return Database::getRows($sql, $params);
     }
 
