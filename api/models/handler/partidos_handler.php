@@ -478,22 +478,24 @@ class PartidosHandler
 
 
     public function subtemaMasFrecuente()
-    {
-        $subtema_frecuente = '';
-        $max_frecuencia = 0;
-        $this->ContenidosUltimos2Meses();
+{
+    $subtema_frecuente = '';
+    $max_frecuencia = 0;
+    $this->ContenidosUltimos2Meses();
 
-        foreach ($this->contenidosUltimos2Meses as $contenido) {
-            $frecuencia = (int) $contenido['frecuencia']; // Convertir la frecuencia a un valor entero
+    foreach ($this->contenidosUltimos2Meses as $contenido) {
+        $frecuencia = (int) $contenido['frecuencia']; // Convertir la frecuencia a un valor entero
 
-            if ($frecuencia > $max_frecuencia) {
-                $max_frecuencia = $frecuencia;
-                $subtema_frecuente = $contenido['sub_tema_contenido'];
-            }
+        if ($frecuencia > $max_frecuencia) {
+            $max_frecuencia = $frecuencia;
+            $subtema_frecuente = $contenido['sub_tema_contenido'];
         }
-
-        return $subtema_frecuente;
     }
+
+    // Convertir el subtema más frecuente a minúsculas antes de retornarlo
+    return strtolower($subtema_frecuente);
+}
+
 
     public function subtemaMenosFrecuente()
     {
@@ -508,9 +510,9 @@ class PartidosHandler
                 $min_frecuencia = $frecuencia;
                 $subtema_menos_frecuente = $contenido['sub_tema_contenido'];
             }
-        }
+         }
 
-        return $subtema_menos_frecuente;
+        return strtolower($subtema_menos_frecuente);
     }
 
 
@@ -581,7 +583,7 @@ class PartidosHandler
 
         $mensaje1 = "Bajo la frecuencia de entrenamientos de este mes y las áreas reforzadas, los resultados en enfrentamientos de tu equipo y del rival, se predice el resultado de este partido:\n";
         $mensaje2 = "[Logo equipo 1] {$prediccionEquipo} - {$prediccionRival} [logo rival]\n";
-        $mensaje3 = "Reforzar el área de {$subtemaMenor}, jugar limpio. En este partido tu area más fuerte será {$subtemaMayor}, ¡así que potencialo!; Se espera que en la ofensiva los titulares de este partido sean: {$nombresDelanteros}.";
+        $mensaje3 = "Reforzar el área de {$subtemaMenor} y hacer un partido estratégico; Toma en cuenta que en este partido tu area más fuerte será {$subtemaMayor}, ¡Así que potencialo!.\n \nSe espera que en la ofensiva los titulares de este partido sean: {$nombresDelanteros}.";
 
         return [
             'prediccionRival' => $prediccionRival,

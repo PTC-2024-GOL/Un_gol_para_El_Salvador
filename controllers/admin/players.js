@@ -73,7 +73,7 @@ const openPage = async (id, nombre) => {
     idJugador = id;
     SEE_MEDICAL.show();
     MODAL_TITLE_MEDICAL.textContent = `Rendimiento físico de ${nombre}`
-    await estadofisico(id);
+    await zona1func(id);
 }
 
 const zona1func = async () => {
@@ -159,28 +159,32 @@ const estadofisico = async (id) => {
 
 const rendimientoFisico = async (id) => {
     const contenedorOne = document.getElementById('contenedor_estados');
-    const cargarTabla = document.getElementById('tableEstadoFisico');
         contenedorOne.innerHTML = `<div class="ps-5 pe-5 mt-3">
-                    <div class="p-3 mb-0">
-                        <div class="row justify-content-center align-items-center bg-blue-light-color">
-                            <div class="col-md-3">
-                                <p class="mt-3 fw-semibold">Pregunta</p>
-                            </div>
-                            <div class="col-md-3">
-                                <p class="mt-3 fw-semibold">Fecha</p>
-                            </div>
-                            <div class="col-md-3">
-                                <p class="mt-3 fw-semibold">Puntuación</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--Insertamos la tabla con los registro del estado fisico del jugador-->
-                    <div class="p-3" id="tableEstadoFisico">
-
-                    </div>
-                </div>`;
+    <div class="p-3 mb-0">
+        <div class="row justify-content-center align-items-center bg-blue-light-color">
+            <div class="col-md-3">
+                <p class="mt-3 fw-semibold">Pregunta</p>
+            </div>
+            <div class="col-md-3">
+                <p class="mt-3 fw-semibold">Fecha</p>
+            </div>
+            <div class="col-md-3">
+                <p class="mt-3 fw-semibold">Puntuación</p>
+            </div>
+        </div>
+    </div>
+    <div class="text-center d-none mb-4" id="noData">
+        <p>Aún no hay registros para este jugador</p>
+    </div>
+    <!-- Insertamos la tabla con los registros del estado físico del jugador -->
+    <div class="p-3" id="tableRendimientoFisico" style="max-height: 400px; overflow-y: auto;">
+        <!-- Contenido de la tabla aquí -->
+    </div>
+</div>`;
         try {
+            
+    const cargarTabla = document.getElementById('tableRendimientoFisico');
+    const noDataDiv = document.getElementById('noData');
             cargarTabla.innerHTML = '';
             const FORM = new FormData();
             FORM.append('idJugador', id)
@@ -191,10 +195,10 @@ const rendimientoFisico = async (id) => {
                     const tablaHtml = `
                             <div class="row justify-content-center align-items-center">
                                 <div class="col-md-3">
-                                    <p>${row.pregunta} ctm</p>
+                                    <p>${row.pregunta}</p>
                                 </div>
                                 <div class="col-md-3">
-                                    <p>${row.fecha} lbs</p>
+                                    <p>${row.fecha}</p>
                                 </div>
                                 <div class="col-md-3">
                                     <p>${row.respuesta}</p>
@@ -205,7 +209,7 @@ const rendimientoFisico = async (id) => {
                     cargarTabla.innerHTML += tablaHtml;
                 })
             } else {
-                await sweetAlert(3, DATA.error, true)
+                noDataDiv.classList.remove('d-none');
             }
         } catch (error) {
             console.log('Error al obtener datos de la API')

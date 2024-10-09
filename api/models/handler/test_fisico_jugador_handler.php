@@ -35,7 +35,7 @@ class testHandler
     //Función para actualizar de que el test fue contestado
     public function updateRow()
     {
-        
+
         // Aquí actualizamos el estado del test a contestado.
         $sql = 'UPDATE test SET contestado = 1 WHERE id_test = ?;';
         $params = array($this->idTest);
@@ -47,19 +47,19 @@ class testHandler
     public function readAll()
     {
         $sql = 'SELECT 
-    r.pregunta, 
-    r.respuesta, 
-    t.fecha, 
-    t.id_jugador
-    FROM 
-        respuesta_test r
-    INNER JOIN 
-        test t ON r.id_test = t.id_test
-    ORDER BY 
-        t.fecha DESC
-    WHERE 
-        t.id_jugador = ?
-    LIMIT 60;';
+                r.pregunta, 
+                r.respuesta, 
+                t.fecha, 
+                t.id_jugador
+            FROM 
+                respuesta_test r
+            INNER JOIN 
+                test t ON r.id_test = t.id_test
+            WHERE 
+                t.id_jugador = ?
+            ORDER BY 
+                t.fecha DESC
+            LIMIT 60;';
         $params = array($this->idJugador);
         return Database::getRows($sql, $params);
     }
@@ -77,6 +77,6 @@ class testHandler
         ';
 
         $params = array($this->idJugador);
-        return Database::getRow($sql, $params);  
+        return Database::getRow($sql, $params);
     }
 }
