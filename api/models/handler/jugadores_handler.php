@@ -33,13 +33,13 @@ class JugadoresHandler
     // Constante para establecer la ruta de las imágenes.
     const RUTA_IMAGEN = '../../images/jugadores/';
 
-    
+
     /*
      *  Métodos para gestionar la cuenta del Jugador.
      */
 
     //Función para chequear el usuario de un admministrador en el login, sin el procedimiento almacenado.
-    
+
     public function checkUser($username, $password)
     {
         $sql = 'SELECT id_jugador, correo_jugador, 
@@ -48,7 +48,7 @@ class JugadoresHandler
                 nombre_jugador, apellido_jugador
                 FROM jugadores
                 WHERE (BINARY alias_jugador = ? OR BINARY correo_jugador = ?)';
-        $params = array($username,$username);
+        $params = array($username, $username);
         $data = Database::getRow($sql, $params);
         if (password_verify($password, $data['clave_jugador'])) {
             $this->id = $data['id_jugador'];
@@ -164,6 +164,52 @@ class JugadoresHandler
     {
         $sql = 'SELECT * FROM vista_jugadores ORDER BY fecha_creacion;';
         return Database::getRows($sql);
+    }
+
+    //Función para mostrar todos los jugadores
+    public function readAllTechnicals()
+    {
+        $value = '%' . Validator::getSearchValue() . '%';
+        $sql = 'SELECT DISTINCT
+                j.id_jugador,
+                CONCAT(j.nombre_jugador, " ", j.apellido_jugador) AS NOMBRE_COMPLETO,
+                j.dorsal_jugador,
+                j.nombre_jugador,
+                j.apellido_jugador,
+                j.estatus_jugador,
+                j.fecha_nacimiento_jugador,
+                DATE_FORMAT(j.fecha_nacimiento_jugador, "%e de %M del %Y") AS nacimiento,
+                j.genero_jugador,
+                j.perfil_jugador,
+                j.becado,
+                j.id_posicion_principal,
+                j.id_posicion_secundaria,
+                j.alias_jugador,
+                j.clave_jugador,
+                j.foto_jugador,
+                j.fecha_creacion,
+                DATE_FORMAT(j.fecha_creacion, "%e de %M del %Y") AS registoJugador,
+                p1.posicion AS posicionPrincipal,
+                p2.posicion AS posicionSecundaria,
+                j.observacion_medica,
+                j.tipo_sangre,
+                j.telefono,
+                j.telefono_de_emergencia,
+                j.correo_jugador
+                FROM jugadores j
+                INNER JOIN
+                posiciones p1 ON j.id_posicion_principal = p1.id_posicion
+                INNER JOIN
+                posiciones p2 ON j.id_posicion_secundaria = p2.id_posicion
+                RIGHT JOIN
+                plantillas_equipos pe ON pe.id_jugador = j.id_jugador
+                INNER JOIN 
+                equipos e ON pe.id_equipo = e.id_equipo
+                INNER JOIN 
+                detalles_cuerpos_tecnicos dct ON e.id_cuerpo_tecnico = dct.id_cuerpo_tecnico
+                WHERE dct.id_tecnico = 1 AND j.id_jugador IS NOT NULL;';
+        $params = array($_SESSION['idTecnico'], $value);
+        return Database::getRows($sql, $params);
     }
 
     //Función para mostrar todos los jugadores filtrados por el genero
@@ -299,7 +345,7 @@ class JugadoresHandler
         $params = array($_SESSION['idJugador']);
         return Database::getRow($sql, $params);
     }
-    
+
     public function maximosGoleadores()
     {
         $sql = 'SELECT * FROM vista_maximos_goleadores 
@@ -307,7 +353,7 @@ class JugadoresHandler
         $params = array($_SESSION['idJugador']);
         return Database::getRows($sql, $params);
     }
-    
+
     public function maximosAsistentes()
     {
         $sql = 'SELECT * FROM vista_maximos_asistentes 
@@ -342,7 +388,7 @@ class JugadoresHandler
         $params = array($_SESSION['idJugador']);
         return Database::getRows($sql, $params);
     }
-    
+
     public function MejoresPartidos()
     {
         $sql = 'SELECT 
