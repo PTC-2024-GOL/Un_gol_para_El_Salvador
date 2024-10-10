@@ -230,8 +230,10 @@ function showInjuries(page) {
     fillTable.innerHTML = '';
     injuriesPage.forEach(row => {
         let resultado = row.tipo_resultado_partido;
+        let autorizacion = row.autorizacion_prediccion;
+        console.log(autorizacion);
                 const pendienteHtml = resultado === 'Pendiente' ? '<p class="text-warning fw-semibold mb-0">Pendiente</p>' : '';
-                const prediccionHTML = resultado === 'Pendiente' ? `<button class="btn bg-blue-light-color text-black btn-sm rounded-3" 
+                const prediccionHTML = autorizacion == 'true' && resultado === 'Pendiente' ? `<button class="btn bg-blue-light-color text-black btn-sm rounded-3" 
                 onclick="seeReport(${row.id_partido})"> Predicción </button>` : '';
                 const cardsHtml = `<div class="col-md-6 col-sm-12">
                     <div class="tarjetas shadow p-4">

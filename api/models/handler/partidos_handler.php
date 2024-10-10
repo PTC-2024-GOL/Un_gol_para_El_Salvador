@@ -39,6 +39,9 @@ class PartidosHandler
     protected $frecuenciaEntrenamientosUltimos2Meses = null;
     protected $notasPromedioUltimos2Meses = null;
     protected $notasPosicionOfensivaUltimos2Meses = null;
+    protected $notasWellnesUltimos2Meses = null;
+    protected $notasPosicionUltimos2Meses = null; 
+    protected $notasWellnesOfensivaUltimos2Meses = null;
 
     // Constante para establecer la ruta de las imágenes.
     const RUTA_IMAGEN = '../../images/partidos/';
@@ -373,7 +376,33 @@ class PartidosHandler
         $this->notasPosicionOfensivaUltimos2Meses = Database::getRows($sql, $params);
         return $this->notasPosicionOfensivaUltimos2Meses;
     }
+    
+    // 10. Nota de los últimos resultados en test de los delanteros 
+    public function NotasTestWellnesOfensivaUltimos2Meses()
+    {
+        $sql = "SELECT id_jugador, nombre_jugador, promedio FROM delantero_test_wellnes WHERE id_equipo = ?;";
+        $params = array($this->idEquipo);
+        $this->notasWellnesOfensivaUltimos2Meses = Database::getRows($sql, $params);
+        return $this->notasWellnesOfensivaUltimos2Meses;
+    }
 
+    // 11. Nota de la última evaluación de todos los jugadores y cantidad de asistencias en los últimos 2 meses
+    public function NotasPosicionUltimos2Meses()
+    {
+        $sql = "SELECT DISTINCT frecuencia, id_jugador, promedio, nombre_jugador FROM asistencias_evaluaciones WHERE id_equipo = ?;";
+        $params = array($this->idEquipo);
+        $this->notasPosicionUltimos2Meses = Database::getRows($sql, $params);
+        return $this->notasPosicionUltimos2Meses;
+    }
+
+    // 12. Nota del test de wellness de todos los jugaores del equipo en los últimos 2 meses
+    public function NotasTestWellnesUltimos2Meses()
+    {
+        $sql = "SELECT id_jugador, nombre_jugador, promedio FROM test_wellnes WHERE id_equipo = ?;";
+        $params = array($this->idEquipo);
+        $this->notasWellnesUltimos2Meses = Database::getRows($sql, $params);
+        return $this->notasWellnesUltimos2Meses;
+    }
     // Aquí se incluye la lógica de la predicción de partidos
     public function calcularProbabilidadVictoriaRival()
     {
@@ -535,15 +564,116 @@ class PartidosHandler
     public function evaluarDelanteros()
     {
         $mejores_notas = [];
+        $mejores_test = [];
+        $frecuencia_entrenamientos = [];
+        $jugadores_repetidos = [];
+    
+        // Obtener las notas de los últimos 2 meses de las posiciones ofensivas
         $this->NotasPosicionOfensivaUltimos2Meses();
-
+        $this->NotasTestWellnesOfensivaUltimos2Meses();
+    
+        // Crear arrays con los nombres de los jugadores y sus respectivas notas y frecuencias
         foreach ($this->notasPosicionOfensivaUltimos2Meses as $nota) {
             $mejores_notas[$nota['nombre_jugador']] = (float) $nota['promedio'];
+            $frecuencia_entrenamientos[$nota['nombre_jugador']] = (float) $nota['frecuencia'];
         }
-
+    
+        foreach ($this->notasWellnesOfensivaUltimos2Meses as $nota) {
+            $mejores_test[$nota['nombre_jugador']] = (float) $nota['promedio'];
+        }
+    
+        // Ordenar ambos arrays de mayor a menor según las notas
         arsort($mejores_notas);
-        return array_slice($mejores_notas, 0, 3, true);
+        arsort($mejores_test);
+    
+        // Tomar los 6 mejores jugadores de cada arreglo
+        $top_mejores_notas = array_slice($mejores_notas, 0, 6, true);
+        $top_mejores_test = array_slice($mejores_test, 0, 6, true);
+    
+        // Buscar los jugadores que están en ambos arreglos
+        $jugadores_repetidos = array_intersect_key($top_mejores_notas, $top_mejores_test);
+    
+        // Calcular el puntaje ponderado para cada jugador repetido
+        foreach ($jugadores_repetidos as $nombre_jugador => $nota) {
+            $nota_ofensiva = $top_mejores_notas[$nombre_jugador] ?? 0;
+            $nota_test = $top_mejores_test[$nombre_jugador] ?? 0;
+            $frecuencia = $frecuencia_entrenamientos[$nombre_jugador] ?? 0;
+    
+            // Calcular el puntaje final ponderado: 40% nota ofensiva, 30% frecuencia, 30% nota test
+            $jugadores_repetidos[$nombre_jugador] = (
+                ($nota_ofensiva * 0.40) + 
+                ($frecuencia * 0.30) + 
+                ($nota_test * 0.30)
+            );
+        }
+    
+        // Ordenar a los jugadores repetidos por su puntaje ponderado (de mayor a menor)
+        arsort($jugadores_repetidos);
+    
+        // Devolver los 3 mejores jugadores
+        return array_slice($jugadores_repetidos, 0, 4, true);
     }
+    
+    public function mejoresPropuestas()
+    {
+        $notas_posicion = []; // Jugadores con sus notas en posiciones
+        $notas_wellness = []; // Jugadores con sus notas de bienestar (motivación)
+        $frecuencia_entrenamientos = []; // Jugadores con su frecuencia de asistencias
+        $jugadores_desmotivados = []; // Jugadores que aparecerán en ambas listas (repetidos)
+    
+        // Obtener las notas de los últimos 2 meses de las posiciones (no necesariamente ofensivas)
+        $this->NotasPosicionUltimos2Meses(); 
+        $this->NotasTestWellnesUltimos2Meses(); // Obtener las notas de bienestar (motivación)
+    
+        // Crear arrays con los nombres de los jugadores y sus respectivas notas y frecuencias
+        foreach ($this->notasPosicionUltimos2Meses as $nota) {
+            $notas_posicion[$nota['nombre_jugador']] = (float) $nota['promedio'];
+            $frecuencia_entrenamientos[$nota['nombre_jugador']] = (float) $nota['frecuencia'];
+        }
+    
+        foreach ($this->notasWellnesUltimos2Meses as $nota) {
+            $notas_wellness[$nota['nombre_jugador']] = (float) $nota['promedio'];
+        }
+    
+        // Ordenar las notas de posiciones de mayor a menor
+        arsort($notas_posicion);
+    
+        // Las notas de bienestar ya están de menor a mayor, así que no es necesario ordenar
+    
+        // Tomar los 6 mejores jugadores en posiciones y los 6 con menor motivación
+        $top_jugadores_posicion = array_slice($notas_posicion, 0, 6, true);
+        $jugadores_desmotivados = array_slice($notas_wellness, 0, 6, true); // Tomar los 6 con menor nota
+    
+        // Inversión de las notas de bienestar (mientras más baja la nota, mayor será el peso)
+        $nota_maxima_wellness = max($jugadores_desmotivados);
+        foreach ($jugadores_desmotivados as $nombre_jugador => $nota_wellness) {
+            $jugadores_desmotivados[$nombre_jugador] = $nota_maxima_wellness - $nota_wellness;
+        }
+    
+        // Buscar los jugadores que están en ambos arreglos (jugadores que no son ofensivos y están desmotivados)
+        $jugadores_recomendados = array_intersect_key($top_jugadores_posicion, $jugadores_desmotivados);
+    
+        // Calcular el puntaje ponderado para cada jugador desmotivado
+        foreach ($jugadores_recomendados as $nombre_jugador => $nota) {
+            $nota_posicion = $top_jugadores_posicion[$nombre_jugador] ?? 0;
+            $nota_invertida_wellness = $jugadores_desmotivados[$nombre_jugador] ?? 0;
+            $frecuencia = $frecuencia_entrenamientos[$nombre_jugador] ?? 0;
+    
+            // Calcular el puntaje final ponderado: 30% nota de posición, 30% frecuencia, 40% bienestar invertido
+            $jugadores_recomendados[$nombre_jugador] = (
+                ($nota_posicion * 0.30) + 
+                ($frecuencia * 0.30) + 
+                ($nota_invertida_wellness * 0.40)
+            );
+        }
+    
+        // Ordenar a los jugadores recomendados por su puntaje ponderado (de mayor a menor)
+        arsort($jugadores_recomendados);
+    
+        // Devolver los 3 mejores jugadores recomendados
+        return array_slice($jugadores_recomendados, 0, 3, true);
+    }    
+    
 
     //Función para leer los partidos por el idEquipo
 
@@ -579,11 +709,14 @@ class PartidosHandler
         $subtemaMenor = $this->subtemaMenosFrecuente();
         $subtemaMayor = $this->subtemaMasFrecuente();
         $mejoresDelanteros = $this->evaluarDelanteros();
+        $mejoresPropuesta = $this->mejoresPropuestas();
         $nombresDelanteros = implode(', ', array_keys($mejoresDelanteros));
-
+        // Filtrar nombres de propuestas que no están en delanteros
+        $nombresNoEnDelanteros = implode(', ', array_keys(array_diff_key($mejoresPropuesta, $mejoresDelanteros)));
+        
         $mensaje1 = "Bajo la frecuencia de entrenamientos de este mes y las áreas reforzadas, los resultados en enfrentamientos de tu equipo y del rival, se predice el resultado de este partido:\n";
         $mensaje2 = "[Logo equipo 1] {$prediccionEquipo} - {$prediccionRival} [logo rival]\n";
-        $mensaje3 = "Reforzar el área de {$subtemaMenor} y hacer un partido estratégico; Toma en cuenta que en este partido tu area más fuerte será {$subtemaMayor}, ¡Así que potencialo!.\n \nSe espera que en la ofensiva los titulares de este partido sean: {$nombresDelanteros}.";
+        $mensaje3 = "Reforzar el área de {$subtemaMenor} y hacer un partido estratégico; Toma en cuenta que en este partido tu area más fuerte será {$subtemaMayor}, ¡Así que potencialo!.\n \nSe espera que en la ofensiva los titulares de este partido sean: {$nombresDelanteros}. Se considera que a estos jugadores les vendría bien que los tomen en cuenta para el partido {$nombresNoEnDelanteros}.";
 
         return [
             'prediccionRival' => $prediccionRival,
