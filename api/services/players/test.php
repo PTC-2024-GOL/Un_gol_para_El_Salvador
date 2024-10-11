@@ -62,11 +62,8 @@ if (isset($_GET['action'])) {
                 }
                 break;
             //Función para saber si el jugador tiene test sin contestar. 
-            //devuelve id_partido para saber si es el test del partido, si viene null es del entrenamiento.
             case 'testSinContestar':
-                if (!$testFisico->setIdJugador($_SESSION['idJugador'])) {
-                    $result['error'] = $testFisico->getDataError();
-                } elseif ($result['dataset'] = $testFisico->testSinContestar()) {
+                if ($result['dataset'] = $testFisico->testSinContestarMovil()) {
                     $result['status'] = 1;
                 } else {
                     $result['status'] = 0;

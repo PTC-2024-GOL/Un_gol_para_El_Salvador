@@ -79,4 +79,22 @@ class testHandler
         $params = array($this->idJugador);
         return Database::getRow($sql, $params);
     }
+    
+    public function testSinContestarMovil()
+    {
+        $sql ='SELECT
+        id_test,
+        id_jugador,
+        fecha,
+        contestado,
+        CASE
+        WHEN id_partido IS NOT NULL THEN CONCAT("Test físico ", DATE_FORMAT(fecha, "%d de %M de %Y"), " post partido")
+        WHEN id_entrenamiento IS NOT NULL THEN CONCAT("Test físico ", DATE_FORMAT(fecha, "%d de %M de %Y"), " post entrenamiento")
+        ELSE "Test físico (fecha desconocida)"
+        END AS nombre_test
+        FROM test
+        WHERE id_jugador = ?;';
+        $params = array($_SESSION['idJugador']);
+        return Database::getRows($sql, $params);
+    }
 }
