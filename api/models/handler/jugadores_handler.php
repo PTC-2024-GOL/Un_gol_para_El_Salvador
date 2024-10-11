@@ -362,6 +362,25 @@ class JugadoresHandler
         return Database::getRows($sql, $params);
     }
 
+    public function readOneStatsRecap()
+    {
+        $sql = 'SELECT  COALESCE(SUM(goles), 0) AS TOTAL_GOLES,
+		COALESCE(SUM(asistencias), 0) AS TOTAL_ASISTENCIAS,
+        COALESCE(SUM(minutos_jugados), 0) AS MINUTOS_JUGADOS,
+        COUNT(DISTINCT p.id_partido) AS TOTAL_PARTIDOS,
+        COALESCE(SUM(CASE WHEN da.amonestacion = "Tarjeta amarilla" THEN da.numero_amonestacion ELSE 0 END),0) AS TARJETAS_AMARILLAS,
+        COALESCE(SUM(CASE WHEN da.amonestacion = "Tarjeta roja" THEN da.numero_amonestacion ELSE 0 END),0) AS TARJETAS_ROJAS,
+        ROUND(AVG(puntuacion),2) AS PROMEDIO
+        FROM participaciones_partidos p
+        INNER JOIN partidos pt ON pt.id_partido = p.id_partido
+        LEFT JOIN detalles_amonestaciones da ON da.id_participacion = p.id_participacion
+        WHERE id_jugador = ? AND (titular = 1 OR sustitucion = 1)
+		AND MONTH(pt.fecha_partido) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH))
+		AND YEAR(pt.fecha_partido) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 MONTH));';
+        $params = array($_SESSION['idJugador']);
+        return Database::getRow($sql, $params);
+    }
+
     public function partidosJugados()
     {
         $sql = 'SELECT 
@@ -405,13 +424,18 @@ class JugadoresHandler
         e.id_equipo,
         r.id_rival,
         e.id_categoria,
-        p.id_jugador 
+        p.id_jugador,
+        p.goles,
+        p.asistencias,
+        p.puntuacion
         FROM participaciones_partidos p 
         INNER JOIN partidos pt ON pt.id_partido = p.id_partido
         INNER JOIN equipos e ON e.id_equipo = pt.id_equipo
         INNER JOIN rivales r ON r.id_rival = pt.id_rival
         WHERE id_jugador = ? AND (titular = 1 OR sustitucion = 1)
-        ORDER BY p.asistencias DESC LIMIT 3;';
+		AND MONTH(pt.fecha_partido) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH))
+		AND YEAR(pt.fecha_partido) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 MONTH))
+        ORDER BY p.puntuacion DESC, p.goles DESC, p.asistencias DESC LIMIT 3;';
         $params = array($_SESSION['idJugador']);
         return Database::getRows($sql, $params);
     }

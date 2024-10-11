@@ -79,6 +79,13 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Ocurrió un problema al leer las estadisticas del jugador';
                 }
                 break;
+            case 'readOneStatsRecap':
+                if ($result['dataset'] = $jugador->readOneStatsRecap()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Ocurrió un problema al leer las estadisticas del jugador';
+                }
+                break;
             case 'partidosJugados':
                 if ($result['dataset'] = $jugador->partidosJugados()) {
                     $result['status'] = 1;
