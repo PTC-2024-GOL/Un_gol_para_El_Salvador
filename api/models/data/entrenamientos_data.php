@@ -32,13 +32,13 @@ class EntrenamientosData extends EntrenamientosHandler
             $this->fechaEntrenamiento = $value;
             return true;
         } else {
-            $this->data_error = 'La fecha del entrenamiento es valida';
+            $this->data_error = 'La fecha del entrenamiento es invalida';
             return false;
         }
     }
 
     // Validación y asignación del nombre del SubContenido.
-    public function setSesion($value, $min = 6, $max = 8)
+    public function setSesion($value, $min = 5, $max = 10)
     {
         if (Validator::validateLength($value, $min, $max)) {
             $this->sesion = $value;

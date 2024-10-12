@@ -99,6 +99,7 @@ const lista_datos_contenidos = [
 */
 const openCreate = async () => {
     // Se muestra la caja de diálogo con su título.
+    ID_JORNADAx.disabled = false;
     UP_MODAL.show();
     MODAL_TITLE_UP.textContent = 'Agregar entrenamiento';
     // Se prepara el formulario.
@@ -108,6 +109,7 @@ const openCreate = async () => {
     await fillSelect(ENTRENAMIENTOS_API, 'readOneCategoria', 'idCategoriaa');
     await fillSelect(ENTRENAMIENTOS_API, 'readJornadas', 'idJornada', ID_JORNADA_URL);
     await fillSelect(EQUIPO_API, 'readAll', 'idEquipo');
+    ID_JORNADAx.disabled = true;
 }
 
 /*
@@ -117,6 +119,7 @@ const openCreate = async () => {
 */
 const openUpdate = async (id) => {
     try {
+        ID_JORNADAx.disabled = false;
         // Se define un objeto con los datos del registro seleccionado.
         const FORM = new FormData();
         FORM.append('idEntrenamiento', id);
@@ -137,6 +140,7 @@ const openUpdate = async (id) => {
             await fillSelect(ENTRENAMIENTOS_API, 'readJornadas', 'idJornada', ID_JORNADA_URL);
             await fillSelect(ENTRENAMIENTOS_API, 'readEquipos', 'idEquipo', ROW.id_equipo);
             ID_EQUIPO.disabled = true;
+            ID_JORNADAx.disabled = true;
             for (let option of SESION.options) {
                 if (option.value === ROW.sesion) {
                     option.selected = true;
@@ -636,11 +640,17 @@ window.onload = async function () {
         event.preventDefault();
         // Se verifica la acción a realizar.
         (ID_ENTRENAMIENTO.value) ? action = 'updateRow' : action = 'createRow';
+        ID_JORNADAx.disabled = false;
         // Constante tipo objeto con los datos del formulario.
         const FORM = new FormData(UP_FORM);
         console.log(FORM);
         console.log(action);
+        console.log('El error es la jornada, este es el id: ', ID_JORNADAx.value);
         // Petición para guardar los datos del formulario.
+        console.log('El error esta en la fecha', FECHAx.value);
+        console.log('El error esta en la categoria', ID_CATEGORIA.value);
+        console.log('El error esta en la sesion', SESION.value);
+        console.log('El error esta en el equipo', ID_EQUIPO.value);
         const DATA = await fetchData(ENTRENAMIENTOS_API, action, FORM);
 
         console.log(DATA);
