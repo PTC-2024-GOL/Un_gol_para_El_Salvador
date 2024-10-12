@@ -203,7 +203,7 @@ class Validator
  */
     public static function validateTextOrtograpic($value)
     {
-        if (preg_match('/^[a-zA-Z0-9ñÑáÁéÉíÍóÓúÚ\s\,\;\.\-\+\/\?\!]*$/', $value)) {
+        if (preg_match('/^[a-zA-Z0-9ñÑáÁéÉíÍóÓúÚ\s\,\;\.\-\+\/\¿\?\)\!]*$/', $value)) {
             return true;
         } else {
             return false;

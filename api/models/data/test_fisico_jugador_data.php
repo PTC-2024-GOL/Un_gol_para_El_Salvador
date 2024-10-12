@@ -56,8 +56,8 @@ class TestData extends testHandler
     // Validación y asignación del nombre del test.
     public function setPregunta($value, $min = 5, $max = 2000)
     {
-        if (!Validator::validateAlphanumeric($value)) {
-            $this->data_error = 'La pregunta ser un valor alfanumerico';
+        if (!Validator::validateTextOrtograpic($value)) {
+            $this->data_error = 'La pregunta debe escribirse correctamente';
             return false;
         } elseif (Validator::validateLength($value, $min, $max)) {
             $this->pregunta = $value;

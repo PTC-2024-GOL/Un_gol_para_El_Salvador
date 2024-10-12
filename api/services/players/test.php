@@ -17,37 +17,38 @@ if (isset($_GET['action'])) {
             case 'createRow':
                 $_POST = Validator::validateForm($_POST);
 
-                // Decodificar el arreglo de jugadores
+                // Decodificar el arreglo de preguntas y respuestas
                 $arregloPreguntas = json_decode($_POST['preguntasYRespuestas'], true);
 
                 if (is_array($arregloPreguntas)) {
-                    foreach ($arregloPreguntas as $idTest) {
-                        // Convertir el ID del jugador a un entero
-                        $idTest = intval($idTest);
-
+                    $success = true; // Variable para manejar el éxito de las operaciones
+                    foreach ($arregloPreguntas as $preguntaRespuesta) {
+                        // Asegúrate de que la estructura tenga los campos esperados
                         if (
-                            !$testFisico->setPregunta($_POST['pregunta']) or
-                            !$testFisico->setRespuesta($_POST['respuesta']) or
-                            !$testFisico->setIdTest($idTest)
+                            !$testFisico->setPregunta($preguntaRespuesta['pregunta']) or
+                            !$testFisico->setRespuesta($preguntaRespuesta['respuesta']) or
+                            !$testFisico->setIdTest($_POST['idTest']) // Asegúrate de que 'idTest' sea enviado
                         ) {
                             $result['error'] = $testFisico->getDataError();
-                            break;
+                            $success = false; // Cambiar a false si hay un error
+                            break; // Salir del bucle si hay un error
                         } elseif (!$testFisico->createRow()) {
-                            $result['error'] = 'Ocurrió un problema al crear la pregunta y su respuesta ' . $idTest;
-                            break;
+                            $result['error'] = 'Ocurrió un problema al crear la pregunta y su respuesta';
+                            $success = false; // Cambiar a false si hay un error
+                            break; // Salir del bucle si hay un error
                         }
                     }
 
-                    if (!$testFisico->updateRow()) {
-                        $result['error'] = 'Ocurrió un error al actualizar el test fisico';
-                        break;
-                    }
-                    if (!isset($result['error'])) {
-                        $result['status'] = 1;
-                        $result['message'] = '!Preguntas y respuestas guardadas con éxito!';
+                    if ($success) {
+                        if (!$testFisico->updateRow()) {
+                            $result['error'] = 'Ocurrió un error al actualizar el test físico.';
+                        } else {
+                            $result['status'] = 1;
+                            $result['message'] = '!Preguntas y respuestas guardadas con éxito!';
+                        }
                     }
                 } else {
-                    $result['error'] = 'Formato de arregloPreguntas no es válido.';
+                    $result['error'] = 'Formato de arreglo Preguntas no es válido.';
                 }
                 break;
             // Leer todos

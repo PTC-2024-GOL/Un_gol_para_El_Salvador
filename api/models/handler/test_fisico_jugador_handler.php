@@ -93,7 +93,8 @@ class testHandler
         ELSE "Test físico (fecha desconocida)"
         END AS nombre_test
         FROM test
-        WHERE id_jugador = ?;';
+        WHERE id_jugador = ?
+        AND contestado = 0;';
         $params = array($_SESSION['idJugador']);
         return Database::getRows($sql, $params);
     }
