@@ -196,6 +196,21 @@ class Validator
         }
     }
 
+    /* 
+ *   Método para validar una cadena de texto (letras, dígitos, espacios en blanco, signos de puntuación y guiones).
+ *   Parámetros: $value (dato a validar).
+ *   Retorno: booleano (true si el valor es correcto o false en caso contrario).
+ */
+    public static function validateTextOrtograpic($value)
+    {
+        if (preg_match('/^[a-zA-Z0-9ñÑáÁéÉíÍóÓúÚ\s\,\;\.\-\+\/\?\!]*$/', $value)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
     /*
      *   Método para validar un dato alfabético (letras y espacios en blanco).
      *   Parámetros: $value (dato a validar).
@@ -609,7 +624,7 @@ class Validator
         }
         return false;
     }
-/* 
+    /* 
     public static function generar_salt($dui)
     {
         // Arreglo de caracteres especiales que serán utilizados en el salt.
