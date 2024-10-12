@@ -38,7 +38,7 @@ if (isset($_GET['action'])) {
                     $result['error'] = $contenidos->getDataError();
                 } elseif ($contenidos->createRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Contenido creado correctamente';
+                    $result['message'] = 'Momento de juego creado correctamente';
                 } else {
                     $result['error'] = 'Esta combinación de zona y momento ya existe';
                 }
@@ -49,7 +49,7 @@ if (isset($_GET['action'])) {
                     $result['status'] = 1;
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
-                    $result['error'] = 'No existen contenidos registrados';
+                    $result['error'] = 'No existen momentos registrados';
                 }
                 break;
                 // Leer uno
@@ -59,7 +59,7 @@ if (isset($_GET['action'])) {
                 } elseif ($result['dataset'] = $contenidos->readOne()) {
                     $result['status'] = 1;
                 } else {
-                    $result['error'] = 'Contenido inexistente';
+                    $result['error'] = 'Momento de juego inexistente';
                 }
                 break;
                 // Actualizar
@@ -73,7 +73,7 @@ if (isset($_GET['action'])) {
                     $result['error'] = $contenidos->getDataError();
                 } elseif ($contenidos->updateRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Contenido modificado correctamente';
+                    $result['message'] = 'Momento de juego modificado correctamente';
                 } else {
                     $result['error'] = 'Esta combinación de zona y momento ya existe';
                 }
@@ -86,9 +86,9 @@ if (isset($_GET['action'])) {
                     $result['error'] = $contenidos->getDataError();
                 } elseif ($contenidos->deleteRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Contenido eliminado correctamente';
+                    $result['message'] = 'Momento de juego eliminado correctamente';
                 } else {
-                    $result['error'] = 'El contenido esta relacionado con subcontenidos, elimina los subcontenidos primero';
+                    $result['error'] = 'El momento de juego esta relacionado con un principio, elimina los principios relacionados primero';
                 }
                 break;
             default:
