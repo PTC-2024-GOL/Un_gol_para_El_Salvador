@@ -342,129 +342,142 @@ class CaracteristicasAnalisisHandler
         return $predictions;
     }
 
+    //Predecir probabilidad de convocatoria
 
-    // RED NEURONAL
-    // Función para encontrar una fila por su identificador en un array de datos
-    private function findRowById($data, $id)
+    public function predecir($nuevosDatos)
     {
-        foreach ($data as $row) {
-            if ($row['id'] == $id) {
-                return $row;
-            }
+        // Obtener los datos de entrenamiento desde la base de datos
+        $datosEntrenamiento = $this->obtenerDatosEntrenamientoJugadores();
+
+        if (count($datosEntrenamiento['datos']) == 0 || count($datosEntrenamiento['etiquetas']) == 0) {
+            throw new Exception('No hay suficientes datos históricos para entrenar el modelo.');
         }
-        return null;
+
+        // Crear el modelo KNN
+        $classifier = new KNearestNeighbors();
+
+        // Entrenar el modelo con los datos de la base de datos
+        $classifier->train($datosEntrenamiento['datos'], $datosEntrenamiento['etiquetas']);
+
+        // Realizar la predicción con los datos obtenidos de las funciones
+        return $classifier->predict($nuevosDatos);
     }
 
-    // Método para entrenar la red neuronal con los datos obtenidos de las consultas SQL
-    public function entrenarRedNeuronal()
+    // Función para obtener los datos de entrenamiento de otros jugadores
+    public function obtenerDatosEntrenamientoJugadores()
     {
-        // Consultas SQL (como antes)
-        // Consulta para obtener el promedio de las notas del jugador en cada sesión de entrenamiento durante las ultimas 2 semanas
-        $sql1 = 'SELECT IDJ AS id ,JUGADOR, 
+        // Consulta que obtiene los datos de jugadores anteriores junto con la etiqueta si fueron convocados
+        $sql = 'SELECT 
+                    ROUND(AVG(vpp.nota), 2) AS promedio_notas,
+                    ROUND(SUM(CASE WHEN a.asistencia = "Asistencia" THEN 1 ELSE 0 END) * 100.0 / COUNT(a.id_entrenamiento), 2) AS porcentaje_asistencia,
+                    ROUND(AVG(pp.puntuacion), 2) AS promedio_puntuacion,
+                    (COUNT(DISTINCT cp.id_partido) / (SELECT COUNT(DISTINCT p.id_partido) 
+                    FROM partidos p 
+                    WHERE p.id_equipo IN (SELECT pe.id_equipo FROM plantillas_equipos pe WHERE pe.id_jugador = j.id_jugador))) * 100 AS porcentaje_convocado,
+                    CASE WHEN COUNT(DISTINCT cp.id_partido) > 0 THEN 1 ELSE 0 END AS convocado
+                FROM jugadores j
+                LEFT JOIN asistencias a ON j.id_jugador = a.id_jugador
+                LEFT JOIN entrenamientos e ON a.id_entrenamiento = e.id_entrenamiento
+                LEFT JOIN participaciones_partidos pp ON j.id_jugador = pp.id_jugador
+                LEFT JOIN partidos p ON p.id_partido = pp.id_partido
+                LEFT JOIN convocatorias_partidos cp ON j.id_jugador = cp.id_jugador AND cp.estado_convocado = 1
+                LEFT JOIN vista_predictiva_progresion vpp ON vpp.IDJ = j.id_jugador
+                WHERE e.fecha_entrenamiento >= DATE_SUB(CURDATE(), INTERVAL 2 MONTH) 
+                OR p.fecha_partido >= DATE_SUB(CURDATE(), INTERVAL 2 MONTH)
+                GROUP BY j.id_jugador';
+
+        // Ejecutar la consulta y obtener los datos
+        $datosJugadores = Database::getRows($sql, []);
+
+        $datos = [];
+        $etiquetas = [];
+
+        foreach ($datosJugadores as $jugador) {
+            // Añadir características a los datos de entrenamiento
+            $datos[] = [
+                $jugador['promedio_notas'],
+                $jugador['porcentaje_asistencia'],
+                $jugador['promedio_puntuacion'],
+                $jugador['porcentaje_convocado']
+            ];
+
+            // Añadir la etiqueta de si fue convocado o no
+            $etiquetas[] = $jugador['convocado'];
+        }
+
+        return ['datos' => $datos, 'etiquetas' => $etiquetas];
+    }
+
+    // 1. Promedio de las notas del jugador en cada sesión de entrenamiento durante los ultimos 2 meses
+    public function PromedioNotasDelJugador()
+    {
+        // Consulta para obtener el promedio de las notas del jugador en cada sesión de entrenamiento durante los ultimos 2 meses
+        $sql = 'SELECT IDJ AS id ,JUGADOR, 
         ROUND(AVG(NOTA), 2) AS PROMEDIO, FECHA
-        FROM vista_predictiva_progresion WHERE IDJ = ? AND FECHA >= DATE_SUB(CURDATE(), INTERVAL 2 WEEK)
+        FROM vista_predictiva_progresion WHERE IDJ = ? AND FECHA >= DATE_SUB(CURDATE(), INTERVAL 2 MONTH)
         GROUP BY IDE, JUGADOR
         ORDER BY FECHA ASC;';
+        $params = array($this->jugador);
+        return Database::getRows($sql, $params);
+    }
 
-        // Consulta para obtener el porcentaje de asistencias que ha tenido el jugador durante las ultimas 2 semanas
-        $sql2 = 'SELECT j.id_jugador AS id, CONCAT(j.nombre_jugador, " ", j.apellido_jugador) AS JUGADOR, 
+    // 2. Porcentaje de asistencias que ha tenido el jugador durante los ultimos 2 meses
+    public function PorcentajeAsistenciasDelJugador()
+    {
+        // Consulta para obtener el porcentaje de asistencias que ha tenido el jugador durante los ultimos 2 meses
+        $sql = 'SELECT j.id_jugador AS id, CONCAT(j.nombre_jugador, " ", j.apellido_jugador) AS JUGADOR, 
         ROUND(SUM(CASE WHEN a.asistencia = "Asistencia" THEN 1 ELSE 0 END) * 100.0 / COUNT(a.id_entrenamiento), 2) AS porcentaje_asistencia
         FROM jugadores j INNER JOIN asistencias a ON j.id_jugador = a.id_jugador
         INNER JOIN entrenamientos e ON a.id_entrenamiento = e.id_entrenamiento
-        WHERE j.id_jugador = ? AND e.fecha_entrenamiento >= DATE_SUB(CURDATE(), INTERVAL 2 WEEK)
+        WHERE j.id_jugador = ? AND e.fecha_entrenamiento >= DATE_SUB(CURDATE(), INTERVAL 2 MONTH)
         GROUP BY j.id_jugador;';
-
-        // Consulta para obtener el promedio de puntuación de participaciones que ha tenido el jugador durante las ultimas 2 semanas
-        $sql3 = 'SELECT pp.id_jugador AS id, p.fecha_partido AS FECHA, pp.puntuacion AS PUNTUACION
-        FROM participaciones_partidos pp INNER JOIN partidos p ON p.id_partido = pp.id_partido
-        WHERE pp.id_jugador = ? AND p.fecha_partido >= DATE_SUB(CURDATE(), INTERVAL 2 WEEK);';
-
         $params = array($this->jugador);
-
-        // Ejecutar las 3 consultas SQL
-        $data1 = Database::getRows($sql1, $params);
-        $data2 = Database::getRows($sql2, $params);
-        $data3 = Database::getRows($sql3, $params);
-
-        // Preparar los datos para el entrenamiento (inputs y outputs)
-        $trainingSamples = [];
-        $trainingLabels = [];
-
-        // Suponiendo que cada consulta devuelve un array de filas y las filas tienen un identificador común
-        foreach ($data1 as $row1) {
-            $id = $row1['id'];
-
-            // Encontrar las filas correspondientes en los otros datos
-            $row2 = $this->findRowById($data2, $id);
-            $row3 = $this->findRowById($data3, $id);
-
-            // Verificar si todas las filas están presentes
-            if ($row2 && $row3) {
-                // Preparar los inputs y labels basados en los datos combinados
-                $input = [
-                    $row1['PROMEDIO'], // Datos de la consulta 1
-                    $row2['porcentaje_asistencia'], // Datos de la consulta 2
-                    $row3['puntuacion'] // Asegúrate de que este sea el nombre correcto de la columna
-                ];
-
-                // Definir el resultado esperado como un porcentaje
-                $datos = [
-                    'PROMEDIO' => $input[0],
-                    'porcentaje_asistencia' => $input[1],
-                    'puntuacion_promedio' => $input[2],
-                ];
-
-                // Aquí calculas la "probabilidad" (puede ser entre 0 y 1 o 0 y 100)
-                $label = $this->calcularProbabilidadDeJugar($datos);
-
-                // Dependiendo de cómo manejas el label, puede ser una clase (0 o 1) o un valor continuo
-                // Si es un valor continuo entre 0 y 1, puedes considerar redondearlo o clasificarlo en categorías
-
-                $trainingSamples[] = $input;
-                $trainingLabels[] = [$label]; // Asegúrate de que esté en un array
-            }
-        }
-
-        // Crear el modelo de red neuronal para clasificación binaria
-        $network = new MLPClassifier(3, [10, 10], [0, 1]);
-
-        // Entrenar el modelo
-        $network->train($trainingSamples, $trainingLabels);
-
-        return $network;
+        return Database::getRows($sql, $params);
     }
 
-    // Función para calcular la probabilidad de jugar en base a los datos (ajustada para múltiples datos)
-    private function calcularProbabilidadDeJugar($datos)
+    // 3. Puntuación del jugador dureante los partidos de los ultimos 2 meses
+    public function PromedioPuntajeDeJugador()
     {
-        // Asegúrate de que $datos es un array con los índices esperados
-        $promedio = $datos['PROMEDIO'];
-        $porcentaje_asistencia = $datos['porcentaje_asistencia'];
-        $puntuacion_promedio = $datos['puntuacion_promedio'];
-
-        // Implementa la lógica para determinar la probabilidad en porcentaje
-        // Ejemplo de lógica simple: normaliza y combina los datos
-        $probabilidad = 0;
-
-        // Normalización y ponderación simple
-        if ($promedio > 5) $probabilidad += 0.4;
-        if ($porcentaje_asistencia > 75) $probabilidad += 0.3;
-        if ($puntuacion_promedio > 7) $probabilidad += 0.3;
-
-        // Escalar a porcentaje (0 a 100%)
-        $probabilidad *= 100;
-
-        return $probabilidad;
+        // Consulta para obtener el promedio de puntuación de participaciones que ha tenido el jugador durante los ultimos 2 meses
+        $sql = 'SELECT pp.id_jugador AS id, p.fecha_partido AS FECHA, pp.puntuacion AS PUNTUACION
+        FROM participaciones_partidos pp INNER JOIN partidos p ON p.id_partido = pp.id_partido
+        WHERE pp.id_jugador = ? AND p.fecha_partido >= DATE_SUB(CURDATE(), INTERVAL 2 MONTH);';
+        $params = array($this->jugador);
+        return Database::getRows($sql, $params);
     }
 
 
-    // Función para hacer predicciones con la red neuronal entrenada
-    public function predecir($nuevosDatos)
+    // 4. Porcentaje de partidos convocados del jugador
+    public function PorcentajePartidosConvocadosJugador()
     {
-        $modelo = $this->entrenarRedNeuronal();
-
-        $prediccion = $modelo->predict($nuevosDatos);
-
-        return $prediccion;
+        // Consulta para obtener el promedio de puntuación de participaciones que ha tenido el jugador
+        $sql = 'SELECT j.id_jugador, 
+        CONCAT(j.nombre_jugador, " ", j.apellido_jugador) AS nombre_completo,
+        COUNT(DISTINCT cp.id_partido) AS partidos_convocados,
+        (SELECT COUNT(DISTINCT p.id_partido) 
+        FROM partidos p 
+        WHERE p.id_equipo IN (SELECT pe.id_equipo 
+                           FROM plantillas_equipos pe 
+                           WHERE pe.id_jugador = ?)) AS total_partidos,
+        (COUNT(DISTINCT cp.id_partido) / 
+        (SELECT COUNT(DISTINCT p.id_partido) 
+        FROM partidos p 
+        WHERE p.id_equipo IN (SELECT pe.id_equipo 
+                            FROM plantillas_equipos pe 
+                            WHERE pe.id_jugador = ?))) * 100 AS porcentaje_convocado
+        FROM 
+            jugadores j
+        LEFT JOIN 
+            convocatorias_partidos cp ON j.id_jugador = cp.id_jugador AND cp.estado_convocado = 1
+        LEFT JOIN 
+            partidos p ON cp.id_partido = p.id_partido
+        WHERE 
+            j.id_jugador = ?
+        AND 
+            p.id_equipo IN (SELECT pe.id_equipo FROM plantillas_equipos pe WHERE pe.id_jugador = ?)
+        GROUP BY 
+            j.id_jugador;';
+        $params = array($this->jugador, $this->jugador, $this->jugador, $this->jugador);
+        return Database::getRows($sql, $params);
     }
 }

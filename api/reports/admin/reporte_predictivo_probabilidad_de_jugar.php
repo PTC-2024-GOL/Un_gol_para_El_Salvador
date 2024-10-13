@@ -1,6 +1,9 @@
 <?php
 // Se incluye la clase con las plantillas para generar reportes.
 require_once('../../helpers/report.php');
+use Phpml\Classification\KNearestNeighbors;
+
+require('C:/xampp/htdocs/sitio_gol_sv/vendor/autoload.php');
 
 // Se instancia la clase para crear el reporte.
 $pdf = new Report;
@@ -16,20 +19,35 @@ if (isset($_GET['id'])) {
     if ($analisisHandler->setJugador($_GET['id'])) {
         // Se inicia el reporte con el encabezado del documento.
         $pdf->startReport('Reporte predictivo');
-
         try {
-            // Obtener los datos para la predicción
+            // Obtener los datos históricos para entrenar el modelo
+            $datosHistoricos = [];
+            $notas = $analisisHandler->PromedioNotasDelJugador();
+            $asistencias = $analisisHandler->PorcentajeAsistenciasDelJugador();
+            $puntajes = $analisisHandler->PromedioPuntajeDeJugador();
+            $convocatorias = $analisisHandler->PorcentajePartidosConvocadosJugador();
+
+            // Suponiendo que cada consulta devuelve un único registro con el promedio/puntaje/porcentaje necesario
+            $promedioNota = $notas[0]['PROMEDIO'] ?? 0;
+            $porcentajeAsistencia = $asistencias[0]['porcentaje_asistencia'] ?? 0;
+            $promedioPuntaje = $puntajes[0]['PUNTUACION'] ?? 0;
+            $porcentajeConvocatoria = $convocatorias[0]['porcentaje_convocado'] ?? 0;
+
+            // Agregar los datos a la matriz para entrenamiento
+            $datosHistoricos[] = [$promedioNota, $porcentajeAsistencia, $promedioPuntaje, $porcentajeConvocatoria];
+
+            // Entrenar el modelo con los datos históricos
+            $model = new KNearestNeighbors();
+            $model->train($datosHistoricos, [1]); // Aquí debes usar etiquetas adecuadas para el entrenamiento
+
+            // Realizar la predicción utilizando los datos del jugador
             $nuevosDatos = [
-                // Aquí debes colocar los datos que quieres predecir, si tienes algún conjunto de datos específicos
-                // Por ejemplo:
-                [5, 80, 8] // Ejemplo de datos de entrada
+                [$promedioNota, $porcentajeAsistencia, $promedioPuntaje, $porcentajeConvocatoria] // Datos del jugador
             ];
+            $probabilidad = $model->predict($nuevosDatos)[0]; // Devuelve una etiqueta o número, ajusta según tu modelo
 
-            // Realizar la predicción (suponiendo que devuelva un valor entre 0 y 1)
-            $probabilidad = $analisisHandler->predecir($nuevosDatos)[0]; // Asumiendo que la predicción devuelve un array y tomas el primer valor
-
-            // Convertir la probabilidad a porcentaje
-            $porcentajeProbabilidad = $probabilidad * 100;
+            // Convertir la probabilidad a porcentaje y asegurarte de que esté entre 0 y 100
+            $porcentajeProbabilidad = max(0, min(100, $probabilidad * 100)); // Asegura que esté en el rango
 
             // Información general
             $pdf->setFont('Arial', 'B', 16);
@@ -52,22 +70,12 @@ if (isset($_GET['id'])) {
 
             $pdf->ln(3);
 
-            $pdf->setFont('Arial', 'B', 11);
-            $pdf->cell(71, 8, $pdf->encodeString('Probabilidad de participación: '), 0, 0);
-            $pdf->setFont('Arial', '', 11);
-            $pdf->cell(25, 8, $pdf->encodeString(number_format($porcentajeProbabilidad, 2) . '%'), 0, 1, 'R');
-
             // Añadir recomendaciones basadas en la predicción
             if ($porcentajeProbabilidad > 50) {
                 $recomendaciones = "El jugador tiene una alta probabilidad de jugar en el próximo partido. Asegúrate de que esté bien preparado y en forma.";
             } else {
                 $recomendaciones = "El jugador tiene una baja probabilidad de jugar en el próximo partido. Considera ajustar el plan de entrenamiento o realizar una revisión médica.";
             }
-
-            $pdf->ln(5);
-            // Mostrar las recomendaciones
-            $pdf->SetFont('Arial', 'B', 12);
-            $pdf->Cell(0, 10, 'Recomendaciones:', 0, 1);
 
             $pdf->SetFont('Arial', '', 11);
             $pdf->MultiCell(0, 7, $pdf->encodeString($recomendaciones));
