@@ -285,7 +285,11 @@ async function fillCards(form = null) {
             // Mostrar elementos obtenidos de la API
             DATA.dataset.forEach(row => {
                 let resultado = row.tipo_resultado_partido;
+                let autorizacion = row.autorizacion_prediccion;
+                console.log(autorizacion);
                 const pendienteHtml = resultado === 'Pendiente' ? '<p class="text-warning fw-semibold mb-0">Pendiente</p>' : '';
+                const prediccionHTML = autorizacion == 'true' && resultado === 'Pendiente' ? `<button class="btn bg-blue-light-color text-black btn-sm rounded-3" 
+                onclick="seeReport(${row.id_partido})"> Predicción </button>` : '';
                 const cardsHtml = `<div class="col-md-6 col-sm-12">
                     <div class="tarjetas shadow p-4">
                         <div class="row">
@@ -296,6 +300,9 @@ async function fillCards(form = null) {
                                 <p class="fw-semibold mb-0">${row.fecha}</p>
                                 <p class="small">${row.localidad_partido}</p>
                                 ${pendienteHtml}
+                            </div>
+                            <div class="col-auto py-3">
+                                ${prediccionHTML}
                             </div>
                         </div>
                         <div class="row align-items-center">
@@ -312,13 +319,13 @@ async function fillCards(form = null) {
                             </div>
                         </div>
                         <hr>
-                        <button class="btn bg-yellow-principal-color text-white btn-sm rounded-3 mb-3" onclick="openUpdate(${row.id_partido})">
+                        <button class="btn bg-yellow-principal-color text-white btn-sm rounded-3 mb-3" onclick="openUpdate(${row.id_partido}, '${row.nombre_equipo} vs ${row.nombre_rival}')">
                             Editar partido
                         </button>
                         <button class="btn bg-blue-principal-color text-white btn-sm rounded-3 mb-3" onclick="seeModal(${row.id_partido})">
                             Más información
                         </button>
-                        <button class="btn bg-red-cream-color text-white btn-sm rounded-3 mb-3" onclick="openDelete(${row.id_partido})">
+                        <button class="btn bg-red-cream-color text-white btn-sm rounded-3 mb-3" onclick="openDelete(${row.id_partido}, '${row.nombre_equipo} vs ${row.nombre_rival}')">
                             Eliminar
                         </button>
                         <button class="btn bg-blue-color text-white btn-sm rounded-3 mb-3" onclick="openCalls(${row.id_partido})">
@@ -381,10 +388,20 @@ async function fillCards(form = null) {
     }
 }
 
-const openCalls = (idPartido) =>{
+const openCalls = (idPartido) => {
     // Redirecciona a la otra pantalla y manda tambien el id del equipo
     window.location.href = `../pages/calls_to_matches.html?idPartido=${idPartido}`;
 }
+
+const seeReport = (id) => {
+    // Se declara una constante tipo objeto con la ruta específica del reporte en el servidor.
+    const PATH = new URL(`${SERVER_URL}reports/admin/reporte_prediccion_partido.php`);
+    // Se agrega un parámetro a la ruta con el valor del registro seleccionado.
+    PATH.searchParams.append('idPartido', id);
+    // Se abre el reporte en una nueva pestaña.
+    window.open(PATH.href);
+}
+
 
 // window.onload
 window.onload = async function () {

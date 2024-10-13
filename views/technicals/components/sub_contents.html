@@ -5,7 +5,7 @@
             <div class="col-sm-12 col-md-6">
                 <form id="searchForm" class="d-flex">
                     <input type="search" class="form-control me-3 borde-transparente campo rounded-3 shadow"
-                        name="search" placeholder="Buscar por el nombre del contenido o subcontenido" autocomplete="off" required>
+                        name="search" placeholder="Buscar por el nombre del momento de juego o principio" autocomplete="off" required>
                     <button type="submit"
                         class="btn bg-blue-principal-color borde-transparente rounded-circle me-md-3 me-sm-0">
                         <img src="../../../resources/img/svg/icons_forms/search.svg" width="18px" height="18px">
@@ -21,7 +21,7 @@
                 <button
                     class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
                     type="submit" onclick="openCreate()">
-                    <span class="fs-5 me-2">+</span> Agregar subcontenido
+                    <span class="fs-5 me-2">+</span> Agregar principio
                 </button>
             </div>
         </div>
@@ -36,14 +36,19 @@
                     <td colspan="6" id="rowsFound"></td>
                 </tr>
                 <tr>
-                    <th>Contenido</th>
-                    <th>Sub-Contenido</th>
+                    <th>Principio</th>
+                    <th>Momento de juego</th>
                 </tr>
             </thead>
             <!-- Cuerpo de la tabla para mostrar un registro por fila -->
             <tbody id="tabla_subcontenidos"></tbody>
         </table>
     </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <!-- Aquí se insertarán los elementos de la paginación -->
+        </ul>
+    </nav>
 </div>
 
 <!-- Componente Modal para guardar un registro -->
@@ -63,12 +68,12 @@
                     <!-- Campo oculto para asignar el id del registro al momento de modificar -->
                     <input type="hidden" id="idSubcontenido" name="idSubcontenido">
                     <div class="col-sm-12 col-md-6">
-                        <label for="nombreSubcontenido" class="form-label fw-semibold">Subcontenido</label>
+                        <label for="nombreSubcontenido" class="form-label fw-semibold">Principio</label>
                         <input id="nombreSubcontenido" type="text" name="SubContenido" class="form-control"
                             placeholder="Escribe el nombre del Subcontenido" autocomplete="off" required>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <label for="contenido" class="form-label fw-semibold">Selecciona el contenido</label>
+                        <label for="contenido" class="form-label fw-semibold">Selecciona el momento de juego</label>
                         <select id="contenido" type="text" name="idContenido" class="form-select" autocomplete="off" required></select>
                     </div>
                 </div>

@@ -21,7 +21,7 @@ async function loadComponent(path) {
 const openCreate = async () => {
     // Se muestra la caja de diálogo con su título.
     SAVE_MODAL.show();
-    MODAL_TITLE.textContent = 'Agregar sub-contenido';
+    MODAL_TITLE.textContent = 'Agregar principio';
     // Se prepara el formulario.
     ID_SUBCONTENIDO.value = null;
     SAVE_FORM.reset();
@@ -30,7 +30,7 @@ const openCreate = async () => {
 /*
 *   Función asíncrona para preparar el formulario al momento de actualizar un registro.
 *   Parámetros: id (identificador del registro seleccionado).
-*   Retorno: ninguno.¬
+*   Retorno: ninguno.
 */
 const openUpdate = async (id) => {
     try {
@@ -43,11 +43,11 @@ const openUpdate = async (id) => {
         if (DATA.status) {
             // Se muestra la caja de diálogo con su título.
             SAVE_MODAL.show();
-            MODAL_TITLE.textContent = 'Actualizar subcontenido';
+            const ROW = DATA.dataset;
+            MODAL_TITLE.textContent = `Actualizar el principio: ${ROW.sub_tema_contenido}`;
             // Se prepara el formulario.
             SAVE_FORM.reset();
             // Se inicializan los campos con los datos.
-            const ROW = DATA.dataset;
             ID_SUBCONTENIDO.value = ROW.id_sub_tema_contenido;
             NOMBRE_SUBCONTENIDO.value = ROW.sub_tema_contenido;
             await fillSelect(API, 'readOneContents', 'contenido', ROW.id_tema_contenido);
@@ -66,9 +66,9 @@ const openUpdate = async (id) => {
 *   Parámetros: id (identificador del registro seleccionado).
 *   Retorno: ninguno.
 */
-const openDelete = async (id) => {
+const openDelete = async (id, nombre) => {
     // Llamada a la función para mostrar un mensaje de confirmación, capturando la respuesta en una constante.
-    const RESPONSE = await confirmAction('¿Desea eliminar el subcontenido?');
+    const RESPONSE = await confirmAction(`¿Desea eliminar el principio: ${nombre}?`);
     try {
         // Se verifica la respuesta del mensaje.
         if (RESPONSE) {
@@ -101,6 +101,38 @@ const openDelete = async (id) => {
 *   Parámetros: form (formulario de búsqueda).
 *   Retorno: ninguno.
 */
+// Manejo para la paginacion
+const injuriesByPage = 10;
+let currentPage = 1;
+let injuries = [];
+
+function showInjuries(page) {
+    const start = (page - 1) * injuriesByPage;
+    const end = start + injuriesByPage;
+    const injuriesPage = injuries.slice(start, end);
+
+    const fillTable = document.getElementById('tabla_subcontenidos');
+    fillTable.innerHTML = '';
+    injuriesPage.forEach(row => {
+        const tablaHtml = `
+                <tr>
+                    <td>${row.sub_tema_contenido}</td>
+                    <td>${row.momento_juego}</td>
+                    <td>
+                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id_sub_tema_contenido})">
+                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
+                    </button>
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_sub_tema_contenido}, '${row.sub_tema_contenido}')">
+                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
+                    </button>
+                    </td>
+                </tr>
+                `;
+        fillTable.innerHTML += tablaHtml;
+    });
+
+    updatePaginate();
+}
 async function fillTable(form = null) {
     const lista_datos = [
         {
@@ -137,25 +169,8 @@ async function fillTable(form = null) {
 
         if (DATA.status) {
             // Mostrar elementos obtenidos de la API
-            DATA.dataset.forEach(row => {
-                console.log(row);
-                console.log(action)
-                const tablaHtml = `
-                <tr>
-                    <td>${row.nombre_tema_contenido}</td>
-                    <td>${row.sub_tema_contenido}</td>
-                    <td>
-                    <button type="button" class="btn transparente" onclick="openUpdate(${row.id_sub_tema_contenido})">
-                    <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
-                    </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id_sub_tema_contenido})">
-                    <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
-                    </button>
-                    </td>
-                </tr>
-                `;
-                cargarTabla.innerHTML += tablaHtml;
-            });
+            injuries = DATA.dataset;
+            showInjuries(currentPage);
         } else {
             sweetAlert(4, DATA.error, true);
         }
@@ -171,7 +186,7 @@ async function fillTable(form = null) {
                     <button type="button" class="btn transparente" onclick="openUpdate(${row.id})">
                     <img src="../../../resources/img/svg/icons_forms/pen 1.svg" width="18" height="18">
                     </button>
-                    <button type="button" class="btn transparente" onclick="openDelete(${row.id})">
+                    <button type="button" class="btn transparente" onclick="openDelete(${row.id}, '${row.subcontenido} - ${row.contenido} ')">
                     <img src="../../../resources/img/svg/icons_forms/trash 1.svg" width="18" height="18">
                     </button>
                     </td>
@@ -182,7 +197,31 @@ async function fillTable(form = null) {
     }
 }
 
+// Función para actualizar los contlesiones de paginación
+function updatePaginate() {
+    const paginacion = document.querySelector('.pagination');
+    paginacion.innerHTML = '';
 
+    const totalPaginas = Math.ceil(injuries.length / injuriesByPage);
+
+    if (currentPage > 1) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-bs-dark" href="#" onclick="nextPage(${currentPage - 1})">Anterior</a></li>`;
+    }
+
+    for (let i = 1; i <= totalPaginas; i++) {
+        paginacion.innerHTML += `<li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link text-bs-dark" href="#" onclick="nextPage(${i})">${i}</a></li>`;
+    }
+
+    if (currentPage < totalPaginas) {
+        paginacion.innerHTML += `<li class="page-item"><a class="page-link text-bs-dark" href="#" onclick="nextPage(${currentPage + 1})">Siguiente</a></li>`;
+    }
+}
+
+// Función para cambiar de página
+function nextPage(newPage) {
+    currentPage = newPage;
+    showInjuries(currentPage);
+}
 // window.onload
 window.onload = async function () {
     // Obtiene el contenedor principal
@@ -195,7 +234,7 @@ window.onload = async function () {
     appContainer.innerHTML = subcontenidosHtml;
     //Agrega el encabezado de la pantalla
     const titleElement = document.getElementById('title');
-    titleElement.textContent = 'Sub contenidos';
+    titleElement.textContent = 'Principios';
     fillTable();
     // Constantes para establecer los elementos del componente Modal.
     SAVE_MODAL = new bootstrap.Modal('#saveModal'),
@@ -227,7 +266,7 @@ window.onload = async function () {
             // Se carga nuevamente la tabla para visualizar los cambios.
             fillTable();
         } else {
-            sweetAlert(2, DATA.error, false);
+            sweetAlert(3, DATA.error, false);
             console.error(DATA.exception);
         }
     });

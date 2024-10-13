@@ -13,7 +13,7 @@ if (isset($_GET['action'])) {
     if ((isset($_SESSION['idTecnico'])) /*and Validator::validateSessionTime()*/) {
         // Se compara la acción a realizar cuando un administrador ha iniciado sesión.
         switch ($_GET['action']) {
-                // Buscar
+            // Buscar
             case 'searchRows':
                 if (!Validator::validateSearch($_POST['search'])) {
                     $result['error'] = Validator::getSearchError();
@@ -24,31 +24,31 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'No hay coincidencias';
                 }
                 break;
-                // Crear
+            // Crear
             case 'createRow':
                 $_POST = Validator::validateForm($_POST);
                 if (
                     !$subcontenidos->setSubContenido($_POST['SubContenido']) or
-                    !$subcontenidos->setIdContenido($_POST['idContenido'])  
+                    !$subcontenidos->setIdContenido($_POST['idContenido'])
                 ) {
                     $result['error'] = $subcontenidos->getDataError();
                 } elseif ($subcontenidos->createRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Subcontenido creado correctamente';
+                    $result['message'] = 'Principio creado correctamente';
                 } else {
-                    $result['error'] = 'El nombre del subcontenido debe ser único';
+                    $result['error'] = 'La combinación de principio y momento de juego ya existen';
                 }
                 break;
-                // Leer todos
+            // Leer todos
             case 'readAll':
                 if ($result['dataset'] = $subcontenidos->readAll()) {
                     $result['status'] = 1;
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
-                    $result['error'] = 'No existen subcontenidos registrados';
+                    $result['error'] = 'No existen principios registrados';
                 }
                 break;
-                // Leer todos
+            // Leer todos
             case 'readOneContents':
                 if ($result['dataset'] = $subcontenidos->readOneContents()) {
                     $result['status'] = 1;
@@ -57,17 +57,17 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'No existen contenidos registrados';
                 }
                 break;
-                // Leer uno
+            // Leer uno
             case 'readOne':
                 if (!$subcontenidos->setId($_POST['idSubContenido'])) {
                     $result['error'] = $subcontenidos->getDataError();
                 } elseif ($result['dataset'] = $subcontenidos->readOne()) {
                     $result['status'] = 1;
                 } else {
-                    $result['error'] = 'Subcontenido inexistente';
+                    $result['error'] = 'Principio inexistente';
                 }
                 break;
-                // Actualizar
+            // Actualizar
             case 'updateRow':
                 $_POST = Validator::validateForm($_POST);
                 if (
@@ -78,12 +78,12 @@ if (isset($_GET['action'])) {
                     $result['error'] = $subcontenidos->getDataError();
                 } elseif ($subcontenidos->updateRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Subcontenido modificado correctamente';
+                    $result['message'] = 'Principio modificado correctamente';
                 } else {
-                    $result['error'] = 'El nombre del subcontenido debe ser único';
+                    $result['error'] = 'La combinación de principio y momento de juego ya existen';
                 }
                 break;
-                // Eliminar
+            // Eliminar
             case 'deleteRow':
                 if (
                     !$subcontenidos->setId($_POST['idSubContenido'])
@@ -91,9 +91,9 @@ if (isset($_GET['action'])) {
                     $result['error'] = $subcontenidos->getDataError();
                 } elseif ($subcontenidos->deleteRow()) {
                     $result['status'] = 1;
-                    $result['message'] = 'Subcontenido eliminado correctamente';
+                    $result['message'] = 'Principio eliminado correctamente';
                 } else {
-                    $result['error'] = 'No puedes eliminar este subcontenido porque esta siendo utilizado por contenido por entrenamiento';
+                    $result['error'] = 'No puedes eliminar este principio porque esta siendo utilizado por contenido por entrenamiento';
                 }
                 break;
             default:
@@ -104,10 +104,10 @@ if (isset($_GET['action'])) {
         // Se indica el tipo de contenido a mostrar y su respectivo conjunto de caracteres.
         header('Content-type: application/json; charset=utf-8');
         // Se imprime el resultado en formato JSON y se retorna al contplantillaador.
-        print(json_encode($result));
+        print (json_encode($result));
     } else {
-        print(json_encode('Acceso denegado'));
+        print (json_encode('Acceso denegado'));
     }
 } else {
-    print(json_encode('Recurso no disponible'));
+    print (json_encode('Recurso no disponible'));
 }

@@ -40,7 +40,7 @@ class PartidosHandler
     protected $notasPromedioUltimos2Meses = null;
     protected $notasPosicionOfensivaUltimos2Meses = null;
     protected $notasWellnesUltimos2Meses = null;
-    protected $notasPosicionUltimos2Meses = null; 
+    protected $notasPosicionUltimos2Meses = null;
     protected $notasWellnesOfensivaUltimos2Meses = null;
 
     // Constante para establecer la ruta de las imágenes.
@@ -376,7 +376,7 @@ class PartidosHandler
         $this->notasPosicionOfensivaUltimos2Meses = Database::getRows($sql, $params);
         return $this->notasPosicionOfensivaUltimos2Meses;
     }
-    
+
     // 10. Nota de los últimos resultados en test de los delanteros 
     public function NotasTestWellnesOfensivaUltimos2Meses()
     {
@@ -408,13 +408,18 @@ class PartidosHandler
     {
         $samples = [];
         $labels = [];
-
-        $this->MarcadorRival();
-        $this->MarcadorRivalVictoriaOderrota();
+        $this->MarcadorRival();  // Obtenemos los resultados con goles
+        $this->MarcadorRivalVictoriaOderrota();  // Obtenemos la información de victoria/derrota
 
         // Recorre los resultados de los partidos del rival
         foreach ($this->marcadorRival as $partido) {
             $resultado = explode('-', $partido['resultado_partido']);
+
+            // Validar que el resultado tiene el formato esperado (al menos 2 partes)
+            if (count($resultado) < 2) {
+                continue; // Si no tiene el formato correcto, saltar este partido
+            }
+
             $goles_rival = (int) $resultado[1];
             $goles_equipo = (int) $resultado[0];
 
@@ -427,62 +432,101 @@ class PartidosHandler
         $classifier = new KNearestNeighbors();
         $classifier->train($samples, $labels);
 
-        // Obtener la predicción para un resultado específico
-        $resultadoPartido = explode(', ', $this->marcadorRivalVictoriaDerrota[0]['resultado']);
-        if ($resultadoPartido[1] === 'Victoria') {
-            $goles_rival = 1;
-            $goles_equipo = 0;
-        } elseif ($resultadoPartido[1] === 'Derrota') {
-            $goles_rival = 0;
-            $goles_equipo = 1;
-        } else {
-            $goles_rival = 1;
-            $goles_equipo = 1;
-        }
+        // Ahora recorremos el marcador de victoria/derrota y realizamos la predicción
+        foreach ($this->marcadorRivalVictoriaDerrota as $partido) {
+            $resultadoPartido = explode(', ', $partido['resultado']);
 
-        // Retorna la predicción de goles del rival
-        return $classifier->predict([$goles_rival, $goles_equipo]);
+            // Verificamos si el partido es Victoria, Derrota o Pendiente
+            if (count($resultadoPartido) < 2 || $resultadoPartido[1] === 'Pendiente') {
+                continue; // Saltar si no hay información suficiente o el partido está pendiente
+            }
+
+            // Obtenemos los goles exactos del partido anterior para predecir el próximo resultado
+            // Asumimos que la predicción será similar a partidos pasados
+            if ($resultadoPartido[1] === 'Victoria') {
+                // Se predice como una victoria del rival
+                $goles_rival = 2;  // Puedes ajustar este valor según los datos históricos de victorias
+                $goles_equipo = 1;
+            } elseif ($resultadoPartido[1] === 'Derrota') {
+                // Se predice como una derrota del rival
+                $goles_rival = 1;
+                $goles_equipo = 2;  // Ajustar según los datos históricos
+            } else {
+                // Caso empate
+                $goles_rival = 1;
+                $goles_equipo = 1;
+            }
+
+            // Realiza la predicción de los goles del rival en base a los datos históricos
+            return $classifier->predict([$goles_rival, $goles_equipo]);
+        }
     }
+
+
 
     public function calcularProbabilidadVictoriaEquipo()
     {
         $samples = [];
         $labels = [];
 
-        $this->MarcadorEquipo();
-        $this->MarcadorEquipoVictoriaOderrota();
+        // Recolecta los datos de los partidos del equipo
+        $this->MarcadorEquipo();  // Obtiene los resultados con goles
+        $this->MarcadorEquipoVictoriaOderrota();  // Obtiene la información de victoria/derrota
 
         // Recorre los resultados de los partidos del equipo
         foreach ($this->marcadorEquipo as $partido) {
             $resultado = explode('-', $partido['resultado_partido']);
+
+            // Validar que el resultado tiene el formato esperado (al menos 2 partes)
+            if (count($resultado) < 2) {
+                continue; // Si no tiene el formato correcto, saltar este partido
+            }
+
             $goles_equipo = (int) $resultado[0];
             $goles_rival = (int) $resultado[1];
 
-            // Agrega la muestra (goles del equipo y del rival) al arreglo de samples
+            // Almacena los goles exactos del equipo y del rival
             $samples[] = [$goles_equipo, $goles_rival];
-            $labels[] = $goles_equipo; // Guardar los goles del equipo como etiquetas
+            $labels[] = $goles_equipo; // Goles del equipo como etiquetas para entrenar
         }
 
-        // Entrena el clasificador KNN con los datos de muestras y etiquetas
+        // Entrena el clasificador KNN con las muestras (goles del equipo y del rival)
         $classifier = new KNearestNeighbors();
         $classifier->train($samples, $labels);
 
-        // Obtener la predicción para un resultado específico
-        $resultadoPartido = explode(', ', $this->marcadorEquipoVictoriaDerrota[0]['resultado']);
-        if ($resultadoPartido[1] === 'Victoria') {
-            $goles_equipo = 1;
-            $goles_rival = 0;
-        } elseif ($resultadoPartido[1] === 'Derrota') {
-            $goles_equipo = 0;
-            $goles_rival = 1;
-        } else {
-            $goles_equipo = 1;
-            $goles_rival = 1;
-        }
+        // Recorre los resultados obtenidos en MarcadorEquipoVictoriaOderrota
+        foreach ($this->marcadorEquipoVictoriaDerrota as $partido) {
+            $resultadoPartido = explode(', ', $partido['resultado']);  // Usamos coma para separar localidad y resultado
 
-        // Retorna la predicción de goles del equipo
-        return $classifier->predict([$goles_equipo, $goles_rival]);
+            // Verificamos que tengamos suficientes datos
+            if (count($resultadoPartido) < 2) {
+                continue; // Saltar si no hay información suficiente
+            }
+
+            // Asumimos que el primer valor es la localidad, y el segundo es el resultado (Victoria o Derrota)
+            $tipoResultado = $resultadoPartido[1];  // 'Victoria', 'Derrota' o 'Pendiente'
+
+            // Se asignan goles para la predicción en base a la historia de partidos
+            if ($tipoResultado === 'Victoria') {
+                // Supongamos que el equipo suele marcar más goles en victorias
+                $goles_equipo = 2; // Ajusta este valor según datos históricos
+                $goles_rival = 1;  // Ajusta este valor según datos históricos
+            } elseif ($tipoResultado === 'Derrota') {
+                // En derrotas, se puede predecir que el equipo marca menos
+                $goles_equipo = 1;
+                $goles_rival = 2;  // Ajusta según datos históricos
+            } else {
+                // Para empates o pendientes
+                $goles_equipo = 1;
+                $goles_rival = 1;  // Ajusta según datos históricos
+            }
+
+            // Realiza la predicción de los goles del equipo
+            return $classifier->predict([$goles_equipo, $goles_rival]);
+        }
     }
+
+
 
 
     public function clasificarEquipoPorEntrenamientos()
@@ -507,23 +551,23 @@ class PartidosHandler
 
 
     public function subtemaMasFrecuente()
-{
-    $subtema_frecuente = '';
-    $max_frecuencia = 0;
-    $this->ContenidosUltimos2Meses();
+    {
+        $subtema_frecuente = '';
+        $max_frecuencia = 0;
+        $this->ContenidosUltimos2Meses();
 
-    foreach ($this->contenidosUltimos2Meses as $contenido) {
-        $frecuencia = (int) $contenido['frecuencia']; // Convertir la frecuencia a un valor entero
+        foreach ($this->contenidosUltimos2Meses as $contenido) {
+            $frecuencia = (int) $contenido['frecuencia']; // Convertir la frecuencia a un valor entero
 
-        if ($frecuencia > $max_frecuencia) {
-            $max_frecuencia = $frecuencia;
-            $subtema_frecuente = $contenido['sub_tema_contenido'];
+            if ($frecuencia > $max_frecuencia) {
+                $max_frecuencia = $frecuencia;
+                $subtema_frecuente = $contenido['sub_tema_contenido'];
+            }
         }
-    }
 
-    // Convertir el subtema más frecuente a minúsculas antes de retornarlo
-    return strtolower($subtema_frecuente);
-}
+        // Convertir el subtema más frecuente a minúsculas antes de retornarlo
+        return strtolower($subtema_frecuente);
+    }
 
 
     public function subtemaMenosFrecuente()
@@ -539,7 +583,7 @@ class PartidosHandler
                 $min_frecuencia = $frecuencia;
                 $subtema_menos_frecuente = $contenido['sub_tema_contenido'];
             }
-         }
+        }
 
         return strtolower($subtema_menos_frecuente);
     }
@@ -567,117 +611,117 @@ class PartidosHandler
         $mejores_test = [];
         $frecuencia_entrenamientos = [];
         $jugadores_repetidos = [];
-    
+
         // Obtener las notas de los últimos 2 meses de las posiciones ofensivas
         $this->NotasPosicionOfensivaUltimos2Meses();
         $this->NotasTestWellnesOfensivaUltimos2Meses();
-    
+
         // Crear arrays con los nombres de los jugadores y sus respectivas notas y frecuencias
         foreach ($this->notasPosicionOfensivaUltimos2Meses as $nota) {
             $mejores_notas[$nota['nombre_jugador']] = (float) $nota['promedio'];
             $frecuencia_entrenamientos[$nota['nombre_jugador']] = (float) $nota['frecuencia'];
         }
-    
+
         foreach ($this->notasWellnesOfensivaUltimos2Meses as $nota) {
             $mejores_test[$nota['nombre_jugador']] = (float) $nota['promedio'];
         }
-    
+
         // Ordenar ambos arrays de mayor a menor según las notas
         arsort($mejores_notas);
         arsort($mejores_test);
-    
+
         // Tomar los 6 mejores jugadores de cada arreglo
         $top_mejores_notas = array_slice($mejores_notas, 0, 6, true);
         $top_mejores_test = array_slice($mejores_test, 0, 6, true);
-    
+
         // Buscar los jugadores que están en ambos arreglos
         $jugadores_repetidos = array_intersect_key($top_mejores_notas, $top_mejores_test);
-    
+
         // Calcular el puntaje ponderado para cada jugador repetido
         foreach ($jugadores_repetidos as $nombre_jugador => $nota) {
             $nota_ofensiva = $top_mejores_notas[$nombre_jugador] ?? 0;
             $nota_test = $top_mejores_test[$nombre_jugador] ?? 0;
             $frecuencia = $frecuencia_entrenamientos[$nombre_jugador] ?? 0;
-    
+
             // Calcular el puntaje final ponderado: 40% nota ofensiva, 30% frecuencia, 30% nota test
             $jugadores_repetidos[$nombre_jugador] = (
-                ($nota_ofensiva * 0.40) + 
-                ($frecuencia * 0.30) + 
+                ($nota_ofensiva * 0.40) +
+                ($frecuencia * 0.30) +
                 ($nota_test * 0.30)
             );
         }
-    
+
         // Ordenar a los jugadores repetidos por su puntaje ponderado (de mayor a menor)
         arsort($jugadores_repetidos);
-    
+
         // Devolver los 3 mejores jugadores
         return array_slice($jugadores_repetidos, 0, 4, true);
     }
-    
+
     public function mejoresPropuestas()
     {
         $notas_posicion = []; // Jugadores con sus notas en posiciones
         $notas_wellness = []; // Jugadores con sus notas de bienestar (motivación)
         $frecuencia_entrenamientos = []; // Jugadores con su frecuencia de asistencias
         $jugadores_desmotivados = []; // Jugadores que aparecerán en ambas listas (repetidos)
-    
+
         // Obtener las notas de los últimos 2 meses de las posiciones (no necesariamente ofensivas)
-        $this->NotasPosicionUltimos2Meses(); 
+        $this->NotasPosicionUltimos2Meses();
         $this->NotasTestWellnesUltimos2Meses(); // Obtener las notas de bienestar (motivación)
-    
+
         // Crear arrays con los nombres de los jugadores y sus respectivas notas y frecuencias
         foreach ($this->notasPosicionUltimos2Meses as $nota) {
             $notas_posicion[$nota['nombre_jugador']] = (float) $nota['promedio'];
             $frecuencia_entrenamientos[$nota['nombre_jugador']] = (float) $nota['frecuencia'];
         }
-    
+
         foreach ($this->notasWellnesUltimos2Meses as $nota) {
             $notas_wellness[$nota['nombre_jugador']] = (float) $nota['promedio'];
         }
-    
+
         // Ordenar las notas de posiciones de mayor a menor
         arsort($notas_posicion);
-    
+
         // Las notas de bienestar ya están de menor a mayor, así que no es necesario ordenar
-    
+
         // Tomar los 6 mejores jugadores en posiciones y los 6 con menor motivación
         $top_jugadores_posicion = array_slice($notas_posicion, 0, 6, true);
         $jugadores_desmotivados = array_slice($notas_wellness, 0, 6, true); // Tomar los 6 con menor nota
-    
+
         // Inversión de las notas de bienestar (mientras más baja la nota, mayor será el peso)
         $nota_maxima_wellness = max($jugadores_desmotivados);
         foreach ($jugadores_desmotivados as $nombre_jugador => $nota_wellness) {
             $jugadores_desmotivados[$nombre_jugador] = $nota_maxima_wellness - $nota_wellness;
         }
-    
+
         // Buscar los jugadores que están en ambos arreglos (jugadores que no son ofensivos y están desmotivados)
         $jugadores_recomendados = array_intersect_key($top_jugadores_posicion, $jugadores_desmotivados);
-    
+
         // Calcular el puntaje ponderado para cada jugador desmotivado
         foreach ($jugadores_recomendados as $nombre_jugador => $nota) {
             $nota_posicion = $top_jugadores_posicion[$nombre_jugador] ?? 0;
             $nota_invertida_wellness = $jugadores_desmotivados[$nombre_jugador] ?? 0;
             $frecuencia = $frecuencia_entrenamientos[$nombre_jugador] ?? 0;
-    
+
             // Calcular el puntaje final ponderado: 30% nota de posición, 30% frecuencia, 40% bienestar invertido
             $jugadores_recomendados[$nombre_jugador] = (
-                ($nota_posicion * 0.30) + 
-                ($frecuencia * 0.30) + 
+                ($nota_posicion * 0.30) +
+                ($frecuencia * 0.30) +
                 ($nota_invertida_wellness * 0.40)
             );
         }
-    
+
         // Ordenar a los jugadores recomendados por su puntaje ponderado (de mayor a menor)
         arsort($jugadores_recomendados);
-    
+
         // Devolver los 3 mejores jugadores recomendados
         return array_slice($jugadores_recomendados, 0, 3, true);
-    }    
-    
+    }
+
 
     //Función para leer los partidos por el idEquipo
 
-    
+
     public function searchRowsByIdJugador()
     {
         $value = '%' . Validator::getSearchValue() . '%';
@@ -713,7 +757,7 @@ class PartidosHandler
         $nombresDelanteros = implode(', ', array_keys($mejoresDelanteros));
         // Filtrar nombres de propuestas que no están en delanteros
         $nombresNoEnDelanteros = implode(', ', array_keys(array_diff_key($mejoresPropuesta, $mejoresDelanteros)));
-        
+
         $mensaje1 = "Bajo la frecuencia de entrenamientos de este mes y las áreas reforzadas, los resultados en enfrentamientos de tu equipo y del rival, se predice el resultado de este partido:\n";
         $mensaje2 = "[Logo equipo 1] {$prediccionEquipo} - {$prediccionRival} [logo rival]\n";
         $mensaje3 = "Reforzar el área de {$subtemaMenor} y hacer un partido estratégico; Toma en cuenta que en este partido tu area más fuerte será {$subtemaMayor}, ¡Así que potencialo!.\n \nSe espera que en la ofensiva los titulares de este partido sean: {$nombresDelanteros}. Se considera que a estos jugadores les vendría bien que los tomen en cuenta para el partido {$nombresNoEnDelanteros}.";
