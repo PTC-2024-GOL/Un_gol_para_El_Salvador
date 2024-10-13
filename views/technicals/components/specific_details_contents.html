@@ -13,6 +13,9 @@
                     <button type="reset" class="btn" onclick="fillTable()">
                         <img src="../../../resources/img/svg/icons_forms/reset.svg" width="18px" height="18px">
                     </button>
+                    <button type="button" class="btn" onclick="grapicsView()">
+                        <img src="../../../resources/img/png/eye.png" width="18px" height="18px">
+                    </button>
                 </form>
             </div>
 
@@ -20,13 +23,65 @@
                 <!-- Botón Agregar -->
                 <button
                     class="btn bg-blue-principal-color text-white ms-auto borde-transparente float-md-end float-sm-left btn-sm rounded-3"
-                    type="submit" onclick="openCreate()">
+                    type="submit" onclick="openCreateCancha()">
                     <span class="fs-5 me-2">+</span> Agregar contenidos para los jugadores
                 </button>
             </div>
         </div>
     </div>
+    <!-- Gráficos -->
+    <div class="row justify-content-center">
+        <div class="col-sm-12 col-lg-6 d-flex justify-content-center">
+            <div class="card d-none" id="contenedor1graf">
+                <div class="bar"></div>
+                <div class="card_form">
+                    <div class="container-fluid">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+                <div class="card_data">
+                    <div class="data">
+                        <div class="text">
+                            <label class="text_m">¿Esto qué es?</label>
+                            <div class="cube text_s">
+                                <label class="side front">Gráfico del principio</label>
+                                <label class="side top">Analiza</label>
+                            </div>
+                            <label class="text_d" id="contenido1">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-lg-6 d-flex justify-content-center p-2">
+            <div class="card d-none" id="contenedor2graf">
+                <div class="bar"></div>
+                <div class="card_form">
+                    <div class="container-fluid">
+                        <canvas id="myChart2"></canvas>
+                    </div>
+                </div>
+                <div class="card_data">
+                    <div class="data">
+                        <div class="text">
+                            <label class="text_m">¿Esto qué es?</label>
+                            <div class="cube text_s">
+                                <label class="side front">Gráfico de tareas</label>
+                                <label class="side top">Analiza</label>
+                            </div>
+                            <label class="text_d" id="contenido2">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <hr>
+    <div id="Mensaje">
+
+    </div>
     <!-- Tabla para mostrar los registros existentes -->
     <div class="table-responsive">
         <table class="table table align-middle table-striped table-borderless text-center">
@@ -36,8 +91,9 @@
                     <td colspan="5" id="rowsFound"></td>
                 </tr>
                 <tr>
+                    <th class="fw-semibold">Dorsal</th>
                     <th class="fw-semibold">Jugador</th>
-                    <th class="fw-semibold">Subtema</th>
+                    <th class="fw-semibold">Principio</th>
                     <th class="fw-semibold">Tarea</th>
                 </tr>
             </thead>
@@ -45,12 +101,16 @@
             <tbody id="tabla_especificos_detalles_contenidos"></tbody>
         </table>
     </div>
+    <!-- Tags -->
+    <div id="tags">
+
+    </div>
 </div>
 
 <!-- Componente Modal para guardar un registro -->
 <div class="modal fade" id="saveModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="modalTitle" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-blue-principal-color text-light">
                 <img height="30" width="30" class="me-2" src="../../../resources/img/svg/logos/logo_blanco.svg">
@@ -59,49 +119,51 @@
                     aria-label="Close"></button>
             </div>
             <!-- Formulario para crear o actualizar un registro -->
-            <form id="saveForm">
-                <div class="modal-body row g-3">
-                    <!-- Campo oculto para asignar el id del registro al momento de modificar -->
-                    <input type="hidden" id="iddetallecontenido" name="idDetalle">
-                    <div class="col-sm-12 col-md-6">
-                        <label for="subcontenido" class="form-label fw-semibold">Sub contenido</label>
-                        <select id="subcontenido" type="text" name="idSubContenido" class="form-select"
-                            autocomplete="off" required></select>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <label for="tarea" class="form-label fw-semibold">Tarea</label>
-                        <select id="tarea" type="text" name="IdTarea" class="form-select" autocomplete="off" required></select>
-                    </div>
-                    <div class="col-sm-12 col-md-6 mb-3">
-                        <label for="cantidadEquipo" class="form-label fw-semibold">Minutos del contenido</label>
-                        <input id="cantidadEquipo" type="number" name="CantidadSubContenido" class="form-control"
-                            min="1" max="600" placeholder="Ingresa los minutos del contenido" autocomplete="off" required>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <label for="minutostarea" class="form-label fw-semibold">Minutos tarea</label>
-                        <input id="minutostarea" type="number" name="CantidadTarea" class="form-control" min="1"
-                            max="600" placeholder="Ingresa los minutos de la tarea" autocomplete="off" required>
-                    </div>
-                    <div class="col-sm-12 col-md-12">
-                        <label for="telefonoEquipo" class="form-label fw-semibold">Jugador/ Jugadores</label>
-                        <div class="row">
-                            <div class="col-sm-12 col-md-10">
-                                <select class="form-select me-3 borde-transparente campo rounded-3 shadow"
-                                    id="generador">
-                                    <option value="">Selecciona a quién se asignará</option>
-                                </select>
+            <div id="contenedor_modal">
+                <form id="saveForm">
+                    <div class="modal-body row g-3">
+                        <!-- Campo oculto para asignar el id del registro al momento de modificar -->
+                        <input type="hidden" id="iddetallecontenido" name="idDetalle">
+                        <div class="col-sm-12 col-md-6">
+                            <label for="subcontenido" class="form-label fw-semibold">Principio principal</label>
+                            <select id="subcontenido" type="text" name="idSubContenido" class="form-select"
+                                autocomplete="off" required></select>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="tarea" class="form-label fw-semibold">Tarea</label>
+                            <select id="tarea" type="text" name="IdTarea" class="form-select" autocomplete="off" required></select>
+                        </div>
+                        <div class="col-sm-12 col-md-6 mb-3">
+                            <label for="cantidadEquipo" class="form-label fw-semibold">Minutos del principio</label>
+                            <input id="cantidadEquipo" type="number" name="CantidadSubContenido" class="form-control"
+                                min="1" max="600" placeholder="Ingresa los minutos del contenido" autocomplete="off" required>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="minutostarea" class="form-label fw-semibold">Minutos tarea</label>
+                            <input id="minutostarea" type="number" name="CantidadTarea" class="form-control" min="1"
+                                max="600" placeholder="Ingresa los minutos de la tarea" autocomplete="off" required>
+                        </div>
+                        <div class="col-sm-12 col-md-12">
+                            <label for="telefonoEquipo" class="form-label fw-semibold">Jugador/ Jugadores</label>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-10">
+                                    <select class="form-select me-3 borde-transparente campo rounded-3 shadow"
+                                        id="generador">
+                                        <option value="">Selecciona a quién se asignará</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-sm-12 col-md-12" id="nombresDeLosJugadores">
+                        <div class="col-sm-12 col-md-12" id="nombresDeLosJugadores">
 
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
-                    <button type="reset" class="btn bg-red-cream-color text-white">Cancelar</button>
-                    <button type="submit" class="btn bg-blue-principal-color text-white ">Guardar</button>
-                </div>
-            </form>
+                    <div class="modal-footer col-sm-12 col-md-12 col-lg-12">
+                        <button type="reset" class="btn bg-red-cream-color text-white">Cancelar</button>
+                        <button type="submit" class="btn bg-blue-principal-color text-white ">Guardar</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

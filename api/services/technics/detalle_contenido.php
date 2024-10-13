@@ -92,6 +92,17 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Equipo inexistente';
                 }
                 break;
+                //Leer estadisticas en base al identrenamiento
+            case 'lastAssists':
+                if (!$detalle->setIdEquipo($_POST['idEquipo'])) {
+                    $result['error'] = $detalle->getDataError();
+                } elseif ($result['dataset'] = $detalle->readlastAssists()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['status'] = 0;
+                    $result['error'] = 'Este equipo no tiene asistencias';
+                }
+                break;
             // Leer todos los contenidos
             case 'readAllDContenido':
                 if (!$detalle->setIdEntrenamiento($_POST['idEntrenamiento'])) {
@@ -139,6 +150,16 @@ if (isset($_GET['action'])) {
                     $result['message'] = 'Existen ' . count($result['dataset']) . ' registros';
                 } else {
                     $result['error'] = 'No existen registros';
+                }
+                break;
+            // Leer todos los subcontenidos
+            case 'readAllSubContenidos2':
+                if (!$detalle->setCancha($_POST['cancha'])) {
+                    $result['error'] = $detalle->getDataError();
+                } elseif ($result['dataset'] = $detalle->readAllSubContenidos2()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'No existen contenidos con esta cancha, elija otra cancha';
                 }
                 break;
             // Leer todas las tareas    
@@ -189,6 +210,19 @@ if (isset($_GET['action'])) {
                     $result['message'] = 'El contenido ha sido eliminado correctamente del jugador';
                 } else {
                     $result['error'] = 'Ocurrió un problema al eliminar el contenido del jugador. ';
+                }
+                break;
+             //Leer graficas en base al identrenamiento
+             case 'readAllGraphic':
+                if (!$detalle->setIdEntrenamiento($_POST['idEntrenamiento'])) {
+                    $result['error'] = $detalle->getDataError();
+                } elseif ($result['dataset'] = $detalle->readAllGraphicContents()) {
+                    if($result['dataset2'] = $detalle->readAllGraphicTareas()){
+                        $result['status'] = 1;
+                    }
+                } else {
+                    $result['error'] = 'Sin contenidos';
+                    $result['status'] = 0;
                 }
                 break;
             default:
