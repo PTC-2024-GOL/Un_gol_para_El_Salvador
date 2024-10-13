@@ -43,7 +43,7 @@ class RecuperacionHandler
         $titulo = '¡Bienvenid@ ' . $this->nombre . ', estamos aquí para ayudarte!';
         $mailSubject = 'Recuperación de contraseña';
         $mailAltBody = 'Cambia tu contraseña con un solo click';
-        $link = 'http://localhost/sitio_gol_sv/views/admin/pages/change_passwords.html?c=' . urlencode($this->hash) . '&id=' . urlencode($this->idUsuario) . '&n=' . urlencode($this->nivel);
+        $link = 'https://huellitaspets.shop/sitio_gol_sv/views/admin/pages/change_passwords.html?c=' . urlencode($this->hash) . '&id=' . urlencode($this->idUsuario) . '&n=' . urlencode($this->nivel);
         $message1 = '¡ingresa aquí!';
         $message2 = 'Si no has solicitado este cambio, por favor ignora este mensaje. Este link solo estará habilitado durante los siguientes 15 minutos, después de este tiempo deberás solicitar un nuevo cambio de contraseña. Recuerda que tu seguridad es nuestra prioridad.';
         $footer = 'Copyright &copy; ' . date("Y") . ' Fundación un gol para El Salvador. Todos los derechos reservados.';
