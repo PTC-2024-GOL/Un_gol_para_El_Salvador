@@ -25,7 +25,7 @@ if (isset($_GET['idJugador'])) {
 
             // Imprimir el nombre del jugador en el reporte antes de la tabla
             $pdf->setFont('Arial', 'B', 11); // Fuente para el nombre
-            $pdf->cell(43, 10, 'Nombre del jugador: ', 0, 0, 'L');
+            $pdf->cell(58, 10, 'Nombre del jugador: ', 0, 0, 'L');
             $pdf->setFont('Arial', '', 11);
             $pdf->cell(18, 10, $pdf->encodeString($nombre_jugador), 0, 1, 'R'); // Celda para el nombre del jugador
             $pdf->ln(2); // Salto de línea para separar el nombre de la tabla

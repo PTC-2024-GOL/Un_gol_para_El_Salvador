@@ -563,7 +563,7 @@ class JugadoresHandler
     public function graphicMobile()
     {
         $sql = 'SELECT cj.clasificacion_caracteristica_jugador AS caracteristica,
-        ROUND(AVG(C.nota_caracteristica_analisis), 2) AS promedio
+        ROUND(AVG(c.nota_caracteristica_analisis), 2) AS promedio
         FROM caracteristicas_analisis c
         INNER JOIN caracteristicas_jugadores cj ON c.id_caracteristica_jugador = cj.id_caracteristica_jugador
         WHERE c.id_jugador = ? GROUP BY cj.clasificacion_caracteristica_jugador;';
