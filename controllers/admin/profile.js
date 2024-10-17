@@ -136,6 +136,9 @@ window.onload = async function () {
     const profileHtml = await loadComponent('../components/profile.html');
     // Agrega el HTML del encabezado
     appContainer.innerHTML += profileHtml;
+    //Agrega el encabezado de la pantalla
+    const titleElement = document.getElementById('title');
+    titleElement.textContent = 'Mi perfil';
 
     CORREO = document.getElementById('email');
     await openProfile();
