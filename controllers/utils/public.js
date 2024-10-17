@@ -30,7 +30,7 @@ MAINCONTENT = `
         <ul class="navbar-nav ">
            <div class="nav-item me-5">  
              <button class="nav-link active text-light" aria-current="page" href="soccer_teams.html" onClick = "mostrarEquipos()">
-                <img src="../../../resources/img/svg/icons_menu/IconF.svg" class="me-3"> 
+                <img src="../../../resources/img/svg/icons_menu/iconF.svg" class="me-3"> 
                 Equipos
               </button>
            </div>

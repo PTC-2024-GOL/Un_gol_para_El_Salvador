@@ -113,8 +113,8 @@ class PagoHandler
                 p.mes_pago AS MES,
                 j.id_jugador AS ID_JUGADOR,
                 CONCAT(j.nombre_jugador, " " ,j.apellido_jugador) AS NOMBRE,
-                J.foto_jugador AS FOTO,
-                ROUND(P.cantidad_pago + P.mora_pago, 2) AS SUBTOTAL,
+                j.foto_jugador AS FOTO,
+                ROUND(p.cantidad_pago + p.mora_pago, 2) AS SUBTOTAL,
                 ROUND((p.cantidad_pago + p.mora_pago) * 1.13, 2) AS TOTAL
                 FROM pagos p
                 INNER JOIN jugadores j ON p.id_jugador = j.id_jugador
