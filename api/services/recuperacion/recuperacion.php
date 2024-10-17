@@ -39,7 +39,7 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'Ocurrió un problema al crear el hash';
                 }
             } else {
-                $result['error'] = 'Ocurrió un problema al leer el id del usuario';
+                $result['error'] = 'Correo no reconocido, intentalo de nuevo';
             }
             break;
         case 'updatePass':

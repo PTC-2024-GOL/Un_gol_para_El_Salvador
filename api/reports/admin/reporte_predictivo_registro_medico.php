@@ -36,7 +36,7 @@ try {
         $pdf->ln(3);
 
         $pdf->setFont('Arial', 'B', 11);
-        $pdf->cell(71, 8, $pdf->encodeString('1. Rango de días lesionados: '), 0, 0);
+        $pdf->cell(69, 8, $pdf->encodeString('1. Rango de días lesionados: '), 0, 0);
         $pdf->setFont('Arial', '', 11);
         $pdf->cell(25, 8, $pdf->encodeString($dataRegistro['dias_lesionados_rango']), 0, 1, 'R');
         $pdf->setFont('Arial', 'B', 11);
@@ -53,7 +53,7 @@ try {
         $pdf->multicell(193, 8, $pdf->encodeString('El nivel de riesgo predicho para el grupo de jugadores es ' . $dataRegistro['prediccion']), 0, 1);
         $pdf->ln(2);
 
-        $pdf->cell(50, 8, $pdf->encodeString('La lesión más frecuente entre los jugadores es:'), 0, 0);
+        $pdf->cell(53, 8, $pdf->encodeString('La lesión más frecuente entre los jugadores es:'), 0, 0);
         $pdf->setFont('Arial', 'B', 11);
         $pdf->cell(70, 8, $pdf->encodeString($dataRegistro['tipo_lesion_mas_frecuente']), 0, 1, 'R');
 
